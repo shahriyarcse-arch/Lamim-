@@ -1306,6 +1306,11 @@
         return 'Nascent \u2014 every step counts';
       }
 
+      function updateTrackFill(slider, val) {
+        if (!slider) return;
+        slider.style.background = 'linear-gradient(to right, var(--teal,#3d7a5a) 0%, var(--teal,#3d7a5a) ' + val + '%, rgba(19, 33, 27, 0.12) ' + val + '%, rgba(19, 33, 27, 0.12) 100%)';
+      }
+
       function update() {
         const p = parseInt(prayerSlider.value, 10) || 0;
         const d = parseInt(dhikrSlider.value, 10) || 0;
@@ -1318,6 +1323,12 @@
         if (naflVal)    naflVal.textContent    = n + '%';
         if (mujahidVal) mujahidVal.textContent = m + '%';
         if (rhythmVal)  rhythmVal.textContent  = r + '%';
+
+        updateTrackFill(prayerSlider, p);
+        updateTrackFill(dhikrSlider, d);
+        updateTrackFill(naflSlider, n);
+        updateTrackFill(mujahidSlider, m);
+        updateTrackFill(rhythmSlider, r);
 
         const shs = computeSHS();
         if (scoreEl) scoreEl.innerHTML = shs + ' <small style="font-size:0.4em; color:var(--muted);">/ 100</small>';
