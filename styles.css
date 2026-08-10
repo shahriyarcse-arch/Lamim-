@@ -1638,34 +1638,34 @@ details p {
 }
 
 .footer-brand .brand {
-  font-size: clamp(2.2rem, 3.8vw, 3.2rem) !important;
-  gap: 16px !important;
+  font-size: clamp(2rem, 3.2vw, 2.7rem) !important;
+  gap: 14px !important;
   font-weight: 900 !important;
-  letter-spacing: -0.04em !important;
+  letter-spacing: -0.035em !important;
   display: inline-flex !important;
   align-items: center !important;
   line-height: 1 !important;
 }
 
 .footer-brand .brand-icon {
-  height: clamp(48px, 4.5vw, 64px) !important;
+  height: clamp(40px, 3.5vw, 54px) !important;
   width: auto !important;
   object-fit: contain !important;
   transition: transform 0.35s var(--ease), filter 0.35s var(--ease);
-  filter: drop-shadow(0 4px 16px rgba(207, 238, 130, 0.3));
+  filter: drop-shadow(0 3px 12px rgba(207, 238, 130, 0.28));
 }
 
 .footer-brand .brand:hover .brand-icon {
-  transform: scale(1.1) rotate(-4deg);
-  filter: drop-shadow(0 6px 22px rgba(207, 238, 130, 0.5));
+  transform: scale(1.08) rotate(-4deg);
+  filter: drop-shadow(0 5px 18px rgba(207, 238, 130, 0.45));
 }
 
 .footer-brand p {
   color: #8fa89a;
-  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-  margin-top: 14px;
-  line-height: 1.6;
-  max-width: 28ch;
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+  margin-top: 10px;
+  line-height: 1.5;
+  max-width: 24ch;
 }
 
 /* Column heading */
