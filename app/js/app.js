@@ -122,19 +122,31 @@ updateSectionTitle() {
     // Force clear old service workers and caches ONCE to ensure the bug fix applies
     if (!DB.rawGet('lamim_cache_cleared_v36')) {
       DB.rawSet('lamim_cache_cleared_v36', 'true');
+      let cleanedAnything = false;
 
+      const cleanupPromises = [];
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for (let registration of registrations) {
-            registration.unregister();
-          }
-        }).catch(() => {});
+        cleanupPromises.push(
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            if (registrations.length > 0) cleanedAnything = true;
+            return Promise.all(registrations.map(r => r.unregister()));
+          }).catch(() => {})
+        );
       }
-      caches.keys().then(keys => {
-        keys.forEach(key => caches.delete(key));
-      }).catch(() => {});
-      setTimeout(() => window.location.reload(), 500);
-      return; // Stop initialization until reload
+      if ('caches' in window) {
+        cleanupPromises.push(
+          caches.keys().then(keys => {
+            if (keys.length > 0) cleanedAnything = true;
+            return Promise.all(keys.map(k => caches.delete(k)));
+          }).catch(() => {})
+        );
+      }
+
+      await Promise.all(cleanupPromises);
+      if (cleanedAnything) {
+        setTimeout(() => window.location.reload(), 500);
+        return; // Stop initialization until reload
+      }
     }
 
     // Check for Service Worker Updates is handled automatically by the browser
@@ -177,7 +189,10 @@ updateSectionTitle() {
             const currentVersion = DB.rawGet('lamim_current_sw_version');
             if (currentVersion !== event.data.version) {
               DB.rawSet('lamim_current_sw_version', event.data.version);
-              
+
+              // Skip reload on first install — assets were just fetched fresh
+              if (currentVersion === null) return;
+
               // Clear caches before reloading to ensure absolute fresh assets
               if ('caches' in window) {
                 caches.keys().then((names) => {
