@@ -322,7 +322,7 @@ const Auth = {
 
     container.style.display = 'block';
     list.innerHTML = profiles.map(p => `
-      <div style="display:flex; align-items:center; justify-space-between; padding: 10px 14px; border-radius:14px; background:var(--color-surface-card); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;" onclick="Auth.switchSavedProfile('${p.id}')">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding: 10px 14px; border-radius:14px; background:var(--color-surface-card); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;" onclick="Auth.switchSavedProfile('${p.id}')">
         <div style="display:flex; align-items:center; gap:10px;">
           <div style="width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg, #a855f7, #3b82f6); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">
             ${(p.name || 'U').charAt(0).toUpperCase()}
