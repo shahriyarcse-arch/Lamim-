@@ -1659,23 +1659,15 @@
         if (progressRatio < 1) {
           requestAnimationFrame(runPhase);
         } else {
-          // Reached 100% for this phase! Hold for 800ms at 100%
-          setTimeout(function() {
-            // Reset bar & number smoothly to 0% for next phase
-            barEl.style.transition = 'width 0.4s ease-out';
-            barEl.style.width = '0%';
-            percentEl.textContent = '0%';
+          // Reached 100%! Instantly move to next phase with ZERO delay
+          phaseIdx = (phaseIdx + 1) % phases.length;
+          var nextPhase = phases[phaseIdx];
+          updatePhaseHeader(nextPhase.rank, nextPhase.subtext);
 
-            // Move to next phase
-            phaseIdx = (phaseIdx + 1) % phases.length;
-            var nextPhase = phases[phaseIdx];
-            updatePhaseHeader(nextPhase.rank, nextPhase.subtext);
-
-            startTime = null;
-            setTimeout(function() {
-              requestAnimationFrame(runPhase);
-            }, 500);
-          }, 800);
+          barEl.style.width = '0%';
+          percentEl.textContent = '0%';
+          startTime = null;
+          requestAnimationFrame(runPhase);
         }
       }
 
