@@ -961,79 +961,86 @@
     <!-- Section 08: Career -->
     <section id="feature-career" style="background:var(--coral)">
       <div class="wrap feature-grid">
-
-        <!-- Career Visual Card -->
-        <div class="visual career reveal" style="display:flex;flex-direction:column;justify-content:space-between;padding:24px;gap:0;min-height:260px;overflow:visible;">
-
-          <!-- Row 1: Header + Streak -->
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;">
-            <div>
-              <div style="display:inline-block;font-family:var(--font-body,sans-serif);font-size:0.6rem;font-weight:800;color:var(--teal);letter-spacing:0.12em;text-transform:uppercase;background:rgba(61,122,90,0.1);border:1px solid rgba(61,122,90,0.2);border-radius:99px;padding:3px 10px;margin-bottom:10px;">08 · Career</div>
-              <div style="font-family:var(--font-display,serif);font-size:1.15rem;font-weight:800;color:var(--ink);letter-spacing:-0.025em;line-height:1.2;">Direction<br>over drift.</div>
-            </div>
-            <!-- Streak badge -->
-            <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:linear-gradient(145deg,#1a3d2b,#2e6347);border-radius:16px;padding:10px 14px;box-shadow:0 6px 18px rgba(19,33,27,0.22);">
-              <span style="font-family:var(--font-display,serif);font-size:1.5rem;font-weight:900;color:#cfee82;line-height:1;">12</span>
-              <span style="font-size:0.52rem;font-weight:800;color:rgba(207,238,130,0.7);text-transform:uppercase;letter-spacing:0.1em;">Day streak</span>
-            </div>
+        <div class="visual career reveal">
+          <div class="v-info">
+            <div class="eyebrow">08 &middot; Career</div>
+            <h3>Direction over drift.</h3>
+            <p>One skill improved this week. 4.2 hours of deep focus logged today.</p>
           </div>
+          <div class="v-art" style="width:auto;height:auto;min-width:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+            
+            <!-- Glassmorphic Weekly Focus Card -->
+            <div style="width:150px;background:rgba(255,255,255,0.72);border:2px solid rgba(255,255,255,0.95);border-radius:18px;box-shadow:0 14px 36px rgba(19,33,27,0.1), inset 0 2px 6px rgba(255,255,255,0.9);padding:14px 12px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);user-select:none;-webkit-user-select:none;">
+              
+              <!-- Card Top Header -->
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:5px;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#3d7a5a;box-shadow:0 0 8px #6fcf8a;"></span>
+                  <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.62rem;font-weight:800;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;">FOCUS LOG</span>
+                </div>
+                <span style="font-family:var(--font-display,'Fraunces',serif);font-size:0.75rem;font-weight:800;color:#1e4530;background:#e2f4c1;padding:2px 7px;border-radius:99px;box-shadow:0 2px 6px rgba(61,122,90,0.15);">4.2h</span>
+              </div>
 
-          <!-- Row 2: Skill progress bars -->
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-                <span style="font-size:0.7rem;font-weight:600;color:var(--muted);">DSA &amp; Problem Solving</span>
-                <span style="font-size:0.7rem;font-weight:800;color:var(--teal);">78%</span>
-              </div>
-              <div style="height:7px;background:rgba(19,33,27,0.08);border-radius:99px;overflow:hidden;">
-                <div class="career-bar-fill" data-w="78" style="height:100%;width:0%;background:linear-gradient(90deg,#3d7a5a 0%,#6fcf8a 100%);border-radius:99px;transition:width 1.1s cubic-bezier(0.16,1,0.3,1);"></div>
+              <!-- 5 Animated Vertical Pillars -->
+              <div style="height:76px;display:flex;align-items:flex-end;justify-content:space-between;gap:6px;padding:0 2px;position:relative;">
+                
+                <!-- Baseline grid lines -->
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;opacity:0.25;">
+                  <span style="border-bottom:1px dashed rgba(19,33,27,0.5);"></span>
+                  <span style="border-bottom:1px dashed rgba(19,33,27,0.3);"></span>
+                  <span style="border-bottom:1px dashed rgba(19,33,27,0.5);"></span>
+                </div>
+
+                <!-- Mon -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
+                  <div class="career-pillar" data-h="40%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.1s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Mon: 2.5h"></div>
+                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">M</span>
+                </div>
+
+                <!-- Tue -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
+                  <div class="career-pillar" data-h="65%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s;box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Tue: 3.8h"></div>
+                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">T</span>
+                </div>
+
+                <!-- Wed -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
+                  <div class="career-pillar" data-h="50%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.3s cubic-bezier(0.16,1,0.3,1) 0.2s;box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Wed: 3.0h"></div>
+                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">W</span>
+                </div>
+
+                <!-- Thu (Active Peak) -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
+                  <div class="career-pillar" data-h="95%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#cfee82 0%,#1f4e36 100%);border-radius:6px 6px 3px 3px;transition:height 1.4s cubic-bezier(0.16,1,0.3,1) 0.3s;box-shadow:0 4px 12px rgba(31,78,54,0.3);position:relative;" title="Thu: 4.2h (Peak)">
+                    <span style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#cfee82;border-radius:50%;box-shadow:0 0 6px #cfee82;"></span>
+                  </div>
+                  <span style="font-size:0.58rem;font-weight:900;color:#1e4530;">T</span>
+                </div>
+
+                <!-- Fri -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
+                  <div class="career-pillar" data-h="75%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.5s cubic-bezier(0.16,1,0.3,1) 0.4s;box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Fri: 3.5h"></div>
+                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">F</span>
+                </div>
+
               </div>
             </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-                <span style="font-size:0.7rem;font-weight:600;color:var(--muted);">System Design</span>
-                <span style="font-size:0.7rem;font-weight:800;color:var(--teal);">55%</span>
-              </div>
-              <div style="height:7px;background:rgba(19,33,27,0.08);border-radius:99px;overflow:hidden;">
-                <div class="career-bar-fill" data-w="55" style="height:100%;width:0%;background:linear-gradient(90deg,#3d7a5a 0%,#6fcf8a 100%);border-radius:99px;transition:width 1.3s cubic-bezier(0.16,1,0.3,1) 0.15s;"></div>
-              </div>
+
+            <!-- Streak Pill Badge -->
+            <div style="display:flex;align-items:center;gap:6px;background:#1a3d2b;color:#cfee82;padding:5px 14px;border-radius:99px;box-shadow:0 4px 14px rgba(26,61,43,0.22);font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;letter-spacing:0.04em;">
+              <span>12 Day Streak</span>
+              <span style="opacity:0.5;">&middot;</span>
+              <span style="color:#6fcf8a;">&uparrow;18%</span>
             </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-                <span style="font-size:0.7rem;font-weight:600;color:var(--muted);">React &amp; Next.js</span>
-                <span style="font-size:0.7rem;font-weight:800;color:var(--teal);">91%</span>
-              </div>
-              <div style="height:7px;background:rgba(19,33,27,0.08);border-radius:99px;overflow:hidden;">
-                <div class="career-bar-fill" data-w="91" style="height:100%;width:0%;background:linear-gradient(90deg,#3d7a5a 0%,#cfee82 100%);border-radius:99px;transition:width 1.5s cubic-bezier(0.16,1,0.3,1) 0.3s;"></div>
-              </div>
-            </div>
+
           </div>
-
-          <!-- Row 3: Stats row -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-            <div style="background:rgba(19,33,27,0.05);border:1px solid rgba(19,33,27,0.08);border-radius:14px;padding:9px 8px;text-align:center;">
-              <div style="font-family:var(--font-display,serif);font-size:1.05rem;font-weight:800;color:var(--ink);line-height:1;">4.2h</div>
-              <div style="font-size:0.56rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:3px;">Focus</div>
-            </div>
-            <div style="background:rgba(19,33,27,0.05);border:1px solid rgba(19,33,27,0.08);border-radius:14px;padding:9px 8px;text-align:center;">
-              <div style="font-family:var(--font-display,serif);font-size:1.05rem;font-weight:800;color:var(--ink);line-height:1;">3</div>
-              <div style="font-size:0.56rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:3px;">Goals</div>
-            </div>
-            <div style="background:rgba(61,122,90,0.1);border:1px solid rgba(61,122,90,0.22);border-radius:14px;padding:9px 8px;text-align:center;">
-              <div style="font-family:var(--font-display,serif);font-size:1.05rem;font-weight:800;color:var(--teal);line-height:1;">↑18%</div>
-              <div style="font-size:0.56rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:3px;">Week</div>
-            </div>
-          </div>
-
         </div>
-
         <div class="feature-copy reveal">
           <div class="eyebrow">Professional life, with boundaries</div>
           <h2>Turn ambition into a daily practice.</h2>
           <p>Keep career goals, focus sessions, study time, and milestones visible without letting work consume the rest of your life.</p>
           <a class="btn" href="app/index.html?section=career">Shape your path <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-
       </div>
     </section>
 
@@ -1729,30 +1736,30 @@
       updateBadge();
     })();
 
-    /* ---- FEATURE 4b: CAREER SKILL BARS SCROLL ANIMATION ---- */
+    /* ---- FEATURE 4b: CAREER PILLARS SCROLL ANIMATION ---- */
     (function initCareerBars() {
-      var bars = document.querySelectorAll('.career-bar-fill');
-      if (!bars.length) return;
+      var pillars = document.querySelectorAll('.career-pillar');
+      if (!pillars.length) return;
       var section = document.getElementById('feature-career');
       if (!section) return;
 
       var fired = false;
-      function animateBars() {
+      function animatePillars() {
         if (fired) return;
         fired = true;
-        bars.forEach(function(bar) {
-          var w = bar.getAttribute('data-w') || '0';
-          bar.style.width = w + '%';
+        pillars.forEach(function(pillar) {
+          var h = pillar.getAttribute('data-h') || '0%';
+          pillar.style.height = h;
         });
       }
 
       if ('IntersectionObserver' in window) {
         var obs = new IntersectionObserver(function(entries) {
-          if (entries[0].isIntersecting) { animateBars(); obs.disconnect(); }
+          if (entries[0].isIntersecting) { animatePillars(); obs.disconnect(); }
         }, { threshold: 0.25 });
         obs.observe(section);
       } else {
-        animateBars();
+        animatePillars();
       }
     })();
 
