@@ -176,7 +176,98 @@
     .essence-head h2 { font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -.035em; color: var(--ink); }
     .essence-head p { margin: 0 auto; font-size: 1.05rem; color: var(--muted); line-height: 1.6; }
     .essence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
-    .essence-card { background: #ffffff; border: 1px solid rgba(19, 33, 27, .09); border-radius: 24px; padding: 36px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 30px rgba(19, 33, 27, .03); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); }
+    .essence-card { background: #ffffff; border: 1px solid rgba(19, 33, 27, .09); border-radius: 24px; padding: 32px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 30px rgba(19, 33, 27, .03); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); position: relative; }
+    .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
+    .essence-tap-hint { font-family: var(--font-body, sans-serif); font-size: 0.7rem; font-weight: 800; color: var(--teal); margin-top: 14px; opacity: 0; transform: translateY(4px); transition: all 0.25s ease; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(61,122,90,0.08); padding: 3px 10px; border-radius: 99px; }
+    .essence-card:hover .essence-tap-hint, .essence-card:focus .essence-tap-hint { opacity: 1; transform: translateY(0); }
+
+    /* ---- ESSENCE OVERVIEW MODAL POPUP ---- */
+    .essence-modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(12, 22, 17, 0.65);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(16px, 4vw, 32px);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    }
+    .essence-modal-overlay.active {
+      opacity: 1; visibility: visible;
+    }
+    .essence-modal-card {
+      width: 100%; max-width: 580px;
+      background: linear-gradient(145deg, #ffffff 0%, #f6f8f4 100%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 32px;
+      box-shadow: 0 28px 70px rgba(12, 22, 17, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      padding: clamp(24px, 5vw, 40px);
+      position: relative;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .essence-modal-overlay.active .essence-modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .essence-modal-close {
+      position: absolute; top: 20px; right: 20px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(19, 33, 27, 0.06); border: 1px solid rgba(19, 33, 27, 0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink); font-size: 1.2rem; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .essence-modal-close:hover {
+      background: rgba(19, 33, 27, 0.14); transform: scale(1.08);
+    }
+    .essence-modal-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 99px;
+      font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(61,122,90,0.12); color: var(--teal); border: 1px solid rgba(61,122,90,0.25);
+      margin-bottom: 16px;
+    }
+    .essence-modal-title {
+      font-family: var(--font-display, serif);
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800;
+      color: var(--ink); line-height: 1.1; margin-bottom: 12px;
+      letter-spacing: -0.035em;
+    }
+    .essence-modal-desc {
+      font-size: 1.02rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px;
+    }
+    .essence-modal-stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-bottom: 24px;
+    }
+    .essence-modal-stat-box {
+      background: #ffffff; border: 1px solid rgba(19, 33, 27, 0.09);
+      border-radius: 18px; padding: 14px 10px; text-align: center;
+      box-shadow: 0 4px 14px rgba(19, 33, 27, 0.03);
+    }
+    .essence-modal-stat-box b {
+      display: block; font-family: var(--font-display, serif);
+      font-size: 1.4rem; font-weight: 800; color: var(--ink); line-height: 1.1;
+    }
+    .essence-modal-stat-box span {
+      display: block; font-size: 0.7rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px;
+    }
+    .essence-modal-bullets {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 16px 20px; background: rgba(19, 33, 27, 0.03);
+      border-radius: 20px; border: 1px solid rgba(19, 33, 27, 0.06);
+    }
+    .essence-modal-bullet-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.88rem; color: var(--ink); font-weight: 500; line-height: 1.45;
+    }
+    .essence-modal-bullet-icon {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--mint); color: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+    }
     .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
     /* essence-card active removed for uniform professional design */
     .essence-icon-badge { width: 58px; height: 58px; border-radius: 18px; background: #f0f8e8; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(255, 255, 255, .8); transition: transform .35s var(--ease), background .35s ease; }
@@ -535,39 +626,43 @@
 
         <div class="essence-grid">
           <!-- Fast -->
-          <div class="essence-card reveal">
+          <div class="essence-card reveal" data-essence="fast" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Fast architecture">
             <div class="essence-icon-badge">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             </div>
             <h3>Fast</h3>
             <p>Built for speed</p>
+            <span class="essence-tap-hint">Click for overview &rarr;</span>
           </div>
 
           <!-- Secure -->
-          <div class="essence-card reveal">
+          <div class="essence-card reveal" data-essence="secure" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Secure zero-cloud architecture">
             <div class="essence-icon-badge">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <h3>Secure</h3>
             <p>Your data is safe</p>
+            <span class="essence-tap-hint">Click for overview &rarr;</span>
           </div>
 
-          <!-- Smart (Highlighted Card) -->
-          <div class="essence-card reveal">
+          <!-- Smart -->
+          <div class="essence-card reveal" data-essence="smart" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Smart local analytics">
             <div class="essence-icon-badge">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="2" y="13" width="4" height="8" rx="1"/></svg>
             </div>
             <h3>Smart</h3>
             <p>Local Insights</p>
+            <span class="essence-tap-hint">Click for overview &rarr;</span>
           </div>
 
           <!-- Human -->
-          <div class="essence-card reveal">
+          <div class="essence-card reveal" data-essence="human" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Human-centered design">
             <div class="essence-icon-badge">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
             <h3>Human</h3>
             <p>Designed for people</p>
+            <span class="essence-tap-hint">Click for overview &rarr;</span>
           </div>
         </div>
       </div>
@@ -1063,6 +1158,24 @@
       </div>
     </section>
   </main>
+
+  <!-- Essence Overview Modal Popup -->
+  <div class="essence-modal-overlay" id="essence-modal" aria-hidden="true" role="dialog" aria-labelledby="essence-modal-title">
+    <div class="essence-modal-card">
+      <button class="essence-modal-close" id="essence-modal-close" aria-label="Close modal">&times;</button>
+      <div class="essence-modal-badge" id="essence-modal-badge">Pillars</div>
+      <h3 class="essence-modal-title" id="essence-modal-title">Title</h3>
+      <p class="essence-modal-desc" id="essence-modal-desc">Description</p>
+      
+      <div class="essence-modal-stats-grid" id="essence-modal-stats">
+        <!-- Dynamic Stats Boxes -->
+      </div>
+
+      <div class="essence-modal-bullets" id="essence-modal-bullets">
+        <!-- Dynamic Bullet List -->
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">
@@ -1656,6 +1769,137 @@
       /* Run immediately and after full load */
       applyColors();
       window.addEventListener('load', applyColors);
+    })();
+
+    /* ---- FEATURE 7: ESSENCE CARD OVERVIEW MODAL POPUPS ---- */
+    (function initEssenceModals() {
+      const modal = document.getElementById('essence-modal');
+      const closeBtn = document.getElementById('essence-modal-close');
+      const badgeEl = document.getElementById('essence-modal-badge');
+      const titleEl = document.getElementById('essence-modal-title');
+      const descEl = document.getElementById('essence-modal-desc');
+      const statsEl = document.getElementById('essence-modal-stats');
+      const bulletsEl = document.getElementById('essence-modal-bullets');
+
+      if (!modal || !closeBtn || !titleEl) return;
+
+      const ESSENCE_DATA = {
+        fast: {
+          badge: '⚡ Architecture',
+          title: 'Built for Zero-Lag Speed',
+          desc: 'Lamim operates with zero server round-trips for core routines. All calculation logic runs locally on-device using optimized IndexedDB storage & Service Worker caching.',
+          stats: [
+            { num: '< 50ms', label: 'Launch' },
+            { num: '60 fps', label: 'Animations' },
+            { num: '0 KB', label: 'Cloud Latency' }
+          ],
+          bullets: [
+            'Instant cold launches without waiting for server responses',
+            'Pre-compiled offline assets loaded straight from CacheStorage',
+            'Local sun-angle calculation engine for accurate prayer times'
+          ]
+        },
+        secure: {
+          badge: '🔒 Privacy First',
+          title: '100% Private & Zero Cloud Tracking',
+          desc: 'Your daily Salah records, habit reflections, Dhikr counters, and financial entries never leave your browser storage. Zero analytics, zero telemetries, zero third-party tracking.',
+          stats: [
+            { num: '0 %', label: 'Cloud Data' },
+            { num: '100 %', label: 'Local Encrypted' },
+            { num: '0', label: 'Ad Trackers' }
+          ],
+          bullets: [
+            'Strict client-side isolation with IndexedDB persistent storage',
+            'No account registration, passwords, or emails collected',
+            'Your spiritual & personal logs remain entirely your own'
+          ]
+        },
+        smart: {
+          badge: '🧠 Local Intelligence',
+          title: 'Contextual Self-Improvement Insights',
+          desc: 'Smart local analytics compute your Spiritual Health Score (SHS) in real-time, helping you visualize long-term consistency across Salah, Dhikr, Nafl, and Mujahid goals.',
+          stats: [
+            { num: 'SHS', label: 'Score Engine' },
+            { num: '21 Days', label: 'Streak Pattern' },
+            { num: '5 Mod', label: 'Integrated' }
+          ],
+          bullets: [
+            'Real-time Spiritual Health Score (SHS) calculation without cloud APIs',
+            'Contextual heatmap visualization for Jama\'at, Alone, and Qaza prayers',
+            'Adaptive 4-7-8 recovery guide for Mujahid discipline'
+          ]
+        },
+        human: {
+          badge: '🌿 Intentional UX',
+          title: 'Designed Around Human Rhythms',
+          desc: 'Built without notification spam, streak shame, or social comparison loops. Lamim adapts to your daily life rhythm with peaceful glassmorphic design and calming haptics.',
+          stats: [
+            { num: '0', label: 'Dark Patterns' },
+            { num: '100 %', label: 'Peaceful UX' },
+            { num: '1 Quiet', label: 'System' }
+          ],
+          bullets: [
+            'No social feeds, comparison leaderboards, or vanity metrics',
+            'Calming haptic feedback & gentle ambient visual transitions',
+            'Designed thoughtfully for the Ummah to build long-term routines'
+          ]
+        }
+      };
+
+      function openModal(key) {
+        const data = ESSENCE_DATA[key];
+        if (!data) return;
+
+        badgeEl.textContent = data.badge;
+        titleEl.textContent = data.title;
+        descEl.textContent = data.desc;
+
+        statsEl.innerHTML = data.stats.map(s => `
+          <div class="essence-modal-stat-box">
+            <b>${s.num}</b>
+            <span>${s.label}</span>
+          </div>
+        `).join('');
+
+        bulletsEl.innerHTML = data.bullets.map(b => `
+          <div class="essence-modal-bullet-item">
+            <span class="essence-modal-bullet-icon">✓</span>
+            <span>${b}</span>
+          </div>
+        `).join('');
+
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.essence-card[data-essence]').forEach(card => {
+        card.addEventListener('click', () => {
+          const key = card.getAttribute('data-essence');
+          openModal(key);
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const key = card.getAttribute('data-essence');
+            openModal(key);
+          }
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
     })();
   </script>
 </body>
