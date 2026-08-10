@@ -1592,40 +1592,40 @@
   </script>
 
   <script>
-    /* ---- FEATURE 3: UNIFORM BASE & GUARANTEED RANDOM COVERAGE SALAH PUZZLE ---- */
+    /* ---- FEATURE 3: UNIFORM BASE & VIBRANT LIT-UP COLOR PUZZLE ---- */
     (function initSalahHeatmapPuzzle() {
       var heatmap = document.getElementById('landing-salah-heatmap');
       if (!heatmap) return;
       var cells = heatmap.querySelectorAll('i');
       if (!cells.length) return;
 
-      var baseColor = '#2b5140'; // Uniform dark forest base for ALL blocks
+      var baseColor = '#2b5140'; // Uniform dark forest green when UNLIT
       var glowColors = [
-        '#cfee82', // Glowing Lime Accent
-        '#6fcf8a', // Mint Green
-        '#38c8f0', // Sky Cyan
-        '#f5c842', // Amber Gold
-        '#b886f8', // Violet Purple
-        '#ff8c66', // Coral Orange
-        '#e2f4c1'  // Pale Lime Accent
+        '#cfee82', // Bright Glowing Lime
+        '#6fcf8a', // Vibrant Emerald Mint
+        '#38c8f0', // Electric Sky Cyan
+        '#f5c842', // Warm Amber Gold
+        '#b886f8', // Neon Violet Purple
+        '#ff8c66', // Bright Coral Orange
+        '#e2f4c1'  // Soft Glowing Lime
       ];
 
-      // Set initial uniform dark color
+      // Set initial dark background for all blocks
       cells.forEach(function(cell) {
-        cell.style.background = baseColor;
-        cell.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+        cell.style.setProperty('background-color', baseColor, 'important');
+        cell.style.transition = 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
 
         // Click / Tap handler
         cell.addEventListener('click', function(e) {
           e.stopPropagation();
           var tapColor = glowColors[Math.floor(Math.random() * glowColors.length)];
-          cell.style.background = tapColor;
+          cell.style.setProperty('background-color', tapColor, 'important');
           cell.style.transform = 'scale(1.4) rotate(' + (Math.random() * 12 - 6).toFixed(1) + 'deg)';
           cell.style.boxShadow = '0 0 16px ' + tapColor;
           cell.style.zIndex = '10';
 
           setTimeout(function() {
-            cell.style.background = baseColor;
+            cell.style.setProperty('background-color', baseColor, 'important');
             cell.style.transform = 'scale(1) rotate(0deg)';
             cell.style.boxShadow = 'none';
             cell.style.zIndex = '1';
@@ -1642,7 +1642,6 @@
         for (var i = 0; i < cells.length; i++) {
           pendingQueue.push(i);
         }
-        // Fisher-Yates Shuffle
         for (var j = pendingQueue.length - 1; j > 0; j--) {
           var r = Math.floor(Math.random() * (j + 1));
           var temp = pendingQueue[j];
@@ -1669,14 +1668,16 @@
 
           (function(c) {
             var activeGlow = glowColors[Math.floor(Math.random() * glowColors.length)];
-            c.style.background = activeGlow;
-            c.style.transform = 'scale(1.25)';
+            
+            // Explicitly set background color fill with high priority!
+            c.style.setProperty('background-color', activeGlow, 'important');
+            c.style.transform = 'scale(1.28)';
             c.style.boxShadow = '0 0 14px ' + activeGlow;
             c.style.zIndex = '5';
 
             var holdDuration = 900 + Math.random() * 600; // Hold light for 0.9s - 1.5s
             setTimeout(function() {
-              c.style.background = baseColor;
+              c.style.setProperty('background-color', baseColor, 'important');
               c.style.transform = 'scale(1)';
               c.style.boxShadow = 'none';
               c.style.zIndex = '1';
