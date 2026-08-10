@@ -969,19 +969,19 @@
           </div>
           <div class="v-art" style="width:auto;height:auto;min-width:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
             
-            <!-- Glassmorphic Weekly Focus Card -->
-            <div style="width:150px;background:rgba(255,255,255,0.72);border:2px solid rgba(255,255,255,0.95);border-radius:18px;box-shadow:0 14px 36px rgba(19,33,27,0.1), inset 0 2px 6px rgba(255,255,255,0.9);padding:14px 12px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);user-select:none;-webkit-user-select:none;">
+            <!-- Glassmorphic Weekly Focus Card (Interactive) -->
+            <div id="landing-career-card" style="width:152px;background:rgba(255,255,255,0.78);border:2px solid rgba(255,255,255,0.95);border-radius:18px;box-shadow:0 14px 36px rgba(19,33,27,0.1), inset 0 2px 6px rgba(255,255,255,0.9);padding:14px 12px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);user-select:none;-webkit-user-select:none;cursor:pointer;" title="Tap pillars to inspect focus hours" tabindex="0" role="button" aria-label="Interactive Weekly Focus Log">
               
               <!-- Card Top Header -->
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                 <div style="display:flex;align-items:center;gap:5px;">
-                  <span style="width:6px;height:6px;border-radius:50%;background:#3d7a5a;box-shadow:0 0 8px #6fcf8a;"></span>
+                  <span style="width:7px;height:7px;border-radius:50%;background:#3d7a5a;box-shadow:0 0 8px #6fcf8a;"></span>
                   <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.62rem;font-weight:800;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;">FOCUS LOG</span>
                 </div>
-                <span style="font-family:var(--font-display,'Fraunces',serif);font-size:0.75rem;font-weight:800;color:#1e4530;background:#e2f4c1;padding:2px 7px;border-radius:99px;box-shadow:0 2px 6px rgba(61,122,90,0.15);">4.2h</span>
+                <span id="career-focus-badge" style="font-family:var(--font-display,'Fraunces',serif);font-size:0.75rem;font-weight:800;color:#1e4530;background:#e2f4c1;padding:2px 8px;border-radius:99px;box-shadow:0 2px 6px rgba(61,122,90,0.15);transition:all 0.25s ease;">4.2h</span>
               </div>
 
-              <!-- 5 Animated Vertical Pillars -->
+              <!-- 5 Interactive Vertical Pillars -->
               <div style="height:76px;display:flex;align-items:flex-end;justify-content:space-between;gap:6px;padding:0 2px;position:relative;">
                 
                 <!-- Baseline grid lines -->
@@ -992,42 +992,42 @@
                 </div>
 
                 <!-- Mon -->
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
-                  <div class="career-pillar" data-h="40%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.1s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Mon: 2.5h"></div>
-                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">M</span>
+                <div class="career-day-col" data-day="Mon" data-hours="2.5h" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:40%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Mon: 2.5h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">M</span>
                 </div>
 
                 <!-- Tue -->
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
-                  <div class="career-pillar" data-h="65%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s;box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Tue: 3.8h"></div>
-                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">T</span>
+                <div class="career-day-col" data-day="Tue" data-hours="3.8h" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:65%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Tue: 3.8h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">T</span>
                 </div>
 
                 <!-- Wed -->
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
-                  <div class="career-pillar" data-h="50%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.3s cubic-bezier(0.16,1,0.3,1) 0.2s;box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Wed: 3.0h"></div>
-                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">W</span>
+                <div class="career-day-col" data-day="Wed" data-hours="3.0h" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:50%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Wed: 3.0h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">W</span>
                 </div>
 
                 <!-- Thu (Active Peak) -->
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
-                  <div class="career-pillar" data-h="95%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#cfee82 0%,#1f4e36 100%);border-radius:6px 6px 3px 3px;transition:height 1.4s cubic-bezier(0.16,1,0.3,1) 0.3s;box-shadow:0 4px 12px rgba(31,78,54,0.3);position:relative;" title="Thu: 4.2h (Peak)">
+                <div class="career-day-col active" data-day="Thu" data-hours="4.2h" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:95%;max-height:64px;background:linear-gradient(180deg,#cfee82 0%,#1f4e36 100%);border-radius:6px 6px 3px 3px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 4px 14px rgba(31,78,54,0.4);transform:scaleY(1.06);position:relative;" title="Thu: 4.2h (Peak)">
                     <span style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#cfee82;border-radius:50%;box-shadow:0 0 6px #cfee82;"></span>
                   </div>
-                  <span style="font-size:0.58rem;font-weight:900;color:#1e4530;">T</span>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:900;color:#1e4530;">T</span>
                 </div>
 
                 <!-- Fri -->
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
-                  <div class="career-pillar" data-h="75%" style="width:100%;height:0%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:height 1.5s cubic-bezier(0.16,1,0.3,1) 0.4s;box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Fri: 3.5h"></div>
-                  <span style="font-size:0.58rem;font-weight:800;color:var(--muted);">F</span>
+                <div class="career-day-col" data-day="Fri" data-hours="3.5h" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:75%;max-height:64px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:6px 6px 3px 3px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.15);" title="Fri: 3.5h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">F</span>
                 </div>
 
               </div>
             </div>
 
             <!-- Streak Pill Badge -->
-            <div style="display:flex;align-items:center;gap:6px;background:#1a3d2b;color:#cfee82;padding:5px 14px;border-radius:99px;box-shadow:0 4px 14px rgba(26,61,43,0.22);font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;letter-spacing:0.04em;">
+            <div id="landing-career-streak" style="display:flex;align-items:center;gap:6px;background:#1a3d2b;color:#cfee82;padding:5px 14px;border-radius:99px;box-shadow:0 4px 14px rgba(26,61,43,0.22);font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;letter-spacing:0.04em;cursor:pointer;transition:transform 0.18s ease;" title="Tap to cycle days">
               <span>12 Day Streak</span>
               <span style="opacity:0.5;">&middot;</span>
               <span style="color:#6fcf8a;">&uparrow;18%</span>
@@ -1736,30 +1736,64 @@
       updateBadge();
     })();
 
-    /* ---- FEATURE 4b: CAREER PILLARS SCROLL ANIMATION ---- */
-    (function initCareerBars() {
-      var pillars = document.querySelectorAll('.career-pillar');
-      if (!pillars.length) return;
-      var section = document.getElementById('feature-career');
-      if (!section) return;
+    /* ---- FEATURE 4b: INTERACTIVE CAREER FOCUS CARD ---- */
+    (function initCareerCard() {
+      var card = document.getElementById('landing-career-card');
+      var badge = document.getElementById('career-focus-badge');
+      var cols = document.querySelectorAll('.career-day-col');
+      var streak = document.getElementById('landing-career-streak');
+      if (!card || !cols.length || !badge) return;
 
-      var fired = false;
-      function animatePillars() {
-        if (fired) return;
-        fired = true;
-        pillars.forEach(function(pillar) {
-          var h = pillar.getAttribute('data-h') || '0%';
-          pillar.style.height = h;
+      var currentIndex = 3; /* Thursday default */
+
+      function setActiveDay(index) {
+        currentIndex = index;
+        cols.forEach(function(col, i) {
+          var pillar = col.querySelector('.career-pillar');
+          var lbl = col.querySelector('.career-day-lbl');
+          if (i === index) {
+            col.classList.add('active');
+            if (pillar) {
+              pillar.style.background = 'linear-gradient(180deg,#cfee82 0%,#1f4e36 100%)';
+              pillar.style.boxShadow = '0 4px 14px rgba(31,78,54,0.4)';
+              pillar.style.transform = 'scaleY(1.06)';
+            }
+            if (lbl) { lbl.style.color = '#1e4530'; lbl.style.fontWeight = '900'; }
+            var hours = col.getAttribute('data-hours') || '4.2h';
+            badge.textContent = hours;
+            badge.style.transform = 'scale(1.15)';
+            setTimeout(function() { badge.style.transform = 'scale(1)'; }, 180);
+          } else {
+            col.classList.remove('active');
+            if (pillar) {
+              pillar.style.background = 'linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%)';
+              pillar.style.boxShadow = '0 2px 6px rgba(46,110,77,0.15)';
+              pillar.style.transform = 'scaleY(1)';
+            }
+            if (lbl) { lbl.style.color = 'var(--muted)'; lbl.style.fontWeight = '800'; }
+          }
         });
+        if (navigator.vibrate) { try { navigator.vibrate(18); } catch(e) {} }
       }
 
-      if ('IntersectionObserver' in window) {
-        var obs = new IntersectionObserver(function(entries) {
-          if (entries[0].isIntersecting) { animatePillars(); obs.disconnect(); }
-        }, { threshold: 0.25 });
-        obs.observe(section);
-      } else {
-        animatePillars();
+      cols.forEach(function(col, i) {
+        col.addEventListener('click', function(e) {
+          e.stopPropagation();
+          setActiveDay(i);
+        });
+      });
+
+      card.addEventListener('click', function() {
+        var next = (currentIndex + 1) % cols.length;
+        setActiveDay(next);
+      });
+
+      if (streak) {
+        streak.addEventListener('click', function() {
+          streak.style.transform = 'scale(0.94)';
+          setTimeout(function() { streak.style.transform = 'scale(1)'; }, 160);
+          setActiveDay((currentIndex + 1) % cols.length);
+        });
       }
     })();
 
