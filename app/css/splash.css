@@ -10,13 +10,13 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-splash, 99999);
-  /* Elegant light paper background */
-  background: #f1f0e9; 
+  background: #f1f0e9;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .splash.hidden {
@@ -28,21 +28,22 @@
 /* === LUXURY HALO (Subtle background glow) === */
 .splash-halo {
   position: absolute;
-  width: 70vw;
-  height: 70vw;
-  max-width: 800px;
-  max-height: 800px;
-  background: radial-gradient(circle, rgba(228, 202, 113, 0.12) 0%, rgba(61, 122, 90, 0.04) 50%, transparent 70%);
+  width: 60vw;
+  height: 60vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(circle, rgba(228, 202, 113, 0.10) 0%, rgba(61, 122, 90, 0.03) 50%, transparent 70%);
   border-radius: 50%;
   filter: blur(40px);
   opacity: 0;
-  transform: scale(0.9);
-  animation: haloReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform: scale(0.95);
+  animation: haloReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
   pointer-events: none;
 }
 
 @keyframes haloReveal {
-  0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+  0% { opacity: 0; transform: scale(0.95) translateY(12px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
@@ -64,24 +65,23 @@
   gap: 20px;
 }
 
-/* === LOGO (Premium Scale & Blur Reveal) === */
+/* === LOGO (Clean Scale Reveal — no blur filter) === */
 .splash-logo-box {
   width: 76px;
   height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.95);
   border-radius: 24px;
-  box-shadow: 0 16px 40px rgba(61, 122, 90, 0.08), 
+  box-shadow: 0 16px 40px rgba(61, 122, 90, 0.08),
               0 4px 12px rgba(0, 0, 0, 0.02),
               inset 0 2px 0 rgba(255, 255, 255, 1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   opacity: 0;
-  transform: scale(0.85) translateY(12px);
-  animation: logoBoxReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+  transform: scale(0.92) translateY(8px);
+  animation: logoBoxReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+  will-change: opacity, transform;
 }
 
 .splash-logo-img {
@@ -91,8 +91,8 @@
 }
 
 @keyframes logoBoxReveal {
-  0% { opacity: 0; transform: scale(0.85) translateY(12px); filter: blur(8px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  0% { opacity: 0; transform: scale(0.92) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* === WORDMARK (GSAP-style Mask Reveal) === */
@@ -152,8 +152,9 @@
 }
 
 @keyframes dotPulse {
-  0% { opacity: 0.8; filter: drop-shadow(0 0 2px rgba(228, 202, 113, 0.3)); }
-  100% { opacity: 1; filter: drop-shadow(0 0 10px rgba(228, 202, 113, 0.9)); }
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0.85; }
 }
 
 /* === MINIMALIST LOADER === */
@@ -173,7 +174,7 @@
   width: 0%;
   background: linear-gradient(90deg, #e4ca71 0%, #3d7a5a 100%);
   border-radius: 4px;
-  animation: loaderProgress 0.5s cubic-bezier(0.77, 0, 0.175, 1) 0.45s forwards;
+  animation: loaderProgress 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
 }
 
 @keyframes loaderReveal {
