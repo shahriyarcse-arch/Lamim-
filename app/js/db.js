@@ -313,7 +313,21 @@ const DB = {
     const target = profiles.find(p => p.id === profileId);
     if (!target) return false;
 
-    // Restore target profile snapshot to cache & db
+    // Save current active profile first if exists
+    const current = this.getUser();
+    if (current) {
+      this.saveProfileVault(current);
+    }
+
+    // Isolate active keys: clear all non-vault keys so no state bleeds over
+    const activeKeys = Object.keys(this._cache).filter(k => k !== 'lamim_profiles_vault');
+    activeKeys.forEach(k => {
+      delete this._cache[k];
+      try { localStorage.removeItem(k); } catch {}
+      this._asyncDelete(k);
+    });
+
+    // Restore target profile snapshot clean
     if (target.snapshot) {
       Object.keys(target.snapshot).forEach(k => {
         if (k !== 'lamim_profiles_vault') {
