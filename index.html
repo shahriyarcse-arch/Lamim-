@@ -1785,63 +1785,63 @@
 
       const ESSENCE_DATA = {
         fast: {
-          badge: '⚡ Architecture',
-          title: 'Built for Zero-Lag Speed',
-          desc: 'Lamim operates with zero server round-trips for core routines. All calculation logic runs locally on-device using optimized IndexedDB storage & Service Worker caching.',
+          badge: 'Performance',
+          title: 'Zero Server Round-Trips',
+          desc: 'Lamim loads instantly from CacheStorage and runs every calculation on-device — prayer times, streaks, analytics — with no server call, ever. IndexedDB gives 0ms read times with RAM sync caching.',
           stats: [
-            { num: '< 50ms', label: 'Launch' },
+            { num: '< 50ms', label: 'Cold Launch' },
             { num: '60 fps', label: 'Animations' },
-            { num: '0 KB', label: 'Cloud Latency' }
+            { num: '0 req', label: 'Network Calls' }
           ],
           bullets: [
-            'Instant cold launches without waiting for server responses',
-            'Pre-compiled offline assets loaded straight from CacheStorage',
-            'Local sun-angle calculation engine for accurate prayer times'
+            'Service Worker precaches the full app shell — works even with 0 bars of signal',
+            'Prayer times use a local solar-angle engine — no third-party API needed',
+            'IndexedDB RAM-sync caching delivers sub-millisecond data reads on every interaction'
           ]
         },
         secure: {
-          badge: '🔒 Privacy First',
-          title: '100% Private & Zero Cloud Tracking',
-          desc: 'Your daily Salah records, habit reflections, Dhikr counters, and financial entries never leave your browser storage. Zero analytics, zero telemetries, zero third-party tracking.',
+          badge: 'Privacy First',
+          title: '100% Local. Zero Cloud. Zero Tracking.',
+          desc: 'Your Salah logs, Dhikr counts, daily habits, gym records, and financial ledger never leave your device. No account, no password, no email — nothing is collected or transmitted.',
           stats: [
-            { num: '0 %', label: 'Cloud Data' },
-            { num: '100 %', label: 'Local Encrypted' },
-            { num: '0', label: 'Ad Trackers' }
+            { num: '0 bytes', label: 'Cloud Sent' },
+            { num: '100%', label: 'Local IndexedDB' },
+            { num: '0', label: 'Trackers' }
           ],
           bullets: [
-            'Strict client-side isolation with IndexedDB persistent storage',
-            'No account registration, passwords, or emails collected',
-            'Your spiritual & personal logs remain entirely your own'
+            'All data lives in browser IndexedDB (lamim_db) — isolated per device, per browser',
+            'No signup, no login, no email — you are never identified or tracked',
+            'Full JSON backup export so you own and can migrate your data anytime'
           ]
         },
         smart: {
-          badge: '🧠 Local Intelligence',
-          title: 'Contextual Self-Improvement Insights',
-          desc: 'Smart local analytics compute your Spiritual Health Score (SHS) in real-time, helping you visualize long-term consistency across Salah, Dhikr, Nafl, and Mujahid goals.',
+          badge: 'Local Intelligence',
+          title: 'Insights That Actually Know You',
+          desc: 'Lamim\'s analytics engine computes your Spiritual Health Score (SHS) entirely on-device across 9 integrated modules — Salah, Dhikr, Nafl, Mujahid, Gym, Career, Finance, Analysis, and Profile.',
           stats: [
-            { num: 'SHS', label: 'Score Engine' },
-            { num: '21 Days', label: 'Streak Pattern' },
-            { num: '5 Mod', label: 'Integrated' }
+            { num: 'SHS', label: 'Spirit Score' },
+            { num: '21-Day', label: 'Heatmap Grid' },
+            { num: '9', label: 'Modules Linked' }
           ],
           bullets: [
-            'Real-time Spiritual Health Score (SHS) calculation without cloud APIs',
-            'Contextual heatmap visualization for Jama\'at, Alone, and Qaza prayers',
-            'Adaptive 4-7-8 recovery guide for Mujahid discipline'
+            'Interactive 21-day Salah heatmap tracks Jama\'at, Alone, and Qaza per prayer slot',
+            '7-day and 30-day trend charts powered by Chart.js — rendered fully offline',
+            'PDF statement export for personal reflection and financial audit summaries'
           ]
         },
         human: {
-          badge: '🌿 Intentional UX',
-          title: 'Designed Around Human Rhythms',
-          desc: 'Built without notification spam, streak shame, or social comparison loops. Lamim adapts to your daily life rhythm with peaceful glassmorphic design and calming haptics.',
+          badge: 'Intentional Design',
+          title: 'Built for the Ummah, Not for Metrics',
+          desc: 'No streak shame, no social comparison, no notification spam. Lamim is a quiet companion built around Islamic rhythms — Fajr to Isha, Ramadan to Rajab, one honest day at a time.',
           stats: [
             { num: '0', label: 'Dark Patterns' },
-            { num: '100 %', label: 'Peaceful UX' },
-            { num: '1 Quiet', label: 'System' }
+            { num: '9', label: 'Life Modules' },
+            { num: 'Free', label: 'Forever' }
           ],
           bullets: [
-            'No social feeds, comparison leaderboards, or vanity metrics',
-            'Calming haptic feedback & gentle ambient visual transitions',
-            'Designed thoughtfully for the Ummah to build long-term routines'
+            'Covers Salah, Dhikr, Nafl Goals, Gym, Career, Finance, and Spiritual Analysis in one app',
+            'Glassmorphic dark and light themes with 0.15s transitions — designed to feel calm',
+            'Installable as a PWA on Android and iOS — no App Store, no subscription required'
           ]
         }
       };
