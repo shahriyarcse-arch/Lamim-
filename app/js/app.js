@@ -424,7 +424,14 @@ updateSectionTitle() {
     document.querySelectorAll('.nav-item, .bottom-nav-item').forEach(el => {
       const active = el.dataset.section === sectionId;
       el.classList.toggle('active', active);
-      if (active) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
+      if (active) {
+        el.setAttribute('aria-current', 'page');
+        if (el.classList.contains('bottom-nav-item')) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      } else {
+        el.removeAttribute('aria-current');
+      }
     });
 
     // Show panel
