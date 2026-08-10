@@ -137,6 +137,22 @@ h1 em, h2 em {
   filter: drop-shadow(0 2px 20px rgba(207, 238, 130, 0.35));
 }
 
+/* -------------------------------------------------------------------------- */
+/* SCROLL REVEAL ANIMATIONS                                                   */
+/* -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-revealed,
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 h2 {
   font-size: clamp(1.8rem, 3.8vw + 0.5rem, 3.5rem);
   line-height: 1.02;

@@ -1427,10 +1427,35 @@
   <script>
     window.__motionFallback = setTimeout(function(){
       document.querySelectorAll('.reveal').forEach(function(el){
+        el.classList.add('is-revealed');
         el.style.opacity = '1'; el.style.transform = 'none';
       });
-    },5000);
+    },3000);
     window.__motionReady = function(){ clearTimeout(window.__motionFallback); };
+  </script>
+
+  <script>
+    /* ---- FEATURE: SCROLL REVEAL INTERSECTION OBSERVER ---- */
+    (function initScrollReveal() {
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.reveal').forEach(function(el) {
+          el.classList.add('is-revealed');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
   </script>
   <script type="module" src="app.min.js?v=20260811"></script>
 
