@@ -1899,10 +1899,12 @@
       }
     })();
 
-    /* ---- FEATURE 4c: INTERACTIVE FINANCE LEDGER PREVIEW (12 MONTHS) ---- */
+    /* ---- FEATURE 4c: INTERACTIVE FINANCE LEDGER PREVIEW (CURRENT & PAST MONTHS ONLY) ---- */
     (function initFinanceLedger() {
       var card = document.getElementById('landing-finance-card');
       var monthBtn = document.getElementById('ledger-month-btn');
+      var prevBtn = document.getElementById('ledger-prev-btn');
+      var nextBtn = document.getElementById('ledger-next-btn');
       var totalVal = document.getElementById('ledger-total-val');
       var trendBadge = document.getElementById('ledger-trend-badge');
       var incomeVal = document.getElementById('ledger-income-val');
@@ -1916,7 +1918,7 @@
       var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       var now = new Date();
       var curYear = now.getFullYear();
-      var curMonthIdx = now.getMonth();
+      var curMonthIdx = now.getMonth(); // Real current month index (0-11)
 
       var baseData = [
         { income: 65000, essentials: 35000, giving: 7000, vault: 6500, trend: '+8.2%' },   // Jan
@@ -1952,7 +1954,11 @@
       var monthIdx = curMonthIdx;
 
       function updateMonth(idx) {
+        // Enforce max month boundary: cannot go beyond real current month!
+        if (idx > curMonthIdx) idx = curMonthIdx;
+        if (idx < 0) idx = 0;
         monthIdx = idx;
+
         var data = monthsData[monthIdx];
         monthBtn.innerHTML = data.name;
         totalVal.innerHTML = data.total;
@@ -1963,6 +1969,32 @@
         if (vaultVal) vaultVal.innerHTML = data.vaultText;
         if (vaultBar) vaultBar.style.width = data.vaultPct;
 
+        // Disable Next (>) button if at real current month
+        if (nextBtn) {
+          if (monthIdx >= curMonthIdx) {
+            nextBtn.style.opacity = '0.25';
+            nextBtn.style.cursor = 'not-allowed';
+            nextBtn.style.pointerEvents = 'none';
+          } else {
+            nextBtn.style.opacity = '1';
+            nextBtn.style.cursor = 'pointer';
+            nextBtn.style.pointerEvents = 'auto';
+          }
+        }
+
+        // Disable Prev (<) button if at January (index 0)
+        if (prevBtn) {
+          if (monthIdx <= 0) {
+            prevBtn.style.opacity = '0.25';
+            prevBtn.style.cursor = 'not-allowed';
+            prevBtn.style.pointerEvents = 'none';
+          } else {
+            prevBtn.style.opacity = '1';
+            prevBtn.style.cursor = 'pointer';
+            prevBtn.style.pointerEvents = 'auto';
+          }
+        }
+
         totalVal.style.transform = 'scale(1.08)';
         setTimeout(function() { totalVal.style.transform = 'scale(1)'; }, 180);
         if (navigator.vibrate) { try { navigator.vibrate(18); } catch(err) {} }
@@ -1971,32 +2003,35 @@
       /* Initialize with real current month */
       updateMonth(curMonthIdx);
 
-      var prevBtn = document.getElementById('ledger-prev-btn');
-      var nextBtn = document.getElementById('ledger-next-btn');
-
       if (prevBtn) {
         prevBtn.addEventListener('click', function(e) {
           e.stopPropagation();
-          var prevIdx = (monthIdx - 1 + monthsData.length) % monthsData.length;
-          updateMonth(prevIdx);
+          if (monthIdx > 0) updateMonth(monthIdx - 1);
         });
       }
 
       if (nextBtn) {
         nextBtn.addEventListener('click', function(e) {
           e.stopPropagation();
-          var nextIdx = (monthIdx + 1) % monthsData.length;
-          updateMonth(nextIdx);
+          if (monthIdx < curMonthIdx) updateMonth(monthIdx + 1);
         });
       }
 
       monthBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        updateMonth((monthIdx + 1) % monthsData.length);
+        if (monthIdx > 0) {
+          updateMonth(monthIdx - 1);
+        } else {
+          updateMonth(curMonthIdx);
+        }
       });
 
       card.addEventListener('click', function() {
-        updateMonth((monthIdx + 1) % monthsData.length);
+        if (monthIdx > 0) {
+          updateMonth(monthIdx - 1);
+        } else {
+          updateMonth(curMonthIdx);
+        }
       });
 
       rowBoxes.forEach(function(box) {
