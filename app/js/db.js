@@ -232,10 +232,8 @@ const DB = {
 
   remove(key) {
     delete this._cache[key];
-    if (key === 'lamim_lang' || key === 'lamim_settings') {
-      try { localStorage.removeItem(key); } catch {}
-    }
-    this._asyncDelete(key);
+    try { localStorage.removeItem(key); } catch {}
+    return this._asyncDelete(key);
   },
 
   rawGet(key) {
