@@ -1638,31 +1638,34 @@ details p {
 }
 
 .footer-brand .brand {
-  font-size: clamp(1.4rem, 2.2vw, 1.85rem) !important;
-  gap: 12px !important;
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem) !important;
+  gap: 16px !important;
   font-weight: 900 !important;
-  letter-spacing: -0.03em !important;
-  display: inline-flex;
-  align-items: center;
+  letter-spacing: -0.04em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
 }
 
 .footer-brand .brand-icon {
-  height: clamp(30px, 2.5vw, 38px) !important;
+  height: clamp(48px, 4.5vw, 64px) !important;
   width: auto !important;
   object-fit: contain !important;
-  transition: transform 0.3s var(--ease);
+  transition: transform 0.35s var(--ease), filter 0.35s var(--ease);
+  filter: drop-shadow(0 4px 16px rgba(207, 238, 130, 0.3));
 }
 
 .footer-brand .brand:hover .brand-icon {
-  transform: scale(1.08) rotate(-4deg);
+  transform: scale(1.1) rotate(-4deg);
+  filter: drop-shadow(0 6px 22px rgba(207, 238, 130, 0.5));
 }
 
 .footer-brand p {
   color: #8fa89a;
-  font-size: clamp(0.85rem, 1vw, 0.95rem);
-  margin-top: 10px;
-  line-height: 1.55;
-  max-width: 24ch;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  margin-top: 14px;
+  line-height: 1.6;
+  max-width: 28ch;
 }
 
 /* Column heading */
@@ -1979,7 +1982,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .footer::before { display: none; }
   .footer-grid { grid-template-columns: 1fr; gap: 0; padding-bottom: 0; }
   .footer-brand { text-align: center; padding: 0 0 24px; border-bottom: 1px solid rgba(207,238,130,0.1); }
-  .footer-brand .brand { justify-content: center; font-size: 1.5rem; letter-spacing: -.02em; }
+  .footer-brand .brand { justify-content: center; font-size: clamp(1.8rem, 6vw, 2.5rem) !important; letter-spacing: -.03em; }
   .footer-brand p { margin: 8px auto 0; font-size: 0.82rem; color: #8fa89a; line-height: 1.45; max-width: 24ch; }
   .footer-grid > div:not(.footer-brand) { padding: 20px 0; border-bottom: 1px solid rgba(241,240,233,0.05); }
   .footer-grid > div:last-child { border-bottom: none; }
