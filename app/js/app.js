@@ -522,6 +522,10 @@ updateSectionTitle() {
     });
   },
 
+  routeDataUpdate() {
+    this.notifyDataChanged();
+  },
+
   notifyDataChanged() {
     const mod = this.currentSection && SECTION_MODULES[this.currentSection];
     if (mod && typeof mod.onDataUpdated === 'function') {

@@ -454,9 +454,10 @@ const DB = {
           user.spirit_score = roundedScore;
           user.spirit_level = shs.rating.label;
           this.setUser(user);
+          window.dispatchEvent(new CustomEvent('lamim:data-updated'));
         }
       }
-    }, 2000);
+    }, 500);
   },
 
   // Sleep & Gym — keyed by date YYYY-MM-DD
