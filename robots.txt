@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://shahriyarcse-arch.github.io/Lamim/sitemap.xml
+Sitemap: https://lamim.vercel.app/sitemap.xml

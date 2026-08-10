@@ -116,7 +116,7 @@ updateSectionTitle() {
     // 0. AGGRESSIVE RECOVERY & CACHE BUSTING CHECK
     if (DB.rawGet('lamim_needs_reload')) {
       DB.remove('lamim_needs_reload');
-      window.location.reload(true);
+      window.location.reload();
     }
     
     // Force clear old service workers and caches ONCE to ensure the bug fix applies
@@ -133,7 +133,7 @@ updateSectionTitle() {
       caches.keys().then(keys => {
         keys.forEach(key => caches.delete(key));
       }).catch(() => {});
-      setTimeout(() => window.location.reload(true), 500);
+      setTimeout(() => window.location.reload(), 500);
       return; // Stop initialization until reload
     }
 
@@ -182,11 +182,11 @@ updateSectionTitle() {
               if ('caches' in window) {
                 caches.keys().then((names) => {
                   Promise.all(names.map(name => caches.delete(name))).then(() => {
-                    window.location.reload(true);
-                  }).catch(() => { window.location.reload(true); });
-                }).catch(() => { window.location.reload(true); });
+                    window.location.reload();
+                  }).catch(() => { window.location.reload(); });
+                }).catch(() => { window.location.reload(); });
               } else {
-                window.location.reload(true);
+                window.location.reload();
               }
             }
           }

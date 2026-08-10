@@ -9,14 +9,14 @@
   <meta name="description"
     content="Lamim — Track your salah, dhikr, nafl goals, spiritual progress, gym, career, and halal finance in one offline Islamic lifestyle tracker. No account required.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://shahriyarcse-arch.github.io/Lamim/">
+  <link rel="canonical" href="https://lamim.vercel.app/app/index.html">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Lamim — Islamic Lifestyle Tracker">
   <meta property="og:description"
     content="Track your salah, dhikr, nafl goals, spiritual progress, gym, career, and halal finance in one offline app.">
-  <meta property="og:url" content="https://shahriyarcse-arch.github.io/Lamim/">
+  <meta property="og:url" content="https://lamim.vercel.app/app/index.html">
   <meta property="og:image" content="assets/icon-512x512.png">
   <meta property="og:site_name" content="Lamim">
   <meta property="og:locale" content="en_US">
@@ -35,7 +35,7 @@
     "@type": "WebApplication",
     "name": "Lamim",
     "description": "Track your salah, dhikr, nafl goals, spiritual progress, gym, career, and halal finance in one offline Islamic lifestyle tracker.",
-    "url": "https://shahriyarcse-arch.github.io/Lamim/",
+    "url": "https://lamim.vercel.app/app/index.html",
     "applicationCategory": "LifestyleApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -160,10 +160,10 @@
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(function (regs) {
               regs.forEach(function (r) { r.unregister(); });
-              window.location.reload(true);
+              window.location.reload();
             });
           } else {
-            window.location.reload(true);
+            window.location.reload();
           }
         }
       }
