@@ -1106,8 +1106,34 @@
               <b id="shs-rhythm-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:32px;text-align:right;">70%</b>
             </div>
           </div>
-          <div class="chart" aria-hidden="true">
-            <i title="Salah"></i><i title="Dhikr"></i><i title="Nafl"></i><i title="Mujahid"></i><i title="Rhythm"></i><i title="Total SHS"></i>
+          <!-- 6 Distinct Vibrant Gradient Chart Bars with Category Labels -->
+          <div class="chart" aria-hidden="true" style="margin-top:20px;height:120px;display:flex;align-items:flex-end;gap:8px;border-bottom:1px solid var(--line);padding:0 4px 6px;">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Salah: 92%" style="width:100%;height:92%;background:linear-gradient(180deg,#52d49c 0%,#1e6341 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(30,99,65,0.22);transition:height 0.4s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Salah</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Dhikr: 88%" style="width:100%;height:88%;background:linear-gradient(180deg,#38c8f0 0%,#167cc0 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(22,124,192,0.22);transition:height 0.4s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Dhikr</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Nafl: 60%" style="width:100%;height:60%;background:linear-gradient(180deg,#f5c842 0%,#b87e14 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(184,126,20,0.22);transition:height 0.4s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Nafl</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Mujahid: 80%" style="width:100%;height:80%;background:linear-gradient(180deg,#b886f8 0%,#593b82 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(89,59,130,0.22);transition:height 0.4s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Mujahid</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Rhythm: 70%" style="width:100%;height:70%;background:linear-gradient(180deg,#ff8c66 0%,#c2441d 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(194,68,29,0.22);transition:height 0.4s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Rhythm</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Total SHS: 83/100" style="width:100%;height:83%;background:linear-gradient(180deg,#cfee82 0%,#1f4e36 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 4px 14px rgba(31,78,54,0.4);transition:height 0.4s cubic-bezier(0.16,1,0.3,1);position:relative;">
+                <span style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#cfee82;border-radius:50%;box-shadow:0 0 6px #cfee82;"></span>
+              </i>
+              <span style="font-size:0.56rem;font-weight:900;color:#1f4e36;">SHS</span>
+            </div>
           </div>
         </div>
         <div class="feature-copy reveal">
@@ -1882,14 +1908,25 @@
         if (scoreEl) scoreEl.innerHTML = shs + ' <small style="font-size:0.4em; color:var(--muted);">/ 100</small>';
         if (rankEl)  rankEl.textContent = rankFromScore(shs);
 
-        // Dynamically animate chart bars height!
+        // Dynamically animate chart bars height and tooltips!
         if (chartBars && chartBars.length >= 6) {
           chartBars[0].style.height = Math.max(12, p) + '%';
+          chartBars[0].title = 'Salah: ' + p + '%';
+
           chartBars[1].style.height = Math.max(12, d) + '%';
+          chartBars[1].title = 'Dhikr: ' + d + '%';
+
           chartBars[2].style.height = Math.max(12, n) + '%';
+          chartBars[2].title = 'Nafl: ' + n + '%';
+
           chartBars[3].style.height = Math.max(12, m) + '%';
+          chartBars[3].title = 'Mujahid: ' + m + '%';
+
           chartBars[4].style.height = Math.max(12, r) + '%';
+          chartBars[4].title = 'Rhythm: ' + r + '%';
+
           chartBars[5].style.height = Math.max(15, shs) + '%';
+          chartBars[5].title = 'Total SHS: ' + shs + '/100';
         }
       }
 
