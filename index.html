@@ -666,26 +666,36 @@
           <!-- Live SHS Score -->
           <div class="score" id="landing-shs-score" style="transition:color 0.5s ease;">76 <small style="font-size:0.4em; color:var(--muted);">/ 100</small></div>
           <div id="landing-shs-rank" style="font-size:.78rem; color:var(--muted); transition:opacity 0.4s;">Murid, moving toward Mujahid</div>
-          <!-- SHS Sliders -->
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px;">
+          <!-- 5 Real SHS Sliders -->
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
             <div style="display:flex;align-items:center;gap:8px;">
-              <label for="shs-prayer" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:44px;flex-shrink:0;">Prayer</label>
+              <label for="shs-prayer" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Prayer</label>
               <input id="shs-prayer" type="range" min="0" max="100" value="92" style="flex:1;accent-color:var(--teal);height:4px;cursor:pointer;" aria-label="Prayer percentage">
-              <b id="shs-prayer-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:30px;text-align:right;">92%</b>
+              <b id="shs-prayer-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:32px;text-align:right;">92%</b>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
-              <label for="shs-dhikr" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:44px;flex-shrink:0;">Dhikr</label>
+              <label for="shs-dhikr" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Dhikr</label>
               <input id="shs-dhikr" type="range" min="0" max="100" value="88" style="flex:1;accent-color:var(--teal);height:4px;cursor:pointer;" aria-label="Dhikr percentage">
-              <b id="shs-dhikr-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:30px;text-align:right;">88%</b>
+              <b id="shs-dhikr-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:32px;text-align:right;">88%</b>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
-              <label for="shs-nafl" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:44px;flex-shrink:0;">Nafl</label>
+              <label for="shs-nafl" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Nafl</label>
               <input id="shs-nafl" type="range" min="0" max="100" value="60" style="flex:1;accent-color:var(--teal);height:4px;cursor:pointer;" aria-label="Nafl percentage">
-              <b id="shs-nafl-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:30px;text-align:right;">60%</b>
+              <b id="shs-nafl-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:32px;text-align:right;">60%</b>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label for="shs-mujahid" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Mujahid</label>
+              <input id="shs-mujahid" type="range" min="0" max="100" value="80" style="flex:1;accent-color:var(--teal);height:4px;cursor:pointer;" aria-label="Mujahid habit clean score">
+              <b id="shs-mujahid-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:32px;text-align:right;">80%</b>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label for="shs-rhythm" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Rhythm</label>
+              <input id="shs-rhythm" type="range" min="0" max="100" value="70" style="flex:1;accent-color:var(--teal);height:4px;cursor:pointer;" aria-label="Rhythm consistency score">
+              <b id="shs-rhythm-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--ink);width:32px;text-align:right;">70%</b>
             </div>
           </div>
           <div class="chart" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i>
+            <i title="Salah"></i><i title="Dhikr"></i><i title="Nafl"></i><i title="Mujahid"></i><i title="Rhythm"></i><i title="Total SHS"></i>
           </div>
         </div>
         <div class="feature-copy reveal">
@@ -1183,24 +1193,40 @@
       updateRing();
     })();
 
-    /* ---- FEATURE 5: LIVE SHS SCORE CALCULATOR PREVIEW ---- */
+    /* ---- FEATURE 5: REAL-TIME SHS SCORE CALCULATOR PREVIEW (5 PARAMETERS + LIVE BARS) ---- */
     (function initSHSCalculator() {
-      const prayerSlider = document.getElementById('shs-prayer');
-      const dhikrSlider  = document.getElementById('shs-dhikr');
-      const naflSlider   = document.getElementById('shs-nafl');
-      const prayerVal    = document.getElementById('shs-prayer-val');
-      const dhikrVal     = document.getElementById('shs-dhikr-val');
-      const naflVal      = document.getElementById('shs-nafl-val');
-      const scoreEl      = document.getElementById('landing-shs-score');
-      const rankEl       = document.getElementById('landing-shs-rank');
+      const prayerSlider  = document.getElementById('shs-prayer');
+      const dhikrSlider   = document.getElementById('shs-dhikr');
+      const naflSlider    = document.getElementById('shs-nafl');
+      const mujahidSlider = document.getElementById('shs-mujahid');
+      const rhythmSlider  = document.getElementById('shs-rhythm');
+
+      const prayerVal  = document.getElementById('shs-prayer-val');
+      const dhikrVal   = document.getElementById('shs-dhikr-val');
+      const naflVal    = document.getElementById('shs-nafl-val');
+      const mujahidVal = document.getElementById('shs-mujahid-val');
+      const rhythmVal  = document.getElementById('shs-rhythm-val');
+
+      const scoreEl = document.getElementById('landing-shs-score');
+      const rankEl  = document.getElementById('landing-shs-rank');
+      const chartBars = document.querySelectorAll('#insights .chart i');
       if (!prayerSlider || !scoreEl) return;
 
-      /* Weights match the real PWA SHS algorithm: Prayer 50%, Dhikr 30%, Nafl 20% */
+      /* Official PWA SHS Weights: Prayer 50%, Dhikr 15%, Nafl 15%, Mujahid 10%, Rhythm 10% */
       function computeSHS() {
-        const p = parseInt(prayerSlider.value, 10);
-        const d = parseInt(dhikrSlider.value, 10);
-        const n = parseInt(naflSlider.value, 10);
-        return Math.round(p * 0.5 + d * 0.3 + n * 0.2);
+        const p = parseInt(prayerSlider.value, 10) || 0;
+        const d = parseInt(dhikrSlider.value, 10) || 0;
+        const n = parseInt(naflSlider.value, 10) || 0;
+        const m = parseInt(mujahidSlider ? mujahidSlider.value : 80, 10) || 0;
+        const r = parseInt(rhythmSlider ? rhythmSlider.value : 70, 10) || 0;
+
+        const ptsSalah = (p / 100) * 50;
+        const ptsDhikr = (d / 100) * 15;
+        const ptsNafl  = (n / 100) * 15;
+        const ptsMujahid = (m / 100) * 10;
+        const ptsRhythm = (r / 100) * 10;
+
+        return Math.min(100, Math.round(ptsSalah + ptsDhikr + ptsNafl + ptsMujahid + ptsRhythm));
       }
 
       function rankFromScore(s) {
@@ -1212,21 +1238,36 @@
       }
 
       function update() {
-        const p = parseInt(prayerSlider.value, 10);
-        const d = parseInt(dhikrSlider.value, 10);
-        const n = parseInt(naflSlider.value, 10);
-        if (prayerVal) prayerVal.textContent = p + '%';
-        if (dhikrVal)  dhikrVal.textContent  = d + '%';
-        if (naflVal)   naflVal.textContent   = n + '%';
+        const p = parseInt(prayerSlider.value, 10) || 0;
+        const d = parseInt(dhikrSlider.value, 10) || 0;
+        const n = parseInt(naflSlider.value, 10) || 0;
+        const m = parseInt(mujahidSlider ? mujahidSlider.value : 80, 10) || 0;
+        const r = parseInt(rhythmSlider ? rhythmSlider.value : 70, 10) || 0;
+
+        if (prayerVal)  prayerVal.textContent  = p + '%';
+        if (dhikrVal)   dhikrVal.textContent   = d + '%';
+        if (naflVal)    naflVal.textContent    = n + '%';
+        if (mujahidVal) mujahidVal.textContent = m + '%';
+        if (rhythmVal)  rhythmVal.textContent  = r + '%';
 
         const shs = computeSHS();
         if (scoreEl) scoreEl.innerHTML = shs + ' <small style="font-size:0.4em; color:var(--muted);">/ 100</small>';
         if (rankEl)  rankEl.textContent = rankFromScore(shs);
+
+        // Dynamically animate chart bars height!
+        if (chartBars && chartBars.length >= 6) {
+          chartBars[0].style.height = Math.max(12, p) + '%';
+          chartBars[1].style.height = Math.max(12, d) + '%';
+          chartBars[2].style.height = Math.max(12, n) + '%';
+          chartBars[3].style.height = Math.max(12, m) + '%';
+          chartBars[4].style.height = Math.max(12, r) + '%';
+          chartBars[5].style.height = Math.max(15, shs) + '%';
+        }
       }
 
-      prayerSlider.addEventListener('input', update);
-      dhikrSlider.addEventListener('input', update);
-      naflSlider.addEventListener('input', update);
+      [prayerSlider, dhikrSlider, naflSlider, mujahidSlider, rhythmSlider].forEach(slider => {
+        if (slider) slider.addEventListener('input', update);
+      });
       update();
     })();
   </script>
