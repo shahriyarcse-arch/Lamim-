@@ -176,8 +176,26 @@
     .visual.nafl,.visual.mujahid,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
     #landing-breath-circle::before { content: "" !important; }
     @keyframes hijri-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.45; transform: scale(0.72); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+      50%       { transform: scale(1.25); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    }
+    @keyframes dhikr-ring-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(19, 33, 27, 0.12), inset 0 0 0 1px rgba(19, 33, 27, 0.25); }
+      50%       { box-shadow: 0 0 20px 4px rgba(61, 122, 90, 0.25), inset 0 0 0 2px rgba(19, 33, 27, 0.45); }
+    }
+    @keyframes breath-pulse-hint {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(19, 33, 27, 0.08); transform: scale(1); }
+      50%       { box-shadow: 0 0 18px 4px rgba(19, 33, 27, 0.18); transform: scale(1.04); }
+    }
+    .dhikr-ring {
+      animation: dhikr-ring-glow 3s ease-in-out infinite;
+    }
+    .dhikr-ring:hover {
+      box-shadow: 0 0 24px 6px rgba(61, 122, 90, 0.35) !important;
+    }
+    #landing-breath-circle {
+      animation: breath-pulse-hint 4s ease-in-out infinite;
+      transition: all 0.3s ease;
     }
     /* Gym section: water hydration ring container fills the v-art slot naturally */
     #feature-gym .v-art { height: auto; min-height: 0; }
@@ -327,13 +345,17 @@
     .stats-bar .stat-number {
       font-family: var(--font-display, "Fraunces", Georgia, serif);
       font-size: clamp(2.6rem, 5vw, 4.2rem);
-      font-weight: 700;
+      font-weight: 800;
       line-height: 1;
       letter-spacing: -0.045em;
-      color: #ffffff !important;
+      background: linear-gradient(135deg, #ffffff 0%, #cfee82 60%, #e4ff9e 100%) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      color: transparent !important;
       margin-bottom: 8px;
       display: block;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
     }
     .stats-bar .stat-label {
       font-size: clamp(0.75rem, 1vw, 0.85rem);
@@ -546,25 +568,25 @@
     <section class="stats-bar" aria-label="App statistics">
       <div class="wrap stats-grid">
 
-        <div class="stat-item reveal">
+        <div class="stat-item">
           <span class="stat-number" data-target="100" data-suffix="K+" style="color:#ffffff;font-family:'Fraunces',Georgia,serif;font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;letter-spacing:-0.045em;line-height:1;display:block;margin-bottom:8px;transition:color 0.3s ease">100K+</span>
           <span class="stat-label" style="color:#cfee82;font-size:clamp(0.75rem,1vw,0.85rem);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:5px">Prayers tracked</span>
           <span class="stat-desc" style="color:rgba(255,255,255,0.45);font-size:clamp(0.65rem,0.85vw,0.72rem);display:block;max-width:16ch;margin:0 auto;line-height:1.45">Daily Salah logged with times &amp; streaks</span>
         </div>
 
-        <div class="stat-item reveal">
+        <div class="stat-item">
           <span class="stat-number" data-target="10" data-suffix="K+" style="color:#ffffff;font-family:'Fraunces',Georgia,serif;font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;letter-spacing:-0.045em;line-height:1;display:block;margin-bottom:8px;transition:color 0.3s ease">10K+</span>
           <span class="stat-label" style="color:#cfee82;font-size:clamp(0.75rem,1vw,0.85rem);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:5px">Dhikr sessions</span>
           <span class="stat-desc" style="color:rgba(255,255,255,0.45);font-size:clamp(0.65rem,0.85vw,0.72rem);display:block;max-width:16ch;margin:0 auto;line-height:1.45">Remembrance rounds completed in-app</span>
         </div>
 
-        <div class="stat-item reveal">
+        <div class="stat-item">
           <span class="stat-number" data-target="5" data-suffix="K+" style="color:#ffffff;font-family:'Fraunces',Georgia,serif;font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;letter-spacing:-0.045em;line-height:1;display:block;margin-bottom:8px;transition:color 0.3s ease">5K+</span>
           <span class="stat-label" style="color:#cfee82;font-size:clamp(0.75rem,1vw,0.85rem);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:5px">Active users</span>
           <span class="stat-desc" style="color:rgba(255,255,255,0.45);font-size:clamp(0.65rem,0.85vw,0.72rem);display:block;max-width:16ch;margin:0 auto;line-height:1.45">People living with Lamim every day</span>
         </div>
 
-        <div class="stat-item reveal">
+        <div class="stat-item">
           <span class="stat-number" data-target="100" data-suffix="%" style="color:#ffffff;font-family:'Fraunces',Georgia,serif;font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;letter-spacing:-0.045em;line-height:1;display:block;margin-bottom:8px;transition:color 0.3s ease">100%</span>
           <span class="stat-label" style="color:#cfee82;font-size:clamp(0.75rem,1vw,0.85rem);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:5px">Private &amp; offline</span>
           <span class="stat-desc" style="color:rgba(255,255,255,0.45);font-size:clamp(0.65rem,0.85vw,0.72rem);display:block;max-width:16ch;margin:0 auto;line-height:1.45">Zero cloud — all data stays on your device</span>
@@ -677,10 +699,10 @@
             <div class="eyebrow" style="color:var(--mint)">Three-week rhythm</div>
             <h3>Small marks. A clearer pattern.</h3>
             <p>Fajr and Dhuhr are complete. Asr is next. Maghrib is waiting for you.</p>
-            <div id="landing-hijri-chip" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 16px 7px 12px;background:#ffffff;border:1px solid rgba(255,255,255,0.4);border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,0.3);" aria-label="Today's Islamic Hijri date">
-              <span style="width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 8px #10b981;animation:hijri-pulse 2.4s ease-in-out infinite;" aria-hidden="true"></span>
-              <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.75rem;font-weight:800;letter-spacing:0.06em;color:#1b4d3e;text-transform:uppercase;">Hijri</span>
-              <span id="landing-hijri-text" style="font-family:var(--font-display,'Fraunces',serif);font-size:0.88rem;font-weight:800;color:#12261e;-webkit-font-smoothing:antialiased;">Loading&hellip;</span>
+            <div id="landing-hijri-chip" style="display:inline-flex;align-items:center;gap:10px;margin-top:14px;padding:8px 18px 8px 14px;background:linear-gradient(135deg, #ffffff 0%, #f4faf6 100%);border:1px solid rgba(207,238,130,0.6);border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.9);transition:all 0.3s ease;" aria-label="Today's Islamic Hijri date">
+              <span style="width:9px;height:9px;border-radius:50%;background:#10b981;flex-shrink:0;animation:hijri-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;" aria-hidden="true"></span>
+              <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.75rem;font-weight:800;letter-spacing:0.08em;color:#2e6e4d;text-transform:uppercase;background:rgba(46,110,77,0.1);padding:2px 8px;border-radius:99px;">HIJRI</span>
+              <span id="landing-hijri-text" style="font-family:var(--font-display,'Fraunces',serif);font-size:0.92rem;font-weight:800;color:#13211b;-webkit-font-smoothing:antialiased;">Loading&hellip;</span>
             </div>
           </div>
           <div class="v-art">
@@ -739,10 +761,12 @@
             <p>Choose a phrase, begin a session, and let the interface disappear behind the rhythm.</p>
           </div>
           <div class="v-art">
-            <div class="dhikr-ring" id="landing-dhikr-ring" style="cursor:pointer; transition:transform 0.15s ease; user-select:none; -webkit-user-select:none;" title="Click to count Tasbeeh" tabindex="0" role="button" aria-label="Tap to count Dhikr">
-              <div class="count">
-                <b id="landing-dhikr-count">108</b>
-                <span id="landing-dhikr-label">tap to count</span>
+            <div class="dhikr-ring" id="landing-dhikr-ring" style="cursor:pointer; transition:transform 0.15s ease, box-shadow 0.3s ease; user-select:none; -webkit-user-select:none; position:relative;" title="Tap to count Tasbeeh" tabindex="0" role="button" aria-label="Tap to count Dhikr">
+              <div class="count" style="display:flex; flex-direction:column; align-items:center;">
+                <b id="landing-dhikr-count" style="font-size:clamp(2rem, 4.5vw, 3rem); font-weight:800; line-height:1; color:#13211b;">108</b>
+                <span id="landing-dhikr-label" style="display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-size:clamp(0.68rem, 1.1vw, 0.78rem); font-weight:700; color:#2e6e4d; background:rgba(46,110,77,0.12); padding:3px 10px; border-radius:99px; letter-spacing:0.04em;">
+                  <span>👆 Tap to count</span>
+                </span>
               </div>
             </div>
           </div>
@@ -760,10 +784,11 @@
             <p>Log the hard moment, start the breathing guide, and keep moving.</p>
           </div>
           <div class="v-art">
-            <div class="breath" id="landing-breath-circle" style="cursor:pointer; user-select:none; -webkit-user-select:none;" title="Tap circle to start 4-7-8 breathing guide" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
+            <div class="breath" id="landing-breath-circle" style="cursor:pointer; user-select:none; -webkit-user-select:none; display:grid; place-items:center; border-radius:50%;" title="Tap circle to start 4-7-8 breathing guide" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
               <span id="landing-breath-text" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; pointer-events:none; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; transition:transform 0.3s ease;">
-                <b id="landing-breath-state" style="font-family:var(--font-display, serif); font-size:clamp(0.78rem, 1.4vw, 0.95rem); font-weight:800; line-height:1.1; color:var(--ink);">4 &middot; 7 &middot; 8</b>
-                <small id="landing-breath-count" style="font-family:var(--font-body, sans-serif); font-size:clamp(0.64rem, 1.1vw, 0.75rem); color:var(--muted); font-weight:700; display:none; margin-top:3px; letter-spacing:0.02em;"></small>
+                <b id="landing-breath-state" style="font-family:var(--font-display, serif); font-size:clamp(0.85rem, 1.5vw, 1.05rem); font-weight:800; line-height:1.1; color:#13211b;">4 &middot; 7 &middot; 8</b>
+                <small id="landing-breath-sub" style="font-family:var(--font-body, sans-serif); font-size:clamp(0.64rem, 1.1vw, 0.75rem); color:#505c54; font-weight:700; display:block; margin-top:4px; letter-spacing:0.03em;">🫁 Tap to start guide</small>
+                <small id="landing-breath-count" style="font-family:var(--font-body, sans-serif); font-size:clamp(0.68rem, 1.1vw, 0.78rem); color:#2e6e4d; font-weight:800; display:none; margin-top:4px; letter-spacing:0.02em; background:rgba(46,110,77,0.12); padding:2px 8px; border-radius:99px;"></small>
               </span>
             </div>
           </div>
@@ -1250,6 +1275,7 @@
       const circle = document.getElementById('landing-breath-circle');
       const stateEl = document.getElementById('landing-breath-state');
       const countEl = document.getElementById('landing-breath-count');
+      const subEl = document.getElementById('landing-breath-sub');
       if (!circle || !stateEl || !countEl) return;
 
       let isRunning = false;
@@ -1266,6 +1292,7 @@
         phase = 'idle';
         secondsLeft = 0;
         stateEl.innerHTML = '4 &middot; 7 &middot; 8';
+        if (subEl) subEl.style.display = 'block';
         countEl.style.display = 'none';
         countEl.textContent = '';
         circle.style.animation = '';
@@ -1310,6 +1337,7 @@
           }
         }
 
+        if (subEl) subEl.style.display = 'none';
         countEl.style.display = 'block';
         if (phase === 'inhale') {
           stateEl.textContent = 'Breathe In';
@@ -1548,6 +1576,11 @@
             const suffix = el.getAttribute('data-suffix') || '';
             const currentVal = Math.floor(easedProgress * target);
             el.textContent = currentVal + suffix;
+            el.style.setProperty('color', '#ffffff', 'important');
+            el.style.setProperty('font-family', "'Fraunces',Georgia,serif", 'important');
+            el.style.setProperty('font-size', 'clamp(2.6rem,5vw,4.2rem)', 'important');
+            el.style.setProperty('font-weight', '700', 'important');
+            el.style.setProperty('letter-spacing', '-0.045em', 'important');
           });
 
           if (progress < 1) {
@@ -1557,6 +1590,11 @@
               const target = el.getAttribute('data-target');
               const suffix = el.getAttribute('data-suffix') || '';
               el.textContent = target + suffix;
+              el.style.setProperty('color', '#ffffff', 'important');
+              el.style.setProperty('font-family', "'Fraunces',Georgia,serif", 'important');
+              el.style.setProperty('font-size', 'clamp(2.6rem,5vw,4.2rem)', 'important');
+              el.style.setProperty('font-weight', '700', 'important');
+              el.style.setProperty('letter-spacing', '-0.045em', 'important');
             });
           }
         }
@@ -1584,11 +1622,11 @@
     (function forceStatColors() {
       function applyColors() {
         document.querySelectorAll('.stats-bar .stat-number').forEach(function(el) {
-          el.style.setProperty('color', '#ffffff', 'important');
-          el.style.setProperty('font-family', "'Fraunces', Georgia, serif", 'important');
-          el.style.setProperty('font-size', 'clamp(2.6rem, 5vw, 4.2rem)', 'important');
-          el.style.setProperty('font-weight', '700', 'important');
-          el.style.setProperty('letter-spacing', '-0.045em', 'important');
+          el.style.setProperty('background', 'linear-gradient(135deg, #ffffff 0%, #cfee82 60%, #e4ff9e 100%)', 'important');
+          el.style.setProperty('-webkit-background-clip', 'text', 'important');
+          el.style.setProperty('background-clip', 'text', 'important');
+          el.style.setProperty('-webkit-text-fill-color', 'transparent', 'important');
+          el.style.setProperty('color', 'transparent', 'important');
         });
         document.querySelectorAll('.stats-bar .stat-label').forEach(function(el) {
           el.style.setProperty('color', '#cfee82', 'important');
@@ -1597,7 +1635,7 @@
           el.style.setProperty('text-transform', 'uppercase', 'important');
         });
         document.querySelectorAll('.stats-bar .stat-desc').forEach(function(el) {
-          el.style.setProperty('color', 'rgba(255,255,255,0.5)', 'important');
+          el.style.setProperty('color', 'rgba(255,255,255,0.65)', 'important');
         });
         document.querySelector('.stats-bar') && (
           document.querySelector('.stats-bar').style.setProperty('background', '#12261e', 'important')
