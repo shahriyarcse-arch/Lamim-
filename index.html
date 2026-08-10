@@ -181,8 +181,77 @@
     }
     /* Gym section: water hydration ring container fills the v-art slot naturally */
     #feature-gym .v-art { height: auto; min-height: 0; }
-    /* SHS slider thumb polish */
+
+    /* Ultra-crisp rendering for Analysis Board (removes 1deg rotation layer blurriness) */
+    .analysis-board {
+      transform: none !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      box-shadow: 0 12px 36px rgba(19, 33, 27, 0.06);
+    }
+    .analysis-board:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 20px 48px rgba(19, 33, 27, 0.1);
+    }
+
+    /* Razor-sharp chart bars with subtle gradient and top highlight */
+    #insights .chart {
+      height: 120px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding: 0 4px 2px;
+      margin-top: 18px;
+    }
+    #insights .chart i {
+      flex: 1;
+      border-radius: 8px 8px 3px 3px;
+      background: linear-gradient(180deg, #3d7a5a 0%, #29573f 100%);
+      transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    #insights .chart i:last-child {
+      background: linear-gradient(180deg, #dcf598 0%, var(--mint) 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 14px rgba(207, 238, 130, 0.35);
+    }
+
+    /* Modern crisp range slider styling */
+    #insights input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(19, 33, 27, 0.12);
+      border-radius: 999px;
+      outline: none;
+      height: 6px !important;
+    }
+    #insights input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(19, 33, 27, 0.25);
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    #insights input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    #insights input[type=range]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(19, 33, 27, 0.25);
+      cursor: pointer;
+    }
     #insights input[type=range]:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+
     @media (prefers-reduced-motion: reduce) {
       #landing-hijri-chip span:first-child { animation: none !important; }
     }
