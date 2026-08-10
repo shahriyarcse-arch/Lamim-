@@ -174,7 +174,7 @@
     .essence-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -.02em; }
     .essence-card p { font-size: .92rem; color: var(--muted); margin: 0; }
     .visual.nafl,.visual.mujahid,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
-
+    #landing-breath-circle::before { content: "" !important; }
   </style>
 </head>
 <body>
@@ -958,52 +958,61 @@
       });
     })();
 
-    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING INSIDE CIRCLE ---- */
+    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING WITH LIVE COUNTDOWN INSIDE CIRCLE ---- */
     (function initLandingBreathing() {
       const circle = document.getElementById('landing-breath-circle');
       const textEl = document.getElementById('landing-breath-text');
       if (!circle || !textEl) return;
 
       let isRunning = false;
-      let breathTimer = null;
+      let intervalId = null;
+      let phase = 'idle';
+      let secondsLeft = 0;
 
-      function runCycle() {
+      function stepBreathing() {
         if (!isRunning) return;
 
-        // Phase 1: Inhale (4s)
-        textEl.textContent = 'Inhale (4s)';
-        circle.style.transition = 'transform 4s ease-in-out';
-        circle.style.transform = 'scale(1.45)';
-
-        breathTimer = setTimeout(function() {
-          if (!isRunning) return;
-
-          // Phase 2: Hold (7s)
-          textEl.textContent = 'Hold (7s)';
-          circle.style.transition = 'transform 0.5s ease-in-out';
-          circle.style.transform = 'scale(1.4)';
-
-          breathTimer = setTimeout(function() {
-            if (!isRunning) return;
-
-            // Phase 3: Exhale (8s)
-            textEl.textContent = 'Exhale (8s)';
+        if (secondsLeft <= 0) {
+          if (phase === 'idle' || phase === 'exhale') {
+            phase = 'inhale';
+            secondsLeft = 4;
+            circle.style.transition = 'transform 4s ease-in-out';
+            circle.style.transform = 'scale(1.45)';
+          } else if (phase === 'inhale') {
+            phase = 'hold';
+            secondsLeft = 7;
+            circle.style.transition = 'transform 0.5s ease-in-out';
+            circle.style.transform = 'scale(1.4)';
+          } else if (phase === 'hold') {
+            phase = 'exhale';
+            secondsLeft = 8;
             circle.style.transition = 'transform 8s ease-in-out';
             circle.style.transform = 'scale(1)';
+          }
+        }
 
-            breathTimer = setTimeout(function() {
-              if (isRunning) runCycle();
-            }, 8000);
-          }, 7000);
-        }, 4000);
+        if (phase === 'inhale') {
+          textEl.textContent = 'Inhale ' + secondsLeft + 's';
+        } else if (phase === 'hold') {
+          textEl.textContent = 'Hold ' + secondsLeft + 's';
+        } else if (phase === 'exhale') {
+          textEl.textContent = 'Exhale ' + secondsLeft + 's';
+        }
+
+        secondsLeft--;
       }
 
       function toggleBreathing() {
         isRunning = !isRunning;
         if (isRunning) {
-          runCycle();
+          phase = 'idle';
+          secondsLeft = 0;
+          stepBreathing();
+          intervalId = setInterval(stepBreathing, 1000);
         } else {
-          clearTimeout(breathTimer);
+          if (intervalId) clearInterval(intervalId);
+          intervalId = null;
+          phase = 'idle';
           textEl.innerHTML = '4 &middot; 7 &middot; 8';
           circle.style.transition = 'transform 0.5s ease-out';
           circle.style.transform = 'scale(1)';
