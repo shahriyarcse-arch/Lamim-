@@ -1513,12 +1513,37 @@ section:not(.hero) {
 /* -------------------------------------------------------------------------- */
 /* FAQ SECTION                                                                */
 /* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* SECTION 13: FAQ ENHANCED                                                  */
+/* -------------------------------------------------------------------------- */
 .faq-list {
-  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: none;
 }
 
-details {
-  border-bottom: 1px solid var(--line);
+.faq-list details {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(19, 33, 27, 0.1);
+  border-radius: 20px;
+  padding: 8px 22px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(19, 33, 27, 0.03);
+  backdrop-filter: blur(8px);
+}
+
+.faq-list details:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(61, 122, 90, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(19, 33, 27, 0.07);
+}
+
+.faq-list details[open] {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(61, 122, 90, 0.4);
+  box-shadow: 0 12px 36px rgba(19, 33, 27, 0.08);
 }
 
 summary {
@@ -1529,9 +1554,10 @@ summary {
   align-items: center;
   gap: 16px;
   font-weight: 800;
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
-  padding: 18px 0;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  padding: 14px 0;
   user-select: none;
+  color: var(--ink);
 }
 
 summary::-webkit-details-marker {
@@ -1540,27 +1566,55 @@ summary::-webkit-details-marker {
 
 summary::after {
   content: '+';
-  font-size: 1.4rem;
-  color: var(--teal);
-  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(111, 207, 138, 0.18);
+  color: #1f4e36;
+  font-size: 1.25rem;
+  font-weight: 700;
   flex-shrink: 0;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
 details[open] summary::after {
   content: '−';
+  background: rgba(111, 207, 138, 0.35);
+  transform: rotate(180deg);
 }
 
 details p {
-  padding: 0 16px 18px 0;
-  font-size: 0.94rem;
-  line-height: 1.55;
+  padding: 4px 10px 16px 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--muted);
 }
 
 /* -------------------------------------------------------------------------- */
-/* FINAL CTA                                                                  */
+/* SECTION 14: FINAL CTA ENHANCED                                            */
 /* -------------------------------------------------------------------------- */
 .final {
-  background: var(--mint);
+  background: linear-gradient(135deg, #cfee82 0%, #b5e865 50%, #9dd64c 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(24px, 4vw, 40px);
+  margin: 30px auto 60px;
+  box-shadow: 0 20px 50px rgba(19, 33, 27, 0.12);
+}
+
+.final::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
 }
 
 .final-wrap {
@@ -1569,33 +1623,52 @@ details p {
   gap: 24px;
   align-items: center;
   text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: clamp(36px, 5vw, 64px) clamp(20px, 4vw, 48px);
 }
 
 .final h2 {
   max-width: 14ch;
   margin: 0 auto;
+  color: #13211b;
+  font-weight: 800;
 }
 
 .final p {
-  color: #50654f;
-  margin-bottom: 24px;
+  color: #274233;
+  margin-bottom: 20px;
   font-size: clamp(1rem, 1.8vw, 1.15rem);
+  font-weight: 500;
   max-width: 52ch;
   margin-left: auto;
   margin-right: auto;
 }
 
 .final .btn {
-  min-height: 52px;
-  padding: 0 36px;
-  font-size: 1rem;
+  min-height: 54px;
+  padding: 0 40px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  background: #13211b;
+  color: #cfee82;
+  box-shadow: 0 10px 30px rgba(19, 33, 27, 0.25);
+  border-radius: 99px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.final .btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(19, 33, 27, 0.35);
+  background: #0b1511;
+  color: #ffffff;
 }
 
 @media (min-width: 768px) {
   .final-wrap {
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     gap: 40px;
     text-align: left;
   }
@@ -1607,8 +1680,8 @@ details p {
     margin-right: 0;
   }
   .final .btn {
-    min-height: 48px;
-    padding: 0 32px;
+    min-height: 52px;
+    padding: 0 36px;
   }
 }
 

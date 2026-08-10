@@ -1318,36 +1318,57 @@
     <section id="faq">
       <div class="wrap faq-grid">
         <div class="reveal">
-          <div class="eyebrow">13 · Questions, answered</div>
-          <h2>Nothing hidden behind the calm.</h2>
+          <div class="eyebrow" style="color:var(--teal);">13 &middot; Questions, answered</div>
+          <h2 style="font-size:clamp(1.85rem, 3.2vw, 2.6rem); margin-top:10px;">Nothing hidden behind the calm.</h2>
+          <p style="font-size:0.92rem; color:var(--muted); margin-top:12px; line-height:1.6; max-width:34ch;">Clear answers about your privacy, offline storage, calculation engines, and software architecture.</p>
         </div>
         <div class="faq-list reveal">
           <details open>
             <summary>What is included in Lamim?</summary>
-            <p>Salah, Nafl, Dhikr, Mujahid, Gym, Career, Goals and Sunnah, Smart Finance, Savings Vaults, Analysis, Spiritual Health Score, Profile, local backups, and PWA installation.</p>
+            <p>Salah Companion with Jama'at counters, Nafl &amp; Tahajjud trackers, Dhikr &amp; digital Tasbeeh, Mujahid recovery forge, Gym &amp; fitness logs, Career &amp; Goals, Smart Finance Ledger with savings vaults, on-device analytics, Spiritual Health Score (SHS), local JSON backups, and full PWA offline installation.</p>
           </details>
           <details>
-            <summary>Does Lamim need an account?</summary>
-            <p>No. Lamim works without email, password, phone number, or a central user database.</p>
+            <summary>Does Lamim need an account or cloud login?</summary>
+            <p>No. Lamim operates 100% account-free. No email, password, phone number, or central cloud database is required. Your personal reflections, counters, and financial records stay exclusively on your local device storage.</p>
           </details>
           <details>
-            <summary>Can I use it without internet?</summary>
-            <p>Yes. The app is built for offline use with local storage and service-worker caching.</p>
+            <summary>Can I use Lamim completely offline without internet?</summary>
+            <p>Yes. Lamim is engineered as an offline-first Progressive Web App (PWA). All prayer time algorithms, Qibla calculations, analytics engines, and dhikr counters function seamlessly without any internet connection.</p>
+          </details>
+          <details>
+            <summary>How does the Spiritual Health Score (SHS) work?</summary>
+            <p>SHS computes your weekly spiritual rhythm on-device using a balanced weighting algorithm: Farz Prayer (50%), Dhikr (15%), Nafl (15%), Mujahid discipline (10%), and Routine consistency (10%). It provides actionable insights without judgment or external comparison.</p>
+          </details>
+          <details>
+            <summary>How do I back up or transfer my data to a new device?</summary>
+            <p>You can export your complete encrypted dataset in one click from the Profile tab as a JSON file. Simply import that file on any new device or browser to restore 100% of your history instantly.</p>
           </details>
         </div>
       </div>
     </section>
 
     <!-- Final CTA Section -->
-    <section class="final reveal">
-      <div class="wrap final-wrap">
+    <section class="final reveal wrap">
+      <div class="final-wrap">
         <div>
-          <div class="eyebrow" style="color:#2f4e3f;">Everything you need to begin</div>
-          <h2 style="margin-top:12px;">Make room for what lasts.</h2>
+          <div class="eyebrow" style="color:#1f4e36; background:rgba(19,33,27,0.08); padding:4px 12px; border-radius:99px; display:inline-block; font-weight:800; letter-spacing:0.08em;">EVERYTHING YOU NEED TO BEGIN</div>
+          <h2 style="margin-top:14px; font-size:clamp(2rem, 3.5vw, 3rem);">Make room for what lasts.</h2>
+          <p style="margin-top:8px;">Open Lamim, choose one small practice, and let the rest become clearer with time.</p>
+          
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:16px;">
+            <span style="font-size:0.75rem; font-weight:800; color:#1f4e36; background:rgba(255,255,255,0.65); padding:5px 12px; border-radius:99px; border:1px solid rgba(19,33,27,0.1); display:inline-flex; align-items:center; gap:6px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 100% Private &amp; Local
+            </span>
+            <span style="font-size:0.75rem; font-weight:800; color:#1f4e36; background:rgba(255,255,255,0.65); padding:5px 12px; border-radius:99px; border:1px solid rgba(19,33,27,0.1); display:inline-flex; align-items:center; gap:6px;">
+              ⚡ Zero Ads &bull; Zero Trackers
+            </span>
+            <span style="font-size:0.75rem; font-weight:800; color:#1f4e36; background:rgba(255,255,255,0.65); padding:5px 12px; border-radius:99px; border:1px solid rgba(19,33,27,0.1); display:inline-flex; align-items:center; gap:6px;">
+              🌐 100% Offline PWA Ready
+            </span>
+          </div>
         </div>
-        <div>
-          <p>Open lamim, choose one small practice, and let the rest become clearer with time.</p>
-          <a class="btn btn-final" href="app/index.html">Open app <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div style="flex-shrink:0;">
+          <a class="btn btn-final" href="app/index.html" style="display:inline-flex; align-items:center; gap:8px;">Open app <svg width="13" height="13" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
     </section>
