@@ -923,45 +923,32 @@
             <p>42 minutes today. Personal best on the deadlift. Recovery still counts.</p>
           </div>
           <div class="v-art" style="width:auto;height:auto;min-width:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
-            <!-- Modern Larger Glassmorphic Water Tumbler (Tap to Hydrate) -->
-            <div id="landing-water-glass" style="position:relative;width:110px;height:158px;background:rgba(220,240,255,0.45);border:2.5px solid rgba(255,255,255,0.95);border-radius:14px 14px 28px 28px;box-shadow:0 20px 48px rgba(14,100,190,0.28), inset 0 2px 10px rgba(255,255,255,0.95), inset 0 -8px 18px rgba(20,120,220,0.18);overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;" title="Tap glass to add 250ml water" tabindex="0" role="button" aria-label="Tap glass to add 250ml water">
-              
-              <!-- Glass Reflection Flare -->
-              <div style="position:absolute;top:0;left:8px;width:18px;height:100%;background:linear-gradient(160deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.04) 100%);border-radius:8px;z-index:6;pointer-events:none;"></div>
-              
-              <!-- Measurement Lines -->
-              <div style="position:absolute;right:7px;top:18px;bottom:18px;width:9px;display:flex;flex-direction:column;justify-content:space-between;z-index:6;opacity:0.6;pointer-events:none;">
-                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.5);border-radius:1px;"></span>
-                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.35);border-radius:1px;"></span>
-                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.5);border-radius:1px;"></span>
-                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.35);border-radius:1px;"></span>
-                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.5);border-radius:1px;"></span>
-              </div>
-              
-              <!-- Dynamic Water Liquid Layer -->
-              <div id="landing-water-fill" style="position:absolute;bottom:0;left:0;right:0;height:25%;transition:height 0.7s cubic-bezier(0.16,1,0.3,1);z-index:2;overflow:hidden;">
-                <!-- Solid water body -->
-                <div id="landing-water-body" style="position:absolute;inset:0;background:linear-gradient(180deg,#29b6e8 0%,#0d72c5 100%);"></div>
-                <!-- Big clearly-visible wave — 36px tall, high amplitude -->
-                <svg id="landing-wave-svg" style="position:absolute;top:-30px;left:0;width:300%;height:36px;will-change:transform;" viewBox="0 0 600 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Layer 1: slow deep wave -->
-                  <path d="M0,18 C50,0 100,36 150,18 C200,0 250,36 300,18 C350,0 400,36 450,18 C500,0 550,36 600,18 L600,36 L0,36 Z" fill="#52d4ff" opacity="1"/>
-                  <!-- Layer 2: fast white foam crest -->
-                  <path d="M0,22 C35,8 75,36 115,22 C155,8 195,36 235,22 C275,8 315,36 355,22 C395,8 435,36 475,22 C515,8 555,36 600,22 L600,36 L0,36 Z" fill="rgba(255,255,255,0.85)"/>
-                </svg>
+            <!-- Canvas-based Water Glass (Tap to Hydrate) -->
+            <div id="landing-water-glass" style="position:relative;width:110px;height:158px;background:rgba(220,240,255,0.35);border:2.5px solid rgba(255,255,255,0.95);border-radius:14px 14px 28px 28px;box-shadow:0 20px 48px rgba(14,100,190,0.28),inset 0 2px 10px rgba(255,255,255,0.95),inset 0 -8px 18px rgba(20,120,220,0.18);overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform 0.18s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease;" title="Tap glass to add 250ml water" tabindex="0" role="button" aria-label="Tap glass to add 250ml water">
+
+              <!-- Canvas: water body + realistic sine wave rendered every frame -->
+              <canvas id="landing-water-canvas" width="110" height="158" style="position:absolute;inset:0;z-index:2;pointer-events:none;"></canvas>
+
+              <!-- Glass Reflection Flare (above canvas) -->
+              <div style="position:absolute;top:0;left:8px;width:16px;height:100%;background:linear-gradient(160deg,rgba(255,255,255,0.65) 0%,rgba(255,255,255,0.03) 100%);border-radius:8px;z-index:5;pointer-events:none;"></div>
+
+              <!-- Measurement ticks (above canvas) -->
+              <div style="position:absolute;right:7px;top:18px;bottom:18px;width:9px;display:flex;flex-direction:column;justify-content:space-between;z-index:5;opacity:0.55;pointer-events:none;">
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.45);border-radius:1px;"></span>
+                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.3);border-radius:1px;"></span>
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.45);border-radius:1px;"></span>
+                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.3);border-radius:1px;"></span>
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.45);border-radius:1px;"></span>
               </div>
 
-              <!-- Ripple element for click splash -->
-              <div id="landing-water-ripple" style="position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.5);transform:translate(-50%,-50%);z-index:7;pointer-events:none;opacity:0;"></div>
-              
-              <!-- Center Display inside Glass -->
+              <!-- ML label (above everything) -->
               <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:8;pointer-events:none;text-align:center;">
-                <b id="landing-water-amount" style="font-family:var(--font-display,'Fraunces',serif);font-size:1.75rem;font-weight:900;color:#062d56;line-height:1;text-shadow:0 0 16px rgba(255,255,255,1),0 2px 4px rgba(255,255,255,0.8);-webkit-font-smoothing:antialiased;">750</b>
-                <span id="landing-water-unit" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.68rem;font-weight:900;color:#0a4070;letter-spacing:0.12em;text-transform:uppercase;margin-top:3px;text-shadow:0 1px 6px rgba(255,255,255,1);">ML</span>
+                <b id="landing-water-amount" style="font-family:var(--font-display,'Fraunces',serif);font-size:1.75rem;font-weight:900;color:#062d56;line-height:1;text-shadow:0 0 20px rgba(255,255,255,1),0 2px 6px rgba(255,255,255,0.95);-webkit-font-smoothing:antialiased;">750</b>
+                <span id="landing-water-unit" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.68rem;font-weight:900;color:#0a4070;letter-spacing:0.12em;text-transform:uppercase;margin-top:3px;text-shadow:0 1px 8px rgba(255,255,255,1);">ML</span>
               </div>
             </div>
 
-            <!-- Clean Modern Percentage Pill Badge -->
+            <!-- Percentage Pill Badge -->
             <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
               <span id="landing-water-pct" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.78rem;font-weight:800;color:#ffffff;background:#0d5994;padding:4px 14px;border-radius:99px;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(13,89,148,0.25);">25% &middot; Goal 3L</span>
               <small style="font-size:0.64rem;color:#13211b;font-weight:800;letter-spacing:0.03em;">Tap glass to add water</small>
@@ -1536,123 +1523,155 @@
 
     /* ---- FEATURE 4: MODERN GLASSMORPHIC HYDRATION TUMBLER ---- */
     (function initWaterGlass() {
-      const glassContainer = document.getElementById('landing-water-glass');
-      const fillEl   = document.getElementById('landing-water-fill');
-      const waveSvg  = document.getElementById('landing-wave-svg');
-      const amountEl = document.getElementById('landing-water-amount');
-      const pctEl    = document.getElementById('landing-water-pct');
-      if (!glassContainer || !fillEl || !amountEl || !pctEl) return;
+      var glass    = document.getElementById('landing-water-glass');
+      var canvas   = document.getElementById('landing-water-canvas');
+      var amountEl = document.getElementById('landing-water-amount');
+      var pctEl    = document.getElementById('landing-water-pct');
+      if (!glass || !canvas || !amountEl || !pctEl) return;
 
-      const GOAL_ML = 3000;
-      const STEP_ML = 250;
-      let currentMl = 750;
-      let displayMl = 750; /* animated counter value */
-      let rafId = null;
+      var ctx    = canvas.getContext('2d');
+      var W      = canvas.width;   /* 110 */
+      var H      = canvas.height;  /* 158 */
 
-      /* Animate the ml counter number smoothly */
-      function animateCounter(from, to, duration) {
-        cancelAnimationFrame(rafId);
-        const start = performance.now();
+      var GOAL_ML  = 3000;
+      var STEP_ML  = 250;
+      var ml       = 750;           /* actual target */
+      var renderMl = 750;           /* animated render level */
+      var displayMl = 750;          /* counter label */
+
+      /* Wave state */
+      var phase1   = 0;   /* slow back wave phase */
+      var phase2   = 0;   /* fast front wave phase */
+      var amp      = 5;   /* base amplitude px */
+      var sloshAmp = 0;   /* extra amplitude added on click, decays */
+
+      /* --- draw one frame --- */
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        /* waterline Y: 0=top, H=bottom */
+        var waterTop = H - (renderMl / GOAL_ML) * H;
+        var totalAmp = amp + sloshAmp;
+
+        /* --- Gradient fill body --- */
+        var grad = ctx.createLinearGradient(0, waterTop, 0, H);
+        var pct = renderMl / GOAL_ML;
+        if (pct < 0.35) {
+          grad.addColorStop(0, '#4ecbf5');
+          grad.addColorStop(1, '#1e87d0');
+        } else if (pct < 0.75) {
+          grad.addColorStop(0, '#29b6e8');
+          grad.addColorStop(1, '#0d72c5');
+        } else {
+          grad.addColorStop(0, '#1aabd4');
+          grad.addColorStop(1, '#0a5ea8');
+        }
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.rect(0, waterTop + totalAmp, W, H - waterTop);
+        ctx.fill();
+
+        /* --- Back wave (slow, deeper blue) --- */
+        ctx.beginPath();
+        ctx.moveTo(0, H);
+        for (var x = 0; x <= W; x++) {
+          var y = waterTop + Math.sin((x / W) * Math.PI * 3 + phase1) * totalAmp;
+          if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        ctx.fillStyle = (pct < 0.35) ? '#29b6e8' : (pct < 0.75) ? '#1799d6' : '#1182c0';
+        ctx.fill();
+
+        /* --- Front wave (fast, bright cyan + white crest) --- */
+        ctx.beginPath();
+        for (var x2 = 0; x2 <= W; x2++) {
+          var y2 = waterTop + Math.sin((x2 / W) * Math.PI * 4 + phase2) * totalAmp * 0.65;
+          if (x2 === 0) ctx.moveTo(x2, y2); else ctx.lineTo(x2, y2);
+        }
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        ctx.fillStyle = 'rgba(100, 220, 255, 0.7)';
+        ctx.fill();
+
+        /* --- White foam crest line on top of front wave --- */
+        ctx.beginPath();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = 'rgba(255,255,255,0.80)';
+        for (var x3 = 0; x3 <= W; x3++) {
+          var y3 = waterTop + Math.sin((x3 / W) * Math.PI * 4 + phase2) * totalAmp * 0.65;
+          if (x3 === 0) ctx.moveTo(x3, y3); else ctx.lineTo(x3, y3);
+        }
+        ctx.stroke();
+      }
+
+      /* --- animation loop --- */
+      function loop() {
+        phase1 += 0.022;   /* back wave speed */
+        phase2 += 0.042;   /* front wave (faster) */
+
+        /* smoothly lerp renderMl toward target ml */
+        renderMl += (ml - renderMl) * 0.06;
+
+        /* decay slosh amplitude */
+        sloshAmp *= 0.94;
+        if (sloshAmp < 0.05) sloshAmp = 0;
+
+        draw();
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      /* --- animated display counter --- */
+      var counterRaf = null;
+      function animateCounter(from, to) {
+        cancelAnimationFrame(counterRaf);
+        var start = performance.now();
+        var dur   = 500;
         function step(now) {
-          const t = Math.min(1, (now - start) / duration);
-          const ease = 1 - Math.pow(1 - t, 3); /* ease-out cubic */
+          var t    = Math.min(1, (now - start) / dur);
+          var ease = 1 - Math.pow(1 - t, 3);
           displayMl = Math.round(from + (to - from) * ease);
           amountEl.textContent = displayMl;
-          if (t < 1) rafId = requestAnimationFrame(step);
+          if (t < 1) counterRaf = requestAnimationFrame(step);
         }
-        rafId = requestAnimationFrame(step);
+        counterRaf = requestAnimationFrame(step);
       }
 
-      function updateGlass(animate) {
-        /* Use exact float ratio — no rounding before setting height */
-        const exactPct = Math.min(100, (currentMl / GOAL_ML) * 100);
-        const displayPct = Math.round(exactPct);
-
-        /* height set from exact ratio so fill never drifts from label */
-        fillEl.style.height = exactPct + '%';
-
-        /* Badge label */
-        pctEl.textContent = displayPct + '% \u00b7 Goal 3L';
-
-        /* Animate counter */
-        if (animate) {
-          animateCounter(displayMl, currentMl, 500);
-        } else {
-          displayMl = currentMl;
-          amountEl.textContent = currentMl;
-        }
-
-        /* Water body colour deepens as glass fills */
-        const body = document.getElementById('landing-water-body');
-        if (body) {
-          if (exactPct < 35) {
-            body.style.background = 'linear-gradient(180deg,#4ecbf5 0%,#1e87d0 100%)';
-          } else if (exactPct < 75) {
-            body.style.background = 'linear-gradient(180deg,#29b6e8 0%,#0d72c5 100%)';
-          } else {
-            body.style.background = 'linear-gradient(180deg,#1aabd4 0%,#0a5ea8 100%)';
-          }
-        }
+      /* --- update badge label --- */
+      function updateBadge() {
+        var pct = Math.min(100, Math.round((ml / GOAL_ML) * 100));
+        pctEl.textContent = pct + '% \u00b7 Goal 3L';
       }
 
-      /* Start wave animation — 1.4px per frame, loops at -200 (1/3 of 600px viewBox) */
-      (function startWave() {
-        if (!waveSvg) return;
-        var x = 0;
-        function tick() {
-          x -= 1.4;
-          if (x <= -200) x = 0;
-          waveSvg.style.transform = 'translateX(' + x + 'px)';
-          requestAnimationFrame(tick);
-        }
-        tick();
-      })();
-
-      /* Ripple splash on click */
-      var rippleEl = document.getElementById('landing-water-ripple');
-      function doRipple() {
-        if (!rippleEl) return;
-        rippleEl.style.transition = 'none';
-        rippleEl.style.width = '0'; rippleEl.style.height = '0'; rippleEl.style.opacity = '0.7';
-        requestAnimationFrame(function() {
-          rippleEl.style.transition = 'width 0.5s ease, height 0.5s ease, opacity 0.5s ease';
-          rippleEl.style.width = '130px'; rippleEl.style.height = '130px'; rippleEl.style.opacity = '0';
-        });
-      }
-
-      function bump(el) {
-        if (!el) return;
-        el.style.transform = 'scale(0.93)';
-        setTimeout(function() { el.style.transform = 'scale(1)'; }, 160);
+      /* --- bump + slosh on click --- */
+      function bump() {
+        glass.style.transform = 'scale(0.93)';
+        setTimeout(function() { glass.style.transform = 'scale(1)'; }, 160);
+        sloshAmp = 14;   /* spike the wave amplitude */
         if (navigator.vibrate) { try { navigator.vibrate(22); } catch(e) {} }
       }
 
-      glassContainer.addEventListener('click', function() {
-        var prev = currentMl;
-        if (currentMl >= GOAL_ML) {
-          currentMl = 0;
-        } else {
-          currentMl += STEP_ML;
-        }
-        updateGlass(true);
-        bump(glassContainer);
-        doRipple();
+      /* --- click handler --- */
+      glass.addEventListener('click', function() {
+        var prev = displayMl;
+        ml = (ml >= GOAL_ML) ? 0 : ml + STEP_ML;
+        animateCounter(prev, ml);
+        updateBadge();
+        bump();
       });
 
-      glassContainer.addEventListener('keydown', function(e) {
+      glass.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          if (currentMl >= GOAL_ML) {
-            currentMl = 0;
-          } else {
-            currentMl += STEP_ML;
-          }
-          updateGlass(true);
-          bump(glassContainer);
+          var prev = displayMl;
+          ml = (ml >= GOAL_ML) ? 0 : ml + STEP_ML;
+          animateCounter(prev, ml);
+          updateBadge();
+          bump();
         }
       });
 
-      updateGlass(false);
+      /* initial badge */
+      updateBadge();
     })();
 
     /* ---- FEATURE 5: REAL-TIME SHS SCORE CALCULATOR PREVIEW (5 PARAMETERS + LIVE BARS) ---- */
