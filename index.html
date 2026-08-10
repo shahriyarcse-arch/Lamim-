@@ -96,6 +96,17 @@
       --wrap-max:1280px;--wrap-pad:clamp(16px,4vw,40px);
       --font-display:"Fraunces",Georgia,serif;--font-body:"Inter",system-ui,sans-serif;
     }
+    /* Brand-matched professional text selection */
+    ::selection { background: #cfee82; color: #13211b; }
+    ::-moz-selection { background: #cfee82; color: #13211b; }
+    
+    /* Prevent accidental text selection on UI cards, buttons, icons, & interactive widgets */
+    .btn, .nav, .navcta, .visual, .essence-card, .profile-card, .analysis-board, .phone, .stats-bar, .system-row, button, [role="button"] {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
     *,*::before,*::after{box-sizing:border-box}
     html{-webkit-text-size-adjust:100%}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body,"Inter",system-ui,sans-serif);font-size:clamp(.95rem,1.2vw,1.05rem);line-height:1.55;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased}
