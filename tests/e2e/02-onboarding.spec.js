@@ -10,7 +10,11 @@ test.describe('Setup Wizard & Onboarding Suite', () => {
     });
 
     await page.goto('/app/index.html');
-    await page.waitForTimeout(2500); // Splash screen transition
+    // Wait for splash overlay to finish fading out if present
+    const splash = page.locator('#splash-screen, .splash-screen, .splash');
+    if (await splash.count() > 0) {
+      await splash.first().waitFor({ state: 'hidden', timeout: 8000 }).catch(() => {});
+    }
   });
 
   test('onboarding validation prevents empty name and succeeds with valid name', async ({ page }) => {
