@@ -4,7 +4,10 @@ const { test, expect } = require('@playwright/test');
 test.describe('PWA 9-Section Navigation Suite', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/app/index.html');
-    await page.waitForTimeout(2000);
+    const splash = page.locator('#splash-screen, .splash-screen, .splash');
+    if (await splash.count() > 0) {
+      await splash.first().waitFor({ state: 'hidden', timeout: 8000 }).catch(() => {});
+    }
 
     // Bypass setup wizard if visible
     await page.evaluate(() => {
