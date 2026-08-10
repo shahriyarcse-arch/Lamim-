@@ -1605,7 +1605,7 @@
   </script>
 
   <script>
-    /* ---- FEATURE: CONTINUOUS LINEAR GROWING SPIRITUAL HEALTH SIMULATION ---- */
+    /* ---- FEATURE: REAL-TIME TICKING SPIRITUAL HEALTH PROGRESSION ---- */
     (function initHeroSHSTile() {
       var tile = document.getElementById('hero-shs-tile');
       var rankEl = document.getElementById('hero-shs-rank');
@@ -1614,60 +1614,75 @@
       var subtextEl = document.getElementById('hero-shs-subtext');
       if (!tile || !rankEl || !barEl || !percentEl) return;
 
-      var phases = [
-        { rank: 'Murid', targetPercent: 58, duration: 4000, subtext: 'moving toward Mujahid' },
-        { rank: 'Salik', targetPercent: 76, duration: 3800, subtext: 'steady daily rhythm' },
-        { rank: 'Mujahid', targetPercent: 88, duration: 3600, subtext: 'striving with resolve' },
-        { rank: 'Siddiq', targetPercent: 98, duration: 3400, subtext: 'peak spiritual focus' }
-      ];
+      var currentVal = 0;
+      var targetVal = 98;
+      var totalDuration = 14000; // 14 seconds for complete smooth journey from 0% to 98%
+      var animationFrame = null;
+      var startTime = null;
 
-      var currentPhaseIdx = 0;
+      function getPhaseData(val) {
+        if (val <= 58) {
+          return { rank: 'Murid', subtext: 'moving toward Mujahid' };
+        } else if (val <= 76) {
+          return { rank: 'Salik', subtext: 'steady daily rhythm' };
+        } else if (val <= 88) {
+          return { rank: 'Mujahid', subtext: 'striving with resolve' };
+        } else {
+          return { rank: 'Siddiq', subtext: 'peak spiritual focus' };
+        }
+      }
 
-      function updateDisplay(rank, percentNum, subtext, transitionTimeMs) {
-        if (rankEl.textContent !== rank) {
+      function updateRankText(newRank, newSubtext) {
+        if (rankEl.textContent !== newRank) {
           rankEl.style.transform = 'translateY(-2px)';
-          rankEl.style.opacity = '0.6';
+          rankEl.style.opacity = '0.5';
           setTimeout(function() {
-            rankEl.textContent = rank;
-            if (subtextEl) subtextEl.textContent = subtext;
+            rankEl.textContent = newRank;
+            if (subtextEl) subtextEl.textContent = newSubtext;
             rankEl.style.transform = 'translateY(0)';
             rankEl.style.opacity = '1';
-          }, 180);
+          }, 140);
         }
-
-        percentEl.textContent = Math.round(percentNum) + '%';
-        barEl.style.transition = 'width ' + (transitionTimeMs / 1000) + 's linear';
-        barEl.style.width = percentNum + '%';
       }
 
-      function runPhaseSequence() {
-        var p = phases[currentPhaseIdx];
+      function animateProgress(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+        var progressRatio = Math.min(1, elapsed / totalDuration);
+        
+        currentVal = progressRatio * targetVal;
+        var roundedInt = Math.floor(currentVal);
 
-        // Linearly grow bar from current width to targetPercent
-        updateDisplay(p.rank, p.targetPercent, p.subtext, p.duration);
+        // 1:1 sync of bar width & percentage number
+        barEl.style.transition = 'none';
+        barEl.style.width = currentVal.toFixed(1) + '%';
+        percentEl.textContent = roundedInt + '%';
 
-        // Schedule next phase after current phase completes
-        setTimeout(function() {
-          currentPhaseIdx++;
-          if (currentPhaseIdx >= phases.length) {
-            // Sequence completed! Hold at peak 98% for 2.5s, then reset smoothly to 0%
+        // Check & update phase rank text
+        var pData = getPhaseData(roundedInt);
+        updateRankText(pData.rank, pData.subtext);
+
+        if (progressRatio < 1) {
+          animationFrame = requestAnimationFrame(animateProgress);
+        } else {
+          // Reached peak 98%! Hold for 3s, then reset smoothly to 0% and restart
+          setTimeout(function() {
+            barEl.style.transition = 'width 0.8s ease-out';
+            barEl.style.width = '0%';
+            percentEl.textContent = '0%';
+            currentVal = 0;
+            startTime = null;
             setTimeout(function() {
-              currentPhaseIdx = 0;
-              barEl.style.transition = 'width 0.8s ease-out';
-              barEl.style.width = '0%';
-              percentEl.textContent = '0%';
-              setTimeout(runPhaseSequence, 900);
-            }, 2500);
-          } else {
-            runPhaseSequence();
-          }
-        }, p.duration);
+              animationFrame = requestAnimationFrame(animateProgress);
+            }, 1000);
+          }, 3000);
+        }
       }
 
-      // Start initial linear growth after 600ms
-      barEl.style.width = '0%';
-      percentEl.textContent = '0%';
-      setTimeout(runPhaseSequence, 600);
+      // Start initial real-time ticking loop after 800ms
+      setTimeout(function() {
+        animationFrame = requestAnimationFrame(animateProgress);
+      }, 800);
     })();
   </script>
 
