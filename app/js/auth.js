@@ -347,7 +347,10 @@ const Auth = {
         if (typeof App !== 'undefined') {
           App.showPage('setup');
         }
-        setTimeout(() => { window.location.reload(); }, 200);
+        setTimeout(() => {
+          const baseUrl = window.location.origin + window.location.pathname;
+          window.location.href = baseUrl;
+        }, 150);
       }
     });
   }
