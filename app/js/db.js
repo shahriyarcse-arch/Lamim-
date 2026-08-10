@@ -269,6 +269,10 @@ const DB = {
     await this._asyncClear();
   },
 
+  async wipeAll() {
+    return this.clear();
+  },
+
   keys() {
     return Object.keys(this._cache);
   },
