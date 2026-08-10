@@ -854,54 +854,24 @@ const Profile = {
     }
     icons.forEach(icon => icon.classList.add('rotating'));
 
-    const updateFinalLocation = (lat, lng) => {
-      const settings = DB.getSettings();
-      settings.lat = lat;
-      settings.lng = lng;
-      DB.setSettings(settings);
-      this.renderSettings();
-      // Instant: coordinates are local; refine the city name in the background
-      window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-      Utils.toast('Location synced', 'success');
-      icons.forEach(icon => icon.classList.remove('rotating'));
-      this._isSyncingLocation = false;
-
-      Utils.reverseGeocode(lat, lng, (name) => {
-        const s = DB.getSettings();
-        s.locationName = name;
-        DB.setSettings(s);
+    Utils.detectHighPrecisionLocation(
+      (res) => {
+        const settings = DB.getSettings();
+        settings.lat = res.lat;
+        settings.lng = res.lng;
+        settings.locationName = res.name;
+        DB.setSettings(settings);
         this.renderSettings();
         window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-      });
-    };
-
-    // Strategy 1: High-precision Geolocation (GPS/WiFi)
-    navigator.geolocation.getCurrentPosition(
-      (pos) => updateFinalLocation(pos.coords.latitude, pos.coords.longitude),
-      async (err) => {
-        console.warn("Geolocation failed, trying IP fallback...", err);
-        // Strategy 2: IP-based Fallback (Works better with VPNs on Desktop)
-        try {
-          if (!navigator.onLine) throw new Error("Offline");
-          const ctrl = new AbortController();
-          const to = setTimeout(() => ctrl.abort(), 8000);
-          const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
-          clearTimeout(to);
-          if (!res.ok) throw new Error(res.status);
-          const data = await res.json();
-          if (data.latitude && data.longitude) {
-            updateFinalLocation(data.latitude, data.longitude);
-          } else {
-            throw new Error("IP Geolocation failed");
-          }
-        } catch (ipErr) {
-          Utils.toast('Location access denied or failed', 'error');
-          icons.forEach(icon => icon.classList.remove('rotating'));
-        } finally {
-          this._isSyncingLocation = false;
-        }
+        Utils.toast('Location synced', 'success');
+        icons.forEach(icon => icon.classList.remove('rotating'));
+        this._isSyncingLocation = false;
       },
-      { timeout: 8000 }
+      (err) => {
+        Utils.toast('Location access denied or failed', 'error');
+        icons.forEach(icon => icon.classList.remove('rotating'));
+        this._isSyncingLocation = false;
+      }
     );
   }
 };

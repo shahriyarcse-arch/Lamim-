@@ -255,6 +255,44 @@ const Utils = {
     }, () => { /* denied / unavailable — keep previous location */ }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 });
   },
 
+  // Centralized robust location detection helper (GPS -> IP fallback -> Reverse geocode)
+  detectHighPrecisionLocation(onSuccess, onError) {
+    const handleSuccess = (lat, lng) => {
+      this.reverseGeocode(lat, lng, (name) => {
+        if (onSuccess) onSuccess({ lat, lng, name });
+      });
+    };
+
+    const tryIPFallback = async () => {
+      try {
+        if (!navigator.onLine) throw new Error("Offline");
+        const ctrl = new AbortController();
+        const to = setTimeout(() => ctrl.abort(), 8000);
+        const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
+        clearTimeout(to);
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        if (data.latitude && data.longitude) {
+          handleSuccess(data.latitude, data.longitude);
+        } else {
+          throw new Error("IP Geolocation failed");
+        }
+      } catch (err) {
+        if (onError) onError(err);
+      }
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => handleSuccess(pos.coords.latitude, pos.coords.longitude),
+        (err) => tryIPFallback(),
+        { enableHighAccuracy: true, timeout: 8000 }
+      );
+    } else {
+      tryIPFallback();
+    }
+  },
+
   _haversineKm(la1, lo1, la2, lo2) {
     const R = 6371;
     const dLat = (la2 - la1) * Math.PI / 180;

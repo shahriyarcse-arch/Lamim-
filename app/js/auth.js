@@ -152,54 +152,22 @@ const Auth = {
     if (statusText) statusText.textContent = 'Detecting your coordinates...';
     if (icon) icon.classList.add('rotating');
     if (err) err.classList.remove('show');
-
-    const updateFields = (lat, lng) => {
-      if (latInput) latInput.value = lat.toFixed(6);
-      if (lngInput) lngInput.value = lng.toFixed(6);
-      // Instant cached name + background refresh via shared helper
-      Utils.reverseGeocode(lat, lng, (name) => {
-        if (statusText) statusText.textContent = `Detected: ${name}`;
-        Utils.toast(`Location detected: ${name}`, 'success');
+    Utils.detectHighPrecisionLocation(
+      (res) => {
+        if (latInput) latInput.value = res.lat.toFixed(6);
+        if (lngInput) lngInput.value = res.lng.toFixed(6);
+        if (statusText) statusText.textContent = `Detected: ${res.name}`;
+        Utils.toast(`Location detected: ${res.name}`, 'success');
         if (icon) icon.classList.remove('rotating');
         this._isSyncingLocation = false;
-      });
-    };
-
-    if (!navigator.geolocation) {
-      this.ipLocationFallback(updateFields, icon, statusText);
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => updateFields(pos.coords.latitude, pos.coords.longitude),
-      (geoErr) => {
-        console.warn("Setup geolocation failed, trying IP fallback...", geoErr);
-        this.ipLocationFallback(updateFields, icon, statusText);
       },
-      { timeout: 6000 }
-    );
-  },
-
-  async ipLocationFallback(updateFields, icon, statusText) {
-    try {
-      if (!navigator.onLine) throw new Error("Offline");
-      const ctrl = new AbortController();
-      const to = setTimeout(() => ctrl.abort(), 8000);
-      const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
-      clearTimeout(to);
-      if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
-      if (data.latitude && data.longitude) {
-        updateFields(data.latitude, data.longitude);
-      } else {
-        throw new Error("IP Geolocation failed");
+      (err) => {
+        Utils.toast('Could not detect location. Please input coordinates manually.', 'warning');
+        if (statusText) statusText.textContent = 'Auto-detection failed. Enter manually.';
+        if (icon) icon.classList.remove('rotating');
+        this._isSyncingLocation = false;
       }
-    } catch (ipErr) {
-      Utils.toast('Could not detect location. Please input coordinates manually.', 'warning');
-      if (statusText) statusText.textContent = 'Auto-detection failed. Enter manually.';
-      if (icon) icon.classList.remove('rotating');
-      this._isSyncingLocation = false;
-    }
+    );
   },
 
   submitSetup() {
