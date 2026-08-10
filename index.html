@@ -1154,21 +1154,58 @@
           <p>City, prayer method, language, currency, notifications, goals, rank, and preferences in one considered space.</p>
           <a class="btn" href="app/index.html?section=profile">Make it yours <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-        <div class="profile-card reveal">
-          <div class="profile-top">
-            <div class="avatar">MR</div>
-            <div>
-              <h3 style="font-size:1.25rem;">Mr riyar</h3>
-              <p style="font-size:0.85rem;">Dhaka · Murid · 18 day rhythm</p>
+        <!-- Interactive Profile Card -->
+        <div class="profile-card reveal" id="landing-profile-card" style="position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;transition:all 0.35s var(--ease);" title="Tap to interact with profile preview">
+          
+          <!-- Top Row: Avatar + Name + Live Badge -->
+          <div class="profile-top" style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+            <div class="avatar" style="position:relative;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#cfee82,#3d7a5a);color:#1e4530;font-family:var(--font-display,serif);font-size:1.15rem;font-weight:900;display:grid;place-items:center;box-shadow:0 4px 14px rgba(61,122,90,0.25);flex-shrink:0;">
+              MR
+              <span style="position:absolute;bottom:1px;right:1px;width:11px;height:11px;background:#6fcf8a;border:2px solid #ffffff;border-radius:50%;box-shadow:0 0 8px #6fcf8a;"></span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <h3 style="font-size:1.2rem;font-weight:800;color:var(--ink);margin:0;letter-spacing:-0.02em;">Mr riyar</h3>
+                <span style="font-size:0.58rem;font-weight:800;color:#1f4e36;background:#e2f4c1;padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">PRO</span>
+              </div>
+              <p style="font-size:0.8rem;color:var(--muted);margin-top:2px;" id="profile-sub-info">Dhaka &middot; Murid &middot; 18 day rhythm</p>
             </div>
           </div>
-          <div class="stats">
-            <div class="stat"><b>92%</b><span>Salah rhythm</span></div>
-            <div class="stat"><b>14</b><span>goals alive</span></div>
-            <div class="stat"><b>&#2547;8.5k</b><span>vault saved</span></div>
+
+          <!-- 3 Interactive Glass Stat Cards -->
+          <div class="stats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
+            
+            <div class="profile-stat-box" data-stat="salah" style="background:rgba(61,122,90,0.06);border:1px solid rgba(61,122,90,0.12);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.25s ease;" title="Tap to inspect Salah rhythm">
+              <b style="font-family:var(--font-display,serif);font-size:1.35rem;font-weight:900;color:#1f4e36;line-height:1;display:block;" id="stat-salah-val">92%</b>
+              <span style="font-size:0.62rem;font-weight:700;color:var(--muted);margin-top:4px;display:block;">Salah rhythm</span>
+            </div>
+
+            <div class="profile-stat-box" data-stat="goals" style="background:rgba(61,122,90,0.06);border:1px solid rgba(61,122,90,0.12);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.25s ease;" title="Tap to inspect active goals">
+              <b style="font-family:var(--font-display,serif);font-size:1.35rem;font-weight:900;color:var(--ink);line-height:1;display:block;" id="stat-goals-val">14</b>
+              <span style="font-size:0.62rem;font-weight:700;color:var(--muted);margin-top:4px;display:block;">goals alive</span>
+            </div>
+
+            <div class="profile-stat-box" data-stat="vault" style="background:rgba(61,122,90,0.06);border:1px solid rgba(61,122,90,0.12);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.25s ease;" title="Tap to inspect savings vault">
+              <b style="font-family:var(--font-display,serif);font-size:1.35rem;font-weight:900;color:#1f4e36;line-height:1;display:block;" id="stat-vault-val">&#2547;8.5k</b>
+              <span style="font-size:0.62rem;font-weight:700;color:var(--muted);margin-top:4px;display:block;">vault saved</span>
+            </div>
+
           </div>
-          <div class="profile-row"><span>Current focus</span><b>Steady mornings</b></div>
-          <div class="profile-row"><span>Data location</span><b class="green">This device</b></div>
+
+          <!-- Interactive Detail Rows -->
+          <div class="profile-row" id="profile-row-focus" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer;transition:background 0.2s;" title="Tap to cycle focus goal">
+            <span style="font-size:0.82rem;color:var(--muted);">Current focus</span>
+            <b id="profile-focus-val" style="font-size:0.82rem;font-weight:800;color:var(--ink);background:rgba(19,33,27,0.05);padding:3px 10px;border-radius:99px;transition:all 0.25s ease;">Steady mornings &#9728;&#65039;</b>
+          </div>
+
+          <div class="profile-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line);">
+            <span style="font-size:0.82rem;color:var(--muted);">Data location</span>
+            <b class="green" style="font-size:0.82rem;font-weight:800;color:#1f4e36;display:flex;align-items:center;gap:4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              This device (Encrypted)
+            </b>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1935,6 +1972,46 @@
         if (slider) slider.addEventListener('input', update);
       });
       update();
+    })();
+
+    /* ---- FEATURE 5b: INTERACTIVE PROFILE CARD PREVIEW ---- */
+    (function initProfileCard() {
+      var card = document.getElementById('landing-profile-card');
+      var focusRow = document.getElementById('profile-row-focus');
+      var focusVal = document.getElementById('profile-focus-val');
+      var statBoxes = document.querySelectorAll('.profile-stat-box');
+      if (!card || !focusVal) return;
+
+      var focusModes = ['Steady mornings \u2600\ufe0f', 'Qur\'an 30m \ud83d\ud6d6', 'Night Tahajjud \ud83c\udf19', 'Deep Study \ud83c\udfaf'];
+      var focusIndex = 0;
+
+      if (focusRow) {
+        focusRow.addEventListener('click', function(e) {
+          e.stopPropagation();
+          focusIndex = (focusIndex + 1) % focusModes.length;
+          focusVal.textContent = focusModes[focusIndex];
+          focusVal.style.transform = 'scale(1.12)';
+          focusVal.style.background = 'rgba(61,122,90,0.15)';
+          focusVal.style.color = '#1f4e36';
+          setTimeout(function() {
+            focusVal.style.transform = 'scale(1)';
+          }, 180);
+          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+        });
+      }
+
+      statBoxes.forEach(function(box) {
+        box.addEventListener('click', function(e) {
+          e.stopPropagation();
+          box.style.transform = 'scale(0.95)';
+          box.style.background = 'rgba(61,122,90,0.14)';
+          setTimeout(function() {
+            box.style.transform = 'scale(1)';
+            box.style.background = 'rgba(61,122,90,0.06)';
+          }, 180);
+          if (navigator.vibrate) { try { navigator.vibrate(18); } catch(err) {} }
+        });
+      });
     })();
 
     /* ---- FEATURE 6: ANIMATED SCROLL-TRIGGERED STATS COUNT-UP ---- */
