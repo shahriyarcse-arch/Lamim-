@@ -938,9 +938,15 @@
                 <span style="width:8px;height:1.5px;background:rgba(19,33,27,0.45);"></span>
               </div>
               
-              <!-- Dynamic Water Liquid Layer -->
-              <div id="landing-water-fill" style="position:absolute;bottom:0;left:0;right:0;height:25%;background:linear-gradient(180deg, #38c8f0 0%, #167cc0 100%);transition:height 0.6s cubic-bezier(0.16, 1, 0.3, 1);z-index:1;">
-                <div style="position:absolute;top:-5px;left:0;right:0;height:10px;background:#8ae6ff;border-radius:50%;opacity:0.85;"></div>
+              <!-- Dynamic Water Liquid Layer with SVG Wave -->
+              <div id="landing-water-fill" style="position:absolute;bottom:0;left:0;right:0;height:25%;transition:height 0.65s cubic-bezier(0.16, 1, 0.3, 1);z-index:1;overflow:hidden;">
+                <!-- Body gradient -->
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,#38c8f0 0%,#167cc0 100%);"></div>
+                <!-- SVG animated wave surface -->
+                <svg id="landing-wave-svg" style="position:absolute;top:-10px;left:0;width:200%;height:14px;" viewBox="0 0 400 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0,7 C50,0 100,14 150,7 C200,0 250,14 300,7 C350,0 400,14 400,7 L400,14 L0,14 Z" fill="#6dd9f7" opacity="0.85"/>
+                  <path d="M0,7 C60,14 120,0 180,7 C240,14 300,0 360,7 C380,10 400,5 400,7 L400,14 L0,14 Z" fill="#38c8f0" opacity="0.6"/>
+                </svg>
               </div>
               
               <!-- Center Display inside Glass -->
@@ -1527,6 +1533,7 @@
     (function initWaterGlass() {
       const glassContainer = document.getElementById('landing-water-glass');
       const fillEl   = document.getElementById('landing-water-fill');
+      const waveSvg  = document.getElementById('landing-wave-svg');
       const amountEl = document.getElementById('landing-water-amount');
       const pctEl    = document.getElementById('landing-water-pct');
       if (!glassContainer || !fillEl || !amountEl || !pctEl) return;
@@ -1534,21 +1541,67 @@
       const GOAL_ML = 3000;
       const STEP_ML = 250;
       let currentMl = 750;
+      let displayMl = 750; /* animated counter value */
+      let rafId = null;
 
-      function updateGlass() {
-        const pct = Math.min(100, Math.round((currentMl / GOAL_ML) * 100));
-        fillEl.style.height = pct + '%';
-        amountEl.textContent = currentMl;
-        pctEl.textContent = pct + '% · Goal 3L';
+      /* Animate the ml counter number smoothly */
+      function animateCounter(from, to, duration) {
+        cancelAnimationFrame(rafId);
+        const start = performance.now();
+        function step(now) {
+          const t = Math.min(1, (now - start) / duration);
+          const ease = 1 - Math.pow(1 - t, 3); /* ease-out cubic */
+          displayMl = Math.round(from + (to - from) * ease);
+          amountEl.textContent = displayMl;
+          if (t < 1) rafId = requestAnimationFrame(step);
+        }
+        rafId = requestAnimationFrame(step);
+      }
 
-        if (pct < 35) {
-          fillEl.style.background = 'linear-gradient(180deg, #4ecbf5 0%, #1e87d0 100%)';
-        } else if (pct < 75) {
-          fillEl.style.background = 'linear-gradient(180deg, #38c8f0 0%, #177abf 100%)';
+      function updateGlass(animate) {
+        /* Use exact float ratio — no rounding before setting height */
+        const exactPct = Math.min(100, (currentMl / GOAL_ML) * 100);
+        const displayPct = Math.round(exactPct);
+
+        /* height set from exact ratio so fill never drifts from label */
+        fillEl.style.height = exactPct + '%';
+
+        /* Badge label */
+        pctEl.textContent = displayPct + '% \u00b7 Goal 3L';
+
+        /* Animate counter */
+        if (animate) {
+          animateCounter(displayMl, currentMl, 500);
         } else {
-          fillEl.style.background = 'linear-gradient(180deg, #2ebbe6 0%, #1268a8 100%)';
+          displayMl = currentMl;
+          amountEl.textContent = currentMl;
+        }
+
+        /* Water colour deepens as glass fills */
+        const body = fillEl.querySelector('div');
+        if (body) {
+          if (exactPct < 35) {
+            body.style.background = 'linear-gradient(180deg,#4ecbf5 0%,#1e87d0 100%)';
+          } else if (exactPct < 75) {
+            body.style.background = 'linear-gradient(180deg,#38c8f0 0%,#177abf 100%)';
+          } else {
+            body.style.background = 'linear-gradient(180deg,#2ebbe6 0%,#1268a8 100%)';
+          }
         }
       }
+
+      /* Start wave animation via CSS */
+      (function startWave() {
+        if (!waveSvg) return;
+        var x = 0;
+        function tick() {
+          x -= 0.6;
+          if (x <= -200) x = 0;
+          waveSvg.style.transform = 'translateX(' + x + 'px)';
+          requestAnimationFrame(tick);
+        }
+        tick();
+      })();
 
       function bump(el) {
         if (!el) return;
@@ -1558,12 +1611,13 @@
       }
 
       glassContainer.addEventListener('click', function() {
+        var prev = currentMl;
         if (currentMl >= GOAL_ML) {
           currentMl = 0;
         } else {
           currentMl += STEP_ML;
         }
-        updateGlass();
+        updateGlass(true);
         bump(glassContainer);
       });
 
@@ -1575,12 +1629,12 @@
           } else {
             currentMl += STEP_ML;
           }
-          updateGlass();
+          updateGlass(true);
           bump(glassContainer);
         }
       });
 
-      updateGlass();
+      updateGlass(false);
     })();
 
     /* ---- FEATURE 5: REAL-TIME SHS SCORE CALCULATOR PREVIEW (5 PARAMETERS + LIVE BARS) ---- */
