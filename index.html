@@ -1057,7 +1057,11 @@
         <div class="visual ledger reveal" id="landing-finance-card" style="cursor:pointer;user-select:none;-webkit-user-select:none;" title="Tap month or rows to cycle ledger preview">
           <div class="ledger-top" style="display:flex;justify-content:space-between;align-items:center;">
             <span>Monthly overview</span>
-            <span id="ledger-month-btn" style="cursor:pointer;background:rgba(61,122,90,0.1);color:#1f4e36;padding:3px 10px;border-radius:99px;font-weight:800;transition:all 0.2s ease;">July 2026 &#9662;</span>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <button id="ledger-prev-btn" aria-label="Previous month" title="Previous month" style="background:rgba(61,122,90,0.12);color:#1f4e36;border:none;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;cursor:pointer;font-weight:900;font-size:0.75rem;transition:transform 0.15s, background 0.15s;">&lsaquo;</button>
+              <span id="ledger-month-btn" style="cursor:pointer;background:rgba(61,122,90,0.1);color:#1f4e36;padding:3px 10px;border-radius:99px;font-weight:800;transition:all 0.2s ease;">August 2026 &#9662;</span>
+              <button id="ledger-next-btn" aria-label="Next month" title="Next month" style="background:rgba(61,122,90,0.12);color:#1f4e36;border:none;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;cursor:pointer;font-weight:900;font-size:0.75rem;transition:transform 0.15s, background 0.15s;">&rsaquo;</button>
+            </div>
           </div>
           <div class="ledger-total" style="display:flex;align-items:baseline;gap:10px;margin:16px 0 20px;transition:transform 0.2s ease;">
             <span id="ledger-total-val">&#2547;58,000</span>
@@ -1966,6 +1970,25 @@
 
       /* Initialize with real current month */
       updateMonth(curMonthIdx);
+
+      var prevBtn = document.getElementById('ledger-prev-btn');
+      var nextBtn = document.getElementById('ledger-next-btn');
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var prevIdx = (monthIdx - 1 + monthsData.length) % monthsData.length;
+          updateMonth(prevIdx);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var nextIdx = (monthIdx + 1) % monthsData.length;
+          updateMonth(nextIdx);
+        });
+      }
 
       monthBtn.addEventListener('click', function(e) {
         e.stopPropagation();
