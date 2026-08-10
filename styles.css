@@ -1637,12 +1637,32 @@ details p {
   grid-column: 1 / -1;
 }
 
+.footer-brand .brand {
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem) !important;
+  gap: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-brand .brand-icon {
+  height: clamp(30px, 2.5vw, 38px) !important;
+  width: auto !important;
+  object-fit: contain !important;
+  transition: transform 0.3s var(--ease);
+}
+
+.footer-brand .brand:hover .brand-icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+
 .footer-brand p {
-  color: #6b8278;
-  font-size: 0.875rem;
-  margin-top: 14px;
-  line-height: 1.6;
-  max-width: 22ch;
+  color: #8fa89a;
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  margin-top: 10px;
+  line-height: 1.55;
+  max-width: 24ch;
 }
 
 /* Column heading */
