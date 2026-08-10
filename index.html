@@ -924,35 +924,40 @@
           </div>
           <div class="v-art" style="width:auto;height:auto;min-width:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
             <!-- Modern Larger Glassmorphic Water Tumbler (Tap to Hydrate) -->
-            <div id="landing-water-glass" style="position:relative;width:96px;height:138px;background:rgba(255,255,255,0.55);border:2.5px solid rgba(255,255,255,0.95);border-radius:12px 12px 24px 24px;box-shadow:0 16px 36px rgba(35,115,170,0.22), inset 0 2px 8px rgba(255,255,255,0.9), inset 0 -6px 12px rgba(45,140,210,0.15);overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;" title="Tap glass to add 250ml water" tabindex="0" role="button" aria-label="Tap glass to add 250ml water">
+            <div id="landing-water-glass" style="position:relative;width:110px;height:158px;background:rgba(220,240,255,0.45);border:2.5px solid rgba(255,255,255,0.95);border-radius:14px 14px 28px 28px;box-shadow:0 20px 48px rgba(14,100,190,0.28), inset 0 2px 10px rgba(255,255,255,0.95), inset 0 -8px 18px rgba(20,120,220,0.18);overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;" title="Tap glass to add 250ml water" tabindex="0" role="button" aria-label="Tap glass to add 250ml water">
               
               <!-- Glass Reflection Flare -->
-              <div style="position:absolute;top:0;left:6px;width:16px;height:100%;background:linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.05) 100%);border-radius:6px;z-index:3;pointer-events:none;"></div>
+              <div style="position:absolute;top:0;left:8px;width:18px;height:100%;background:linear-gradient(160deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.04) 100%);border-radius:8px;z-index:6;pointer-events:none;"></div>
               
               <!-- Measurement Lines -->
-              <div style="position:absolute;right:6px;top:16px;bottom:16px;width:8px;display:flex;flex-direction:column;justify-content:space-between;z-index:3;opacity:0.55;pointer-events:none;">
-                <span style="width:8px;height:1.5px;background:rgba(19,33,27,0.45);"></span>
-                <span style="width:5px;height:1px;background:rgba(19,33,27,0.35);"></span>
-                <span style="width:8px;height:1.5px;background:rgba(19,33,27,0.45);"></span>
-                <span style="width:5px;height:1px;background:rgba(19,33,27,0.35);"></span>
-                <span style="width:8px;height:1.5px;background:rgba(19,33,27,0.45);"></span>
+              <div style="position:absolute;right:7px;top:18px;bottom:18px;width:9px;display:flex;flex-direction:column;justify-content:space-between;z-index:6;opacity:0.6;pointer-events:none;">
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.5);border-radius:1px;"></span>
+                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.35);border-radius:1px;"></span>
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.5);border-radius:1px;"></span>
+                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.35);border-radius:1px;"></span>
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.5);border-radius:1px;"></span>
               </div>
               
-              <!-- Dynamic Water Liquid Layer with SVG Wave -->
-              <div id="landing-water-fill" style="position:absolute;bottom:0;left:0;right:0;height:25%;transition:height 0.65s cubic-bezier(0.16, 1, 0.3, 1);z-index:1;overflow:hidden;">
-                <!-- Body gradient -->
-                <div style="position:absolute;inset:0;background:linear-gradient(180deg,#38c8f0 0%,#167cc0 100%);"></div>
-                <!-- SVG animated wave surface -->
-                <svg id="landing-wave-svg" style="position:absolute;top:-10px;left:0;width:200%;height:14px;" viewBox="0 0 400 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0,7 C50,0 100,14 150,7 C200,0 250,14 300,7 C350,0 400,14 400,7 L400,14 L0,14 Z" fill="#6dd9f7" opacity="0.85"/>
-                  <path d="M0,7 C60,14 120,0 180,7 C240,14 300,0 360,7 C380,10 400,5 400,7 L400,14 L0,14 Z" fill="#38c8f0" opacity="0.6"/>
+              <!-- Dynamic Water Liquid Layer -->
+              <div id="landing-water-fill" style="position:absolute;bottom:0;left:0;right:0;height:25%;transition:height 0.7s cubic-bezier(0.16,1,0.3,1);z-index:2;overflow:hidden;">
+                <!-- Solid water body -->
+                <div id="landing-water-body" style="position:absolute;inset:0;background:linear-gradient(180deg,#29b6e8 0%,#0d72c5 100%);"></div>
+                <!-- Big clearly-visible wave — 36px tall, high amplitude -->
+                <svg id="landing-wave-svg" style="position:absolute;top:-30px;left:0;width:300%;height:36px;will-change:transform;" viewBox="0 0 600 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Layer 1: slow deep wave -->
+                  <path d="M0,18 C50,0 100,36 150,18 C200,0 250,36 300,18 C350,0 400,36 450,18 C500,0 550,36 600,18 L600,36 L0,36 Z" fill="#52d4ff" opacity="1"/>
+                  <!-- Layer 2: fast white foam crest -->
+                  <path d="M0,22 C35,8 75,36 115,22 C155,8 195,36 235,22 C275,8 315,36 355,22 C395,8 435,36 475,22 C515,8 555,36 600,22 L600,36 L0,36 Z" fill="rgba(255,255,255,0.85)"/>
                 </svg>
               </div>
+
+              <!-- Ripple element for click splash -->
+              <div id="landing-water-ripple" style="position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.5);transform:translate(-50%,-50%);z-index:7;pointer-events:none;opacity:0;"></div>
               
               <!-- Center Display inside Glass -->
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:4;pointer-events:none;text-align:center;">
-                <b id="landing-water-amount" style="font-family:var(--font-display,'Fraunces',serif);font-size:1.6rem;font-weight:800;color:var(--ink);line-height:1;text-shadow:0 1px 6px rgba(255,255,255,0.9);-webkit-font-smoothing:antialiased;">750</b>
-                <span id="landing-water-unit" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:var(--dark);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;">ml</span>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:8;pointer-events:none;text-align:center;">
+                <b id="landing-water-amount" style="font-family:var(--font-display,'Fraunces',serif);font-size:1.75rem;font-weight:900;color:#062d56;line-height:1;text-shadow:0 0 16px rgba(255,255,255,1),0 2px 4px rgba(255,255,255,0.8);-webkit-font-smoothing:antialiased;">750</b>
+                <span id="landing-water-unit" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.68rem;font-weight:900;color:#0a4070;letter-spacing:0.12em;text-transform:uppercase;margin-top:3px;text-shadow:0 1px 6px rgba(255,255,255,1);">ML</span>
               </div>
             </div>
 
@@ -1577,31 +1582,43 @@
           amountEl.textContent = currentMl;
         }
 
-        /* Water colour deepens as glass fills */
-        const body = fillEl.querySelector('div');
+        /* Water body colour deepens as glass fills */
+        const body = document.getElementById('landing-water-body');
         if (body) {
           if (exactPct < 35) {
             body.style.background = 'linear-gradient(180deg,#4ecbf5 0%,#1e87d0 100%)';
           } else if (exactPct < 75) {
-            body.style.background = 'linear-gradient(180deg,#38c8f0 0%,#177abf 100%)';
+            body.style.background = 'linear-gradient(180deg,#29b6e8 0%,#0d72c5 100%)';
           } else {
-            body.style.background = 'linear-gradient(180deg,#2ebbe6 0%,#1268a8 100%)';
+            body.style.background = 'linear-gradient(180deg,#1aabd4 0%,#0a5ea8 100%)';
           }
         }
       }
 
-      /* Start wave animation via CSS */
+      /* Start wave animation — 1.4px per frame, loops at -200 (1/3 of 600px viewBox) */
       (function startWave() {
         if (!waveSvg) return;
         var x = 0;
         function tick() {
-          x -= 0.6;
+          x -= 1.4;
           if (x <= -200) x = 0;
           waveSvg.style.transform = 'translateX(' + x + 'px)';
           requestAnimationFrame(tick);
         }
         tick();
       })();
+
+      /* Ripple splash on click */
+      var rippleEl = document.getElementById('landing-water-ripple');
+      function doRipple() {
+        if (!rippleEl) return;
+        rippleEl.style.transition = 'none';
+        rippleEl.style.width = '0'; rippleEl.style.height = '0'; rippleEl.style.opacity = '0.7';
+        requestAnimationFrame(function() {
+          rippleEl.style.transition = 'width 0.5s ease, height 0.5s ease, opacity 0.5s ease';
+          rippleEl.style.width = '130px'; rippleEl.style.height = '130px'; rippleEl.style.opacity = '0';
+        });
+      }
 
       function bump(el) {
         if (!el) return;
@@ -1619,6 +1636,7 @@
         }
         updateGlass(true);
         bump(glassContainer);
+        doRipple();
       });
 
       glassContainer.addEventListener('keydown', function(e) {
