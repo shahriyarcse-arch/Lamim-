@@ -432,20 +432,20 @@
     <section class="stats-bar">
       <div class="wrap stats-grid">
         <div class="stat-item reveal">
-          <span class="stat-number">100K+</span>
+          <span class="stat-number" data-target="100" data-suffix="K+">100K+</span>
           <span class="stat-label">Prayers tracked</span>
         </div>
         <div class="stat-item reveal">
-          <span class="stat-number">10K+</span>
+          <span class="stat-number" data-target="10" data-suffix="K+">10K+</span>
           <span class="stat-label">Dhikr sessions</span>
         </div>
         <div class="stat-item reveal">
-          <span class="stat-number">5K+</span>
+          <span class="stat-number" data-target="5" data-suffix="K+">5K+</span>
           <span class="stat-label">Active users</span>
         </div>
         <div class="stat-item reveal">
-          <span class="stat-number">100%</span>
-          <span class="stat-label">Private & offline</span>
+          <span class="stat-number" data-target="100" data-suffix="%">100%</span>
+          <span class="stat-label">Private &amp; offline</span>
         </div>
       </div>
     </section>
@@ -1394,6 +1394,67 @@
         if (slider) slider.addEventListener('input', update);
       });
       update();
+    })();
+
+    /* ---- FEATURE 6: ANIMATED SCROLL-TRIGGERED STATS COUNT-UP ---- */
+    (function initStatsCounter() {
+      const statsSection = document.querySelector('.stats-bar');
+      const statNumbers  = document.querySelectorAll('.stat-number[data-target]');
+      if (!statsSection || !statNumbers.length) return;
+
+      let animated = false;
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function animateCountUp() {
+        if (animated) return;
+        animated = true;
+
+        const duration = 1600;
+        const startTime = performance.now();
+
+        function step(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(1, elapsed / duration);
+          const easedProgress = easeOutCubic(progress);
+
+          statNumbers.forEach(el => {
+            const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+            const suffix = el.getAttribute('data-suffix') || '';
+            const currentVal = Math.floor(easedProgress * target);
+            el.textContent = currentVal + suffix;
+          });
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            statNumbers.forEach(el => {
+              const target = el.getAttribute('data-target');
+              const suffix = el.getAttribute('data-suffix') || '';
+              el.textContent = target + suffix;
+            });
+          }
+        }
+
+        requestAnimationFrame(step);
+      }
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateCountUp();
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.2 });
+
+        observer.observe(statsSection);
+      } else {
+        animateCountUp();
+      }
     })();
   </script>
 </body>
