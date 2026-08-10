@@ -958,7 +958,7 @@
       });
     })();
 
-    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING (100% SYNCED COUNTDOWN & SCALE) ---- */
+    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING (SINGLE CYCLE & NORMAL IDLE RESTORE) ---- */
     (function initLandingBreathing() {
       const circle = document.getElementById('landing-breath-circle');
       const textEl = document.getElementById('landing-breath-text');
@@ -969,25 +969,41 @@
       let phase = 'idle';
       let secondsLeft = 0;
 
+      function stopBreathing() {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = null;
+        isRunning = false;
+        phase = 'idle';
+        secondsLeft = 0;
+        textEl.innerHTML = '4 &middot; 7 &middot; 8';
+        circle.style.animation = '';
+        circle.style.transition = 'transform 0.5s ease-out';
+        circle.style.transform = '';
+      }
+
       function stepBreathing() {
         if (!isRunning) return;
 
         if (secondsLeft <= 0) {
-          if (phase === 'idle' || phase === 'exhale') {
+          if (phase === 'idle') {
             phase = 'inhale';
             secondsLeft = 4;
-            circle.style.transition = 'transform 4000ms cubic-bezier(0.4, 0, 0.2, 1)';
-            circle.style.transform = 'scale(1.45)';
+            circle.style.animation = 'none';
+            circle.style.transition = 'transform 4000ms ease-in-out';
+            circle.style.transform = 'scale(1.5)';
           } else if (phase === 'inhale') {
             phase = 'hold';
             secondsLeft = 7;
             circle.style.transition = 'transform 7000ms linear';
-            circle.style.transform = 'scale(1.38)';
+            circle.style.transform = 'scale(1.45)';
           } else if (phase === 'hold') {
             phase = 'exhale';
             secondsLeft = 8;
-            circle.style.transition = 'transform 8000ms cubic-bezier(0.4, 0, 0.2, 1)';
+            circle.style.transition = 'transform 8000ms ease-in-out';
             circle.style.transform = 'scale(1.0)';
+          } else if (phase === 'exhale') {
+            stopBreathing();
+            return;
           }
         }
 
@@ -1003,20 +1019,14 @@
       }
 
       function toggleBreathing() {
-        isRunning = !isRunning;
         if (isRunning) {
+          stopBreathing();
+        } else {
+          isRunning = true;
           phase = 'idle';
           secondsLeft = 0;
           stepBreathing();
           intervalId = setInterval(stepBreathing, 1000);
-        } else {
-          if (intervalId) clearInterval(intervalId);
-          intervalId = null;
-          phase = 'idle';
-          secondsLeft = 0;
-          textEl.innerHTML = '4 &middot; 7 &middot; 8';
-          circle.style.transition = 'transform 0.5s ease-out';
-          circle.style.transform = 'scale(1)';
         }
       }
 
