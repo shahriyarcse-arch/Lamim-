@@ -338,15 +338,16 @@ const Auth = {
       icon: '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
       color: '#8b5cf6',
       confirmText: isBn ? 'লগ আউট' : 'Log Out',
-      onConfirm: () => {
-        DB.remove('lamim_user');
+      onConfirm: async () => {
+        await DB.remove('lamim_user');
+        try { localStorage.removeItem('lamim_user'); } catch {}
         document.body.classList.remove('home-active');
         Utils.toast(isBn ? 'লগ আউট করা হয়েছে' : 'Logged out', 'info');
         this.resetSetup();
         if (typeof App !== 'undefined') {
           App.showPage('setup');
         }
-        setTimeout(() => { window.location.reload(); }, 300);
+        setTimeout(() => { window.location.reload(); }, 200);
       }
     });
   }
