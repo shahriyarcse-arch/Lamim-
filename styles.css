@@ -1078,16 +1078,16 @@ section:not(.hero) {
 .heatmap i {
   aspect-ratio: 1;
   border-radius: 4px;
-  background: #2b5140;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #2b5140 !important;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   position: relative;
 }
 
 .heatmap i:hover {
-  transform: scale(1.35) rotate(4deg);
+  transform: scale(1.35) rotate(4deg) !important;
   background: #cfee82 !important;
-  box-shadow: 0 0 14px rgba(207, 238, 130, 0.85);
+  box-shadow: 0 0 14px rgba(207, 238, 130, 0.85) !important;
   z-index: 10;
 }
 

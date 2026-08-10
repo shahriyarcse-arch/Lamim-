@@ -1592,51 +1592,46 @@
   </script>
 
   <script>
-    /* ---- FEATURE 3: INTERACTIVE & AUTO-BLINKING SALAH HEATMAP PUZZLE ---- */
+    /* ---- FEATURE 3: UNIFORM BASE & SMOOTH RANDOM BLINKING SALAH HEATMAP PUZZLE ---- */
     (function initSalahHeatmapPuzzle() {
       var heatmap = document.getElementById('landing-salah-heatmap');
       if (!heatmap) return;
       var cells = heatmap.querySelectorAll('i');
       if (!cells.length) return;
 
-      var colorPalette = [
-        '#2b5140', // Dark Forest (Default)
-        '#3d7a5a', // Medium Green
-        '#6fcf8a', // Mint Green (Alone)
-        '#cfee82', // Glowing Lime (Jama'at)
-        '#e2f4c1'  // Pale Lime Accent
+      var baseColor = '#2b5140'; // Uniform initial dark forest color for ALL blocks
+      var glowColors = [
+        '#cfee82', // Glowing Lime Accent
+        '#6fcf8a', // Mint Green
+        '#e2f4c1', // Pale Lime
+        '#3d7a5a'  // Medium Emerald
       ];
 
-      // Assign initial randomized organic colors
-      cells.forEach(function(cell, idx) {
-        var baseColor = colorPalette[idx % colorPalette.length];
+      // Step 1: Set ALL cells to the exact same initial dark color
+      cells.forEach(function(cell) {
         cell.style.background = baseColor;
-        cell.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-        cell.setAttribute('data-color-idx', idx % colorPalette.length);
+        cell.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
 
-        // Click / Tap handler to cycle colors
+        // Click / Tap handler
         cell.addEventListener('click', function(e) {
           e.stopPropagation();
-          var currentIdx = parseInt(cell.getAttribute('data-color-idx') || '0', 10);
-          var nextIdx = (currentIdx + 1) % colorPalette.length;
-          cell.setAttribute('data-color-idx', nextIdx);
-          
-          cell.style.background = colorPalette[nextIdx];
+          cell.style.background = '#cfee82';
           cell.style.transform = 'scale(1.4) rotate(' + (Math.random() * 12 - 6).toFixed(1) + 'deg)';
-          cell.style.boxShadow = '0 0 14px ' + colorPalette[nextIdx];
+          cell.style.boxShadow = '0 0 14px rgba(207, 238, 130, 0.9)';
           cell.style.zIndex = '10';
 
           setTimeout(function() {
+            cell.style.background = baseColor;
             cell.style.transform = 'scale(1) rotate(0deg)';
             cell.style.boxShadow = 'none';
             cell.style.zIndex = '1';
-          }, 350);
+          }, 1000);
 
           if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
         });
       });
 
-      // Auto Random Puzzle Blink Loop
+      // Step 2: Auto Random Puzzle Smooth Light-up Loop
       var isHovered = false;
       heatmap.addEventListener('mouseenter', function() { isHovered = true; });
       heatmap.addEventListener('mouseleave', function() { isHovered = false; });
@@ -1644,30 +1639,30 @@
       setInterval(function() {
         if (isHovered) return;
         
-        // Pick 2 to 4 random cells to blink like a living puzzle
-        var count = Math.floor(Math.random() * 3) + 2;
+        // Pick a random number of cells (3 to 6 cells out of 21)
+        var count = Math.floor(Math.random() * 4) + 3;
         for (var i = 0; i < count; i++) {
           var randIdx = Math.floor(Math.random() * cells.length);
           var targetCell = cells[randIdx];
           if (!targetCell) continue;
 
           (function(c) {
-            var originalBg = c.style.background;
-            var blinkColor = '#cfee82'; // Glowing Lime highlight
-            c.style.background = blinkColor;
-            c.style.transform = 'scale(1.25)';
-            c.style.boxShadow = '0 0 10px rgba(207,238,130,0.8)';
+            var activeGlow = glowColors[Math.floor(Math.random() * glowColors.length)];
+            c.style.background = activeGlow;
+            c.style.transform = 'scale(1.22)';
+            c.style.boxShadow = '0 0 12px rgba(207, 238, 130, 0.75)';
             c.style.zIndex = '5';
 
+            var holdDuration = 800 + Math.random() * 600; // Hold light for 0.8s - 1.4s
             setTimeout(function() {
-              c.style.background = originalBg;
+              c.style.background = baseColor;
               c.style.transform = 'scale(1)';
               c.style.boxShadow = 'none';
               c.style.zIndex = '1';
-            }, 600 + Math.random() * 400);
+            }, holdDuration);
           })(targetCell);
         }
-      }, 1600);
+      }, 1400);
 
     })();
   </script>
