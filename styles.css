@@ -623,7 +623,7 @@ p {
 .float {
   position: absolute;
   right: 10px;
-  bottom: -22px;
+  bottom: -42px;
   padding: 10px 14px;
   border-radius: 14px;
   background: var(--dark);
@@ -681,7 +681,7 @@ p {
 
   .float {
     right: 12px;
-    bottom: -24px;
+    bottom: -46px;
     padding: 11px 15px;
   }
 
