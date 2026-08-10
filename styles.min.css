@@ -146,6 +146,12 @@ h1 em, h2 em {
   pointer-events: auto;
 }
 
+/* Hero eyebrow chip — app.js sets opacity=1 instantly; CSS transition makes it smooth */
+.hero .reveal {
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.06s,
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.06s;
+}
+
 h2 {
   font-size: clamp(1.8rem, 3.8vw + 0.5rem, 3.5rem);
   line-height: 1.02;
