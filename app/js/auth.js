@@ -386,13 +386,11 @@ const Auth = {
         document.body.classList.remove('home-active');
         Utils.toast(isBn ? 'লগ আউট করা হয়েছে' : 'Logged out', 'info');
         this.resetSetup();
+        const baseUrl = window.location.origin + window.location.pathname;
         if (typeof App !== 'undefined') {
           App.showPage('setup');
         }
-        setTimeout(() => {
-          const baseUrl = window.location.origin + window.location.pathname;
-          window.location.href = baseUrl;
-        }, 150);
+        window.location.replace(baseUrl);
       }
     });
   }

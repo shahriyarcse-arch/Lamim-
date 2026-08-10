@@ -322,7 +322,7 @@ const Utils = {
     const cacheAndEmit = (city, country) => {
       const name = city && country ? `${city}, ${country}` : (city || country || fallbackName);
       try { localStorage.setItem(key, JSON.stringify({ city, country, name })); } catch (e) { /* ignore */ }
-      if (cb) cb(name);
+      if (!servedCache && cb) cb(name);
     };
 
     // 2) Background: refresh from network
