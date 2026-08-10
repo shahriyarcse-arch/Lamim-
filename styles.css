@@ -605,16 +605,16 @@ p {
 
 .float {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
+  right: -12px;
+  bottom: -42px;
   padding: 10px 14px;
   border-radius: 16px;
   background: var(--dark);
   color: var(--paper);
-  box-shadow: 0 12px 30px rgba(19, 33, 27, 0.25);
+  box-shadow: 0 12px 30px rgba(19, 33, 27, 0.3);
   animation: float 4s ease-in-out infinite;
-  font-size: 0.8rem;
-  z-index: 10;
+  font-size: 0.78rem;
+  z-index: 20;
 }
 
 .float b {
@@ -661,9 +661,9 @@ p {
   }
 
   .float {
-    right: 0;
-    bottom: 10%;
-    padding: 14px 17px;
+    right: -16px;
+    bottom: -46px;
+    padding: 12px 16px;
   }
 
   .tile {
