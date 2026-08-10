@@ -374,8 +374,8 @@ const Auth = {
     const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     const title = isBn ? 'লগ আউট' : 'Log Out';
     const msg = isBn
-      ? 'লগ আউট করবেন এবং ওয়েলকাম স্ক্রিনে ফিরে যাবেন। আপনার প্রোফাইল লোকালি সেইভ থাকবে।'
-      : 'Log out and return to the welcome screen. Your profile will stay saved on this device.';
+      ? 'লগ আউট করবেন এবং ওয়েলকাম স্ক্রিনে ফিরে যাবেন। আপনার লোকাল ডাটা এই ডিভাইসেই থাকবে।'
+      : 'Log out and return to the welcome screen. Your local data stays on this device.';
     Utils.dangerConfirm({
       title,
       message: msg,
@@ -383,32 +383,12 @@ const Auth = {
       color: '#8b5cf6',
       confirmText: isBn ? 'লগ আউট' : 'Log Out',
       onConfirm: async () => {
-        const currentUser = DB.getUser();
-        if (currentUser) {
-          DB.saveProfileVault(currentUser);
-        }
-        delete DB._cache['lamim_user'];
         await DB.remove('lamim_user');
         try { localStorage.removeItem('lamim_user'); } catch {}
-        document.body.classList.remove('home-active');
-        Utils.toast(isBn ? 'লগ আউট করা হয়েছে' : 'Logged out', 'info');
-        this.resetSetup();
-
-        // 1. Instant Synchronous UI Switch
-        if (typeof App !== 'undefined') {
-          App.showPage('setup');
-        }
-
-        // 2. Clear query string from address bar synchronously
-        const cleanPath = window.location.pathname;
-        try {
-          window.history.replaceState({}, '', cleanPath);
-        } catch (e) {}
-
-        // 3. Force clean reload to clear memory
-        setTimeout(() => {
-          window.location.replace(cleanPath);
-        }, 50);
+        if (typeof DB._cache === 'object') delete DB._cache['lamim_user'];
+        
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.location.href = cleanUrl;
       }
     });
   }
