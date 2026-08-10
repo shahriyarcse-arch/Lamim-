@@ -321,10 +321,10 @@
       width: 1px;
       background: linear-gradient(180deg, transparent, rgba(207,238,130,.18) 40%, rgba(207,238,130,.18) 60%, transparent);
     }
-    .stat-item:hover .stat-number {
-      color: #cfee82;
+    .stats-bar .stat-item:hover .stat-number {
+      color: #cfee82 !important;
     }
-    .stat-number {
+    .stats-bar .stat-number {
       font-family: var(--font-display, "Fraunces", Georgia, serif);
       font-size: clamp(2.6rem, 5vw, 4.2rem);
       font-weight: 700;
@@ -335,7 +335,7 @@
       display: block;
       transition: color 0.3s ease;
     }
-    .stat-label {
+    .stats-bar .stat-label {
       font-size: clamp(0.75rem, 1vw, 0.85rem);
       font-weight: 700;
       color: #cfee82 !important;
@@ -344,9 +344,9 @@
       margin-bottom: 5px;
       display: block;
     }
-    .stat-desc {
+    .stats-bar .stat-desc {
       font-size: clamp(0.65rem, 0.85vw, 0.72rem);
-      color: rgba(241,240,233,0.5) !important;
+      color: rgba(241, 240, 233, 0.52) !important;
       line-height: 1.45;
       display: block;
       max-width: 16ch;
