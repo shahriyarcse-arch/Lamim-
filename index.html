@@ -1270,29 +1270,34 @@
     <section id="demo" class="demo">
       <div class="wrap demo-grid">
         <div class="demo-copy reveal">
-          <div class="eyebrow" style="color:var(--mint)">12 · A living product</div>
+          <div class="eyebrow" style="color:var(--mint)">12 &middot; A living product</div>
           <h2>See the app change as you do.</h2>
           <p>Switch between your day, analysis, and profile. This preview is interactive.</p>
-          <div class="tabs" role="tablist">
-            <button type="button" class="tab" role="tab" aria-selected="true" aria-controls="demo-panel" data-mode="Today" data-title="A steady morning" data-copy="Fajr, dhikr, gym, and room to breathe." data-value="76%">Today</button>
-            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Analysis" data-title="A longer view" data-copy="Three weeks of rhythm, not a perfect streak." data-value="92%">Analysis</button>
-            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Profile" data-title="A clear identity" data-copy="Your goals, rank, and private progress in one place." data-value="64%">Profile</button>
+          <div class="tabs" role="tablist" id="demo-tabs">
+            <button type="button" class="tab active" role="tab" aria-selected="true" aria-controls="demo-panel" data-mode="Today">Today</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Analysis">Analysis</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Profile">Profile</button>
           </div>
+          <p style="font-size:0.75rem;color:var(--mint);opacity:0.85;margin-top:14px;display:flex;align-items:center;gap:6px;">
+            <span style="width:6px;height:6px;background:var(--mint);border-radius:50%;box-shadow:0 0 8px var(--mint);"></span>
+            Interactive live preview &middot; Tap title or screen to cycle
+          </p>
         </div>
-        <div class="phone reveal">
-          <div class="screen" role="tabpanel" id="demo-panel" aria-label="Demo preview" aria-live="polite">
+
+        <div class="phone reveal" id="demo-phone-frame" style="perspective:1000px;transition:transform 0.25s ease-out;cursor:pointer;" title="Tap phone to toggle interactive state">
+          <div class="screen" role="tabpanel" id="demo-panel" aria-label="Demo preview" aria-live="polite" style="transition:transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;">
             <div>
               <small>Lamim / <span id="mode">Today</span></small>
-              <h3 id="title">A steady morning</h3>
-              <div class="meter"><span id="meter" style="width: 76%;"></span></div>
+              <h3 id="title" style="cursor:pointer;user-select:none;transition:all 0.2s;" title="Tap to cycle time of day">A steady morning</h3>
+              <div class="meter"><span id="meter" style="width: 76%; transition: width 0.6s cubic-bezier(0.16,1,0.3,1);"></span></div>
             </div>
-            <div>
+            <div id="demo-rows-container">
               <div class="screen-row">
                 <span id="copy">Fajr, dhikr, gym, and room to breathe.</span>
-                <strong id="value">76%</strong>
+                <strong id="value" style="color:var(--mint);">76%</strong>
               </div>
-              <div class="screen-row"><span>Private by default</span><span>&#10003;</span></div>
-              <div class="screen-row"><span>Stored on</span><span>This device</span></div>
+              <div class="screen-row"><span>Private by default</span><span style="color:var(--mint);font-weight:bold;">&#10003; Encrypted</span></div>
+              <div class="screen-row"><span>Stored on</span><span style="color:#ffffff;font-weight:600;">This device</span></div>
             </div>
           </div>
         </div>
@@ -1583,6 +1588,148 @@
       });
 
       updateProgress();
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE 12: LIVING PRODUCT INTERACTIVE DEMO & 3D PARALLAX ---- */
+    (function initLivingProductDemo() {
+      var phone = document.getElementById('demo-phone-frame');
+      var panel = document.getElementById('demo-panel');
+      var modeEl = document.getElementById('mode');
+      var titleEl = document.getElementById('title');
+      var meterEl = document.getElementById('meter');
+      var rowsContainer = document.getElementById('demo-rows-container');
+      var tabs = document.querySelectorAll('#demo-tabs .tab');
+      if (!phone || !panel || !tabs.length) return;
+
+      var screensData = {
+        'Today': {
+          titleOptions: ['A steady morning', 'A focused afternoon', 'A quiet evening'],
+          titlesIdx: 0,
+          meterVals: ['76%', '88%', '95%'],
+          rows: [
+            { label: 'Fajr, dhikr, gym, and room to breathe.', val: '76%', highlight: true },
+            { label: 'Private by default', val: '\u10003 Encrypted', green: true },
+            { label: 'Stored on', val: 'This device' }
+          ]
+        },
+        'Analysis': {
+          titleOptions: ['A longer view', '3-Week Rhythm', 'Peak Nafl & Dhikr'],
+          titlesIdx: 0,
+          meterVals: ['92%', '95%', '98%'],
+          rows: [
+            { label: 'Spiritual Health Score', val: '92/100 (Optimal)', highlight: true },
+            { label: 'Consistency Streak', val: '21 Days Active', green: true },
+            { label: 'Primary Focus', val: 'Salah & Nafl Synergy' }
+          ]
+        },
+        'Profile': {
+          titleOptions: ['A clear identity', 'Private Vault', 'Offline Sync'],
+          titlesIdx: 0,
+          meterVals: ['64%', '80%', '100%'],
+          rows: [
+            { label: 'User Rank & Identity', val: 'Mr riyar (PRO)', highlight: true },
+            { label: 'City & Method', val: 'Dhaka \u00b7 Murid', green: true },
+            { label: 'Local Backup', val: 'JSON Encrypted' }
+          ]
+        }
+      };
+
+      var currentMode = 'Today';
+
+      function renderScreen(modeName) {
+        currentMode = modeName;
+        var data = screensData[modeName];
+        if (!data) return;
+
+        panel.style.transform = 'scale(0.94) translateY(8px)';
+        panel.style.opacity = '0.4';
+
+        setTimeout(function() {
+          if (modeEl) modeEl.textContent = modeName;
+          if (titleEl) titleEl.textContent = data.titleOptions[data.titlesIdx];
+          if (meterEl) meterEl.style.width = data.meterVals[data.titlesIdx];
+          
+          if (rowsContainer) {
+            var html = '';
+            data.rows.forEach(function(r) {
+              var valStyle = r.highlight ? 'color:var(--mint);font-weight:700;' : (r.green ? 'color:#cfee82;font-weight:600;' : 'color:#ffffff;font-weight:500;');
+              html += '<div class="screen-row"><span>' + r.label + '</span><span style="' + valStyle + '">' + r.val + '</span></div>';
+            });
+            rowsContainer.innerHTML = html;
+          }
+
+          panel.style.transform = 'scale(1) translateY(0)';
+          panel.style.opacity = '1';
+        }, 160);
+      }
+
+      /* Tab button handlers */
+      tabs.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          tabs.forEach(function(t) {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+          
+          var mode = btn.getAttribute('data-mode') || 'Today';
+          renderScreen(mode);
+          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+        });
+      });
+
+      /* Tap title inside phone screen to cycle sub-states */
+      if (titleEl) {
+        titleEl.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var data = screensData[currentMode];
+          if (!data) return;
+          data.titlesIdx = (data.titlesIdx + 1) % data.titleOptions.length;
+          titleEl.textContent = data.titleOptions[data.titlesIdx];
+          if (meterEl) meterEl.style.width = data.meterVals[data.titlesIdx];
+          titleEl.style.transform = 'scale(1.05)';
+          setTimeout(function() { titleEl.style.transform = 'scale(1)'; }, 150);
+          if (navigator.vibrate) { try { navigator.vibrate(12); } catch(err) {} }
+        });
+      }
+
+      /* 3D Mouse Parallax Tilt Effect on phone frame */
+      phone.addEventListener('mousemove', function(e) {
+        var rect = phone.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+        var rotX = (-y / rect.height) * 14;
+        var rotY = (x / rect.width) * 14;
+        phone.style.transform = 'perspective(1000px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) scale(1.02)';
+      });
+
+      phone.addEventListener('mouseleave', function() {
+        phone.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      });
+
+      /* Auto-cycle tabs every 6s unless hovered */
+      var autoCycle = true;
+      phone.addEventListener('mouseenter', function() { autoCycle = false; });
+      phone.addEventListener('mouseleave', function() { autoCycle = true; });
+
+      setInterval(function() {
+        if (!autoCycle) return;
+        var modeKeys = ['Today', 'Analysis', 'Profile'];
+        var curIdx = modeKeys.indexOf(currentMode);
+        var nextIdx = (curIdx + 1) % modeKeys.length;
+        var nextMode = modeKeys[nextIdx];
+
+        tabs.forEach(function(t) {
+          if (t.getAttribute('data-mode') === nextMode) {
+            t.click();
+          }
+        });
+      }, 6000);
+
     })();
   </script>
 
