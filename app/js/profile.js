@@ -851,6 +851,17 @@ const Profile = {
     }
   },
 
+  removeAvatar() {
+    const updatedUser = DB.getUser();
+    if (!updatedUser) return;
+    delete updatedUser.avatar;
+    DB.setUser(updatedUser);
+    Profile.renderProfile();
+    Profile.renderSettings();
+    if (typeof App !== 'undefined') App.updateAvatars();
+    Utils.toast('Photo removed!', 'info');
+  },
+
 
   async detectLocation(e) {
     if (this._isSyncingLocation) return;
