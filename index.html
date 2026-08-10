@@ -578,9 +578,9 @@
                   <div class="kicker" style="margin:0;">Spiritual health</div>
                   <span id="hero-shs-indicator" style="font-size:0.56rem;font-weight:800;color:#1f4e36;background:rgba(31,78,54,0.12);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">LIVE</span>
                 </div>
-                <div class="big" id="hero-shs-rank" style="transition:transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s ease;">Murid</div>
-                <div class="meter"><span id="hero-shs-bar" style="width:58%; transition:width 1.2s cubic-bezier(0.16,1,0.3,1); background:linear-gradient(90deg, #1f4e36, #3d7a5a);"></span></div>
-                <div class="row"><span id="hero-shs-subtext">moving toward Mujahid</span><b id="hero-shs-percent" style="transition:all 0.35s ease;">58%</b></div>
+                <div class="big" id="hero-shs-rank" style="transition:transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s ease;">Ghafil</div>
+                <div class="meter"><span id="hero-shs-bar" style="width:0%; transition:none; background:linear-gradient(90deg, #1f4e36, #3d7a5a);"></span></div>
+                <div class="row"><span id="hero-shs-subtext">beginning the journey</span><b id="hero-shs-percent">0%</b></div>
               </div>
               <!-- Interactive Hero Live Activity Tile -->
               <div class="tile dark wide" id="hero-live-activity-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;padding:16px 18px;">
@@ -1615,10 +1615,13 @@
       if (!tile || !rankEl || !barEl || !percentEl) return;
 
       var phases = [
+        { rank: 'Ghafil', subtext: 'beginning the journey' },
+        { rank: 'Musafir', subtext: 'traveling with intention' },
         { rank: 'Murid', subtext: 'moving toward Mujahid' },
-        { rank: 'Salik', subtext: 'steady daily rhythm' },
         { rank: 'Mujahid', subtext: 'striving with resolve' },
-        { rank: 'Siddiq', subtext: 'peak spiritual focus' }
+        { rank: 'Mukhlis', subtext: 'sincere & devoted rhythm' },
+        { rank: 'Muttaqi', subtext: 'mindful & god-conscious' },
+        { rank: 'Muhsin', subtext: 'peak spiritual excellence' }
       ];
 
       var phaseIdx = 0;
