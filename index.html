@@ -182,6 +182,24 @@
     /* Gym section: water hydration ring container fills the v-art slot naturally */
     #feature-gym .v-art { height: auto; min-height: 0; }
 
+    /* High-contrast text visibility for Salah card */
+    .salah .eyebrow {
+      color: #cfee82 !important;
+      background: rgba(207,238,130,0.18) !important;
+      border: 1px solid rgba(207,238,130,0.38) !important;
+      box-shadow: 0 2px 10px rgba(207,238,130,0.15) !important;
+    }
+    .salah h3 {
+      color: #ffffff !important;
+      font-weight: 800;
+      -webkit-font-smoothing: antialiased;
+    }
+    .salah p {
+      color: #e2f0e7 !important;
+      font-weight: 500;
+      opacity: 1 !important;
+    }
+
     /* Ultra-crisp rendering for Analysis Board (removes 1deg rotation layer blurriness) */
     .analysis-board {
       transform: none !important;
@@ -536,10 +554,10 @@
             <div class="eyebrow" style="color:var(--mint)">Three-week rhythm</div>
             <h3>Small marks. A clearer pattern.</h3>
             <p>Fajr and Dhuhr are complete. Asr is next. Maghrib is waiting for you.</p>
-            <div id="landing-hijri-chip" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 14px 7px 10px;background:rgba(255,255,255,0.72);border:1px solid rgba(61,122,90,0.18);border-radius:999px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(19,33,27,0.07);" aria-label="Today's Islamic Hijri date">
-              <span style="width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0;animation:hijri-pulse 2.4s ease-in-out infinite;" aria-hidden="true"></span>
-              <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;letter-spacing:0.04em;color:var(--teal);text-transform:uppercase;">Hijri</span>
-              <span id="landing-hijri-text" style="font-family:var(--font-display,'Fraunces',serif);font-size:0.85rem;font-weight:800;color:var(--ink);-webkit-font-smoothing:antialiased;">Loading&hellip;</span>
+            <div id="landing-hijri-chip" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 16px 7px 12px;background:#ffffff;border:1px solid rgba(255,255,255,0.4);border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,0.3);" aria-label="Today's Islamic Hijri date">
+              <span style="width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;box-shadow:0 0 8px #10b981;animation:hijri-pulse 2.4s ease-in-out infinite;" aria-hidden="true"></span>
+              <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.75rem;font-weight:800;letter-spacing:0.06em;color:#1b4d3e;text-transform:uppercase;">Hijri</span>
+              <span id="landing-hijri-text" style="font-family:var(--font-display,'Fraunces',serif);font-size:0.88rem;font-weight:800;color:#12261e;-webkit-font-smoothing:antialiased;">Loading&hellip;</span>
             </div>
           </div>
           <div class="v-art">
