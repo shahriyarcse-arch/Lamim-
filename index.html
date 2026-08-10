@@ -1053,16 +1053,37 @@
           <p>Track income and expenses across 220+ categories, create savings vaults, see timelines, convert currencies, and export PDF statements.</p>
           <a class="btn" href="app/index.html?section=finance">Explore the ledger <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-        <div class="visual ledger reveal">
-          <div class="ledger-top">
+        <!-- Interactive Finance Ledger Card -->
+        <div class="visual ledger reveal" id="landing-finance-card" style="cursor:pointer;user-select:none;-webkit-user-select:none;" title="Tap month or rows to cycle ledger preview">
+          <div class="ledger-top" style="display:flex;justify-content:space-between;align-items:center;">
             <span>Monthly overview</span>
-            <span>July 2026</span>
+            <span id="ledger-month-btn" style="cursor:pointer;background:rgba(61,122,90,0.1);color:#1f4e36;padding:3px 10px;border-radius:99px;font-weight:800;transition:all 0.2s ease;">July 2026 &blackdown;</span>
           </div>
-          <div class="ledger-total">&#2547;58,000</div>
-          <div class="ledger-row"><span>Income</span><b class="green">+ &#2547;72,000</b></div>
-          <div class="ledger-row"><span>Essentials</span><b>&minus; &#2547;32,500</b></div>
-          <div class="ledger-row"><span>Giving</span><b>&minus; &#2547;8,000</b></div>
-          <div class="ledger-row"><span>Savings vault</span><b class="green">&#2547;8,500 / &#2547;10,000</b></div>
+          <div class="ledger-total" style="display:flex;align-items:baseline;gap:10px;margin:16px 0 20px;transition:transform 0.2s ease;">
+            <span id="ledger-total-val">&#2547;58,000</span>
+            <span id="ledger-trend-badge" style="font-family:var(--font-body,sans-serif);font-size:0.75rem;font-weight:800;color:#1f4e36;background:#e2f4c1;padding:2px 9px;border-radius:99px;">&plus;12.4%</span>
+          </div>
+          
+          <div class="ledger-row-box" data-row="income" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0;"><span>Income</span><b class="green" id="ledger-income-val">&plus; &#2547;72,000</b></div>
+          </div>
+
+          <div class="ledger-row-box" data-row="essentials" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0;"><span>Essentials</span><b id="ledger-essentials-val">&minus; &#2547;32,500</b></div>
+          </div>
+
+          <div class="ledger-row-box" data-row="giving" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0;"><span>Giving</span><b id="ledger-giving-val">&minus; &#2547;8,000</b></div>
+          </div>
+
+          <div class="ledger-row-box" data-row="vault" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0 2px;"><span>Savings vault</span><b class="green" id="ledger-vault-val">&#2547;8,500 / &#2547;10,000</b></div>
+            <!-- Progress bar fill for Vault -->
+            <div style="height:5px;background:rgba(19,33,27,0.08);border-radius:99px;overflow:hidden;margin-bottom:6px;">
+              <div id="ledger-vault-bar" style="height:100%;width:85%;background:linear-gradient(90deg,#3d7a5a,#6fcf8a);border-radius:99px;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);"></div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1871,6 +1892,89 @@
           setActiveDay((currentIndex + 1) % cols.length);
         });
       }
+    /* ---- FEATURE 4c: INTERACTIVE FINANCE LEDGER PREVIEW ---- */
+    (function initFinanceLedger() {
+      var card = document.getElementById('landing-finance-card');
+      var monthBtn = document.getElementById('ledger-month-btn');
+      var totalVal = document.getElementById('ledger-total-val');
+      var trendBadge = document.getElementById('ledger-trend-badge');
+      var incomeVal = document.getElementById('ledger-income-val');
+      var essentialsVal = document.getElementById('ledger-essentials-val');
+      var givingVal = document.getElementById('ledger-giving-val');
+      var vaultVal = document.getElementById('ledger-vault-val');
+      var vaultBar = document.getElementById('ledger-vault-bar');
+      var rowBoxes = document.querySelectorAll('.ledger-row-box');
+      if (!card || !monthBtn || !totalVal) return;
+
+      var monthsData = [
+        {
+          name: 'July 2026 \u25be',
+          total: '\u09f358,000',
+          trend: '+12.4%',
+          income: '+ \u09f372,000',
+          essentials: '- \u09f332,500',
+          giving: '- \u09f38,000',
+          vaultText: '\u09f38,500 / \u09f310,000',
+          vaultPct: '85%'
+        },
+        {
+          name: 'August 2026 \u25be',
+          total: '\u09f364,500',
+          trend: '+15.2%',
+          income: '+ \u09f378,000',
+          essentials: '- \u09f331,000',
+          giving: '- \u09f310,000',
+          vaultText: '\u09f39,200 / \u09f310,000',
+          vaultPct: '92%'
+        },
+        {
+          name: 'June 2026 \u25be',
+          total: '\u09f351,000',
+          trend: '+9.8%',
+          income: '+ \u09f368,000',
+          essentials: '- \u09f334,000',
+          giving: '- \u09f37,500',
+          vaultText: '\u09f37,800 / \u09f310,000',
+          vaultPct: '78%'
+        }
+      ];
+
+      var monthIdx = 0;
+
+      function updateMonth(idx) {
+        monthIdx = idx;
+        var data = monthsData[monthIdx];
+        monthBtn.innerHTML = data.name;
+        totalVal.innerHTML = data.total;
+        if (trendBadge) trendBadge.textContent = data.trend;
+        if (incomeVal) incomeVal.innerHTML = data.income;
+        if (essentialsVal) essentialsVal.innerHTML = data.essentials;
+        if (givingVal) givingVal.innerHTML = data.giving;
+        if (vaultVal) vaultVal.innerHTML = data.vaultText;
+        if (vaultBar) vaultBar.style.width = data.vaultPct;
+
+        totalVal.style.transform = 'scale(1.08)';
+        setTimeout(function() { totalVal.style.transform = 'scale(1)'; }, 180);
+        if (navigator.vibrate) { try { navigator.vibrate(18); } catch(err) {} }
+      }
+
+      monthBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        updateMonth((monthIdx + 1) % monthsData.length);
+      });
+
+      card.addEventListener('click', function() {
+        updateMonth((monthIdx + 1) % monthsData.length);
+      });
+
+      rowBoxes.forEach(function(box) {
+        box.addEventListener('click', function(e) {
+          e.stopPropagation();
+          box.style.background = 'rgba(61,122,90,0.08)';
+          setTimeout(function() { box.style.background = 'transparent'; }, 200);
+          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+        });
+      });
     })();
 
     /* ---- FEATURE 5: REAL-TIME SHS SCORE CALCULATOR PREVIEW (5 PARAMETERS + LIVE BARS) ---- */
