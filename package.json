@@ -1,6 +1,6 @@
 {
   "name": "lamim-pwa",
-  "version": "1.0.0",
+  "version": "4.2.0",
   "description": "Lamim — Islamic Lifestyle Tracker & PWA",
   "scripts": {
     "test": "npx playwright test",
