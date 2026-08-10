@@ -383,6 +383,10 @@ const Auth = {
       color: '#8b5cf6',
       confirmText: isBn ? 'লগ আউট' : 'Log Out',
       onConfirm: async () => {
+        const currentUser = DB.getUser();
+        if (currentUser) {
+          DB.saveProfileVault(currentUser);
+        }
         await DB.remove('lamim_user');
         try { localStorage.removeItem('lamim_user'); } catch {}
         if (typeof DB._cache === 'object') delete DB._cache['lamim_user'];
