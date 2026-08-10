@@ -63,7 +63,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="styles.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="styles.min.css?v=20260810" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
     <link rel="stylesheet" href="styles.min.css">
@@ -799,7 +799,32 @@
     },5000);
     window.__motionReady = function(){ clearTimeout(window.__motionFallback); };
   </script>
-  <script type="module" src="app.min.js"></script>
+  <script type="module" src="app.min.js?v=20260810"></script>
+
+  <script>
+    (function () {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('message', function (event) {
+          if (event.data && event.data.type === 'LAMIM_ROOT_CLEANED') {
+            window.location.reload();
+          }
+        });
+        var needsReload = false;
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          var ops = [];
+          regs.forEach(function (reg) {
+            if (reg.active && reg.active.scriptURL.indexOf('/app/sw.js') === -1) {
+              ops.push(reg.unregister());
+              needsReload = true;
+            }
+          });
+          return Promise.all(ops);
+        }).then(function () {
+          if (needsReload) { window.location.reload(); }
+        }).catch(function () {});
+      }
+    })();
+  </script>
 </body>
 </html>
 
