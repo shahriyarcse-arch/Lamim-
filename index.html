@@ -1894,7 +1894,7 @@
       }
     })();
 
-    /* ---- FEATURE 4c: INTERACTIVE FINANCE LEDGER PREVIEW ---- */
+    /* ---- FEATURE 4c: INTERACTIVE FINANCE LEDGER PREVIEW (12 MONTHS) ---- */
     (function initFinanceLedger() {
       var card = document.getElementById('landing-finance-card');
       var monthBtn = document.getElementById('ledger-month-btn');
@@ -1908,40 +1908,43 @@
       var rowBoxes = document.querySelectorAll('.ledger-row-box');
       if (!card || !monthBtn || !totalVal) return;
 
-      var monthsData = [
-        {
-          name: 'July 2026 \u25be',
-          total: '\u09f358,000',
-          trend: '+12.4%',
-          income: '+ \u09f372,000',
-          essentials: '- \u09f332,500',
-          giving: '- \u09f38,000',
-          vaultText: '\u09f38,500 / \u09f310,000',
-          vaultPct: '85%'
-        },
-        {
-          name: 'August 2026 \u25be',
-          total: '\u09f364,500',
-          trend: '+15.2%',
-          income: '+ \u09f378,000',
-          essentials: '- \u09f331,000',
-          giving: '- \u09f310,000',
-          vaultText: '\u09f39,200 / \u09f310,000',
-          vaultPct: '92%'
-        },
-        {
-          name: 'June 2026 \u25be',
-          total: '\u09f351,000',
-          trend: '+9.8%',
-          income: '+ \u09f368,000',
-          essentials: '- \u09f334,000',
-          giving: '- \u09f37,500',
-          vaultText: '\u09f37,800 / \u09f310,000',
-          vaultPct: '78%'
-        }
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var now = new Date();
+      var curYear = now.getFullYear();
+      var curMonthIdx = now.getMonth();
+
+      var baseData = [
+        { income: 65000, essentials: 35000, giving: 7000, vault: 6500, trend: '+8.2%' },   // Jan
+        { income: 66000, essentials: 34500, giving: 7200, vault: 6800, trend: '+8.5%' },   // Feb
+        { income: 68000, essentials: 34000, giving: 7500, vault: 7200, trend: '+9.1%' },   // Mar
+        { income: 70000, essentials: 33500, giving: 7800, vault: 7500, trend: '+10.4%' },  // Apr
+        { income: 69000, essentials: 33800, giving: 7600, vault: 7800, trend: '+10.1%' },  // May
+        { income: 68000, essentials: 34000, giving: 7500, vault: 7800, trend: '+9.8%' },   // Jun
+        { income: 72000, essentials: 32500, giving: 8000, vault: 8500, trend: '+12.4%' },  // Jul
+        { income: 78000, essentials: 31000, giving: 10000, vault: 9200, trend: '+15.2%' }, // Aug
+        { income: 74000, essentials: 32000, giving: 8500, vault: 8800, trend: '+13.1%' },  // Sep
+        { income: 75000, essentials: 31500, giving: 9000, vault: 9000, trend: '+13.8%' },  // Oct
+        { income: 76000, essentials: 31200, giving: 9200, vault: 9100, trend: '+14.2%' },  // Nov
+        { income: 80000, essentials: 30000, giving: 11000, vault: 9500, trend: '+16.5%' }  // Dec
       ];
 
-      var monthIdx = 0;
+      var monthsData = monthNames.map(function(mName, i) {
+        var d = baseData[i];
+        var net = d.income - d.essentials - d.giving;
+        var pct = Math.min(100, Math.round((d.vault / 10000) * 100)) + '%';
+        return {
+          name: mName + ' ' + curYear + ' \u25be',
+          total: '\u09f3' + net.toLocaleString('en-US'),
+          trend: d.trend,
+          income: '+ \u09f3' + d.income.toLocaleString('en-US'),
+          essentials: '- \u09f3' + d.essentials.toLocaleString('en-US'),
+          giving: '- \u09f3' + d.giving.toLocaleString('en-US'),
+          vaultText: '\u09f3' + d.vault.toLocaleString('en-US') + ' / \u09f310,000',
+          vaultPct: pct
+        };
+      });
+
+      var monthIdx = curMonthIdx;
 
       function updateMonth(idx) {
         monthIdx = idx;
@@ -1959,6 +1962,9 @@
         setTimeout(function() { totalVal.style.transform = 'scale(1)'; }, 180);
         if (navigator.vibrate) { try { navigator.vibrate(18); } catch(err) {} }
       }
+
+      /* Initialize with real current month */
+      updateMonth(curMonthIdx);
 
       monthBtn.addEventListener('click', function(e) {
         e.stopPropagation();
