@@ -331,7 +331,13 @@ const DB = {
     if (target.snapshot) {
       Object.keys(target.snapshot).forEach(k => {
         if (k !== 'lamim_profiles_vault') {
-          this.set(k, JSON.parse(target.snapshot[k]));
+          try {
+            const rawVal = target.snapshot[k];
+            this._cache[k] = rawVal;
+            this.set(k, JSON.parse(rawVal));
+          } catch (e) {
+            this._cache[k] = target.snapshot[k];
+          }
         }
       });
     }

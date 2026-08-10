@@ -341,7 +341,13 @@ const Auth = {
     const ok = await DB.switchProfile(profileId);
     if (ok) {
       Utils.toast('Switched profile successfully!', 'success');
-      setTimeout(() => window.location.reload(), 300);
+      if (typeof App !== 'undefined') {
+        App.showDashboard();
+      }
+      setTimeout(() => {
+        const baseUrl = window.location.origin + window.location.pathname;
+        window.location.replace(baseUrl);
+      }, 200);
     }
   },
 
