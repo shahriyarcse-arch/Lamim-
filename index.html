@@ -1592,7 +1592,7 @@
   </script>
 
   <script>
-    /* ---- FEATURE 3: UNIFORM BASE & VIBRANT LIT-UP COLOR PUZZLE ---- */
+    /* ---- FEATURE 3: RHYTHMIC SEQUENTIAL RANDOM PUZZLE BLINK ---- */
     (function initSalahHeatmapPuzzle() {
       var heatmap = document.getElementById('landing-salah-heatmap');
       if (!heatmap) return;
@@ -1655,38 +1655,52 @@
       heatmap.addEventListener('mouseenter', function() { isHovered = true; });
       heatmap.addEventListener('mouseleave', function() { isHovered = false; });
 
-      setInterval(function() {
-        if (isHovered) return;
+      // Run sequential pulse wave loop
+      function triggerSequentialWave() {
+        if (isHovered) {
+          setTimeout(triggerSequentialWave, 1400);
+          return;
+        }
 
-        // Pick 2 to 4 cells from the shuffled queue
-        var count = Math.min(pendingQueue.length, Math.floor(Math.random() * 3) + 2);
+        // Pick 3 to 5 cells for this sequence
+        var count = Math.min(pendingQueue.length, Math.floor(Math.random() * 3) + 3);
+        var sequenceCells = [];
         for (var k = 0; k < count; k++) {
           if (pendingQueue.length === 0) refreshQueue();
-          var cellIdx = pendingQueue.pop();
-          var targetCell = cells[cellIdx];
-          if (!targetCell) continue;
+          sequenceCells.push(cells[pendingQueue.pop()]);
+        }
 
-          (function(c) {
+        // Light up each cell in sequence with a smooth 140ms stagger delay!
+        sequenceCells.forEach(function(c, seqIndex) {
+          if (!c) return;
+          var staggerDelay = seqIndex * 140; // 140ms delay between consecutive blocks in the sequence
+
+          setTimeout(function() {
             var activeGlow = glowColors[Math.floor(Math.random() * glowColors.length)];
-            
-            // Explicitly set background color fill with high priority!
             c.style.setProperty('background-color', activeGlow, 'important');
             c.style.transform = 'scale(1.28)';
             c.style.boxShadow = '0 0 14px ' + activeGlow;
             c.style.zIndex = '5';
 
-            var holdDuration = 900 + Math.random() * 600; // Hold light for 0.9s - 1.5s
+            // Hold light for 900ms then smoothly return to dark base
             setTimeout(function() {
               c.style.setProperty('background-color', baseColor, 'important');
               c.style.transform = 'scale(1)';
               c.style.boxShadow = 'none';
               c.style.zIndex = '1';
-            }, holdDuration);
-          })(targetCell);
-        }
+            }, 900);
+          }, staggerDelay);
+        });
 
         if (pendingQueue.length === 0) refreshQueue();
-      }, 1200);
+
+        // Schedule next sequence after current sequence finishes
+        var nextWaveDelay = (count * 140) + 1100;
+        setTimeout(triggerSequentialWave, nextWaveDelay);
+      }
+
+      // Start initial sequence after 800ms
+      setTimeout(triggerSequentialWave, 800);
 
     })();
   </script>
