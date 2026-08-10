@@ -387,6 +387,7 @@ const Auth = {
         if (currentUser) {
           DB.saveProfileVault(currentUser);
         }
+        delete DB._cache['lamim_user'];
         await DB.remove('lamim_user');
         try { localStorage.removeItem('lamim_user'); } catch {}
         document.body.classList.remove('home-active');

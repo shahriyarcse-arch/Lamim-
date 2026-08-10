@@ -292,6 +292,9 @@ const DB = {
     const profiles = this.getProfiles();
     const existingIndex = profiles.findIndex(p => p.id === userObj.id || (p.name && p.name.toLowerCase() === userObj.name.toLowerCase()));
     
+    const cleanCache = { ...this._cache };
+    delete cleanCache['lamim_user'];
+
     const profileSnapshot = {
       id: userObj.id || ('usr_' + Date.now()),
       name: userObj.name,
@@ -299,7 +302,7 @@ const DB = {
       gender: userObj.gender || 'male',
       lastActive: new Date().toISOString(),
       userData: userObj,
-      snapshot: { ...this._cache }
+      snapshot: cleanCache
     };
 
     if (existingIndex >= 0) {
