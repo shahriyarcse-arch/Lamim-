@@ -593,7 +593,7 @@ const Profile = {
         }
 
         Utils.toast(isBn ? 'অ্যাপ রিসেট হয়েছে! রিলোড হচ্ছে...' : 'App reset successfully! Reloading...', 'success');
-        setTimeout(() => window.location.reload(true), 1200);
+        setTimeout(() => window.location.reload(), 1200);
       }
     });
   },
