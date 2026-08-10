@@ -580,39 +580,49 @@
                 <div class="row"><span>this week</span><b>76%</b></div>
               </div>
               <!-- Interactive Hero Live Activity Tile -->
-              <div class="tile dark wide" id="hero-live-activity-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                  <div class="kicker" style="margin:0;">Live activity</div>
-                  <span id="hero-activity-badge" style="font-size:0.62rem;font-weight:800;color:var(--mint);background:rgba(111,207,138,0.15);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">3/5 Done</span>
+              <div class="tile dark wide" id="hero-live-activity-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;padding:16px 18px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <div class="kicker" style="margin:0;font-size:0.68rem;letter-spacing:0.14em;color:#cfee82;font-weight:800;">LIVE ACTIVITY</div>
+                  <span id="hero-activity-badge" style="font-size:0.62rem;font-weight:800;color:var(--mint);background:rgba(111,207,138,0.15);padding:3px 10px;border-radius:99px;letter-spacing:0.04em;">3/5 Done</span>
                 </div>
                 
-                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;">
-                  <span>Fajr, Jama'at</span>
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Fajr Prayer <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; Jama'at at 04:45</span>
+                  </span>
                   <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
                 </div>
 
-                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;">
-                  <span>Dhikr, 108 repetitions</span>
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Morning Dhikr <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; 108x SubhanAllah</span>
+                  </span>
                   <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
                 </div>
 
-                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;">
-                  <span>Gym, 42 minutes</span>
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Strength Gym <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; 42m Upper Body</span>
+                  </span>
                   <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
                 </div>
 
-                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;opacity:0.65;">
-                  <span>Nafl, 2 Rakat</span>
+                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;opacity:0.65;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Tahajjud Nafl <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; 2 Rakat at 03:30</span>
+                  </span>
                   <b class="activity-check" style="color:rgba(255,255,255,0.3);font-size:0.85rem;transition:all 0.2s ease;">&#9675;</b>
                 </div>
 
-                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;opacity:0.65;">
-                  <span>Qur'an, 15 pages</span>
+                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;opacity:0.65;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Qur'an Recitation <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; 15 pages (Juz 15)</span>
+                  </span>
                   <b class="activity-check" style="color:rgba(255,255,255,0.3);font-size:0.85rem;transition:all 0.2s ease;">&#9675;</b>
                 </div>
 
                 <!-- Live Progress Bar Fill -->
-                <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:10px;">
+                <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:12px;">
                   <div id="hero-activity-bar" style="height:100%;width:60%;background:linear-gradient(90deg,var(--mint),#cfee82);border-radius:99px;transition:width 0.4s cubic-bezier(0.16,1,0.3,1);"></div>
                 </div>
               </div>
