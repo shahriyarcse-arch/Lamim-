@@ -6,7 +6,7 @@
 window.LamimVerses = window.LamimVerses || [];
 
 // Single source of truth mapping a section id to its module (used by router + bus).
-const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, mujahid: Mujahid, finance: Finance, gym: Gym, career: Career };
+const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, mujahid: Mujahid, habits: Mujahid, finance: Finance, gym: Gym, career: Career };
 
 const App = {
   currentSection: '',
@@ -105,8 +105,8 @@ updateSectionTitle() {
 
   // Section labels for the topbar
   sectionLabels: {
-    en: { home: 'Home', salah: 'Salah Tracker', dhikr: 'Dhikr Counter', nafl: 'Nafl Salah', mujahid: 'Mujahid', finance: 'Islamic Finance', analysis: 'Analysis', gym: 'Gym Tracker', career: 'Career Builder', profile: 'Profile' },
-    bn: { home: 'হোম', salah: 'সালাত ট্র্যাকার', dhikr: 'যিকির কাউন্টার', nafl: 'নফল সালাত', mujahid: 'মুজাহিদ', finance: 'ইসলামিক অর্থনীতি', analysis: 'বিশ্লেষণ', gym: 'জিম ট্র্যাকার', career: 'ক্যারিয়ার বিল্ডার', profile: 'প্রোফাইল' }
+    en: { home: 'Home', salah: 'Salah Tracker', dhikr: 'Dhikr Counter', nafl: 'Nafl Salah', mujahid: 'Habits', habits: 'Habits', finance: 'Islamic Finance', analysis: 'Analysis', gym: 'Gym Tracker', career: 'Career Builder', profile: 'Profile' },
+    bn: { home: 'হোম', salah: 'সালাত ট্র্যাকার', dhikr: 'যিকির কাউন্টার', nafl: 'নফল সালাত', mujahid: 'হ্যাবিটস', habits: 'হ্যাবিটস', finance: 'ইসলামিক অর্থনীতি', analysis: 'বিশ্লেষণ', gym: 'জিম ট্র্যাকার', career: 'ক্যারিয়ার বিল্ডার', profile: 'প্রোফাইল' }
   },
 
   async init() {
