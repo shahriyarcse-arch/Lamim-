@@ -47,8 +47,8 @@ test.describe('Landing Page Interactive Widgets Suite', () => {
     await expect(subEl).toBeVisible();
     await expect(subEl).toHaveText('start guide');
 
-    // Click to start breathing guide
-    await circle.click();
+    // Click to start breathing guide (force: true bypasses Playwright element stability check during continuous CSS keyframe pulse)
+    await circle.click({ force: true });
     await expect(countEl).toBeVisible();
     await expect(stateEl).toHaveText('Breathe In');
   });
