@@ -579,11 +579,42 @@
                 <div class="meter"><span></span></div>
                 <div class="row"><span>this week</span><b>76%</b></div>
               </div>
-              <div class="tile dark wide">
-                <div class="kicker">Live activity</div>
-                <div class="row"><span>Fajr, Jama'at</span><b style="color:var(--mint)">&#10003;</b></div>
-                <div class="row"><span>Dhikr, 108 repetitions</span><b style="color:var(--mint)">&#10003;</b></div>
-                <div class="row"><span>Gym, 42 minutes</span><b style="color:var(--mint)">&#10003;</b></div>
+              <!-- Interactive Hero Live Activity Tile -->
+              <div class="tile dark wide" id="hero-live-activity-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;" title="Tap any activity to toggle completion">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <div class="kicker" style="margin:0;">Live activity</div>
+                  <span id="hero-activity-badge" style="font-size:0.62rem;font-weight:800;color:var(--mint);background:rgba(111,207,138,0.15);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">3/5 Done</span>
+                </div>
+                
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;">
+                  <span>Fajr, Jama'at</span>
+                  <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;">
+                  <span>Dhikr, 108 repetitions</span>
+                  <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;">
+                  <span>Gym, 42 minutes</span>
+                  <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;opacity:0.65;">
+                  <span>Nafl, 2 Rakat</span>
+                  <b class="activity-check" style="color:rgba(255,255,255,0.3);font-size:0.85rem;transition:all 0.2s ease;">&#9675;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:4px 0;transition:all 0.2s ease;opacity:0.65;">
+                  <span>Qur'an, 15 pages</span>
+                  <b class="activity-check" style="color:rgba(255,255,255,0.3);font-size:0.85rem;transition:all 0.2s ease;">&#9675;</b>
+                </div>
+
+                <!-- Live Progress Bar Fill -->
+                <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:10px;">
+                  <div id="hero-activity-bar" style="height:100%;width:60%;background:linear-gradient(90deg,var(--mint),#cfee82);border-radius:99px;transition:width 0.4s cubic-bezier(0.16,1,0.3,1);"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1496,6 +1527,62 @@
 
       updateHeroPrayer();
       setInterval(updateHeroPrayer, 1000);
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE: HERO LIVE ACTIVITY INTERACTIVE TOGGLE ---- */
+    (function initHeroLiveActivity() {
+      var tile = document.getElementById('hero-live-activity-tile');
+      var badge = document.getElementById('hero-activity-badge');
+      var bar = document.getElementById('hero-activity-bar');
+      var items = document.querySelectorAll('.hero-activity-item');
+      if (!tile || !items.length) return;
+
+      function updateProgress() {
+        var total = items.length;
+        var done = 0;
+        items.forEach(function(item) {
+          if (item.getAttribute('data-done') === 'true') done++;
+        });
+
+        if (badge) badge.textContent = done + '/' + total + ' Done';
+        if (bar) bar.style.width = Math.round((done / total) * 100) + '%';
+      }
+
+      items.forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var isDone = item.getAttribute('data-done') === 'true';
+          var check = item.querySelector('.activity-check');
+
+          if (isDone) {
+            item.setAttribute('data-done', 'false');
+            item.style.opacity = '0.65';
+            if (check) {
+              check.innerHTML = '&#9675;';
+              check.style.color = 'rgba(255,255,255,0.3)';
+              check.style.fontSize = '0.85rem';
+            }
+          } else {
+            item.setAttribute('data-done', 'true');
+            item.style.opacity = '1';
+            if (check) {
+              check.innerHTML = '&#10003;';
+              check.style.color = 'var(--mint)';
+              check.style.fontSize = '0.95rem';
+            }
+          }
+
+          item.style.transform = 'scale(1.03)';
+          setTimeout(function() { item.style.transform = 'scale(1)'; }, 150);
+
+          updateProgress();
+          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+        });
+      });
+
+      updateProgress();
     })();
   </script>
 
