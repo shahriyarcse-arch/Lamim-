@@ -1605,7 +1605,7 @@
   </script>
 
   <script>
-    /* ---- FEATURE: AUTOMATED PROGRESSIVE HERO SPIRITUAL HEALTH SIMULATION ---- */
+    /* ---- FEATURE: CONTINUOUS LINEAR GROWING SPIRITUAL HEALTH SIMULATION ---- */
     (function initHeroSHSTile() {
       var tile = document.getElementById('hero-shs-tile');
       var rankEl = document.getElementById('hero-shs-rank');
@@ -1615,43 +1615,59 @@
       if (!tile || !rankEl || !barEl || !percentEl) return;
 
       var phases = [
-        { rank: 'Murid', percent: '58%', width: '58%', subtext: 'moving toward Mujahid' },
-        { rank: 'Salik', percent: '74%', width: '74%', subtext: 'steady daily rhythm' },
-        { rank: 'Mujahid', percent: '88%', width: '88%', subtext: 'striving with resolve' },
-        { rank: 'Siddiq', percent: '98%', width: '98%', subtext: 'peak spiritual focus' }
+        { rank: 'Murid', targetPercent: 58, duration: 4000, subtext: 'moving toward Mujahid' },
+        { rank: 'Salik', targetPercent: 76, duration: 3800, subtext: 'steady daily rhythm' },
+        { rank: 'Mujahid', targetPercent: 88, duration: 3600, subtext: 'striving with resolve' },
+        { rank: 'Siddiq', targetPercent: 98, duration: 3400, subtext: 'peak spiritual focus' }
       ];
 
-      var currentIdx = 0;
+      var currentPhaseIdx = 0;
 
-      function advancePhase() {
-        currentIdx = (currentIdx + 1) % phases.length;
-        var next = phases[currentIdx];
+      function updateDisplay(rank, percentNum, subtext, transitionTimeMs) {
+        if (rankEl.textContent !== rank) {
+          rankEl.style.transform = 'translateY(-2px)';
+          rankEl.style.opacity = '0.6';
+          setTimeout(function() {
+            rankEl.textContent = rank;
+            if (subtextEl) subtextEl.textContent = subtext;
+            rankEl.style.transform = 'translateY(0)';
+            rankEl.style.opacity = '1';
+          }, 180);
+        }
 
-        rankEl.style.transform = 'translateY(-3px)';
-        rankEl.style.opacity = '0.5';
-
-        setTimeout(function() {
-          rankEl.textContent = next.rank;
-          if (subtextEl) subtextEl.textContent = next.subtext;
-          percentEl.textContent = next.percent;
-          barEl.style.width = next.width;
-
-          rankEl.style.transform = 'translateY(0)';
-          rankEl.style.opacity = '1';
-        }, 200);
+        percentEl.textContent = Math.round(percentNum) + '%';
+        barEl.style.transition = 'width ' + (transitionTimeMs / 1000) + 's linear';
+        barEl.style.width = percentNum + '%';
       }
 
-      // Auto progression loop every 3 seconds
-      var shsInterval = setInterval(advancePhase, 3000);
+      function runPhaseSequence() {
+        var p = phases[currentPhaseIdx];
 
-      // Optional manual tap also advances phase and resets interval timer
-      tile.addEventListener('click', function(e) {
-        e.stopPropagation();
-        clearInterval(shsInterval);
-        advancePhase();
-        shsInterval = setInterval(advancePhase, 3000);
-        if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
-      });
+        // Linearly grow bar from current width to targetPercent
+        updateDisplay(p.rank, p.targetPercent, p.subtext, p.duration);
+
+        // Schedule next phase after current phase completes
+        setTimeout(function() {
+          currentPhaseIdx++;
+          if (currentPhaseIdx >= phases.length) {
+            // Sequence completed! Hold at peak 98% for 2.5s, then reset smoothly to 0%
+            setTimeout(function() {
+              currentPhaseIdx = 0;
+              barEl.style.transition = 'width 0.8s ease-out';
+              barEl.style.width = '0%';
+              percentEl.textContent = '0%';
+              setTimeout(runPhaseSequence, 900);
+            }, 2500);
+          } else {
+            runPhaseSequence();
+          }
+        }, p.duration);
+      }
+
+      // Start initial linear growth after 600ms
+      barEl.style.width = '0%';
+      percentEl.textContent = '0%';
+      setTimeout(runPhaseSequence, 600);
     })();
   </script>
 
