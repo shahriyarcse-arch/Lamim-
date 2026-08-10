@@ -513,10 +513,10 @@
             <p>Choose a phrase, begin a session, and let the interface disappear behind the rhythm.</p>
           </div>
           <div class="v-art">
-            <div class="dhikr-ring">
+            <div class="dhikr-ring" id="landing-dhikr-ring" style="cursor:pointer; transition:transform 0.15s ease;" title="Click to count Tasbeeh" tabindex="0" role="button" aria-label="Tap to count Dhikr">
               <div class="count">
-                <b>108</b>
-                <span>today</span>
+                <b id="landing-dhikr-count">108</b>
+                <span id="landing-dhikr-label">tap to count</span>
               </div>
             </div>
           </div>
@@ -533,8 +533,10 @@
             <h3>Discipline without shame.</h3>
             <p>Log the hard moment, start the breathing guide, and keep moving.</p>
           </div>
-          <div class="v-art">
-            <div class="breath" aria-hidden="true"></div>
+          <div class="v-art" style="display:flex; flex-direction:column; align-items:center;">
+            <div class="breath" id="landing-breath-circle" style="transition: transform 4s ease-in-out, background 0.3s ease;"></div>
+            <button type="button" id="landing-breath-btn" style="margin-top:16px; padding:8px 20px; font-weight:700; font-size:0.82rem; border-radius:99px; background:var(--dark); color:var(--paper); border:none; cursor:pointer; box-shadow:0 4px 12px rgba(19,33,27,0.15);">Start 4-7-8 Breath</button>
+            <div id="landing-breath-phase" style="font-size:0.82rem; font-weight:700; color:var(--teal); margin-top:8px; height:20px; text-align:center;">Tap button to practice</div>
           </div>
         </div>
         <div class="feature-copy reveal">
@@ -916,6 +918,98 @@
 
       updateHeroPrayer();
       setInterval(updateHeroPrayer, 1000);
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE 1: INTERACTIVE LANDING TASBEEH COUNTER ---- */
+    (function initLandingTasbeeh() {
+      const ring = document.getElementById('landing-dhikr-ring');
+      const countEl = document.getElementById('landing-dhikr-count');
+      const labelEl = document.getElementById('landing-dhikr-label');
+      if (!ring || !countEl) return;
+
+      let count = 108;
+      const dhikrPhrases = ['SubhanAllah ✦', 'Alhamdulillah ✦', 'Allahu Akbar ✦'];
+      let phraseIdx = 0;
+
+      function incrementTasbeeh() {
+        count++;
+        countEl.textContent = count;
+        if (labelEl) labelEl.textContent = dhikrPhrases[phraseIdx % dhikrPhrases.length];
+        phraseIdx++;
+
+        if (navigator.vibrate) {
+          try { navigator.vibrate(25); } catch(e) {}
+        }
+
+        ring.style.transform = 'scale(1.08)';
+        setTimeout(function() {
+          ring.style.transform = 'scale(1)';
+        }, 150);
+      }
+
+      ring.addEventListener('click', incrementTasbeeh);
+      ring.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          incrementTasbeeh();
+        }
+      });
+    })();
+
+    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING ---- */
+    (function initLandingBreathing() {
+      const circle = document.getElementById('landing-breath-circle');
+      const btn = document.getElementById('landing-breath-btn');
+      const phaseEl = document.getElementById('landing-breath-phase');
+      if (!circle || !btn || !phaseEl) return;
+
+      let isRunning = false;
+      let breathTimer = null;
+
+      function runCycle() {
+        if (!isRunning) return;
+
+        // Phase 1: Inhale 4s
+        phaseEl.textContent = 'Inhale (4s)... 🫁';
+        circle.style.transition = 'transform 4s ease-in-out';
+        circle.style.transform = 'scale(1.5)';
+
+        breathTimer = setTimeout(function() {
+          if (!isRunning) return;
+          // Phase 2: Hold 7s
+          phaseEl.textContent = 'Hold (7s)... ✋';
+          circle.style.transition = 'transform 0.5s ease-in-out';
+          circle.style.transform = 'scale(1.45)';
+
+          breathTimer = setTimeout(function() {
+            if (!isRunning) return;
+            // Phase 3: Exhale 8s
+            phaseEl.textContent = 'Exhale (8s)... 💨';
+            circle.style.transition = 'transform 8s ease-in-out';
+            circle.style.transform = 'scale(1)';
+
+            breathTimer = setTimeout(function() {
+              if (isRunning) runCycle();
+            }, 8000);
+          }, 7000);
+        }, 4000);
+      }
+
+      btn.addEventListener('click', function() {
+        isRunning = !isRunning;
+        if (isRunning) {
+          btn.textContent = 'Stop Breath Guide';
+          runCycle();
+        } else {
+          clearTimeout(breathTimer);
+          btn.textContent = 'Start 4-7-8 Breath';
+          phaseEl.textContent = 'Tap button to practice';
+          circle.style.transition = 'transform 0.5s ease-out';
+          circle.style.transform = 'scale(1)';
+        }
+      });
     })();
   </script>
 </body>
