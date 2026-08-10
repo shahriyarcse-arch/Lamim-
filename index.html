@@ -923,13 +923,13 @@
     <!-- Section 06: Mujahid -->
     <section id="feature-mujahid" style="background:var(--lilac)">
       <div class="wrap feature-grid">
-        <div class="visual mujahid reveal" style="background:linear-gradient(135deg, #ede6f7 0%, #e3d7f4 100%);">
+        <div class="visual mujahid reveal" style="background:linear-gradient(135deg, #ede6f7 0%, #e3d7f4 100%); min-height:clamp(280px, 42vh, 370px); padding:clamp(28px, 4.5vw, 42px); gap:clamp(20px, 4vw, 36px);">
           <div class="v-info">
-            <div class="eyebrow" style="color:#593b82 !important; background:rgba(89,59,130,0.1) !important; border-color:rgba(89,59,130,0.25) !important;">06 · Mujahid</div>
+            <div class="eyebrow" style="color:#593b82 !important; background:rgba(89,59,130,0.1) !important; border-color:rgba(89,59,130,0.25) !important;">06 &middot; Mujahid</div>
             <h3>Discipline without shame.</h3>
             <p>Log the hard moment, start the breathing guide, and keep moving.</p>
           </div>
-          <div class="v-art">
+          <div class="v-art" style="width:clamp(120px, 18vw, 155px); height:clamp(120px, 18vw, 155px); margin-right:16px; flex-shrink:0;">
             <div class="breath" id="landing-breath-circle" style="cursor:pointer; user-select:none; -webkit-user-select:none; display:grid; place-items:center; border-radius:50%; background:#ffffff; border:2px solid rgba(255,255,255,0.9); box-shadow:0 10px 28px rgba(89,59,130,0.12);" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
               <span id="landing-breath-text" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; pointer-events:none; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; transition:transform 0.3s ease;">
                 <b id="landing-breath-state" style="font-family:var(--font-display, serif); font-size:clamp(1.1rem, 2vw, 1.4rem); font-weight:800; line-height:1; color:#13211b; letter-spacing:0.02em;">4 &middot; 7 &middot; 8</b>
@@ -1969,14 +1969,14 @@
             if (textWrapper) { textWrapper.style.transition = 'none'; textWrapper.style.transform = 'scale(1)'; }
             void circle.offsetWidth;
             circle.style.transition = 'transform 4s linear';
-            circle.style.transform = 'scale(1.45)';
-            if (textWrapper) { textWrapper.style.transition = 'transform 4s linear'; textWrapper.style.transform = 'scale(0.7)'; }
+            circle.style.transform = 'scale(1.28)';
+            if (textWrapper) { textWrapper.style.transition = 'transform 4s linear'; textWrapper.style.transform = 'scale(0.78)'; }
           } else if (phase === 'inhale') {
             phase = 'hold';
             secondsLeft = 7;
             circle.style.transition = 'none';
-            circle.style.transform = 'scale(1.45)';
-            if (textWrapper) { textWrapper.style.transition = 'none'; textWrapper.style.transform = 'scale(0.7)'; }
+            circle.style.transform = 'scale(1.28)';
+            if (textWrapper) { textWrapper.style.transition = 'none'; textWrapper.style.transform = 'scale(0.78)'; }
           } else if (phase === 'hold') {
             phase = 'exhale';
             secondsLeft = 8;
