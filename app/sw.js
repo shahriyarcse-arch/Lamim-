@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-v158';
+const CACHE_NAME = 'lamim-v159';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -71,25 +71,22 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // LOCAL ASSETS (JS, CSS, images, verses.json) → CACHE-FIRST
-  // Served instantly from cache on repeat launches. Assets carry a `?v=` cache-buster
-  // in their URL, so new deploys automatically fetch fresh copies (cache miss on new URL).
-  // verses.json (3.7 MB) is included here, so it is downloaded only ONCE, then instant.
+  // LOCAL ASSETS (JS, CSS, images, verses.json) → NETWORK-FIRST with cache fallback
+  // Every load revalidates against the server (HTTP cache + ETag keeps it cheap),
+  // so new deploys are picked up on the very next launch on ANY device.
+  // Offline still works — the cached copy is served when the network is unavailable.
   const isLocalAsset = e.request.url.startsWith(self.location.origin);
   if (isLocalAsset) {
     e.respondWith(
-      caches.match(e.request).then((cached) => {
-        if (cached) return cached;
-        return fetch(e.request, { cache: 'no-cache' })
-          .then((res) => {
-            if (res && res.ok) {
-              const copy = res.clone();
-              caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
-            }
-            return res;
-          })
-          .catch(() => new Response('Offline – resource unavailable', { status: 503, statusText: 'Service Unavailable' }));
-      })
+      fetch(e.request)
+        .then((res) => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(e.request).then((cached) => cached || new Response('Offline – resource unavailable', { status: 503, statusText: 'Service Unavailable' })))
     );
     return;
   }
