@@ -573,11 +573,14 @@
                 <div class="big" id="hero-next-prayer-name">Maghrib</div>
                 <div class="row"><span id="hero-next-prayer-countdown">in 01:42:18</span><b id="hero-next-prayer-time">18:47</b></div>
               </div>
-              <div class="tile sky">
-                <div class="kicker">Spiritual health</div>
-                <div class="big">Murid</div>
-                <div class="meter"><span></span></div>
-                <div class="row"><span>this week</span><b>76%</b></div>
+              <div class="tile sky" id="hero-shs-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;transition:all 0.3s ease;" title="Tap to cycle spiritual health rank">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div class="kicker" style="margin:0;">Spiritual health</div>
+                  <span id="hero-shs-indicator" style="font-size:0.56rem;font-weight:800;color:#13211b;background:rgba(19,33,27,0.1);padding:2px 7px;border-radius:99px;letter-spacing:0.04em;">TAP</span>
+                </div>
+                <div class="big" id="hero-shs-rank" style="transition:transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;">Murid</div>
+                <div class="meter"><span id="hero-shs-bar" style="width:76%; transition:width 0.6s cubic-bezier(0.16,1,0.3,1); background:linear-gradient(90deg, #1f4e36, #3d7a5a);"></span></div>
+                <div class="row"><span id="hero-shs-subtext">moving toward Mujahid</span><b id="hero-shs-percent" style="transition:all 0.3s ease;">76%</b></div>
               </div>
               <!-- Interactive Hero Live Activity Tile -->
               <div class="tile dark wide" id="hero-live-activity-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;padding:16px 18px;">
@@ -1598,6 +1601,47 @@
       });
 
       updateProgress();
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE: INTERACTIVE HERO SPIRITUAL HEALTH TILE ---- */
+    (function initHeroSHSTile() {
+      var tile = document.getElementById('hero-shs-tile');
+      var rankEl = document.getElementById('hero-shs-rank');
+      var barEl = document.getElementById('hero-shs-bar');
+      var percentEl = document.getElementById('hero-shs-percent');
+      var subtextEl = document.getElementById('hero-shs-subtext');
+      if (!tile || !rankEl || !barEl || !percentEl) return;
+
+      var states = [
+        { rank: 'Murid', percent: '76%', width: '76%', subtext: 'moving toward Mujahid' },
+        { rank: 'Mujahid', percent: '92%', width: '92%', subtext: 'striving with resolve' },
+        { rank: 'Salik', percent: '84%', width: '84%', subtext: 'steady daily rhythm' },
+        { rank: 'Siddiq', percent: '98%', width: '98%', subtext: 'peak spiritual focus' }
+      ];
+
+      var stateIdx = 0;
+      tile.addEventListener('click', function(e) {
+        e.stopPropagation();
+        stateIdx = (stateIdx + 1) % states.length;
+        var nextState = states[stateIdx];
+
+        rankEl.style.transform = 'translateY(-4px)';
+        rankEl.style.opacity = '0.4';
+
+        setTimeout(function() {
+          rankEl.textContent = nextState.rank;
+          if (subtextEl) subtextEl.textContent = nextState.subtext;
+          percentEl.textContent = nextState.percent;
+          barEl.style.width = nextState.width;
+
+          rankEl.style.transform = 'translateY(0)';
+          rankEl.style.opacity = '1';
+        }, 150);
+
+        if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
+      });
     })();
   </script>
 
