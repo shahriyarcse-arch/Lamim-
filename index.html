@@ -922,23 +922,14 @@
   </script>
 
   <script>
-    /* ---- FEATURE 1: INTERACTIVE LANDING TASBEEH COUNTER (PERSISTENT) ---- */
+    /* ---- FEATURE 1: INTERACTIVE LANDING TASBEEH COUNTER (DEMO) ---- */
     (function initLandingTasbeeh() {
       const ring = document.getElementById('landing-dhikr-ring');
       const countEl = document.getElementById('landing-dhikr-count');
       const labelEl = document.getElementById('landing-dhikr-label');
       if (!ring || !countEl) return;
 
-      // Load saved count from localStorage or default to 108
       let count = 108;
-      try {
-        const saved = localStorage.getItem('lamim_landing_dhikr_count');
-        if (saved && !isNaN(Number(saved))) {
-          count = Number(saved);
-        }
-      } catch(e) {}
-      countEl.textContent = count;
-
       const dhikrPhrases = ['SubhanAllah ✦', 'Alhamdulillah ✦', 'Allahu Akbar ✦'];
       let phraseIdx = 0;
 
@@ -947,10 +938,6 @@
         countEl.textContent = count;
         if (labelEl) labelEl.textContent = dhikrPhrases[phraseIdx % dhikrPhrases.length];
         phraseIdx++;
-
-        try {
-          localStorage.setItem('lamim_landing_dhikr_count', count);
-        } catch(e) {}
 
         if (navigator.vibrate) {
           try { navigator.vibrate(25); } catch(e) {}
