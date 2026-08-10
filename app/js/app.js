@@ -220,7 +220,7 @@ updateSectionTitle() {
         this.showPage('setup');
       }
       this._bootComplete = true;
-    }, 1800);
+    }, 800);
 
     // Safety fallback
     setTimeout(() => {

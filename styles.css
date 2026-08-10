@@ -771,6 +771,12 @@ section {
   padding: clamp(50px, 8vw, 130px) 0;
 }
 
+/* Skip rendering of below-fold sections until scrolled near (perf: cuts style/layout work) */
+section:not(.hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 .section-head {
   display: flex;
   flex-direction: column;
