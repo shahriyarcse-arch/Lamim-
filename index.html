@@ -764,8 +764,8 @@
             <div class="dhikr-ring" id="landing-dhikr-ring" style="cursor:pointer; transition:transform 0.15s ease, box-shadow 0.3s ease; user-select:none; -webkit-user-select:none; position:relative;" title="Tap to count Tasbeeh" tabindex="0" role="button" aria-label="Tap to count Dhikr">
               <div class="count" style="display:flex; flex-direction:column; align-items:center;">
                 <b id="landing-dhikr-count" style="font-size:clamp(2rem, 4.5vw, 3rem); font-weight:800; line-height:1; color:#13211b;">108</b>
-                <span id="landing-dhikr-label" style="display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-size:clamp(0.68rem, 1.1vw, 0.78rem); font-weight:700; color:#2e6e4d; background:rgba(46,110,77,0.12); padding:3px 10px; border-radius:99px; letter-spacing:0.04em;">
-                  <span>👆 Tap to count</span>
+                <span id="landing-dhikr-label" style="display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-size:clamp(0.68rem, 1.1vw, 0.78rem); font-weight:800; color:#ffffff; background:#13211b; padding:4px 12px; border-radius:99px; letter-spacing:0.06em; text-transform:uppercase; box-shadow:0 2px 8px rgba(19,33,27,0.18);">
+                  <span>Tap to count</span>
                 </span>
               </div>
             </div>
@@ -787,7 +787,7 @@
             <div class="breath" id="landing-breath-circle" style="cursor:pointer; user-select:none; -webkit-user-select:none; display:grid; place-items:center; border-radius:50%;" title="Tap circle to start 4-7-8 breathing guide" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
               <span id="landing-breath-text" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; pointer-events:none; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; transition:transform 0.3s ease;">
                 <b id="landing-breath-state" style="font-family:var(--font-display, serif); font-size:clamp(0.85rem, 1.5vw, 1.05rem); font-weight:800; line-height:1.1; color:#13211b;">4 &middot; 7 &middot; 8</b>
-                <small id="landing-breath-sub" style="font-family:var(--font-body, sans-serif); font-size:clamp(0.64rem, 1.1vw, 0.75rem); color:#505c54; font-weight:700; display:block; margin-top:4px; letter-spacing:0.03em;">🫁 Tap to start guide</small>
+                <small id="landing-breath-sub" style="font-family:var(--font-body, sans-serif); font-size:clamp(0.64rem, 1.1vw, 0.75rem); color:#ffffff; background:#13211b; font-weight:800; display:block; margin-top:5px; letter-spacing:0.05em; text-transform:uppercase; padding:3px 10px; border-radius:99px; box-shadow:0 2px 8px rgba(19,33,27,0.15);">Tap to start guide</small>
                 <small id="landing-breath-count" style="font-family:var(--font-body, sans-serif); font-size:clamp(0.68rem, 1.1vw, 0.78rem); color:#2e6e4d; font-weight:800; display:none; margin-top:4px; letter-spacing:0.02em; background:rgba(46,110,77,0.12); padding:2px 8px; border-radius:99px;"></small>
               </span>
             </div>
@@ -847,8 +847,8 @@
 
             <!-- Clean Modern Percentage Pill Badge -->
             <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-              <span id="landing-water-pct" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.78rem;font-weight:800;color:#126db3;background:rgba(45,140,210,0.14);padding:4px 12px;border-radius:99px;letter-spacing:0.04em;border:1px solid rgba(45,140,210,0.25);">💧 25% &middot; Goal 3L</span>
-              <small style="font-size:0.62rem;color:var(--muted);font-weight:700;letter-spacing:0.02em;">Tap glass to add water</small>
+              <span id="landing-water-pct" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.78rem;font-weight:800;color:#ffffff;background:#0d5994;padding:4px 14px;border-radius:99px;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(13,89,148,0.25);">25% &middot; Goal 3L</span>
+              <small style="font-size:0.64rem;color:#13211b;font-weight:800;letter-spacing:0.03em;">Tap glass to add water</small>
             </div>
           </div>
         </div>
@@ -1416,7 +1416,7 @@
         const pct = Math.min(100, Math.round((currentMl / GOAL_ML) * 100));
         fillEl.style.height = pct + '%';
         amountEl.textContent = currentMl;
-        pctEl.textContent = '💧 ' + pct + '% · Goal 3L';
+        pctEl.textContent = pct + '% · Goal 3L';
 
         if (pct < 35) {
           fillEl.style.background = 'linear-gradient(180deg, #4ecbf5 0%, #1e87d0 100%)';
