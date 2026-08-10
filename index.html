@@ -1579,6 +1579,34 @@
         animateCountUp();
       }
     })();
+
+    /* ---- FORCE STAT COLORS (overrides all external CSS) ---- */
+    (function forceStatColors() {
+      function applyColors() {
+        document.querySelectorAll('.stats-bar .stat-number').forEach(function(el) {
+          el.style.setProperty('color', '#ffffff', 'important');
+          el.style.setProperty('font-family', "'Fraunces', Georgia, serif", 'important');
+          el.style.setProperty('font-size', 'clamp(2.6rem, 5vw, 4.2rem)', 'important');
+          el.style.setProperty('font-weight', '700', 'important');
+          el.style.setProperty('letter-spacing', '-0.045em', 'important');
+        });
+        document.querySelectorAll('.stats-bar .stat-label').forEach(function(el) {
+          el.style.setProperty('color', '#cfee82', 'important');
+          el.style.setProperty('font-weight', '700', 'important');
+          el.style.setProperty('letter-spacing', '0.1em', 'important');
+          el.style.setProperty('text-transform', 'uppercase', 'important');
+        });
+        document.querySelectorAll('.stats-bar .stat-desc').forEach(function(el) {
+          el.style.setProperty('color', 'rgba(255,255,255,0.5)', 'important');
+        });
+        document.querySelector('.stats-bar') && (
+          document.querySelector('.stats-bar').style.setProperty('background', '#12261e', 'important')
+        );
+      }
+      /* Run immediately and after full load */
+      applyColors();
+      window.addEventListener('load', applyColors);
+    })();
   </script>
 </body>
 </html>
