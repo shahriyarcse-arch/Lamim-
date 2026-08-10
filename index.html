@@ -1057,7 +1057,7 @@
         <div class="visual ledger reveal" id="landing-finance-card" style="cursor:pointer;user-select:none;-webkit-user-select:none;" title="Tap month or rows to cycle ledger preview">
           <div class="ledger-top" style="display:flex;justify-content:space-between;align-items:center;">
             <span>Monthly overview</span>
-            <span id="ledger-month-btn" style="cursor:pointer;background:rgba(61,122,90,0.1);color:#1f4e36;padding:3px 10px;border-radius:99px;font-weight:800;transition:all 0.2s ease;">July 2026 &blackdown;</span>
+            <span id="ledger-month-btn" style="cursor:pointer;background:rgba(61,122,90,0.1);color:#1f4e36;padding:3px 10px;border-radius:99px;font-weight:800;transition:all 0.2s ease;">July 2026 &#9662;</span>
           </div>
           <div class="ledger-total" style="display:flex;align-items:baseline;gap:10px;margin:16px 0 20px;transition:transform 0.2s ease;">
             <span id="ledger-total-val">&#2547;58,000</span>
@@ -1892,6 +1892,8 @@
           setActiveDay((currentIndex + 1) % cols.length);
         });
       }
+    })();
+
     /* ---- FEATURE 4c: INTERACTIVE FINANCE LEDGER PREVIEW ---- */
     (function initFinanceLedger() {
       var card = document.getElementById('landing-finance-card');
