@@ -343,7 +343,10 @@ const Auth = {
         document.body.classList.remove('home-active');
         Utils.toast(isBn ? 'লগ আউট করা হয়েছে' : 'Logged out', 'info');
         this.resetSetup();
-        setTimeout(() => { window.location.reload(); }, 400);
+        if (typeof App !== 'undefined') {
+          App.showPage('setup');
+        }
+        setTimeout(() => { window.location.reload(); }, 300);
       }
     });
   }
