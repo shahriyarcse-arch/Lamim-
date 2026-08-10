@@ -393,11 +393,22 @@ const Auth = {
         document.body.classList.remove('home-active');
         Utils.toast(isBn ? 'লগ আউট করা হয়েছে' : 'Logged out', 'info');
         this.resetSetup();
-        const baseUrl = window.location.origin + window.location.pathname;
+
+        // 1. Instant Synchronous UI Switch
         if (typeof App !== 'undefined') {
           App.showPage('setup');
         }
-        window.location.replace(baseUrl);
+
+        // 2. Clear query string from address bar synchronously
+        const cleanPath = window.location.pathname;
+        try {
+          window.history.replaceState({}, '', cleanPath);
+        } catch (e) {}
+
+        // 3. Force clean reload to clear memory
+        setTimeout(() => {
+          window.location.replace(cleanPath);
+        }, 50);
       }
     });
   }
