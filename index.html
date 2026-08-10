@@ -1684,6 +1684,8 @@
       var tabs = document.querySelectorAll('#demo-tabs .tab');
       if (!phone || !panel || !tabs.length) return;
 
+      var modeOrder = ['Today', 'Analysis', 'Profile'];
+
       var screensData = {
         'Today': {
           titleOptions: ['A steady morning', 'A focused afternoon', 'A quiet evening'],
@@ -1718,14 +1720,25 @@
       };
 
       var currentMode = 'Today';
+      var isAnimating = false;
+      var userInteractedTime = 0;
 
       function renderScreen(modeName) {
+        if (isAnimating) return;
+        var prevIdx = modeOrder.indexOf(currentMode);
+        var nextIdx = modeOrder.indexOf(modeName);
+        var direction = nextIdx >= prevIdx ? 1 : -1; // 1 = slide from right, -1 = slide from left
+
         currentMode = modeName;
         var data = screensData[modeName];
         if (!data) return;
 
-        panel.style.transform = 'scale(0.94) translateY(8px)';
-        panel.style.opacity = '0.4';
+        isAnimating = true;
+
+        // Slide out in opposite direction
+        panel.style.transition = 'transform 0.22s cubic-bezier(0.4, 0, 1, 1), opacity 0.22s ease';
+        panel.style.transform = 'translateX(' + (-direction * 30) + 'px) scale(0.96)';
+        panel.style.opacity = '0';
 
         setTimeout(function() {
           if (modeEl) modeEl.textContent = modeName;
@@ -1741,15 +1754,26 @@
             rowsContainer.innerHTML = html;
           }
 
-          panel.style.transform = 'scale(1) translateY(0)';
-          panel.style.opacity = '1';
-        }, 160);
+          // Prepare entrance from direction
+          panel.style.transition = 'none';
+          panel.style.transform = 'translateX(' + (direction * 30) + 'px) scale(0.96)';
+          
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+              panel.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease';
+              panel.style.transform = 'translateX(0) scale(1)';
+              panel.style.opacity = '1';
+              setTimeout(function() { isAnimating = false; }, 380);
+            });
+          });
+        }, 220);
       }
 
       /* Tab button handlers */
       tabs.forEach(function(btn) {
         btn.addEventListener('click', function(e) {
           e.stopPropagation();
+          userInteractedTime = Date.now(); // Record user interaction time
           tabs.forEach(function(t) {
             t.classList.remove('active');
             t.setAttribute('aria-selected', 'false');
@@ -1758,7 +1782,9 @@
           btn.setAttribute('aria-selected', 'true');
           
           var mode = btn.getAttribute('data-mode') || 'Today';
-          renderScreen(mode);
+          if (mode !== currentMode) {
+            renderScreen(mode);
+          }
           if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
         });
       });
@@ -1767,13 +1793,14 @@
       if (titleEl) {
         titleEl.addEventListener('click', function(e) {
           e.stopPropagation();
+          userInteractedTime = Date.now();
           var data = screensData[currentMode];
           if (!data) return;
           data.titlesIdx = (data.titlesIdx + 1) % data.titleOptions.length;
           titleEl.textContent = data.titleOptions[data.titlesIdx];
           if (meterEl) meterEl.style.width = data.meterVals[data.titlesIdx];
-          titleEl.style.transform = 'scale(1.05)';
-          setTimeout(function() { titleEl.style.transform = 'scale(1)'; }, 150);
+          titleEl.style.transform = 'scale(1.06)';
+          setTimeout(function() { titleEl.style.transform = 'scale(1)'; }, 160);
           if (navigator.vibrate) { try { navigator.vibrate(12); } catch(err) {} }
         });
       }
@@ -1783,8 +1810,8 @@
         var rect = phone.getBoundingClientRect();
         var x = e.clientX - rect.left - rect.width / 2;
         var y = e.clientY - rect.top - rect.height / 2;
-        var rotX = (-y / rect.height) * 14;
-        var rotY = (x / rect.width) * 14;
+        var rotX = (-y / rect.height) * 12;
+        var rotY = (x / rect.width) * 12;
         phone.style.transform = 'perspective(1000px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) scale(1.02)';
       });
 
@@ -1792,24 +1819,25 @@
         phone.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
       });
 
-      /* Auto-cycle tabs every 6s unless hovered */
-      var autoCycle = true;
-      phone.addEventListener('mouseenter', function() { autoCycle = false; });
-      phone.addEventListener('mouseleave', function() { autoCycle = true; });
+      /* Smart Auto-cycle: pause 12s if user recently interacted */
+      var isHovered = false;
+      phone.addEventListener('mouseenter', function() { isHovered = true; });
+      phone.addEventListener('mouseleave', function() { isHovered = false; });
 
       setInterval(function() {
-        if (!autoCycle) return;
-        var modeKeys = ['Today', 'Analysis', 'Profile'];
-        var curIdx = modeKeys.indexOf(currentMode);
-        var nextIdx = (curIdx + 1) % modeKeys.length;
-        var nextMode = modeKeys[nextIdx];
+        if (isHovered) return;
+        if (Date.now() - userInteractedTime < 12000) return; // Pause auto-cycle for 12 seconds after user click
+
+        var curIdx = modeOrder.indexOf(currentMode);
+        var nextIdx = (curIdx + 1) % modeOrder.length;
+        var nextMode = modeOrder[nextIdx];
 
         tabs.forEach(function(t) {
           if (t.getAttribute('data-mode') === nextMode) {
             t.click();
           }
         });
-      }, 6000);
+      }, 5500);
 
     })();
   </script>
