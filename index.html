@@ -842,7 +842,7 @@
             </div>
           </div>
           <div class="v-art">
-            <div class="heatmap" aria-hidden="true">
+            <div class="heatmap" id="landing-salah-heatmap" aria-label="Interactive 3-week prayer rhythm heatmap grid" style="cursor:pointer;position:relative;" title="Tap any cell to cycle prayer state">
               <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
               <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
               <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
@@ -1588,6 +1588,87 @@
       });
 
       updateProgress();
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE 3: INTERACTIVE & AUTO-BLINKING SALAH HEATMAP PUZZLE ---- */
+    (function initSalahHeatmapPuzzle() {
+      var heatmap = document.getElementById('landing-salah-heatmap');
+      if (!heatmap) return;
+      var cells = heatmap.querySelectorAll('i');
+      if (!cells.length) return;
+
+      var colorPalette = [
+        '#2b5140', // Dark Forest (Default)
+        '#3d7a5a', // Medium Green
+        '#6fcf8a', // Mint Green (Alone)
+        '#cfee82', // Glowing Lime (Jama'at)
+        '#e2f4c1'  // Pale Lime Accent
+      ];
+
+      // Assign initial randomized organic colors
+      cells.forEach(function(cell, idx) {
+        var baseColor = colorPalette[idx % colorPalette.length];
+        cell.style.background = baseColor;
+        cell.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        cell.setAttribute('data-color-idx', idx % colorPalette.length);
+
+        // Click / Tap handler to cycle colors
+        cell.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var currentIdx = parseInt(cell.getAttribute('data-color-idx') || '0', 10);
+          var nextIdx = (currentIdx + 1) % colorPalette.length;
+          cell.setAttribute('data-color-idx', nextIdx);
+          
+          cell.style.background = colorPalette[nextIdx];
+          cell.style.transform = 'scale(1.4) rotate(' + (Math.random() * 12 - 6).toFixed(1) + 'deg)';
+          cell.style.boxShadow = '0 0 14px ' + colorPalette[nextIdx];
+          cell.style.zIndex = '10';
+
+          setTimeout(function() {
+            cell.style.transform = 'scale(1) rotate(0deg)';
+            cell.style.boxShadow = 'none';
+            cell.style.zIndex = '1';
+          }, 350);
+
+          if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
+        });
+      });
+
+      // Auto Random Puzzle Blink Loop
+      var isHovered = false;
+      heatmap.addEventListener('mouseenter', function() { isHovered = true; });
+      heatmap.addEventListener('mouseleave', function() { isHovered = false; });
+
+      setInterval(function() {
+        if (isHovered) return;
+        
+        // Pick 2 to 4 random cells to blink like a living puzzle
+        var count = Math.floor(Math.random() * 3) + 2;
+        for (var i = 0; i < count; i++) {
+          var randIdx = Math.floor(Math.random() * cells.length);
+          var targetCell = cells[randIdx];
+          if (!targetCell) continue;
+
+          (function(c) {
+            var originalBg = c.style.background;
+            var blinkColor = '#cfee82'; // Glowing Lime highlight
+            c.style.background = blinkColor;
+            c.style.transform = 'scale(1.25)';
+            c.style.boxShadow = '0 0 10px rgba(207,238,130,0.8)';
+            c.style.zIndex = '5';
+
+            setTimeout(function() {
+              c.style.background = originalBg;
+              c.style.transform = 'scale(1)';
+              c.style.boxShadow = 'none';
+              c.style.zIndex = '1';
+            }, 600 + Math.random() * 400);
+          })(targetCell);
+        }
+      }, 1600);
+
     })();
   </script>
 
