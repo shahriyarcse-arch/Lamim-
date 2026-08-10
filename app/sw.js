@@ -66,7 +66,7 @@ self.addEventListener('fetch', (e) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
           return res;
         })
-        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('./index.html'))) // Fallback to cache or index.html if offline
+        .catch(() => caches.match(e.request, { ignoreSearch: true }).then((cached) => cached || caches.match('./index.html', { ignoreSearch: true }) || caches.match('index.html'))) // Fallback to cache or index.html if offline
     );
     return;
   }
@@ -107,5 +107,15 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
-
-
+// Notification Click Handler: Opens/focuses PWA app on Salah section on notification tap
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url && 'focus' in client) return client.focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow('./index.html?section=salah');
+    })
+  );
+});

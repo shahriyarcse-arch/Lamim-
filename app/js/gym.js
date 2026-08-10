@@ -362,7 +362,10 @@ const Gym = {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   },
   _time24ToSleepSlider(timeStr) {
-    const [h, m] = timeStr.split(':').map(Number);
+    if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return 0;
+    const parts = timeStr.split(':').map(Number);
+    if (isNaN(parts[0]) || isNaN(parts[1])) return 0;
+    const h = parts[0], m = parts[1];
     let totalMin = h * 60 + m;
     let base = 18 * 60; // 6PM
     let val = totalMin - base;
@@ -378,7 +381,10 @@ const Gym = {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   },
   _time24ToWakeSlider(timeStr) {
-    const [h, m] = timeStr.split(':').map(Number);
+    if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return 0;
+    const parts = timeStr.split(':').map(Number);
+    if (isNaN(parts[0]) || isNaN(parts[1])) return 0;
+    const h = parts[0], m = parts[1];
     let totalMin = h * 60 + m;
     let base = 4 * 60; // 4AM
     let val = totalMin - base;
@@ -616,7 +622,8 @@ const Gym = {
 
   deleteMeal(idx) {
     const data = DB.getGym(this.selectedDate);
-    if (!data.diet || !data.diet.meals) return;
+    if (!data.diet || !Array.isArray(data.diet.meals)) return;
+    if (idx < 0 || idx >= data.diet.meals.length) return;
     data.diet.meals.splice(idx, 1);
     DB.setGym(this.selectedDate, data);
     this.renderDiet();
@@ -630,28 +637,29 @@ const Gym = {
     const water = data.water || { amount: 0, goal: 3000 };
     const n = window.n ? window.n : (x => x);
     const pct = water.goal ? Math.min(100, (water.amount / water.goal) * 100) : 0;
+    const displayPct = (pct > 0 && pct < 10) ? pct.toFixed(1) : Math.round(pct);
 
     const valEl = document.getElementById('gym-water-amount-center');
     const pctEl = document.getElementById('gym-water-pct-center');
     const glassFill = document.getElementById('gym-water-glass-fill');
 
     if (valEl) valEl.textContent = `${n(water.amount)} ml`;
-    if (pctEl) pctEl.textContent = n(Math.round(pct)) + '%';
+    if (pctEl) pctEl.textContent = n(displayPct) + '%';
     
-    // Animate the glass fill height
+    // Animate the glass fill height (ensure minimum 6% visual height when amount > 0)
     if (glassFill) {
-      glassFill.style.height = `${pct}%`;
+      glassFill.style.height = `${water.amount > 0 ? Math.max(6, pct) : 0}%`;
     }
 
-    // Update global stat strip new tile if present
+    // Update global stat strip tile
     const statValEl = document.getElementById('gym-stat-hydration-val');
-    if (statValEl) statValEl.textContent = n(Math.round(pct)) + '%';
+    if (statValEl) statValEl.textContent = n(displayPct) + '%';
   },
 
   addWater(amount) {
     const data = DB.getGym(this.selectedDate);
     if (!data.water) data.water = { amount: 0, goal: 3000 };
-    data.water.amount = Math.max(0, (data.water.amount || 0) + amount);
+    data.water.amount = Math.min(20000, Math.max(0, (data.water.amount || 0) + amount));
     DB.setGym(this.selectedDate, data);
     this.renderWater();
     this.updateHeroMetrics();
@@ -673,8 +681,8 @@ const Gym = {
 
     if (trendEl && window.Charts) {
       const entries = metrics.entries.slice(-14);
-      if (entries.length === 0) {
-        trendEl.innerHTML = '<div class="gh-body-empty">Log your weight to see the trend</div>';
+      if (entries.length < 2) {
+        trendEl.innerHTML = '<div style="font-size:12px;color:var(--gh-text-muted);text-align:center;padding:18px 0">Need 2+ days of logs to show weight trend</div>';
       } else {
         Charts.lineChart(trendEl, entries.map(e => ({ label: '', value: e.weight || 0 })), { color: 'var(--gh-secondary)', height: 70 });
       }
@@ -688,6 +696,15 @@ const Gym = {
     const weight = parseFloat(wInput && wInput.value) || 0;
     const bodyFat = parseFloat(bfInput && bfInput.value) || 0;
     if (!weight && !bodyFat) return;
+
+    if (weight < 0 || weight > 300) {
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter valid body weight (1-300kg)', 'error');
+      return;
+    }
+    if (bodyFat < 0 || bodyFat > 80) {
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter valid body fat % (0-80%)', 'error');
+      return;
+    }
 
     const metrics = DB.getBodyMetrics();
     const idx = metrics.entries.findIndex(e => e.date === this.selectedDate);

@@ -1071,8 +1071,8 @@ const Mujahid = {
       }
 
       const habit = {
-        id: 'custom-' + Date.now(),
-        label: escapedLabel,
+        id: 'custom-' + Utils.uid(),
+        label: label.trim(),
         icon: this.selectedIcon || this.availableIcons[0],
         color: this.selectedColor || '#6366f1',
         startDate: startDate,
@@ -1437,15 +1437,16 @@ const Mujahid = {
   },
 
   clearAllData() {
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     this.showConfirm(
-      'Factory Reset', 
-      'This will permanently delete ALL habits, history, and streaks. This action is irreversible.', 
+      isBn ? 'ফ্যাক্টরি রিসেট' : 'Factory Reset', 
+      isBn ? 'এটি আপনার সমস্ত অভ্যাস, হিস্ট্রি এবং স্ট্রিক স্থায়ীভাবে মুছে ফেলবে। এই কাজ পরিবর্তনযোগ্য নয়।' : 'This will permanently delete ALL habits, history, and streaks. This action is irreversible.', 
       () => {
         DB.setMujahid([]);
         this.habits = [];
         this.render(true);
         this.hideToolsModal();
-        Utils.toast('System Reset Complete', 'info');
+        Utils.toast(isBn ? 'সিস্টেম রিসেট সম্পন্ন হয়েছে' : 'System Reset Complete', 'info');
       }
     );
   },

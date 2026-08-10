@@ -217,6 +217,11 @@ const Translations = {
   'Theme': 'থিম',
   'Dark': 'ডার্ক',
   'Light': 'লাইট',
+  'Data & Backup': 'ডাটা ও ব্যাকআপ',
+  'Export Backup JSON': 'ব্যাকআপ ফাইল এক্সপোর্ট',
+  'Restore Backup JSON': 'ব্যাকআপ ফাইল রিস্টোর',
+  'Save backup file to device': 'ডিভাইসে ব্যাকআপ সেভ করুন',
+  'Import saved backup file': 'সেভ করা ব্যাকআপ ফাইল ইমপোর্ট করুন',
   'Export Data': 'ডেটা এক্সপোর্ট',
   'Import Data': 'ডেটা ইমপোর্ট',
   'JSON Backup': 'JSON ব্যাকআপ',
@@ -371,7 +376,7 @@ const autoTranslateObserver = new MutationObserver((mutations) => {
     const tag = p.tagName;
     if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'CODE' || tag === 'PRE') return;
     if (p.closest('svg')) return; // Never touch SVG content - breaks viewBox, coordinates, etc.
-    if (p.hasAttribute('data-no-translate')) return; // Allow opting out
+    if (p.closest('[data-no-translate], [contenteditable="true"], .notranslate')) return; // Allow opting out
     let text = node.nodeValue;
     if (!text || !text.trim()) return;
 

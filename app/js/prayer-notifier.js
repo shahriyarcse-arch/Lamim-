@@ -109,13 +109,16 @@ const PrayerNotifier = {
       : `Pray now. May Allah accept your prayer.`;
 
     try {
+      const iconUrl = new URL('assets/icon-192x192.png', window.location.href).href;
+      const badgeUrl = new URL('assets/icon-32x32.png', window.location.href).href;
+
       // Try Service Worker notification first (works in background)
       if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
         navigator.serviceWorker.ready.then(reg => {
           reg.showNotification(title, {
             body: body,
-            icon: './assets/icon-192x192.png',
-            badge: './assets/icon-32x32.png',
+            icon: iconUrl,
+            badge: badgeUrl,
             tag: `prayer-${prayer.name}`,
             renotify: true,
             vibrate: [200, 100, 200, 100, 200],
@@ -123,13 +126,13 @@ const PrayerNotifier = {
             data: { prayer: prayer.name }
           });
         }).catch(() => {
-          new Notification(title, { body, icon: './assets/icon-192x192.png' });
+          new Notification(title, { body, icon: iconUrl });
         });
       } else {
         // Fallback to regular Notification API
         new Notification(title, {
           body: body,
-          icon: './assets/icon-192x192.png',
+          icon: iconUrl,
           tag: `prayer-${prayer.name}`,
           requireInteraction: true
         });

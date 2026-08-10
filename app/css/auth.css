@@ -30,8 +30,7 @@
     radial-gradient(circle at 50% 80%,
       var(--auth-radial-3),
       transparent 55%);
-  background-size: 200% 200%;
-  animation: meshGradient 15s ease infinite;
+  background-size: 100% 100%;
   padding: var(--space-6);
   position: relative;
   overflow: hidden;
@@ -71,8 +70,6 @@
   align-items: center;
   justify-content: center;
   background: radial-gradient(circle at 30% 30%, #f472b6, #d946ef, #8b5cf6, #3b82f6);
-  background-size: 200% 200%;
-  animation: float-logo 4s ease-in-out infinite, gradientShift 6s ease infinite;
   box-shadow: 
     0 12px 28px rgba(139, 92, 246, 0.4),
     inset 0 2px 4px rgba(255, 255, 255, 0.5);
@@ -92,36 +89,17 @@
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
 }
 
-@keyframes float-logo {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 .auth-logo-name {
+  font-family: var(--font-display);
+  font-style: italic;
   font-size: 32px;
   font-weight: 800;
   letter-spacing: -0.03em;
   text-align: center;
-  background: linear-gradient(to right, #a855f7, #3b82f6, #ec4899, #a855f7);
-  background-size: 300% auto;
+  background: linear-gradient(135deg, #a855f7, #3b82f6, #ec4899);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmerText 4s linear infinite;
 }
 
 @keyframes shimmerText {
@@ -132,6 +110,7 @@
 
 /* Colorful Titles & Labels */
 .auth-title {
+  font-family: var(--font-display);
   font-size: 26px;
   font-weight: 800;
   margin-bottom: 8px;
@@ -669,17 +648,11 @@
 .loc-detect-btn:active { transform: scale(0.97); }
 .loc-btn-icon { flex-shrink: 0; }
 
-/* Radar pulse rings */
 .loc-radar-ring {
   position: absolute;
   inset: 0; border-radius: inherit;
-  border: 2px solid rgba(255,255,255,0.4);
-  animation: loc-radar-pulse 1.8s ease-out infinite;
+  border: 1.5px solid rgba(255,255,255,0.25);
   pointer-events: none;
-}
-@keyframes loc-radar-pulse {
-  0%   { transform: scale(1);   opacity: 0.7; }
-  100% { transform: scale(1.12); opacity: 0; }
 }
 
 /* Coordinate cards */
@@ -911,12 +884,6 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at center, rgba(var(--glow-color), 0.15) 0%, transparent 70%);
-  animation: radar-pulse-bg 2s ease-in-out infinite;
-}
-
-@keyframes radar-pulse-bg {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.5); opacity: 1; }
 }
 
 .premium-step-icon-wrap svg {
@@ -998,7 +965,7 @@
 
 .coord-card.premium .coord-card-input {
   font-size: 18px;
-  font-family: 'Space Grotesk', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-sans);
   color: var(--color-text-primary);
   background: transparent;
   border: none;

@@ -412,7 +412,7 @@ const Finance = {
         <!-- Zakat & Sadaqah Hub: Coming Soon -->
         <div class="finance-premium-card" style="text-align: center; padding: 32px 24px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.03) 0%, rgba(59, 130, 246, 0.01) 100%); border: 1px dashed rgba(255, 255, 255, 0.08); border-radius: 20px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm);">
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 2; position: relative;">
-            <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(212, 163, 89, 0.1); border: 1px solid rgba(212, 163, 89, 0.2); display: flex; align-items: center; justify-content: center; color: var(--color-accent-gold); box-shadow: 0 0 20px rgba(212, 163, 89, 0.15); animation: float 6s ease-in-out infinite;">${this.renderIcon('mosque', 26)}</div>
+            <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(212, 163, 89, 0.1); border: 1px solid rgba(212, 163, 89, 0.2); display: flex; align-items: center; justify-content: center; color: var(--color-accent-gold); box-shadow: 0 0 20px rgba(212, 163, 89, 0.15);">${this.renderIcon('mosque', 26)}</div>
             <div style="font-weight: 800; font-size: 16px; color: var(--color-text-primary); letter-spacing: 0.5px;">Zakat & Sadaqah Hub</div>
             <div style="font-size: 12px; color: var(--color-text-subtitle); max-width: 320px; line-height: 1.5; font-weight: 500; margin-bottom: 4px;">Comprehensive Zakat calculations, custom assets bookkeeping, live Nisab thresholds, and Sadaqah charity tracking are coming in the next update.</div>
             <div style="font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--color-accent-gold); padding: 4px 14px; background: rgba(212, 163, 89, 0.08); border-radius: 20px; border: 1px solid rgba(212, 163, 89, 0.15);">Coming Soon</div>
@@ -1147,7 +1147,15 @@ const Finance = {
     }
   },
 
-  saveIncome() { const desc = document.getElementById('finance-income-desc').value; let a = parseFloat(document.getElementById('finance-income-amount').value); const d = document.getElementById('finance-income-date').value; if (!desc || isNaN(a) || a <= 0) return Utils.toast('Fill valid fields','error'); if (DB.getSettings().currency==='BDT') a /= this.exchangeRate; this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d }); this.saveData(); this.closeModal(); this.render(); },
+  saveIncome() { 
+    const desc = (document.getElementById('finance-income-desc').value || '').trim(); 
+    let a = parseFloat(document.getElementById('finance-income-amount').value); 
+    const d = document.getElementById('finance-income-date').value || Utils.todayStr(); 
+    if (!desc || isNaN(a) || a <= 0) return Utils.toast('Fill valid fields','error'); 
+    if (DB.getSettings().currency==='BDT') a /= this.exchangeRate; 
+    this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d }); 
+    this.saveData(); this.closeModal(); this.render(); 
+  },
 
   formatPickerDate(iso) {
     if (!iso) return 'Select date';
@@ -1386,8 +1394,9 @@ const Finance = {
   },
 
   saveSavingsGoal() {
-    const name = document.getElementById('finance-savings-name').value;
-    let target = parseFloat(document.getElementById('finance-savings-target').value);
+    const nameInput = document.getElementById('finance-savings-name');
+    const name = nameInput ? nameInput.value.trim() : '';
+    let target = parseFloat(document.getElementById('finance-savings-target')?.value || '');
     if (!name || isNaN(target) || target <= 0) return Utils.toast('Fill valid fields', 'error');
     if (DB.getSettings().currency === 'BDT') target /= this.exchangeRate;
     this.data.savings.push({ id: Utils.uid(), name, target, saved: 0 });

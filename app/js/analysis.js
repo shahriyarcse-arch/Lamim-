@@ -84,7 +84,7 @@ const Analysis = {
       
       habits.forEach(h => {
         // Only count this habit if it was started on or before the current date
-        const habitStartDateStr = h.startDate ? h.startDate.split('T')[0] : null;
+        const habitStartDateStr = typeof h.startDate === 'string' ? h.startDate.split('T')[0] : (h.startDate instanceof Date ? Utils.dateStr(h.startDate) : null);
         if (habitStartDateStr && date >= habitStartDateStr) {
           activeHabitsForDay++;
           const history = h.history || [];
@@ -146,10 +146,11 @@ const Analysis = {
       const date = new Date(year, month, d);
       if (date > todayOffset) break;
       const shs = this.calculateSHS(Utils.dateStr(date));
+      const lang = (typeof App !== 'undefined' && App.lang) === 'bn' ? 'bn-BD' : 'en-US';
       days.push({
         dateNum: d.toString(),
         fullDateStr: Utils.dateStr(date),
-        weekday: date.toLocaleDateString(undefined, { weekday: 'short' }),
+        weekday: date.toLocaleDateString(lang, { weekday: 'short' }),
         score: shs.total,
         color: shs.rating.color
       });

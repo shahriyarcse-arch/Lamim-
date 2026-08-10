@@ -67,7 +67,7 @@ const DB = {
       }
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readonly');
-        const store = transaction.objectStore(['keyvalue']);
+        const store = transaction.objectStore('keyvalue');
         const request = store.openCursor();
         this._cache = {};
 
@@ -104,7 +104,7 @@ const DB = {
     return new Promise((resolve) => {
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
-        const store = transaction.objectStore(['keyvalue']);
+        const store = transaction.objectStore('keyvalue');
 
         keysToMigrate.forEach(key => {
           const val = localStorage.getItem(key);
@@ -137,7 +137,7 @@ const DB = {
       if (!this._db) { resolve(); return; }
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
-        const store = transaction.objectStore(['keyvalue']);
+        const store = transaction.objectStore('keyvalue');
         const req = store.put(val, key);
 
         req.onsuccess = () => resolve();
@@ -168,7 +168,7 @@ const DB = {
       if (!this._db) { resolve(); return; }
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
-        const store = transaction.objectStore(['keyvalue']);
+        const store = transaction.objectStore('keyvalue');
         store.delete(key);
         transaction.oncomplete = () => resolve();
         transaction.onerror = () => resolve();
@@ -186,7 +186,7 @@ const DB = {
       if (!this._db) { resolve(); return; }
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
-        const store = transaction.objectStore(['keyvalue']);
+        const store = transaction.objectStore('keyvalue');
         store.clear();
         transaction.oncomplete = () => resolve();
         transaction.onerror = (e) => { console.error('[DB] Async clear failed:', e.target.error); resolve(); };

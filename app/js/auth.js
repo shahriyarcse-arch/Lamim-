@@ -278,6 +278,12 @@ const Auth = {
       settings.lat = lat;
       settings.lng = lng;
 
+      if (typeof App !== 'undefined' && App.setLang) {
+        App.setLang(language);
+      } else {
+        try { localStorage.setItem('lamim_lang', language); } catch {}
+      }
+
       // Generate a unique virtual card number for this account at creation time
       if (!settings.cardNumber) {
         const grp = () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
@@ -369,10 +375,8 @@ const Auth = {
         document.body.classList.remove('home-active');
         Utils.toast(isBn ? 'লগ আউট করা হয়েছে' : 'Logged out', 'info');
         this.resetSetup();
-        setTimeout(() => { window.location.href = '../index.html'; }, 500);
+        setTimeout(() => { if (typeof App !== 'undefined') App.showPage('setup'); }, 400);
       }
     });
   }
 };
-
-

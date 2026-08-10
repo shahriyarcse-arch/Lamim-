@@ -1899,7 +1899,7 @@ select.input option:disabled {
   display: inline-block;
   color: inherit;
   text-align: center;
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-display, 'Fraunces', Georgia, serif);
   font-style: italic;
   letter-spacing: 0 !important;
 }
@@ -1916,4 +1916,5 @@ select.input option:disabled {
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(151, 216, 76, 0.75);
   pointer-events: none;
+  -webkit-text-fill-color: initial;
 }

@@ -209,6 +209,8 @@ const Dhikr = {
     if (this._keyHandler) document.removeEventListener('keydown', this._keyHandler);
     this._keyHandler = (e) => {
       if (e.code === 'Space' && document.getElementById('section-dhikr')?.classList.contains('active')) {
+        const tag = e.target && e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
         e.preventDefault();
         this.tap();
       }
@@ -406,19 +408,25 @@ const Dhikr = {
   hideAddModal() {
     const m = document.getElementById('dhikr-add-modal');
     if (m) m.classList.add('hidden');
+    const inputName = document.getElementById('custom-latin');
+    if (inputName) inputName.value = '';
+    const inputTarget = document.getElementById('custom-target');
+    if (inputTarget) inputTarget.value = '33';
   },
 
   saveCustom() {
     const latin = (document.getElementById('custom-latin')?.value || '').trim().slice(0, 60);
-    const target = document.getElementById('custom-target')?.value || '33';
-    if (!latin) { Utils.toast('Name is required', 'error'); return; }
-    const preset = { id: Utils.uid(), latin, meaning: `${this.getLang() === 'bn' ? 'লক্ষ্য: ' : 'Target: '}${target}`, category: 'general', icon: Icons.tasbeeh };
+    const targetRaw = document.getElementById('custom-target')?.value || '33';
+    let targetNum = parseInt(targetRaw, 10);
+    if (isNaN(targetNum) || targetNum < 1 || targetNum > 10000) targetNum = 33;
+    if (!latin) { Utils.toast(this.getLang() === 'bn' ? 'নাম দেওয়া আবশ্যক' : 'Name is required', 'error'); return; }
+    const preset = { id: Utils.uid(), latin, meaning: `${this.getLang() === 'bn' ? 'লক্ষ্য: ' : 'Target: '}${targetNum}`, category: 'general', icon: Icons.tasbeeh };
     const presets = DB.getDhikrPresets();
     presets.push(preset);
     DB.setDhikrPresets(presets);
     this.hideAddModal();
     this.renderPresetRow();
-    Utils.toast('Custom dhikr added!', 'success');
+    Utils.toast(this.getLang() === 'bn' ? 'কাস্টম জিকির যোগ করা হয়েছে!' : 'Custom dhikr added!', 'success');
   },
 
   resetToday() {

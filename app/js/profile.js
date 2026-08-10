@@ -194,6 +194,19 @@ const Profile = {
       </div>
     `;
     
+    // Data & Backup
+    const dataEl = document.getElementById('profile-data-settings');
+    if (dataEl) dataEl.innerHTML = `
+      <div class="settings-item" role="button" tabindex="0" onclick="Profile.exportData()">
+        <div class="settings-item-left"><div class="settings-item-icon ic-teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></div><div><div class="settings-item-label" data-i18n="Export Backup JSON">Export Backup JSON</div><div class="settings-item-value" data-i18n="Save backup file to device">Save backup file to device</div></div></div>
+        <div class="settings-item-right"><span>›</span></div>
+      </div>
+      <div class="settings-item" role="button" tabindex="0" onclick="Profile.triggerImport()">
+        <div class="settings-item-left"><div class="settings-item-icon ic-lime"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div><div><div class="settings-item-label" data-i18n="Restore Backup JSON">Restore Backup JSON</div><div class="settings-item-value" data-i18n="Import saved backup file">Import saved backup file</div></div></div>
+        <div class="settings-item-right"><span>›</span></div>
+      </div>
+    `;
+
     // About
     const ab = document.getElementById('profile-about');
     if (ab) ab.innerHTML = `
@@ -391,20 +404,24 @@ const Profile = {
 
   setTheme(theme) {
     if (theme !== 'light' && theme !== 'dark') return;
-    const s = DB.getSettings();
-    s.theme = theme;
-    DB.setSettings(s);
+
+    // 1. Visual change FIRST — user sees instant response
+    document.documentElement.classList.add('theme-anim');
     document.documentElement.setAttribute('data-theme', theme);
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', theme === 'light' ? '#F1F5F9' : '#020408');
     document.querySelectorAll('.topbar-theme-toggle').forEach(b => b.setAttribute('aria-pressed', String(theme === 'dark')));
-    
+
     // Update theme selection buttons inside settings panel if open
     document.querySelectorAll('.theme-option-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-theme-val') === theme);
     });
 
-    document.documentElement.classList.add('theme-anim');
+    // 2. Persist to DB AFTER visual update (non-blocking)
+    const s = DB.getSettings();
+    s.theme = theme;
+    DB.setSettings(s);
+
     clearTimeout(this._themeAnimT);
     this._themeAnimT = setTimeout(() => document.documentElement.classList.remove('theme-anim'), 160);
     window.dispatchEvent(new CustomEvent('lamim:theme-changed', { detail: { theme } }));
@@ -549,13 +566,10 @@ const Profile = {
       icon: '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>',
       color: '#ef4444',
       confirmText: isBn ? 'সব মুছুন' : 'Delete Everything',
-      onConfirm: () => {
-        DB.clearAllUserData();
-        DB.remove('lamim_settings');
-        DB.remove('lamim_user');
-        try { localStorage.removeItem('lamim_lang'); } catch (e) {}
+      onConfirm: async () => {
+        await DB.wipeAll();
         Utils.toast(isBn ? 'অ্যাকাউন্ট ও সব ডাটা মুছে ফেলা হয়েছে।' : 'Account and all data wiped.', 'success');
-        setTimeout(() => App.showPage('setup'), 800);
+        setTimeout(() => { window.location.reload(); }, 600);
       }
     });
   },
@@ -573,8 +587,8 @@ const Profile = {
       color: '#f97316',
       confirmText: isBn ? 'রিসেট করুন' : 'Reset App',
       onConfirm: async () => {
-        // Clear all local data (awaited so IndexedDB is fully wiped before reload)
-        await DB.clear();
+        // Clear all local data, IndexedDB, localStorage, sessionStorage
+        await DB.wipeAll();
 
         // Unregister service workers
         if ('serviceWorker' in navigator) {
@@ -593,7 +607,7 @@ const Profile = {
         }
 
         Utils.toast(isBn ? 'অ্যাপ রিসেট হয়েছে! রিলোড হচ্ছে...' : 'App reset successfully! Reloading...', 'success');
-        setTimeout(() => window.location.reload(), 1200);
+        setTimeout(() => window.location.reload(), 800);
       }
     });
   },
@@ -605,28 +619,101 @@ const Profile = {
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
         if (key.startsWith('lamim_')) {
-          data[key] = DB.rawGet(key);
+          const raw = DB.rawGet(key);
+          if (raw !== null && raw !== undefined) {
+            try {
+              data[key] = JSON.parse(raw);
+            } catch {
+              data[key] = raw;
+            }
+          }
         }
       }
       
-      const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+      const jsonStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `lamim_backup_${Utils.todayStr()}.json`;
+      a.target = '_blank';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      // Reset the backup timer
+      
       const s = DB.getSettings();
       s.lastBackupDate = Utils.todayStr();
       DB.setSettings(s);
 
-      Utils.toast('Data exported successfully!', 'success');
+      const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'ব্যাকআপ সফলভাবে এক্সপোর্ট হয়েছে!' : 'Data exported successfully!', 'success');
     } catch (e) {
       console.error(e);
       Utils.toast('Failed to export data', 'error');
+    }
+  },
+
+  triggerImport() {
+    let input = document.getElementById('profile-import-file-input');
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'file';
+      input.id = 'profile-import-file-input';
+      input.accept = '.json,application/json';
+      input.style.display = 'none';
+      document.body.appendChild(input);
+    }
+    input.onchange = (e) => this.importData(e);
+    input.click();
+  },
+
+  async importData(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid JSON format');
+      }
+
+      const keys = Object.keys(data).filter(k => k.startsWith('lamim_'));
+      if (keys.length === 0) {
+        Utils.toast(isBn ? 'বৈধ ব্যাকআপ ফাইল পাওয়া যায়নি' : 'No valid backup data found in file', 'error');
+        return;
+      }
+
+      Utils.confirm(
+        isBn ? 'ডাটা রিস্টোর করুন' : 'Restore Backup Data',
+        isBn ? `${keys.length}টি ডাটা এন্ট্রি রিস্টোর করা হবে। বর্তমান লোকাল ডাটা ওভাররাইট হবে। আপনি কি নিশ্চিত?`
+             : `This will restore ${keys.length} data entries and overwrite matching local data. Are you sure?`,
+        async () => {
+          for (let i = 0; i < keys.length; i++) {
+            const k = keys[i];
+            const val = data[k];
+            if (val !== undefined && val !== null) {
+              DB.rawSet(k, typeof val === 'string' ? val : JSON.stringify(val));
+            }
+          }
+
+          const s = DB.getSettings();
+          s.lastBackupDate = Utils.todayStr();
+          DB.setSettings(s);
+
+          Utils.toast(isBn ? 'ব্যাকআপ সফলভাবে রিস্টোর হয়েছে!' : 'Backup restored successfully!', 'success');
+          setTimeout(() => window.location.reload(), 1000);
+        },
+        'info'
+      );
+    } catch (err) {
+      console.error('[Profile] importData error:', err);
+      Utils.toast(isBn ? 'ব্যাকআপ ফাইল পড়তে ব্যর্থ হয়েছে' : 'Failed to read backup file', 'error');
+    } finally {
+      e.target.value = '';
     }
   },
 

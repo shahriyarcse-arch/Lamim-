@@ -643,34 +643,35 @@
 [data-theme="light"] .gh-water-glass-glare { background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%); opacity: 0.9; }
 
 .gh-water-wave-fill {
-  background: var(--gh-water);
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
   transition: height 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
   transform: translate3d(0, 0, 0);
+  min-height: 0;
 }
 .gh-water-wave-fill::before,
 .gh-water-wave-fill::after {
   content: "";
   position: absolute;
-  width: 200px;
-  height: 200px;
-  top: -190px;
+  width: 160px;
+  height: 160px;
+  top: -155px;
   left: 50%;
-  background-color: var(--color-bg-elevated, #172033);
+  background-color: var(--color-bg-surface, #0f172a);
   border-radius: 40%;
   transform: translateX(-50%) translate3d(0, 0, 0);
   animation: ghWave 6s infinite linear;
-  transition: background-color 0.3s;
+  opacity: 0.85;
   will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  pointer-events: none;
 }
 [data-theme="light"] .gh-water-wave-fill::before,
 [data-theme="light"] .gh-water-wave-fill::after {
   background-color: #ffffff;
+  opacity: 0.95;
 }
 .gh-water-wave-fill::after {
   border-radius: 44%;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(56, 189, 248, 0.25);
   animation: ghWave 10s infinite linear;
   transform: translateX(-50%) translate3d(0, 0, 0);
 }

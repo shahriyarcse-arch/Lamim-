@@ -33,15 +33,7 @@
 
 /* Background */
 .home-aurora-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-  background: var(--color-bg-primary);
+  display: none;
 }
 
 .aurora-blob {
@@ -112,7 +104,6 @@ body:not(.home-active) .home-aurora-bg .aurora-blob {
   overflow: hidden;
   color: var(--color-text-primary);
   transform: translateZ(0);
-  will-change: transform;
   contain: paint;
 }
 

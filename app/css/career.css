@@ -1043,25 +1043,33 @@
 .cb-progress-hero-tile {
   display: flex; align-items: center; gap: 14px;
   padding: 16px 18px; border-radius: 16px;
-  background: linear-gradient(135deg, rgba(129,140,248,0.15), rgba(168,85,247,0.10));
-  border: 1px solid rgba(129,140,248,0.25);
-  box-shadow: 0 2px 12px rgba(129,140,248,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+  background: var(--cb-surface-2);
+  border: 1px solid var(--cb-border);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   grid-column: span 1;
   position: relative;
   overflow: hidden;
+  transition: all var(--cb-transition);
 }
 .cb-progress-hero-tile::before {
-  content: ''; position: absolute; top: -50%; right: -30%; width: 120px; height: 120px;
-  background: radial-gradient(circle, rgba(129,140,248,0.12) 0%, transparent 70%);
-  pointer-events: none;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--cb-primary), var(--cb-accent));
+  opacity: 0; transition: opacity var(--cb-transition);
 }
+.cb-progress-hero-tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--cb-border-strong);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.cb-progress-hero-tile:hover::before { opacity: 1; }
+
 [data-theme="light"] .cb-progress-hero-tile {
-  background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
-  border-color: rgba(99,102,241,0.18);
-  box-shadow: 0 2px 12px rgba(99,102,241,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+  background: #fff;
+  border-color: var(--cb-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
-[data-theme="light"] .cb-progress-hero-tile::before {
-  background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+[data-theme="light"] .cb-progress-hero-tile:hover {
+  box-shadow: 0 4px 16px rgba(99,102,241,0.1);
 }
 .cb-progress-ring-wrap { flex-shrink: 0; position: relative; z-index: 1; color: var(--cb-primary); }
 .cb-progress-hero-info { display: flex; flex-direction: column; gap: 3px; position: relative; z-index: 1; }
@@ -1074,12 +1082,13 @@
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
 }
 .cb-month-stat-card {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 18px 10px; border-radius: 16px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 16px 12px; border-radius: 16px;
   background: var(--cb-surface-2); border: 1px solid var(--cb-border);
   transition: all var(--cb-transition);
   position: relative;
   overflow: hidden;
+  text-align: center;
 }
 .cb-month-stat-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;

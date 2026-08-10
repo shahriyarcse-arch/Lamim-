@@ -5,6 +5,7 @@ const Charts = {
 
   /* ---------- ring (SVG circular progress, starts at 0) ---------- */
   ring(container, opts = {}) {
+    if (!container) return;
     const size = opts.size || 88;
     const thick = opts.thickness || 8;
     const r = (size - thick) / 2;
@@ -31,6 +32,7 @@ const Charts = {
 
   /* ---------- animateRing ---------- */
   animateRing(container, value, opts = {}) {
+    if (!container) return;
     const svg = container.querySelector('svg');
     if (!svg) return;
     const circle = container.querySelector('.ch-ring');
@@ -45,6 +47,7 @@ const Charts = {
 
   /* ---------- sparkline ---------- */
   sparkline(container, data, opts = {}) {
+    if (!container) return;
     if (!data || data.length < 2) { container.innerHTML = '<div style="font-size:11px;color:var(--color-text-muted);text-align:center;padding:12px 0;">Not enough data</div>'; return; }
     const w = container.clientWidth || 120;
     const h = opts.height || 44;
@@ -73,6 +76,7 @@ const Charts = {
 
   /* ---------- lineChart ---------- */
   lineChart(container, data, opts = {}) {
+    if (!container) return;
     if (!data || data.length < 2) { container.innerHTML = '<div style="font-size:11px;color:var(--color-text-muted);text-align:center;padding:12px 0;">Not enough data</div>'; return; }
     const w = container.clientWidth || 200;
     const h = opts.height || 90;

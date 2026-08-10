@@ -176,7 +176,7 @@ updateSectionTitle() {
         }).catch(() => {});
       } else {
         // Register service worker with auto-update system on production
-        navigator.serviceWorker.register('/app/sw.js')
+        navigator.serviceWorker.register('./sw.js')
           .then((registration) => {
             // Force immediate update check on reload
             registration.update();
@@ -213,9 +213,11 @@ updateSectionTitle() {
     this.applyTranslations();
 
     // Global Midnight Rollover Detector - ensures app state resets if left open overnight
-    const startupDate = Utils.todayStr();
+    let startupDate = Utils.todayStr();
     setInterval(() => {
-      if (Utils.todayStr() !== startupDate) {
+      const today = Utils.todayStr();
+      if (today !== startupDate) {
+        startupDate = today;
         window.location.reload();
       }
     }, 60000);
@@ -278,6 +280,15 @@ updateSectionTitle() {
       showOfflineBanner();
     });
     if (!navigator.onLine) showOfflineBanner();
+
+    // PWA 1-Click Install Prompt Capture
+    window.deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.deferredInstallPrompt = e;
+      const btn = document.getElementById('pwa-install-btn');
+      if (btn) btn.style.display = 'inline-flex';
+    });
 
     // Auto re-detect location after travelling (app returns to foreground / relaunch)
     document.addEventListener('visibilitychange', () => {
@@ -490,6 +501,20 @@ updateSectionTitle() {
     }
   },
 
+  triggerInstall() {
+    if (!window.deferredInstallPrompt) {
+      Utils.toast(this.lang === 'bn' ? 'অ্যাপটি ইতিমধ্যেই ইনস্টল করা আছে বা অটো-ইনস্টল সমর্থিত।' : 'App is already installed or auto-install prompt is ready.', 'info');
+      return;
+    }
+    window.deferredInstallPrompt.prompt();
+    window.deferredInstallPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        Utils.toast(this.lang === 'bn' ? 'অ্যাপটি হোম স্ক্রিনে যুক্ত করা হয়েছে!' : 'App added to home screen!', 'success');
+      }
+      window.deferredInstallPrompt = null;
+    });
+  },
+
   notifyDataChanged() {
     const mod = this.currentSection && SECTION_MODULES[this.currentSection];
     if (mod && typeof mod.onDataUpdated === 'function') {
@@ -504,7 +529,7 @@ updateSectionTitle() {
     const lastBackup = settings.lastBackupDate;
     const today = Utils.todayStr();
 
-    if (!lastBackup) {
+    if (!lastBackup || isNaN(new Date(lastBackup + 'T00:00:00').getTime())) {
       settings.lastBackupDate = today;
       DB.setSettings(settings);
       return;
@@ -512,6 +537,7 @@ updateSectionTitle() {
 
     const lastDate = new Date(lastBackup + 'T00:00:00');
     const currDate = new Date(today + 'T00:00:00');
+    if (isNaN(lastDate.getTime()) || isNaN(currDate.getTime())) return;
     const diffTime = Math.abs(currDate - lastDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 

@@ -539,8 +539,8 @@ const Career = {
 
   triggerGoalConfetti(e) {
     if (!e) return;
-    const x = (e.clientX || (e.touches && e.touches[0].clientX)) || window.innerWidth / 2;
-    const y = (e.clientY || (e.touches && e.touches[0].clientY)) || window.innerHeight / 2;
+    const x = typeof e.clientX === 'number' ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : window.innerWidth / 2);
+    const y = typeof e.clientY === 'number' ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : window.innerHeight / 2);
     const colors = ['#2dd4bf', '#818cf8', '#fbbf24', '#34d399', '#a78bfa'];
     for (let i = 0; i < 18; i++) {
       const p = document.createElement('div');
@@ -987,7 +987,7 @@ const Career = {
         </div>
       </div>
       <div class="cb-month-stat-card"><div class="cb-month-stat-label">Goal Streak</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Week Rate</div><div class="cb-month-stat-val">${t(weekPct)}/100%</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Week Rate</div><div class="cb-month-stat-val">${t(weekPct)}%</div></div>
       <div class="cb-month-stat-card"><div class="cb-month-stat-label">Perfect Days</div><div class="cb-month-stat-val">${t(perfectDays)}/7</div></div>`;
 
     const ringEl = document.getElementById('cb-progress-today-ring');
@@ -1108,7 +1108,7 @@ const Career = {
         </div>
       </div>
       <div class="cb-month-stat-card"><div class="cb-month-stat-label">Goal Streak</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Month Rate</div><div class="cb-month-stat-val">${t(monthPct)}/100%</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Month Rate</div><div class="cb-month-stat-val">${t(monthPct)}%</div></div>
       <div class="cb-month-stat-card"><div class="cb-month-stat-label">Perfect Days</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(daysInMonth)}</div></div>`;
 
     const ringEl = document.getElementById('cb-progress-monthly-ring');
@@ -1248,7 +1248,7 @@ const Career = {
         </div>
       </div>
       <div class="cb-month-stat-card"><div class="cb-month-stat-label">Goal Streak</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Year Rate</div><div class="cb-month-stat-val">${t(yearPct)}/100%</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Year Rate</div><div class="cb-month-stat-val">${t(yearPct)}%</div></div>
       <div class="cb-month-stat-card"><div class="cb-month-stat-label">Perfect Days</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(totalDays)}</div></div>`;
 
     const ringEl = document.getElementById('cb-progress-yearly-ring');
@@ -1311,6 +1311,15 @@ const Career = {
     }
 
     if (extraEl) extraEl.innerHTML = '';
+  },
+
+  destroy() {
+    if (this._handlers) {
+      this._handlers.forEach(h => {
+        if (h.el && h.el.removeEventListener) h.el.removeEventListener(h.type, h.fn);
+      });
+      this._handlers = [];
+    }
   }
 };
 

@@ -22,7 +22,6 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at center, rgba(var(--glow-color), 0.15) 0%, transparent 70%);
-  animation: radar-pulse-bg 2s ease-in-out infinite;
 }
 .premium-step-icon-wrap svg { z-index: 2; position: relative; }
 .premium-step-icon-wrap.step-loc { --glow-color: 56, 189, 248; }
@@ -73,9 +72,10 @@
   border-color: #38bdf8; box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
 }
 .coord-card-input {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 1.25rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
   background: transparent;
   border: none;

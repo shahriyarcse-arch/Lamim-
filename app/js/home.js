@@ -21,18 +21,7 @@ const Home = {
   },
 
   bindAuroraScrollPause() {
-    if (this._auroraBound) return;
-    this._auroraBound = true;
-    const bg = document.querySelector('.home-aurora-bg');
-    if (!bg) return;
-    let timer;
-    this._auroraHandler = () => {
-      if (!document.body.classList.contains('home-active')) return;
-      bg.classList.add('is-scrolling');
-      clearTimeout(timer);
-      timer = setTimeout(() => bg.classList.remove('is-scrolling'), 120);
-    };
-    window.addEventListener('scroll', this._auroraHandler, { passive: true });
+    // No-op: Aurora background disabled for ultra-smooth 60fps scrolling
   },
 
   destroy() {
@@ -43,6 +32,10 @@ const Home = {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
       this.countdownInterval = null;
+    }
+    if (this._nextPrayerTimeout) {
+      clearTimeout(this._nextPrayerTimeout);
+      this._nextPrayerTimeout = null;
     }
     if (this._auroraHandler) {
       window.removeEventListener('scroll', this._auroraHandler);
@@ -61,13 +54,13 @@ const Home = {
   },
 
   getGreeting() {
-    const hour = new Date().getHours();
     const lang = (typeof App !== 'undefined' && App.lang) || 'en';
-    const greetings = {
-      en: hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening',
-      bn: hour < 12 ? 'সুপ্রভাত' : hour < 18 ? 'শুভ অপরাহ্ন' : 'শুভ সন্ধ্যা'
-    };
-    return greetings[lang] || greetings.en;
+    const hour = new Date().getHours();
+    const isBn = lang === 'bn';
+    if (hour < 4) return isBn ? 'শুভ রাত্রি' : 'Late Night';
+    if (hour < 12) return isBn ? 'সুপ্রভাত' : 'Good Morning';
+    if (hour < 18) return isBn ? 'শুভ অপরাহ্ন' : 'Good Afternoon';
+    return isBn ? 'শুভ সন্ধ্যা' : 'Good Evening';
   },
 
   startClock() {
@@ -163,7 +156,7 @@ const Home = {
         let statusClass = status ? `status-${status}` : '';
         const initial = p.charAt(0);
         html += `
-          <div class="timeline-node ${statusClass}">
+          <div class="timeline-node ${statusClass}" onclick="App.switchSection('salah')" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p}">
             <div class="timeline-dot">${initial}</div>
             <span class="timeline-label">${p}</span>
           </div>

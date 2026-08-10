@@ -1,6 +1,13 @@
 /* =============================================
    LAMIM — UTILITIES
    ============================================= */
+// Global SWE Defensive Guard: Catch unhandled promise rejections (e.g. AbortController timeouts)
+window.addEventListener('unhandledrejection', (event) => {
+  if (event && event.reason && (event.reason.name === 'AbortError' || event.reason.name === 'TypeError')) {
+    event.preventDefault();
+  }
+});
+
 const Utils = {
   // 3:00 AM Offset (Waking Day logic)
   // If the time is before 3:00 AM, it counts as the previous calendar day.
@@ -57,16 +64,17 @@ const Utils = {
     const month = Math.floor((24 * l) / 709);
     const day = l - Math.floor((709 * month) / 24);
     const year = 30 * n + j - 30;
+    const mIdx = Math.max(0, Math.min(11, (month || 1) - 1));
     const months = ['Muharram','Safar','Rabi al-Awwal','Rabi al-Thani','Jumada al-Awwal','Jumada al-Thani','Rajab',"Sha'ban",'Ramadan','Shawwal',"Dhu al-Qi'dah",'Dhu al-Hijjah'];
-    let monthName = months[month - 1];
+    let monthName = months[mIdx];
     let dateStr = `${day} ${monthName} ${year} AH`;
     
     if (typeof App !== 'undefined' && App.lang === 'bn') {
       const bnMonths = ['মুহাররম','সফর','রবিউল আউয়াল','রবিউস সানি','জুমাদাল উলা','জুমাদাস সানি','রজব','শাবান','রমজান','শাওয়াল','জিলকদ','জিলহজ'];
-      monthName = bnMonths[month - 1];
+      monthName = bnMonths[mIdx];
       const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-      const bnDay = String(day).split('').map(d => bnNums[d]).join('');
-      const bnYear = String(year).split('').map(d => bnNums[d]).join('');
+      const bnDay = String(day).split('').map(d => bnNums[d] || d).join('');
+      const bnYear = String(year).split('').map(d => bnNums[d] || d).join('');
       dateStr = `${bnDay} ${monthName} ${bnYear} হিজরি`;
     } else if (typeof window.t === 'function') {
       monthName = window.t(monthName);
@@ -303,9 +311,14 @@ const Utils = {
 
   // Toast
   toast(msg, type = 'info', duration = 3000) {
-    const icons = { success: '', error: '', info: 'ℹ️', warning: '️' };
-    const container = document.getElementById('toast-container');
-    if (!container) return;
+    const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
     const el = document.createElement('div');
     el.className = `toast toast-${type}`;
     const iconSpan = document.createElement('span');
@@ -461,6 +474,7 @@ const Utils = {
     // --- 2. Keyboard activation for non-native proxy buttons ---
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT' || e.target.isContentEditable)) return;
       const el = e.target.closest && e.target.closest('[data-section], [role="button"]');
       if (!el) return;
       if (el.tagName === 'BUTTON' || el.tagName === 'A') return; // native elements handle their own activation

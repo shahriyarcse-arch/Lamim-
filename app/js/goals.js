@@ -43,8 +43,9 @@ const Goals = {
     const label = document.getElementById('nafl-date-label');
     const sub = document.getElementById('nafl-date-sub');
     const dObj = new Date(this.currentDate + 'T00:00:00');
-    if (label) label.textContent = isToday ? 'Today' : dObj.toLocaleDateString('en-US', {month:'short', day:'numeric'});
-    if (sub) sub.textContent = isToday ? dObj.toLocaleDateString('en-US', {weekday:'short'}) : dObj.toLocaleDateString('en-US', {year:'numeric'});
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    if (label) label.textContent = isToday ? (isBn ? 'আজ' : 'Today') : dObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {month:'short', day:'numeric'});
+    if (sub) sub.textContent = isToday ? dObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {weekday:'short'}) : dObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {year:'numeric'});
 
     // TEMPORAL LOCK: Use explicit ID
     const nextBtn = document.getElementById('nafl-next-btn');
@@ -73,8 +74,8 @@ const Goals = {
     if (data.tahajjud_rakat > 0) done++;
     if (data.witr > 0) done++;
     
-    const total = this.sunnahList.length + 2;
-    const pct = (done / total) * 100;
+    const total = (this.sunnahList ? this.sunnahList.length : 0) + 2;
+    const pct = total > 0 ? (done / total) * 100 : 0;
     
     hero.innerHTML = `
       <div class="nafl-celestial-glass ${skipAnim ? '' : 'anim-scale-up'}">
@@ -381,10 +382,11 @@ const Goals = {
     const r = prompt("Enter custom Rakat number (e.g. 14, 20):");
     if (r) {
       const num = parseInt(r, 10);
-      if (!isNaN(num) && num > 0) {
+      if (!isNaN(num) && num > 0 && num <= 100) {
         this.setTahajjudRakat(num);
       } else {
-        Utils.toast("Invalid number", "error");
+        const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+        Utils.toast(isBn ? '১ থেকে ১০০ এর মধ্যে সঠিক রাকাত সংখ্যা লিখুন' : 'Please enter a valid rakat count between 1 and 100', 'error');
       }
     }
   },

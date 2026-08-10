@@ -2,6 +2,9 @@
 .env
 .env.local
 
+# Node modules
+node_modules/
+
 # OS & Temp
 .DS_Store
 Thumbs.db
@@ -21,6 +24,7 @@ Thumbs.db
 # Test Outputs & Screenshots
 tests/screenshots/*
 tests/test-results/*
+test-results/
+playwright-report/
 *.png
 !app/assets/*.png
-
