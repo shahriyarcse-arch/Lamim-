@@ -1592,22 +1592,25 @@
   </script>
 
   <script>
-    /* ---- FEATURE 3: UNIFORM BASE & SMOOTH RANDOM BLINKING SALAH HEATMAP PUZZLE ---- */
+    /* ---- FEATURE 3: UNIFORM BASE & GUARANTEED RANDOM COVERAGE SALAH PUZZLE ---- */
     (function initSalahHeatmapPuzzle() {
       var heatmap = document.getElementById('landing-salah-heatmap');
       if (!heatmap) return;
       var cells = heatmap.querySelectorAll('i');
       if (!cells.length) return;
 
-      var baseColor = '#2b5140'; // Uniform initial dark forest color for ALL blocks
+      var baseColor = '#2b5140'; // Uniform dark forest base for ALL blocks
       var glowColors = [
         '#cfee82', // Glowing Lime Accent
         '#6fcf8a', // Mint Green
-        '#e2f4c1', // Pale Lime
-        '#3d7a5a'  // Medium Emerald
+        '#38c8f0', // Sky Cyan
+        '#f5c842', // Amber Gold
+        '#b886f8', // Violet Purple
+        '#ff8c66', // Coral Orange
+        '#e2f4c1'  // Pale Lime Accent
       ];
 
-      // Step 1: Set ALL cells to the exact same initial dark color
+      // Set initial uniform dark color
       cells.forEach(function(cell) {
         cell.style.background = baseColor;
         cell.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
@@ -1615,9 +1618,10 @@
         // Click / Tap handler
         cell.addEventListener('click', function(e) {
           e.stopPropagation();
-          cell.style.background = '#cfee82';
+          var tapColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+          cell.style.background = tapColor;
           cell.style.transform = 'scale(1.4) rotate(' + (Math.random() * 12 - 6).toFixed(1) + 'deg)';
-          cell.style.boxShadow = '0 0 14px rgba(207, 238, 130, 0.9)';
+          cell.style.boxShadow = '0 0 16px ' + tapColor;
           cell.style.zIndex = '10';
 
           setTimeout(function() {
@@ -1625,35 +1629,52 @@
             cell.style.transform = 'scale(1) rotate(0deg)';
             cell.style.boxShadow = 'none';
             cell.style.zIndex = '1';
-          }, 1000);
+          }, 1100);
 
           if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
         });
       });
 
-      // Step 2: Auto Random Puzzle Smooth Light-up Loop
+      // Fair Shuffle Queue: Ensures EVERY single cell (0 to 20) gets lit up over time!
+      var pendingQueue = [];
+      function refreshQueue() {
+        pendingQueue = [];
+        for (var i = 0; i < cells.length; i++) {
+          pendingQueue.push(i);
+        }
+        // Fisher-Yates Shuffle
+        for (var j = pendingQueue.length - 1; j > 0; j--) {
+          var r = Math.floor(Math.random() * (j + 1));
+          var temp = pendingQueue[j];
+          pendingQueue[j] = pendingQueue[r];
+          pendingQueue[r] = temp;
+        }
+      }
+      refreshQueue();
+
       var isHovered = false;
       heatmap.addEventListener('mouseenter', function() { isHovered = true; });
       heatmap.addEventListener('mouseleave', function() { isHovered = false; });
 
       setInterval(function() {
         if (isHovered) return;
-        
-        // Pick a random number of cells (3 to 6 cells out of 21)
-        var count = Math.floor(Math.random() * 4) + 3;
-        for (var i = 0; i < count; i++) {
-          var randIdx = Math.floor(Math.random() * cells.length);
-          var targetCell = cells[randIdx];
+
+        // Pick 2 to 4 cells from the shuffled queue
+        var count = Math.min(pendingQueue.length, Math.floor(Math.random() * 3) + 2);
+        for (var k = 0; k < count; k++) {
+          if (pendingQueue.length === 0) refreshQueue();
+          var cellIdx = pendingQueue.pop();
+          var targetCell = cells[cellIdx];
           if (!targetCell) continue;
 
           (function(c) {
             var activeGlow = glowColors[Math.floor(Math.random() * glowColors.length)];
             c.style.background = activeGlow;
-            c.style.transform = 'scale(1.22)';
-            c.style.boxShadow = '0 0 12px rgba(207, 238, 130, 0.75)';
+            c.style.transform = 'scale(1.25)';
+            c.style.boxShadow = '0 0 14px ' + activeGlow;
             c.style.zIndex = '5';
 
-            var holdDuration = 800 + Math.random() * 600; // Hold light for 0.8s - 1.4s
+            var holdDuration = 900 + Math.random() * 600; // Hold light for 0.9s - 1.5s
             setTimeout(function() {
               c.style.background = baseColor;
               c.style.transform = 'scale(1)';
@@ -1662,7 +1683,9 @@
             }, holdDuration);
           })(targetCell);
         }
-      }, 1400);
+
+        if (pendingQueue.length === 0) refreshQueue();
+      }, 1200);
 
     })();
   </script>
