@@ -1195,7 +1195,7 @@
           <!-- Interactive Detail Rows -->
           <div class="profile-row" id="profile-row-focus" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer;transition:background 0.2s;" title="Tap to cycle focus goal">
             <span style="font-size:0.82rem;color:var(--muted);">Current focus</span>
-            <b id="profile-focus-val" style="font-size:0.82rem;font-weight:800;color:var(--ink);background:rgba(19,33,27,0.05);padding:3px 10px;border-radius:99px;transition:all 0.25s ease;">Steady mornings &#9728;&#65039;</b>
+            <b id="profile-focus-val" style="font-size:0.82rem;font-weight:800;color:var(--ink);background:rgba(19,33,27,0.05);padding:3px 10px;border-radius:99px;transition:all 0.25s ease;">Steady mornings</b>
           </div>
 
           <div class="profile-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line);">
@@ -1982,7 +1982,7 @@
       var statBoxes = document.querySelectorAll('.profile-stat-box');
       if (!card || !focusVal) return;
 
-      var focusModes = ['Steady mornings \u2600\ufe0f', 'Qur\'an 30m \ud83d\ud6d6', 'Night Tahajjud \ud83c\udf19', 'Deep Study \ud83c\udfaf'];
+      var focusModes = ['Steady mornings', 'Qur\'an 30m', 'Night Tahajjud', 'Deep Study'];
       var focusIndex = 0;
 
       if (focusRow) {
