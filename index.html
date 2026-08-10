@@ -229,14 +229,14 @@
           <div class="orbit"></div>
           <div class="app">
             <div class="app-head">
-              <span>Tuesday, 21 July <span style="color:var(--teal)">&#9679; </span></span>
+              <span id="hero-live-date">Tuesday, 21 July <span style="color:var(--teal)">&#9679; </span></span>
               <span>&bull;&bull;&bull;</span>
             </div>
             <div class="app-grid">
               <div class="tile mint">
                 <div class="kicker">Next prayer</div>
-                <div class="big">Maghrib</div>
-                <div class="row"><span>in 01:42:18</span><b>18:47</b></div>
+                <div class="big" id="hero-next-prayer-name">Maghrib</div>
+                <div class="row"><span id="hero-next-prayer-countdown">in 01:42:18</span><b id="hero-next-prayer-time">18:47</b></div>
               </div>
               <div class="tile sky">
                 <div class="kicker">Spiritual health</div>
@@ -824,6 +824,98 @@
           if (needsReload) { window.location.reload(); }
         }).catch(function () {});
       }
+    })();
+  </script>
+
+  <script>
+    (function initHeroLivePrayer() {
+      const dateEl = document.getElementById('hero-live-date');
+      const nameEl = document.getElementById('hero-next-prayer-name');
+      const countEl = document.getElementById('hero-next-prayer-countdown');
+      const timeEl = document.getElementById('hero-next-prayer-time');
+      if (!dateEl || !nameEl || !countEl || !timeEl) return;
+
+      function updateHeroPrayer() {
+        const now = new Date();
+        const options = { weekday: 'long', day: 'numeric', month: 'short' };
+        const dateStr = now.toLocaleDateString('en-US', options);
+        dateEl.innerHTML = dateStr + ' <span style="color:var(--teal)">&#9679;</span>';
+
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const day = now.getDate();
+
+        let lat = 23.8103, lng = 90.4125;
+        try {
+          const stored = localStorage.getItem('lamim_settings');
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed.lat && parsed.lng) { lat = Number(parsed.lat); lng = Number(parsed.lng); }
+          }
+        } catch(e) {}
+
+        const dayOfYear = Math.floor((now - new Date(year, 0, 0)) / 86400000);
+        const B = (360 / 365) * (dayOfYear - 81) * (Math.PI / 180);
+        const EoT = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
+        const decl = 23.45 * Math.sin((360 / 365) * (dayOfYear - 81) * (Math.PI / 180)) * (Math.PI / 180);
+        const tzOffset = -now.getTimezoneOffset() / 60;
+        const solarNoon = 12 + (tzOffset - lng / 15) - (EoT / 60);
+
+        const hourAngle = function(angleDeg) {
+          const latRad = lat * (Math.PI / 180);
+          const angleRad = angleDeg * (Math.PI / 180);
+          const cosH = (Math.sin(angleRad) - Math.sin(latRad) * Math.sin(decl)) / (Math.cos(latRad) * Math.cos(decl));
+          if (cosH > 1) return 0;
+          if (cosH < -1) return 12;
+          return (Math.acos(cosH) * 180 / Math.PI) / 15;
+        };
+
+        const fajrHA = hourAngle(-18);
+        const asrAngle = Math.atan(1 / (2 + Math.tan(Math.abs((lat * Math.PI / 180) - decl)))) * 180 / Math.PI;
+        const asrHA = hourAngle(asrAngle);
+        const maghribHA = hourAngle(-0.833);
+        const ishaHA = hourAngle(-17);
+
+        const makeDate = function(hFloat, addDays) {
+          const h = Math.floor(hFloat);
+          const m = Math.floor((hFloat - h) * 60);
+          const s = Math.floor(((hFloat - h) * 60 - m) * 60);
+          return new Date(year, month, day + (addDays || 0), h, m, s);
+        };
+
+        const prayers = [
+          { name: 'Fajr', time: makeDate(solarNoon - fajrHA) },
+          { name: 'Dhuhr', time: makeDate(solarNoon) },
+          { name: 'Asr', time: makeDate(solarNoon + asrHA) },
+          { name: 'Maghrib', time: makeDate(solarNoon + maghribHA) },
+          { name: 'Isha', time: makeDate(solarNoon + ishaHA) }
+        ];
+
+        let next = null;
+        for (let i = 0; i < prayers.length; i++) {
+          if (prayers[i].time > now) {
+            next = prayers[i];
+            break;
+          }
+        }
+        if (!next) {
+          next = { name: 'Fajr', time: makeDate(solarNoon - fajrHA, 1) };
+        }
+
+        nameEl.textContent = next.name;
+        const pH = String(next.time.getHours()).padStart(2, '0');
+        const pM = String(next.time.getMinutes()).padStart(2, '0');
+        timeEl.textContent = pH + ':' + pM;
+
+        const diffMs = Math.max(0, next.time - now);
+        const cH = String(Math.floor(diffMs / 3600000)).padStart(2, '0');
+        const cM = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0');
+        const cS = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0');
+        countEl.textContent = 'in ' + cH + ':' + cM + ':' + cS;
+      }
+
+      updateHeroPrayer();
+      setInterval(updateHeroPrayer, 1000);
     })();
   </script>
 </body>
