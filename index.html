@@ -58,12 +58,13 @@
   }
   </script>
 
-  <script>if ('scrollRestoration' in history) { history.scrollRestoration = 'auto'; }</script>
+  <!-- Preconnect for performance -->
+  <script>history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="stylesheet" href="styles.min.css?v=20260811">
+  <link rel="preload" as="style" href="styles.min.css?v=20260811" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
     <link rel="stylesheet" href="styles.min.css">
@@ -1433,29 +1434,6 @@
     window.__motionReady = function(){ clearTimeout(window.__motionFallback); };
   </script>
 
-  <script>
-    /* ---- FEATURE: SCROLL REVEAL INTERSECTION OBSERVER ---- */
-    (function initScrollReveal() {
-      if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.reveal').forEach(function(el) {
-          el.classList.add('is-revealed');
-        });
-        return;
-      }
-
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed');
-          }
-        });
-      }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-
-      document.querySelectorAll('.reveal').forEach(function(el) {
-        observer.observe(el);
-      });
-    })();
-  </script>
   <script type="module" src="app.min.js?v=20260811"></script>
 
   <script>
