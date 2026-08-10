@@ -535,9 +535,9 @@
           </div>
           <div class="v-art">
             <div class="breath" id="landing-breath-circle" style="cursor:pointer; user-select:none; -webkit-user-select:none;" title="Tap circle to start 4-7-8 breathing guide" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
-              <span id="landing-breath-text" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; pointer-events:none;">
-                <b id="landing-breath-state" style="font-size:clamp(0.7rem, 1.3vw, 0.85rem); font-weight:800; line-height:1.1;">4 &middot; 7 &middot; 8</b>
-                <small id="landing-breath-count" style="font-size:clamp(0.6rem, 1.1vw, 0.72rem); opacity:0.85; font-weight:700; display:none; margin-top:2px;"></small>
+              <span id="landing-breath-text" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; pointer-events:none; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; transition:transform 0.3s ease;">
+                <b id="landing-breath-state" style="font-family:var(--font-display, serif); font-size:clamp(0.78rem, 1.4vw, 0.95rem); font-weight:800; line-height:1.1; color:var(--ink);">4 &middot; 7 &middot; 8</b>
+                <small id="landing-breath-count" style="font-family:var(--font-body, sans-serif); font-size:clamp(0.64rem, 1.1vw, 0.75rem); color:var(--muted); font-weight:700; display:none; margin-top:3px; letter-spacing:0.02em;"></small>
               </span>
             </div>
           </div>
@@ -973,6 +973,8 @@
       let phase = 'idle';
       let secondsLeft = 0;
 
+      const textWrapper = document.getElementById('landing-breath-text');
+
       function stopBreathing() {
         if (intervalId) clearInterval(intervalId);
         intervalId = null;
@@ -985,6 +987,10 @@
         circle.style.animation = '';
         circle.style.transition = 'transform 0.5s ease-out';
         circle.style.transform = '';
+        if (textWrapper) {
+          textWrapper.style.transition = 'transform 0.5s ease-out';
+          textWrapper.style.transform = 'scale(1)';
+        }
       }
 
       function stepBreathing() {
@@ -997,19 +1003,23 @@
             circle.style.animation = 'none';
             circle.style.transition = 'none';
             circle.style.transform = 'scale(1)';
+            if (textWrapper) { textWrapper.style.transition = 'none'; textWrapper.style.transform = 'scale(1)'; }
             void circle.offsetWidth;
             circle.style.transition = 'transform 4s linear';
-            circle.style.transform = 'scale(1.5)';
+            circle.style.transform = 'scale(1.45)';
+            if (textWrapper) { textWrapper.style.transition = 'transform 4s linear'; textWrapper.style.transform = 'scale(0.7)'; }
           } else if (phase === 'inhale') {
             phase = 'hold';
             secondsLeft = 7;
             circle.style.transition = 'none';
-            circle.style.transform = 'scale(1.5)';
+            circle.style.transform = 'scale(1.45)';
+            if (textWrapper) { textWrapper.style.transition = 'none'; textWrapper.style.transform = 'scale(0.7)'; }
           } else if (phase === 'hold') {
             phase = 'exhale';
             secondsLeft = 8;
             circle.style.transition = 'transform 8s linear';
             circle.style.transform = 'scale(1.0)';
+            if (textWrapper) { textWrapper.style.transition = 'transform 8s linear'; textWrapper.style.transform = 'scale(1.0)'; }
           } else if (phase === 'exhale') {
             stopBreathing();
             return;
