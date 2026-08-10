@@ -58,8 +58,7 @@
   }
   </script>
 
-  <!-- Preconnect for performance -->
-  <script>history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</script>
+  <script>if ('scrollRestoration' in history) { history.scrollRestoration = 'auto'; }</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
