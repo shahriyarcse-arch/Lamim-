@@ -556,20 +556,38 @@ const Profile = {
 
   deleteAccount() {
     const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-    const title = isBn ? 'অ্যাকাউন্ট ও সব ডাটা মুছুন' : 'Delete Account & All Data';
+    const title = isBn ? 'বর্তমান প্রোফাইল মুছুন' : 'Delete Active Profile & Data';
     const msg = isBn
-      ? 'আপনার প্রোফাইল এবং সব লোকাল ডাটা (নামাজ, জিকির, গোল, ফাইন্যান্স, ভল্ট, সেটিংস) স্থায়ীভাবে মুছে ফেলবে। এটি ফেরানো যাবে না।'
-      : 'This will permanently delete your profile and ALL local data on this device — salah, dhikr, goals, finance, vault, settings and preferences. This cannot be undone.';
+      ? 'আপনার বর্তমান প্রোফাইল এবং এর সব লোকাল ডাটা চিরতরে মুছে ফেলবে। অন্যান্য সেভ করা প্রোফাইল সুরক্ষিত থাকবে।'
+      : 'This will permanently delete your CURRENT active profile and data from this device. Other saved profiles on this device will stay safe.';
     Utils.dangerConfirm({
       title,
       message: msg,
       icon: '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>',
       color: '#ef4444',
-      confirmText: isBn ? 'সব মুছুন' : 'Delete Everything',
+      confirmText: isBn ? 'প্রোফাইল মুছুন' : 'Delete This Profile',
       onConfirm: async () => {
-        await DB.wipeAll();
-        Utils.toast(isBn ? 'অ্যাকাউন্ট ও সব ডাটা মুছে ফেলা হয়েছে।' : 'Account and all data wiped.', 'success');
-        setTimeout(() => { window.location.reload(); }, 600);
+        const user = DB.getUser();
+        if (user && user.name) {
+          const profiles = DB.getProfiles().filter(p => p.name.toLowerCase() !== user.name.toLowerCase() && p.id !== user.id);
+          DB.set('lamim_profiles_vault', profiles);
+        }
+        await DB.remove('lamim_user');
+        try { localStorage.removeItem('lamim_user'); } catch {}
+        
+        // Clear active user keys
+        const activeKeys = Object.keys(DB._cache).filter(k => k !== 'lamim_profiles_vault');
+        activeKeys.forEach(k => {
+          delete DB._cache[k];
+          try { localStorage.removeItem(k); } catch {}
+          DB._asyncDelete(k);
+        });
+
+        Utils.toast(isBn ? 'প্রোফাইল মুছে ফেলা হয়েছে।' : 'Profile deleted.', 'success');
+        setTimeout(() => {
+          const baseUrl = window.location.origin + window.location.pathname;
+          window.location.replace(baseUrl);
+        }, 400);
       }
     });
   },
