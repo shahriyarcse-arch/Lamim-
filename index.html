@@ -96,18 +96,17 @@
       --wrap-max:1280px;--wrap-pad:clamp(16px,4vw,40px);
       --font-display:"Fraunces",Georgia,serif;--font-body:"Inter",system-ui,sans-serif;
     }
-    /* Brand-matched professional text selection */
-    ::selection { background: #cfee82; color: #13211b; }
-    ::-moz-selection { background: #cfee82; color: #13211b; }
-    
-    /* Prevent accidental text selection on UI cards, buttons, icons, & interactive widgets */
-    .btn, .nav, .navcta, .visual, .essence-card, .profile-card, .analysis-board, .phone, .stats-bar, .system-row, button, [role="button"] {
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
+    /* Permanently disable text selection & blue overlay across the entire landing page */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      -webkit-touch-callout: none !important;
     }
-    *,*::before,*::after{box-sizing:border-box}
+    ::selection { background: transparent; color: inherit; }
+    ::-moz-selection { background: transparent; color: inherit; }
     html{-webkit-text-size-adjust:100%}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body,"Inter",system-ui,sans-serif);font-size:clamp(.95rem,1.2vw,1.05rem);line-height:1.55;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased}
     body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 10% 4%,#e2f4c1,transparent 24%),radial-gradient(circle at 90% 8%,#e7ddf4,transparent 28%),radial-gradient(circle at 48% 84%,#d5edf1,transparent 24%);pointer-events:none}
