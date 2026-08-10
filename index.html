@@ -1427,10 +1427,9 @@
   <script>
     window.__motionFallback = setTimeout(function(){
       document.querySelectorAll('.reveal').forEach(function(el){
-        el.classList.add('is-revealed');
         el.style.opacity = '1'; el.style.transform = 'none';
       });
-    },3000);
+    },5000);
     window.__motionReady = function(){ clearTimeout(window.__motionFallback); };
   </script>
 

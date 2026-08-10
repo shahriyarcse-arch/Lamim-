@@ -1095,6 +1095,8 @@ section:not(.hero) {
   cursor: pointer;
   position: relative;
 }
+.heatmap i:nth-child(3n) { background: var(--teal); }
+.heatmap i:nth-child(5n) { background: var(--mint); }
 
 .heatmap i:hover {
   transform: scale(1.35) rotate(4deg);
@@ -1732,17 +1734,36 @@ details p {
 }
 
 .footer-links a {
-  color: #8fa89a;
-  font-size: 0.88rem;
-  padding: 4px 0;
-  display: block !important;
+  color: #7d9e8d;
+  font-size: 0.875rem;
+  padding: 7px 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  position: relative;
+  width: fit-content;
   transition: color 0.22s ease;
   text-decoration: none;
-  width: fit-content;
+}
+
+/* Slide-underline hover effect */
+.footer-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #cfee82;
+  transition: width 0.28s cubic-bezier(.16, 1, .3, 1);
 }
 
 .footer-links a:hover {
-  color: #cfee82;
+  color: #e8f5d0;
+}
+
+.footer-links a:hover::after {
+  width: 100%;
 }
 
 .footer-links-2col {
