@@ -277,11 +277,53 @@ const DB = {
     return Object.keys(this._cache);
   },
 
-  // User
+  // User & Multi-Profile Vault
   getUser()      { return this.get('lamim_user'); },
   setUser(u)     { return this.set('lamim_user', u); },
+  
+  getProfiles() {
+    return this.get('lamim_profiles_vault') || [];
+  },
 
-  // Settings
+  saveProfileVault(userObj) {
+    if (!userObj || !userObj.name) return;
+    const profiles = this.getProfiles();
+    const existingIndex = profiles.findIndex(p => p.id === userObj.id || (p.name && p.name.toLowerCase() === userObj.name.toLowerCase()));
+    
+    const profileSnapshot = {
+      id: userObj.id || ('usr_' + Date.now()),
+      name: userObj.name,
+      avatar: userObj.avatar || '',
+      gender: userObj.gender || 'male',
+      lastActive: new Date().toISOString(),
+      userData: userObj,
+      snapshot: { ...this._cache }
+    };
+
+    if (existingIndex >= 0) {
+      profiles[existingIndex] = profileSnapshot;
+    } else {
+      profiles.push(profileSnapshot);
+    }
+    this.set('lamim_profiles_vault', profiles);
+  },
+
+  async switchProfile(profileId) {
+    const profiles = this.getProfiles();
+    const target = profiles.find(p => p.id === profileId);
+    if (!target) return false;
+
+    // Restore target profile snapshot to cache & db
+    if (target.snapshot) {
+      Object.keys(target.snapshot).forEach(k => {
+        if (k !== 'lamim_profiles_vault') {
+          this.set(k, JSON.parse(target.snapshot[k]));
+        }
+      });
+    }
+    this.setUser(target.userData);
+    return true;
+  },
   getSettings()  { return this.get('lamim_settings') || { theme: 'light', notifications: true, jumuahMode: true, language: 'en', currency: 'USD', lat: 23.8103, lng: 90.4125 }; },
   setSettings(s) { return this.set('lamim_settings', s); },
 

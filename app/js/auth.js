@@ -267,6 +267,7 @@ const Auth = {
 
       DB.setUser(user);
       DB.setSettings(settings);
+      DB.saveProfileVault(user);
 
       Utils.toast('Welcome, ' + name + '!', 'success');
 
@@ -308,7 +309,44 @@ const Auth = {
     this.goToStep(1);
   },
 
+  renderSavedProfiles() {
+    const container = document.getElementById('saved-profiles-container');
+    const list = document.getElementById('saved-profiles-list');
+    if (!container || !list) return;
+
+    const profiles = DB.getProfiles();
+    if (!profiles || profiles.length === 0) {
+      container.style.display = 'none';
+      return;
+    }
+
+    container.style.display = 'block';
+    list.innerHTML = profiles.map(p => `
+      <div style="display:flex; align-items:center; justify-space-between; padding: 10px 14px; border-radius:14px; background:var(--color-surface-card); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;" onclick="Auth.switchSavedProfile('${p.id}')">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg, #a855f7, #3b82f6); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">
+            ${(p.name || 'U').charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:var(--color-text-primary);">${Utils.escapeHTML(p.name)}</div>
+            <div style="font-size:11px; color:var(--color-text-muted);">Saved profile on device</div>
+          </div>
+        </div>
+        <span style="font-size:13px; font-weight:700; color:var(--color-accent-primary);">Switch →</span>
+      </div>
+    `).join('');
+  },
+
+  async switchSavedProfile(profileId) {
+    const ok = await DB.switchProfile(profileId);
+    if (ok) {
+      Utils.toast('Switched profile successfully!', 'success');
+      setTimeout(() => window.location.reload(), 300);
+    }
+  },
+
   bindSetup() {
+    this.renderSavedProfiles();
     if (this._setupBound) return;
     this._setupBound = true;
     const nameInput = document.getElementById('setup-name');
@@ -330,8 +368,8 @@ const Auth = {
     const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     const title = isBn ? 'লগ আউট' : 'Log Out';
     const msg = isBn
-      ? 'লগ আউট করবেন এবং ওয়েলকাম স্ক্রিনে ফিরে যাবেন। আপনার লোকাল ডাটা এই ডিভাইসেই থাকবে।'
-      : 'Log out and return to the welcome screen. Your local data stays on this device.';
+      ? 'লগ আউট করবেন এবং ওয়েলকাম স্ক্রিনে ফিরে যাবেন। আপনার প্রোফাইল লোকালি সেইভ থাকবে।'
+      : 'Log out and return to the welcome screen. Your profile will stay saved on this device.';
     Utils.dangerConfirm({
       title,
       message: msg,
@@ -339,6 +377,10 @@ const Auth = {
       color: '#8b5cf6',
       confirmText: isBn ? 'লগ আউট' : 'Log Out',
       onConfirm: async () => {
+        const currentUser = DB.getUser();
+        if (currentUser) {
+          DB.saveProfileVault(currentUser);
+        }
         await DB.remove('lamim_user');
         try { localStorage.removeItem('lamim_user'); } catch {}
         document.body.classList.remove('home-active');
