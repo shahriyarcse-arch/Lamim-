@@ -1744,7 +1744,10 @@
       var streak = document.getElementById('landing-career-streak');
       if (!card || !cols.length || !badge) return;
 
-      var currentIndex = 3; /* Thursday default */
+      /* Auto-detect real current day of week (Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat/Sun=3) */
+      var dayOfWeek = new Date().getDay();
+      var defaultIndex = (dayOfWeek >= 1 && dayOfWeek <= 5) ? (dayOfWeek - 1) : 3;
+      var currentIndex = defaultIndex;
 
       function setActiveDay(index) {
         currentIndex = index;
@@ -1776,6 +1779,9 @@
         });
         if (navigator.vibrate) { try { navigator.vibrate(18); } catch(e) {} }
       }
+
+      /* Initialize with real current day */
+      setActiveDay(defaultIndex);
 
       cols.forEach(function(col, i) {
         col.addEventListener('click', function(e) {
