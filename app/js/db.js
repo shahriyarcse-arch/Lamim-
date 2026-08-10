@@ -108,8 +108,10 @@ const DB = {
 
         keysToMigrate.forEach(key => {
           const val = localStorage.getItem(key);
-          store.put(val, key);
-          this._cache[key] = val;
+          if (val) {
+            store.put(val, key);
+            this._cache[key] = val;
+          }
         });
 
         transaction.oncomplete = () => {
