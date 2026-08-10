@@ -1,7 +1,7 @@
 /* =============================================
    LAMIM — UTILITIES
    ============================================= */
-// Global SWE Defensive Guard: Catch unhandled promise rejections (e.g. AbortController timeouts)
+// Catch unhandled promise rejections (e.g. AbortController timeouts)
 window.addEventListener('unhandledrejection', (event) => {
   if (event && event.reason && (event.reason.name === 'AbortError' || event.reason.name === 'TypeError')) {
     event.preventDefault();
