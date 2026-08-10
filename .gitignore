@@ -1,0 +1,26 @@
+# Environment
+.env
+.env.local
+
+# OS & Temp
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Editor & Local Configs
+.vscode/
+.idea/
+.claude/
+.freebuff/
+.agents/
+.opencode/
+*.swp
+*.swo
+
+# Test Outputs & Screenshots
+tests/screenshots/*
+tests/test-results/*
+*.png
+!app/assets/*.png
+

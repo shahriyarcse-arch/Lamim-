@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lamim | One day, held with intention</title>
+  <meta name="description" content="Lamim is a private offline-first Islamic life companion for prayer, habits, health, money and reflection.">
+  <meta name="theme-color" content="#f1f0e9">
+
+  <!-- SEO / Social -->
+  <link rel="canonical" href="https://shahriyarcse-arch.github.io/Lamim/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shahriyarcse-arch.github.io/Lamim/">
+  <meta property="og:title" content="Lamim | One day, held with intention">
+  <meta property="og:description" content="Lamim is a private offline-first Islamic life companion for prayer, habits, health, money and reflection.">
+  <meta property="og:image" content="https://shahriyarcse-arch.github.io/Lamim/app/assets/icon-512x512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lamim | One day, held with intention">
+  <meta name="twitter:description" content="Lamim is a private offline-first Islamic life companion for prayer, habits, health, money and reflection.">
+  <meta name="twitter:image" content="https://shahriyarcse-arch.github.io/Lamim/app/assets/icon-512x512.png">
+
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="app/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="app/assets/icon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="app/assets/icon-32x32.png">
+  <link rel="apple-touch-icon" href="app/assets/icon-180x180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Lamim",
+    "description": "A private offline-first Islamic life companion for prayer, habits, health, money and reflection.",
+    "url": "https://shahriyarcse-arch.github.io/Lamim/",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": ["Salah Tracker", "Dhikr Counter", "Nafl Goals", "Spiritual Analysis", "Gym & Diet Tracker", "Career Builder", "Islamic Finance"],
+    "screenshot": "app/assets/icon-512x512.png",
+    "softwareVersion": "4.0.0"
+  }
+  </script>
+
+  <!-- Speculation Rules for Instant Pre-rendering -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Preconnect for performance -->
+  <script>history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="styles.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
+    <link rel="stylesheet" href="styles.min.css">
+    <style>.reveal{opacity:1;transform:none}
+    /* Brand Essence Section */
+    .brand-essence { padding: 90px 0 60px; text-align: center; }
+    .essence-head { max-width: 680px; margin: 0 auto 48px; }
+    .essence-head .eyebrow { margin-bottom: 12px; color: var(--teal); letter-spacing: .14em; font-weight: 800; font-size: .78rem; }
+    .essence-head h2 { font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -.035em; color: var(--ink); }
+    .essence-head p { margin: 0 auto; font-size: 1.05rem; color: var(--muted); line-height: 1.6; }
+    .essence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
+    .essence-card { background: #ffffff; border: 1px solid rgba(19, 33, 27, .09); border-radius: 24px; padding: 36px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 30px rgba(19, 33, 27, .03); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); }
+    .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
+    /* essence-card active removed for uniform professional design */
+    .essence-icon-badge { width: 58px; height: 58px; border-radius: 18px; background: #f0f8e8; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(255, 255, 255, .8); transition: transform .35s var(--ease), background .35s ease; }
+.essence-card:hover .essence-icon-badge { transform: scale(1.08); background: #e2f4c1; }
+    .essence-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -.02em; }
+    .essence-card p { font-size: .92rem; color: var(--muted); margin: 0; }
+    .visual.nafl,.visual.mujahid,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
+
+  </style>
+  </noscript>
+
+  <style>
+    :root{
+      --paper:#f1f0e9;--paper-rgb:241,240,233;--ink:#13211b;--muted:#505c54;--dark:#12261e;
+      --mint:#cfee82;--teal:#3d7a5a;--lilac:#ddd1ed;--sky:#bddcf0;--coral:#edb391;--gold:#e4ca71;
+      --line:#cbd6ce;--line-dark:rgba(241,240,233,.14);--ease:cubic-bezier(.16,1,.3,1);
+      --wrap-max:1280px;--wrap-pad:clamp(16px,4vw,40px);
+      --font-display:"Fraunces",Georgia,serif;--font-body:"Inter",system-ui,sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body,"Inter",system-ui,sans-serif);font-size:clamp(.95rem,1.2vw,1.05rem);line-height:1.55;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased}
+    body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 10% 4%,#e2f4c1,transparent 24%),radial-gradient(circle at 90% 8%,#e7ddf4,transparent 28%),radial-gradient(circle at 48% 84%,#d5edf1,transparent 24%);pointer-events:none}
+    .skip-link{position:fixed;top:-100%;left:12px;z-index:1000;padding:10px 20px;background:var(--ink);color:var(--paper);border-radius:0 0 12px 12px;font-weight:700;font-size:.88rem;transition:top .2s}
+    .skip-link:focus{top:0;outline:3px solid var(--teal);outline-offset:2px}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer}
+    h1,h2,h3,h4,p,blockquote,figure{margin:0}
+    h1,h2,h3{font-family:var(--font-display,"Fraunces",Georgia,serif);letter-spacing:-.02em;color:var(--ink)}
+    h1{font-size:clamp(2.2rem,6.5vw+.5rem,7.5rem);line-height:.92;letter-spacing:-.05em}
+    .hero-title{margin-top:20px}
+    h1 em{font-family:var(--font-display,"Fraunces",Georgia,serif);font-weight:700;font-style:italic;color:var(--teal);line-height:.95}
+    h2{font-size:clamp(1.8rem,4vw+.5rem,4.8rem);line-height:.95}
+    h3{font-size:clamp(1.15rem,2vw,1.6rem);line-height:1.15}
+    p{color:var(--muted);max-width:65ch}
+    .eyebrow{font-size:clamp(.68rem,1vw,.75rem);letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--teal)}
+    .wrap{width:100%;max-width:var(--wrap-max);padding-left:var(--wrap-pad);padding-right:var(--wrap-pad);margin:0 auto}
+    .nav{position:fixed;z-index:100;top:12px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:var(--wrap-max);display:flex;align-items:center;justify-content:space-between;padding:8px 12px 8px 16px;background:rgba(var(--paper-rgb),.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:999px;box-shadow:0 8px 32px rgba(19,33,27,.06)}
+    .brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display,"Fraunces",Georgia,serif);font-style:italic;font-weight:700;font-size:1.36rem;line-height:1;letter-spacing:-.015em;color:var(--ink);text-decoration:none}
+    .brand>span{display:inline-block;transform:translateY(1px);line-height:1}
+    .brand-icon{height:20px;width:auto;display:block;flex-shrink:0;object-fit:contain}
+    .i-green-dot{position:relative;display:inline-block;color:inherit;text-align:center;font-family:var(--font-display,"Fraunces",Georgia,serif);font-style:italic;letter-spacing:0 !important}
+    .i-green-dot::after{content:"";position:absolute;top:0.05em;left:48%;transform:translateX(-50%);width:.22em;height:.22em;background-color:#97D84C;border-radius:50%;box-shadow:0 0 10px rgba(151,216,76,.75);pointer-events:none}
+    .links{display:none;gap:clamp(16px,2vw,28px);color:var(--muted);font-size:.88rem;font-weight:500}
+    .links a{padding:6px 0}
+    .navcta,.btn{min-height:44px;padding:0 18px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:.85rem;cursor:pointer;white-space:nowrap}
+    .navcta{background:var(--dark);color:var(--paper)}
+    .btn{background:var(--dark);color:var(--paper);padding:0 24px;min-height:48px;font-size:.92rem}
+    .btn.alt{background:transparent;border:1px solid var(--line);color:var(--ink)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .menu{display:flex;align-items:center;justify-content:center;background:transparent;border:0;width:44px;height:44px;font-size:20px;color:var(--ink);border-radius:50%}
+    .nav-overlay{position:fixed;top:66px;left:12px;right:12px;background:rgba(241,240,233,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:24px;padding:20px 16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 20px 50px rgba(19,33,27,.18);opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);z-index:99}
+    .nav.mobile-active .nav-overlay{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    @media(min-width:768px){.links{display:flex}.menu,.nav-overlay{display:none!important}.nav{top:16px;padding:9px 12px 9px 16px}}
+    .hero{padding:110px 0 60px}
+    .hero-grid{display:flex;flex-direction:column;gap:clamp(28px,5vw,60px)}
+    .hero p{font-size:clamp(1rem,1.8vw,1.18rem);line-height:1.5;margin:clamp(20px,4vw,32px) 0;max-width:44ch}
+    .actions{display:flex;flex-direction:column;gap:12px;width:100%}
+    .actions .btn{width:100%;text-align:center}
+    @media(min-width:540px){.actions{flex-direction:row;width:auto}.actions .btn{width:auto}}
+    .hero-art{width:100%;max-width:580px;margin:0 auto;min-height:380px;position:relative;overflow:hidden}
+    .halo{position:absolute;inset:7% 0 3% 7%;border-radius:50%;background:radial-gradient(circle at 68% 28%,#d8ccec,transparent 66%)}
+    .orbit{position:absolute;inset:0;border:1px solid #5e9f7b55;border-radius:50%;transform:rotate(18deg) scale(.89)}
+    .app{position:absolute;left:2%;right:2%;top:4%;bottom:2%;padding:clamp(12px,3vw,20px);border:1px solid #13211b2c;border-radius:clamp(20px,4vw,30px);background:#fafbf6ee;box-shadow:0 20px 60px rgba(19,33,27,.15);transform:rotate(1deg)}
+    .float{position:absolute;right:12px;bottom:12px;padding:10px 14px;border-radius:16px;background:var(--dark);color:var(--paper);box-shadow:0 12px 30px rgba(19,33,27,.25);font-size:.8rem;z-index:10}
+    @media(min-width:1024px){.hero-art{overflow:visible}.hero{min-height:100vh;padding:140px 0 80px;display:grid;align-items:center}.hero-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(40px,5vw,90px);align-items:center}.hero-art{height:620px;max-width:100%}.app{left:8%;right:0;top:8%;bottom:2%;padding:15px;border-radius:30px;transform:rotate(3deg)}.float{right:-3%;bottom:10%;padding:14px 17px}}
+    .reveal{opacity:0;transform:translateY(30px)}
+    .btn,.navcta{transition:transform .45s var(--ease),box-shadow .45s var(--ease),background .2s;will-change:transform}
+    .app-head{display:flex;justify-content:space-between;padding:4px 7px 12px;border-bottom:1px solid var(--line);font-weight:800;font-size:.85rem}
+    .app-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,2vw,13px);margin-top:12px}
+    .tile{padding:clamp(10px,2.5vw,16px);border-radius:16px;min-height:110px;background:#edf2eb;display:flex;flex-direction:column;justify-content:space-between}
+    .tile.mint{background:var(--mint)}.tile.sky{background:var(--sky)}.tile.dark{background:var(--dark);color:var(--paper)}
+    .wide{grid-column:1/-1;min-height:140px}
+    .kicker{font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800;opacity:.75}
+    .big{font-family:var(--font-display);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:500;line-height:1;margin:8px 0 4px}
+    .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:clamp(.7rem,1.2vw,.77rem)}
+    .meter{height:7px;background:#13211b22;border-radius:9px;overflow:hidden;margin-top:10px}
+    .meter span{display:block;width:76%;height:100%;background:var(--teal);border-radius:inherit}
+    @media(prefers-reduced-motion:reduce){.track{animation:none}.reveal{opacity:1;transform:none}}
+    @media(max-width:767px){.hero-art{min-height:420px;overflow:visible}.app{position:relative;left:auto;right:auto;top:auto;bottom:auto;padding:14px;border-radius:20px;transform:none}.float{position:relative;right:auto;bottom:auto;display:inline-block;margin-top:12px}.halo,.orbit{display:none}.footer{overflow:visible;padding:40px 0 0}.footer::before{display:none}.footer-grid{grid-template-columns:1fr;gap:0;padding-bottom:0}.footer-brand{text-align:center;padding:0 0 24px;border-bottom:1px solid rgba(207,238,130,.1)}.footer-brand .brand{justify-content:center;font-size:1.5rem;letter-spacing:-.02em}.footer-brand p{margin:8px auto 0;font-size:.82rem;color:#8fa89a;line-height:1.45;max-width:24ch}.footer-grid>div:not(.footer-brand){padding:20px 0;border-bottom:1px solid rgba(241,240,233,.05)}.footer-grid>div:last-child{border-bottom:none}.footer-grid h3{font-size:.6rem;letter-spacing:.2em;color:#cfee82;margin-bottom:2px;font-weight:700}.footer-links{gap:0;margin-top:8px}.footer-links a{font-size:.82rem;color:#9cb5a8;padding:4px 0;min-height:auto;display:block}.footer-links a::after{display:none}.footer-links-2col{grid-template-columns:1fr 1fr;gap:0 20px}.footer-divider{display:none}.bottom{flex-direction:column;align-items:center;text-align:center;padding:18px 0;gap:4px;border-top:1px solid rgba(241,240,233,.06);margin-top:8px}.bottom span{font-size:.66rem;color:#4a6558;letter-spacing:.01em}}
+    :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+  
+    /* Brand Essence Section */
+    .brand-essence { padding: 90px 0 60px; text-align: center; }
+    .essence-head { max-width: 680px; margin: 0 auto 48px; }
+    .essence-head .eyebrow { margin-bottom: 12px; color: var(--teal); letter-spacing: .14em; font-weight: 800; font-size: .78rem; }
+    .essence-head h2 { font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -.035em; color: var(--ink); }
+    .essence-head p { margin: 0 auto; font-size: 1.05rem; color: var(--muted); line-height: 1.6; }
+    .essence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
+    .essence-card { background: #ffffff; border: 1px solid rgba(19, 33, 27, .09); border-radius: 24px; padding: 36px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 30px rgba(19, 33, 27, .03); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); }
+    .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
+    /* essence-card active removed for uniform professional design */
+    .essence-icon-badge { width: 58px; height: 58px; border-radius: 18px; background: #f0f8e8; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(255, 255, 255, .8); transition: transform .35s var(--ease), background .35s ease; }
+.essence-card:hover .essence-icon-badge { transform: scale(1.08); background: #e2f4c1; }
+    .essence-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -.02em; }
+    .essence-card p { font-size: .92rem; color: var(--muted); margin: 0; }
+    .visual.nafl,.visual.mujahid,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
+
+  </style>
+</head>
+<body>
+  <a href="#top" class="skip-link">Skip to main content</a>
+
+  <!-- Sticky Navigation Header -->
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="Lamim Home">
+      <img src="app/assets/logo-mark.png" alt="Lamim Logo" class="brand-icon" style="height:20px; width:auto; object-fit:contain;" fetchpriority="high" decoding="async">
+      <span>lam<span class="i-green-dot">&#305;</span>m</span>
+    </a>
+    
+    <div class="links">
+      <a href="#difference">Why Lamim</a>
+      <a href="#system">Features</a>
+      <a href="#insights">Preview</a>
+      <a href="#faq">FAQ</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="navcta" href="app/index.html">Open app <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <button type="button" class="menu" aria-label="Open navigation" aria-expanded="false" id="menuToggle"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+
+    <!-- Mobile Navigation Overlay Dropdown -->
+    <div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+        <div class="nav-links-mobile">
+          <a href="#difference" class="nav-link-mobile"><span>Why Lamim</span></a>
+          <a href="#system" class="nav-link-mobile"><span>Features</span></a>
+          <a href="#insights" class="nav-link-mobile"><span>Preview</span></a>
+          <a href="#faq" class="nav-link-mobile"><span>FAQ</span></a>
+        </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">A living system for an intentional life</div>
+          <h1 class="hero-title">One day. Every intention. <em>Held.</em></h1>
+          <p>Lamim combines Salah, Nafl, Dhikr, Mujahid, Gym, Career, Finance, Goals, Analysis, and Profile in one private offline-first companion.</p>
+          <div class="actions">
+            <a class="btn" href="app/index.html">Start privately <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn alt" href="#system">Tour the system</a>
+          </div>
+        </div>
+
+        <div class="hero-art reveal">
+          <div class="halo"></div>
+          <div class="orbit"></div>
+          <div class="app">
+            <div class="app-head">
+              <span>Tuesday, 21 July <span style="color:var(--teal)">&#9679; </span></span>
+              <span>&bull;&bull;&bull;</span>
+            </div>
+            <div class="app-grid">
+              <div class="tile mint">
+                <div class="kicker">Next prayer</div>
+                <div class="big">Maghrib</div>
+                <div class="row"><span>in 01:42:18</span><b>18:47</b></div>
+              </div>
+              <div class="tile sky">
+                <div class="kicker">Spiritual health</div>
+                <div class="big">Murid</div>
+                <div class="meter"><span></span></div>
+                <div class="row"><span>this week</span><b>76%</b></div>
+              </div>
+              <div class="tile dark wide">
+                <div class="kicker">Live activity</div>
+                <div class="row"><span>Fajr, Jama'at</span><b style="color:var(--mint)">&#10003;</b></div>
+                <div class="row"><span>Dhikr, 108 repetitions</span><b style="color:var(--mint)">&#10003;</b></div>
+                <div class="row"><span>Gym, 42 minutes</span><b style="color:var(--mint)">&#10003;</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="float"><b>100%</b> local and private</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Infinite Marquee Ribbon -->
+    <div class="ribbon">
+      <div class="track-wrapper">
+        <div class="track">
+          <span>Salah with presence</span>
+          <span>Nafl with intention</span>
+          <span>Dhikr with rhythm</span>
+          <span>Habits with mercy</span>
+          <span>Career with direction</span>
+          <span>Money with clarity</span>
+          <span>Zero cloud, zero tracking</span>
+          <span>Salah with presence</span>
+          <span>Nafl with intention</span>
+          <span>Dhikr with rhythm</span>
+          <span>Habits with mercy</span>
+          <span>Career with direction</span>
+          <span>Money with clarity</span>
+          <span>Zero cloud, zero tracking</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Brand Essence Section -->
+    <section class="brand-essence" id="brand-essence">
+      <div class="wrap">
+        <div class="essence-head reveal">
+          <div class="eyebrow">BRAND ESSENCE</div>
+          <h2>Think. Plan. Achieve.</h2>
+          <p>Lamim is a living system for an intentional life. We bring clarity, planning, and action together to help you achieve more.</p>
+        </div>
+
+        <div class="essence-grid">
+          <!-- Fast -->
+          <div class="essence-card reveal">
+            <div class="essence-icon-badge">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3>Fast</h3>
+            <p>Built for speed</p>
+          </div>
+
+          <!-- Secure -->
+          <div class="essence-card reveal">
+            <div class="essence-icon-badge">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Secure</h3>
+            <p>Your data is safe</p>
+          </div>
+
+          <!-- Smart (Highlighted Card) -->
+          <div class="essence-card reveal">
+            <div class="essence-icon-badge">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="2" y="13" width="4" height="8" rx="1"/></svg>
+            </div>
+            <h3>Smart</h3>
+            <p>AI powered</p>
+          </div>
+
+          <!-- Human -->
+          <div class="essence-card reveal">
+            <div class="essence-icon-badge">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3d7a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3>Human</h3>
+            <p>Designed for people</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+      <div class="wrap stats-grid">
+        <div class="stat-item reveal">
+          <span class="stat-number">100K+</span>
+          <span class="stat-label">Prayers tracked</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-number">10K+</span>
+          <span class="stat-label">Dhikr sessions</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-number">5K+</span>
+          <span class="stat-label">Active users</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Private & offline</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 01: Difference -->
+    <section id="difference">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="eyebrow">01 · The Lamim difference</div>
+            <h2>One system beats nine scattered apps.</h2>
+          </div>
+          <p>Lamim does not treat prayer, habits, money, health, and ambition as separate lives. It gives them one context, one rhythm, and one private home.</p>
+        </div>
+
+        <div class="manifest">
+          <article class="reveal">
+            <b>01</b>
+            <h3>Private by architecture</h3>
+            <p>No account, no cloud sync, no third-party profile.</p>
+          </article>
+          <article class="reveal">
+            <b>02</b>
+            <h3>Built for real days</h3>
+            <p>A custom 3 AM waking-day boundary for night worship.</p>
+          </article>
+          <article class="reveal">
+            <b>03</b>
+            <h3>Useful, not noisy</h3>
+            <p>Insight from patterns, not engagement tricks.</p>
+          </article>
+          <article class="reveal">
+            <b>04</b>
+            <h3>Always close</h3>
+            <p>Offline-first storage and local calculations.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 02: Complete System -->
+    <section class="dark" id="system">
+      <div class="wrap dark-grid">
+        <div class="reveal">
+          <div class="eyebrow" style="color:var(--mint)">02 · The complete system</div>
+          <h2>Everything your day asks for.</h2>
+          <p>Each module is focused, but the intelligence compounds across the whole experience.</p>
+        </div>
+
+        <div class="system">
+          <article class="system-row reveal">
+            <div class="num">01</div>
+            <h3>Salah</h3>
+            <p>Local prayer times, countdowns, Jama'at, Qaza, Missed, and a three-week heatmap.</p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">02</div>
+            <h3>Dhikr</h3>
+            <p>Tactile Tasbeeh with presets, custom phrases, haptics, sound, sessions, and streaks.</p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">03</div>
+            <h3>Nafl</h3>
+            <p>Sunnah Muakkadah, Tahajjud, Witr, and optional prayers with a 3 AM boundary.</p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">04</div>
+            <h3>Mujahid</h3>
+            <p>Habit forge with relapse logging, progression badges, and 4-7-8 breathing.</p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">05</div>
+            <h3>Gym</h3>
+            <p>Workout sessions, sets, reps, movement streaks, diet, sleep, and records.</p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">06</div>
+            <h3>Career</h3>
+            <p>Focus sessions, study time, career goals, milestones, and direction.</p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">07</div>
+            <h3>Finance</h3>
+            <p>220+ categories, savings vaults, timelines, currency support, and PDF statements.</p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">08</div>
+            <h3>Analysis</h3>
+            <p>Spiritual Health Score, weighted ranks, trends, and downloadable reports.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 03: Salah -->
+    <section id="feature-salah">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">03 · Salah</div>
+          <h2>Let consistency become visible.</h2>
+          <p>Local sun-angle calculations power the next-prayer countdown. The heatmap adds context, showing Jama'at, Alone, Qaza, and Missed.</p>
+          <a class="btn" href="app/index.html?section=salah">Explore Salah <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual salah reveal">
+          <div class="v-info">
+            <div class="eyebrow" style="color:var(--mint)">Three-week rhythm</div>
+            <h3>Small marks. A clearer pattern.</h3>
+            <p>Fajr and Dhuhr are complete. Asr is next. Maghrib is waiting for you.</p>
+          </div>
+          <div class="v-art">
+            <div class="heatmap" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 04: Nafl -->
+    <section id="feature-nafl" style="background:var(--gold)">
+      <div class="wrap feature-grid">
+        <div class="visual nafl reveal">
+          <div class="v-info">
+            <div class="eyebrow">04 · Nafl Salah</div>
+            <h3>Keep the prayers you choose.</h3>
+            <p>Witr completed. Tahajjud remembered. A private record of the prayers that asked a little more from you.</p>
+          </div>
+          <div class="v-art">
+            <div class="nafl-orbit-ring" aria-hidden="true">
+              <div class="nafl-badge witr">Witr</div>
+              <div class="nafl-badge tahajjud">Tahajjud</div>
+            </div>
+            <div class="nafl-center-text">
+              <b>3 AM</b>
+              <span>new waking day</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-copy reveal">
+          <div class="eyebrow">The night view</div>
+          <h2>Your night has its own logic.</h2>
+          <p>Tahajjud and Witr belong to the waking day you were living, not an arbitrary midnight boundary.</p>
+          <a class="btn" href="app/index.html?section=nafl">Explore Nafl <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 05: Dhikr -->
+    <section id="feature-dhikr">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">05 · Dhikr</div>
+          <h2>Make repetition feel present.</h2>
+          <p>Tap, haptic response, subtle ripple, and session history let the practice stay meaningful without becoming performative.</p>
+          <a class="btn" href="app/index.html?section=dhikr">Open Dhikr <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual dhikr reveal">
+          <div class="v-info">
+            <div class="eyebrow">Tasbeeh session</div>
+            <h3>108 repetitions, one breath at a time.</h3>
+            <p>Choose a phrase, begin a session, and let the interface disappear behind the rhythm.</p>
+          </div>
+          <div class="v-art">
+            <div class="dhikr-ring">
+              <div class="count">
+                <b>108</b>
+                <span>today</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 06: Mujahid -->
+    <section id="feature-mujahid" style="background:var(--lilac)">
+      <div class="wrap feature-grid">
+        <div class="visual mujahid reveal">
+          <div class="v-info">
+            <div class="eyebrow">06 · Mujahid</div>
+            <h3>Discipline without shame.</h3>
+            <p>Log the hard moment, start the breathing guide, and keep moving.</p>
+          </div>
+          <div class="v-art">
+            <div class="breath" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="feature-copy reveal">
+          <div class="eyebrow">Recovery as a feature</div>
+          <h2>Growth should feel honest.</h2>
+          <p>Streaks, relapse logs, badges, and breathing give you practical tools for habits you are trying to leave behind.</p>
+          <a class="btn" href="app/index.html?section=mujahid">Enter the forge <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 07: Gym -->
+    <section id="feature-gym">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">07 · Gym & movement</div>
+          <h2>Train the body that carries the intention.</h2>
+          <p>Workouts, sets, reps, diet, sleep, movement streaks, and personal records. No social feed, no comparison loop.</p>
+          <a class="btn" href="app/index.html?section=gym">Build your rhythm <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual gym reveal">
+          <div class="v-info">
+            <div class="eyebrow">Training log</div>
+            <h3>12 days of showing up.</h3>
+            <p>42 minutes today. Personal best on the deadlift. Recovery still counts.</p>
+          </div>
+          <div class="v-art">
+            <div class="gym-ring">
+              <div class="gym-stat">
+                <b>8,240</b>
+                <span>steps</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 08: Career -->
+    <section id="feature-career" style="background:var(--coral)">
+      <div class="wrap feature-grid">
+        <div class="visual career reveal">
+          <div class="v-info">
+            <div class="eyebrow">08 · Career</div>
+            <h3>Direction over drift.</h3>
+            <p>One skill improved this week. One project moved forward.</p>
+          </div>
+          <div class="v-art">
+            <div class="career-bars" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+        </div>
+        <div class="feature-copy reveal">
+          <div class="eyebrow">Professional life, with boundaries</div>
+          <h2>Turn ambition into a daily practice.</h2>
+          <p>Keep career goals, focus sessions, study time, and milestones visible without letting work consume the rest of your life.</p>
+          <a class="btn" href="app/index.html?section=career">Shape your path <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 09: Finance -->
+    <section id="feature-finance" style="background:#dcece1">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">09 · Smart finance</div>
+          <h2>Clarity is a form of care.</h2>
+          <p>Track income and expenses across 220+ categories, create savings vaults, see timelines, convert currencies, and export PDF statements.</p>
+          <a class="btn" href="app/index.html?section=finance">Explore the ledger <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual ledger reveal">
+          <div class="ledger-top">
+            <span>Monthly overview</span>
+            <span>July 2026</span>
+          </div>
+          <div class="ledger-total">&#2547;58,000</div>
+          <div class="ledger-row"><span>Income</span><b class="green">+ &#2547;72,000</b></div>
+          <div class="ledger-row"><span>Essentials</span><b>&minus; &#2547;32,500</b></div>
+          <div class="ledger-row"><span>Giving</span><b>&minus; &#2547;8,000</b></div>
+          <div class="ledger-row"><span>Savings vault</span><b class="green">&#2547;8,500 / &#2547;10,000</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 10: Analysis & Insights -->
+    <section id="insights">
+      <div class="wrap analysis-grid">
+        <div class="analysis-board reveal">
+          <div class="analysis-top">
+            <span>Spiritual health report</span>
+            <span class="green">This month</span>
+          </div>
+          <div class="score">76 <small style="font-size:0.4em; color:var(--muted);">/ 100</small></div>
+          <div style="font-size:.78rem; color:var(--muted)">Murid, moving toward Mujahid</div>
+          <div class="chart" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="row"><span>Prayer</span><b>92%</b></div>
+          <div class="row"><span>Dhikr</span><b>88%</b></div>
+        </div>
+        <div class="feature-copy reveal">
+          <div class="eyebrow">10 · Analysis & insights</div>
+          <h2>See the pattern, not just the score.</h2>
+          <p>Connect Salah, Nafl, Dhikr, habits, and goals into a useful long-term view. Review trends and export a PDF report.</p>
+          <a class="btn" href="app/index.html?section=analysis">Open your insights <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 11: Profile -->
+    <section id="feature-profile" class="profile">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">11 · Profile</div>
+          <h2>Your whole self, in one view.</h2>
+          <p>City, prayer method, language, currency, notifications, goals, rank, and preferences in one considered space.</p>
+          <a class="btn" href="app/index.html?section=profile">Make it yours <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="profile-card reveal">
+          <div class="profile-top">
+            <div class="avatar">MR</div>
+            <div>
+              <h3 style="font-size:1.25rem;">Mr riyar</h3>
+              <p style="font-size:0.85rem;">Dhaka · Murid · 18 day rhythm</p>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>92%</b><span>Salah rhythm</span></div>
+            <div class="stat"><b>14</b><span>goals alive</span></div>
+            <div class="stat"><b>&#2547;8.5k</b><span>vault saved</span></div>
+          </div>
+          <div class="profile-row"><span>Current focus</span><b>Steady mornings</b></div>
+          <div class="profile-row"><span>Data location</span><b class="green">This device</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 12: Interactive Demo -->
+    <section id="demo" class="demo">
+      <div class="wrap demo-grid">
+        <div class="demo-copy reveal">
+          <div class="eyebrow" style="color:var(--mint)">12 · A living product</div>
+          <h2>See the app change as you do.</h2>
+          <p>Switch between your day, analysis, and profile. This preview is interactive.</p>
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab" role="tab" aria-selected="true" aria-controls="demo-panel" data-mode="Today" data-title="A steady morning" data-copy="Fajr, dhikr, gym, and room to breathe." data-value="76%">Today</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Analysis" data-title="A longer view" data-copy="Three weeks of rhythm, not a perfect streak." data-value="92%">Analysis</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Profile" data-title="A clear identity" data-copy="Your goals, rank, and private progress in one place." data-value="64%">Profile</button>
+          </div>
+        </div>
+        <div class="phone reveal">
+          <div class="screen" role="tabpanel" id="demo-panel" aria-label="Demo preview" aria-live="polite">
+            <div>
+              <small>Lamim / <span id="mode">Today</span></small>
+              <h3 id="title">A steady morning</h3>
+              <div class="meter"><span id="meter" style="width: 76%;"></span></div>
+            </div>
+            <div>
+              <div class="screen-row">
+                <span id="copy">Fajr, dhikr, gym, and room to breathe.</span>
+                <strong id="value">76%</strong>
+              </div>
+              <div class="screen-row"><span>Private by default</span><span>&#10003;</span></div>
+              <div class="screen-row"><span>Stored on</span><span>This device</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 13: FAQ -->
+    <section id="faq">
+      <div class="wrap faq-grid">
+        <div class="reveal">
+          <div class="eyebrow">13 · Questions, answered</div>
+          <h2>Nothing hidden behind the calm.</h2>
+        </div>
+        <div class="faq-list reveal">
+          <details open>
+            <summary>What is included in Lamim?</summary>
+            <p>Salah, Nafl, Dhikr, Mujahid, Gym, Career, Goals and Sunnah, Smart Finance, Savings Vaults, Analysis, Spiritual Health Score, Profile, local backups, and PWA installation.</p>
+          </details>
+          <details>
+            <summary>Does Lamim need an account?</summary>
+            <p>No. Lamim works without email, password, phone number, or a central user database.</p>
+          </details>
+          <details>
+            <summary>Can I use it without internet?</summary>
+            <p>Yes. The app is built for offline use with local storage and service-worker caching.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final reveal">
+      <div class="wrap final-wrap">
+        <div>
+          <div class="eyebrow" style="color:#2f4e3f;">Everything you need to begin</div>
+          <h2 style="margin-top:12px;">Make room for what lasts.</h2>
+        </div>
+        <div>
+          <p>Open lamim, choose one small practice, and let the rest become clearer with time.</p>
+          <a class="btn btn-final" href="app/index.html">Open app <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wrap footer-grid reveal">
+      <div class="footer-brand">
+        <a class="brand footer-brand-link" href="#top" style="color:var(--paper);">
+          <img src="app/assets/logo-mark.png" alt="Lamim Logo" class="brand-icon" style="height:20px; width:auto; object-fit:contain;">
+          <span>lam<span class="i-green-dot">&#305;</span>m</span>
+        </a>
+        <p>Your entire life, one quiet system.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="#system">Features</a>
+          <a href="#insights">Preview</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <h3>Modules</h3>
+        <div class="footer-links footer-links-2col">
+          <a href="app/index.html?section=salah">Salah</a>
+          <a href="app/index.html?section=nafl">Nafl</a>
+          <a href="app/index.html?section=dhikr">Dhikr</a>
+          <a href="app/index.html?section=mujahid">Mujahid</a>
+          <a href="app/index.html?section=gym">Gym</a>
+          <a href="app/index.html?section=career">Career</a>
+          <a href="app/index.html?section=finance">Finance</a>
+          <a href="app/index.html?section=analysis">Analysis</a>
+        </div>
+      </div>
+      <div>
+        <h3>Product</h3>
+        <div class="footer-links">
+          <a href="#difference">Why Lamim</a>
+          <a href="app/index.html">Open app</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="wrap bottom">
+      <span>Offline first. Always yours.</span>
+      <span>&copy; 2026 lamim. Crafted for the Ummah.</span>
+    </div>
+  </footer>
+
+  <script>
+    window.__motionFallback = setTimeout(function(){
+      document.querySelectorAll('.reveal').forEach(function(el){
+        el.style.opacity = '1'; el.style.transform = 'none';
+      });
+    },5000);
+    window.__motionReady = function(){ clearTimeout(window.__motionFallback); };
+  </script>
+  <script type="module" src="app.min.js"></script>
+</body>
+</html>
+
+
+
+

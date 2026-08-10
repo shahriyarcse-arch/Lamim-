@@ -1,0 +1,188 @@
+/* =============================================
+   LAMIM — BILLION DOLLAR SPLASH SCREEN
+   Ultimate premium aesthetic.
+   Features mask-reveals, smooth easings, and a 
+   luxurious warm light halo.
+   ============================================= */
+
+/* === BASE CONTAINER === */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-splash, 99999);
+  /* Elegant light paper background */
+  background: #f1f0e9; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.splash.hidden {
+  opacity: 0;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+/* === LUXURY HALO (Subtle background glow) === */
+.splash-halo {
+  position: absolute;
+  width: 70vw;
+  height: 70vw;
+  max-width: 800px;
+  max-height: 800px;
+  background: radial-gradient(circle, rgba(228, 202, 113, 0.12) 0%, rgba(61, 122, 90, 0.04) 50%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0;
+  transform: scale(0.9);
+  animation: haloReveal 4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes haloReveal {
+  0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* === MAIN CONTENT === */
+.splash-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* === BRAND WRAP (Layout for logo + text) === */
+.splash-brand-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* === LOGO (Premium Scale & Blur Reveal) === */
+.splash-logo-box {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(61, 122, 90, 0.08), 
+              0 4px 12px rgba(0, 0, 0, 0.02),
+              inset 0 2px 0 rgba(255, 255, 255, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  transform: scale(0.85) translateY(12px);
+  animation: logoBoxReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.splash-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+@keyframes logoBoxReveal {
+  0% { opacity: 0; transform: scale(0.85) translateY(12px); filter: blur(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+/* === WORDMARK (GSAP-style Mask Reveal) === */
+.splash-text-mask {
+  overflow: hidden;
+  padding-bottom: 6px; /* Space for descenders */
+  padding-top: 4px;
+}
+
+.splash-wordmark {
+  font-family: var(--font-display, "Fraunces", Georgia, serif);
+  font-style: italic;
+  font-size: 46px;
+  font-weight: 700;
+  
+  /* Extremely premium gradient text to avoid harsh black */
+  background: linear-gradient(135deg, #13211b 0%, #3d7a5a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  letter-spacing: -0.04em;
+  margin: 0;
+  line-height: 1;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: textMaskReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+@keyframes textMaskReveal {
+  0% { transform: translateY(110%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* The signature green dot */
+.splash-wordmark .i-green-dot,
+.splash-wordmark .i-dot {
+  position: relative;
+  display: inline-block;
+  letter-spacing: 0 !important;
+}
+
+.splash-wordmark .i-green-dot::after,
+.splash-wordmark .i-dot::after {
+  content: "";
+  position: absolute;
+  top: 0.04em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.2em;
+  height: 0.2em;
+  background-color: #97D84C;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(151, 216, 76, 0.8);
+  animation: dotPulse 2.5s ease-in-out infinite alternate 1s;
+  pointer-events: none;
+}
+
+@keyframes dotPulse {
+  0% { opacity: 0.8; filter: drop-shadow(0 0 2px rgba(228, 202, 113, 0.3)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 10px rgba(228, 202, 113, 0.9)); }
+}
+
+/* === MINIMALIST LOADER === */
+.splash-loader-track {
+  width: 160px;
+  height: 2px;
+  background: rgba(61, 122, 90, 0.08); /* Soft teal track instead of harsh grey */
+  border-radius: 4px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: loaderReveal 1s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+}
+
+.splash-loader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #e4ca71 0%, #3d7a5a 100%); /* Gold to Teal */
+  border-radius: 4px;
+  animation: loaderProgress 1.6s cubic-bezier(0.77, 0, 0.175, 1) 0.7s forwards;
+}
+
+@keyframes loaderReveal {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loaderProgress {
+  0% { width: 0%; }
+  40% { width: 65%; }
+  100% { width: 100%; }
+}
