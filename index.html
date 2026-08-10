@@ -534,8 +534,11 @@
             <p>Log the hard moment, start the breathing guide, and keep moving.</p>
           </div>
           <div class="v-art">
-            <div class="breath" id="landing-breath-circle" style="cursor:pointer; user-select:none; -webkit-user-select:none; transition: transform 4s ease-in-out, background 0.3s ease;" title="Tap circle to start 4-7-8 breathing guide" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
-              <span id="landing-breath-text" style="font-weight:800; font-size:clamp(0.68rem, 1.4vw, 0.85rem); text-align:center; z-index:2; pointer-events:none;">4 &middot; 7 &middot; 8</span>
+            <div class="breath" id="landing-breath-circle" style="cursor:pointer; user-select:none; -webkit-user-select:none;" title="Tap circle to start 4-7-8 breathing guide" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
+              <span id="landing-breath-text" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; pointer-events:none;">
+                <b id="landing-breath-state" style="font-size:clamp(0.7rem, 1.3vw, 0.85rem); font-weight:800; line-height:1.1;">4 &middot; 7 &middot; 8</b>
+                <small id="landing-breath-count" style="font-size:clamp(0.6rem, 1.1vw, 0.72rem); opacity:0.85; font-weight:700; display:none; margin-top:2px;"></small>
+              </span>
             </div>
           </div>
         </div>
@@ -958,11 +961,12 @@
       });
     })();
 
-    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING (SINGLE CYCLE & NORMAL IDLE RESTORE) ---- */
+    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING (100% PWA ALIGNED) ---- */
     (function initLandingBreathing() {
       const circle = document.getElementById('landing-breath-circle');
-      const textEl = document.getElementById('landing-breath-text');
-      if (!circle || !textEl) return;
+      const stateEl = document.getElementById('landing-breath-state');
+      const countEl = document.getElementById('landing-breath-count');
+      if (!circle || !stateEl || !countEl) return;
 
       let isRunning = false;
       let intervalId = null;
@@ -975,7 +979,9 @@
         isRunning = false;
         phase = 'idle';
         secondsLeft = 0;
-        textEl.innerHTML = '4 &middot; 7 &middot; 8';
+        stateEl.innerHTML = '4 &middot; 7 &middot; 8';
+        countEl.style.display = 'none';
+        countEl.textContent = '';
         circle.style.animation = '';
         circle.style.transition = 'transform 0.5s ease-out';
         circle.style.transform = '';
@@ -989,17 +995,20 @@
             phase = 'inhale';
             secondsLeft = 4;
             circle.style.animation = 'none';
-            circle.style.transition = 'transform 4000ms ease-in-out';
+            circle.style.transition = 'none';
+            circle.style.transform = 'scale(1)';
+            void circle.offsetWidth;
+            circle.style.transition = 'transform 4s linear';
             circle.style.transform = 'scale(1.5)';
           } else if (phase === 'inhale') {
             phase = 'hold';
             secondsLeft = 7;
-            circle.style.transition = 'transform 7000ms linear';
-            circle.style.transform = 'scale(1.45)';
+            circle.style.transition = 'none';
+            circle.style.transform = 'scale(1.5)';
           } else if (phase === 'hold') {
             phase = 'exhale';
             secondsLeft = 8;
-            circle.style.transition = 'transform 8000ms ease-in-out';
+            circle.style.transition = 'transform 8s linear';
             circle.style.transform = 'scale(1.0)';
           } else if (phase === 'exhale') {
             stopBreathing();
@@ -1007,12 +1016,16 @@
           }
         }
 
+        countEl.style.display = 'block';
         if (phase === 'inhale') {
-          textEl.textContent = 'Inhale ' + secondsLeft + 's';
+          stateEl.textContent = 'Breathe In';
+          countEl.textContent = secondsLeft + 's Inhale';
         } else if (phase === 'hold') {
-          textEl.textContent = 'Hold ' + secondsLeft + 's';
+          stateEl.textContent = 'Hold';
+          countEl.textContent = secondsLeft + 's Stillness';
         } else if (phase === 'exhale') {
-          textEl.textContent = 'Exhale ' + secondsLeft + 's';
+          stateEl.textContent = 'Breathe Out';
+          countEl.textContent = secondsLeft + 's Release';
         }
 
         secondsLeft--;
