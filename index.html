@@ -64,10 +64,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="styles.min.css?v=20260811_v73" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="styles.min.css?v=20260811_v74" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
-    <link rel="stylesheet" href="styles.min.css?v=20260811_v73">
+    <link rel="stylesheet" href="styles.min.css?v=20260811_v74">
     <style>.reveal{opacity:1;transform:none}
     /* Brand Essence Section */
     .brand-essence { padding: 90px 0 60px; text-align: center; }
@@ -175,11 +175,24 @@
     .essence-head .eyebrow { margin-bottom: 12px; color: var(--teal); letter-spacing: .14em; font-weight: 800; font-size: .78rem; }
     .essence-head h2 { font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -.035em; color: var(--ink); }
     .essence-head p { margin: 0 auto; font-size: 1.05rem; color: var(--muted); line-height: 1.6; }
+    .essence-icon-badge { width: 56px; height: 56px; border-radius: 16px; background: rgba(61, 122, 90, 0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; flex-shrink: 0; }
     .essence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
     .essence-card { background: #ffffff; border: 1px solid rgba(19, 33, 27, .09); border-radius: 24px; padding: 32px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 30px rgba(19, 33, 27, .03); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); position: relative; }
     .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
     .essence-tap-hint { font-family: var(--font-body, sans-serif); font-size: 0.7rem; font-weight: 800; color: var(--teal); margin-top: 14px; opacity: 0; transform: translateY(4px); transition: all 0.25s ease; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(61,122,90,0.08); padding: 3px 10px; border-radius: 99px; }
     .essence-card:hover .essence-tap-hint, .essence-card:focus .essence-tap-hint { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 767px) {
+      .brand-essence { padding: 50px 0 35px; }
+      .essence-head { margin-bottom: 28px; }
+      .essence-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+      .essence-card { padding: 20px 10px 16px !important; border-radius: 18px !important; }
+      .essence-icon-badge { width: 44px !important; height: 44px !important; margin-bottom: 10px !important; border-radius: 12px !important; }
+      .essence-icon-badge svg { width: 22px !important; height: 22px !important; }
+      .essence-card h3 { font-size: 1.05rem !important; margin-bottom: 4px !important; }
+      .essence-card p { font-size: 0.8rem !important; line-height: 1.35 !important; }
+      .essence-tap-hint { margin-top: 10px !important; font-size: 0.6rem !important; padding: 2px 8px !important; opacity: 0.95 !important; transform: none !important; }
+    }
 
     /* ---- ESSENCE OVERVIEW MODAL POPUP ---- */
     .essence-modal-overlay {
