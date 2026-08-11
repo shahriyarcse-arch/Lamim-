@@ -394,7 +394,14 @@ const Utils = {
       });
   },
 
-  uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); },
+  uid() {
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+      const arr = new Uint8Array(8);
+      crypto.getRandomValues(arr);
+      return Date.now().toString(36) + Array.from(arr, b => b.toString(36)).join('').slice(0, 8);
+    }
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  },
 
   // Toast
   toast(msg, type = 'info', duration = 3000) {
