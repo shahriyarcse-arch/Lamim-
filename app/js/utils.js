@@ -47,6 +47,23 @@ const Utils = {
     return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', ...opts });
   },
 
+  // Safe date parser for YYYY-MM-DD strings in local timezone
+  parseDate(str) {
+    if (!str) return new Date();
+    if (str instanceof Date) return str;
+    const parts = String(str).trim().split('T')[0].split('-');
+    if (parts.length === 3) {
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10) - 1;
+      const d = parseInt(parts[2], 10);
+      if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+        return new Date(y, m, d);
+      }
+    }
+    const parsed = new Date(str);
+    return isNaN(parsed.getTime()) ? new Date() : parsed;
+  },
+
   // Hijri date (simple approximation)
   toHijri(date) {
     const settings = DB.getSettings();
