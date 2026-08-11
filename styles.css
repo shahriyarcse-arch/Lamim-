@@ -1784,6 +1784,70 @@ section.dark .feature-copy p {
   font-weight: 700 !important;
 }
 
+/* Section 11 Profile Typography & Visual Polish */
+#feature-profile .feature-copy .eyebrow {
+  color: #3d246c !important;
+  background: rgba(61, 36, 108, 0.08) !important;
+  border: 1px solid rgba(61, 36, 108, 0.18) !important;
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+#feature-profile .feature-copy h2 {
+  color: #1b0f33 !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+#feature-profile .feature-copy p {
+  color: #4a3a66 !important;
+  line-height: 1.58;
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+
+.visual.profile {
+  background: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 22px 55px rgba(36, 20, 64, 0.09) !important;
+  padding: clamp(24px, 3.5vw, 36px) !important;
+  color: #1b0f33 !important;
+}
+
+.visual.profile .avatar {
+  background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%) !important;
+  color: #0e382b !important;
+  font-weight: 900 !important;
+  box-shadow: 0 4px 14px rgba(61, 122, 90, 0.25) !important;
+}
+
+.visual.profile .stat {
+  background: rgba(61, 36, 108, 0.04) !important;
+  border: 1px solid rgba(61, 36, 108, 0.08) !important;
+}
+
+.visual.profile .stat b {
+  color: #1b0f33 !important;
+  font-weight: 800 !important;
+}
+
+.visual.profile .stat span {
+  color: #4a3a66 !important;
+  font-weight: 700 !important;
+}
+
+.profile-row {
+  border-top: 1px solid rgba(61, 36, 108, 0.1) !important;
+  color: #4a3a66 !important;
+  font-weight: 600 !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
