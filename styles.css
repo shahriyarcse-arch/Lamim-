@@ -1984,7 +1984,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .hero { padding: 90px 0 40px; }
   .hero p { font-size: 1rem; line-height: 1.55; }
   .hero-art { min-height: 420px; overflow: visible; }
-  .app { position: relative; left: auto; right: auto; top: auto; bottom: auto; padding: 14px; border-radius: 20px; transform: none; }
+  .app { position: relative; left: auto; right: auto; top: auto; bottom: auto; padding: 14px; border-radius: 20px; transform: none !important; -webkit-transform: none !important; }
   .float { position: relative; right: auto; bottom: auto; display: inline-block; margin-top: 12px; }
   .app-grid { gap: 8px; margin-top: 10px; }
   .tile { padding: 12px; min-height: 90px; border-radius: 14px; }
