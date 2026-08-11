@@ -1731,6 +1731,59 @@ section.dark .feature-copy p {
   font-weight: 800 !important;
 }
 
+/* Analysis & Insights Section Typography & Visual Polish */
+#insights .feature-copy .eyebrow {
+  color: #11241a !important;
+  background: rgba(17, 36, 26, 0.08) !important;
+  border: 1px solid rgba(17, 36, 26, 0.18) !important;
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+#insights .feature-copy h2 {
+  color: #0b1a13 !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+#insights .feature-copy p {
+  color: #27473b !important;
+  line-height: 1.58;
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+
+.analysis-board {
+  background: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 22px 55px rgba(17, 36, 26, 0.09) !important;
+  padding: clamp(24px, 3.5vw, 36px) !important;
+  color: #11241a !important;
+}
+
+.analysis-top {
+  border-bottom: 1px solid rgba(17, 36, 26, 0.12) !important;
+  padding-bottom: 12px !important;
+  font-weight: 800 !important;
+  color: #11241a !important;
+}
+
+#landing-shs-score {
+  color: #0b1a13 !important;
+  font-weight: 900 !important;
+}
+
+#landing-shs-rank {
+  color: #27473b !important;
+  font-weight: 700 !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
