@@ -82,7 +82,10 @@ test.describe('Landing Page Interactive Widgets Suite', () => {
 
   test('06 - Text selection is prevented on interactive cards and buttons', async ({ page }) => {
     const dhikrRing = page.locator('#landing-dhikr-ring');
-    const userSelect = await dhikrRing.evaluate((el) => window.getComputedStyle(el).userSelect);
+    const userSelect = await dhikrRing.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return style.userSelect || style.webkitUserSelect || style.getPropertyValue('-webkit-user-select');
+    });
     expect(userSelect).toBe('none');
   });
 });
