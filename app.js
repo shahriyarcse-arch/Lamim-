@@ -125,7 +125,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         el.style.transform = '';
       });
       return () => { };
-    }, { amount: 0.01 });
+    }, { amount: 0, margin: '0px 0px -60px 0px' });
   });
 
   // Manifest scroll reveal (prominent depth entrance)
@@ -139,7 +139,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.querySelectorAll('.manifest article').forEach((a) => { a.classList.remove('reveal'); a.style.transform = ''; a.style.opacity = '1'; });
       });
       return () => { };
-    }, { amount: 0.01 });
+    }, { amount: 0, margin: '0px 0px -60px 0px' });
   }
 
   // System rows scroll reveal
@@ -157,7 +157,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         });
       });
       return () => { };
-    }, { amount: 0.01 });
+    }, { amount: 0, margin: '0px 0px -60px 0px' });
   }
 
   // FAQ scroll reveal
@@ -168,7 +168,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const faqEnd = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
       animate('details', { opacity: [0, 1], transform: [faqStart, faqEnd] }, { duration: 0.6, easing: ease });
       return () => { };
-    }, { amount: 0.1 });
+    }, { amount: 0, margin: '0px 0px -60px 0px' });
   }
 
 }
