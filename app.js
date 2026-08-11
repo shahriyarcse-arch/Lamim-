@@ -88,12 +88,12 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   animate('.float', { opacity: [0, 1] }, { duration: 0.5, delay: 0.7, easing: ease });
 }
 
-/* ---- SCROLL REVEAL (skip if reduced motion) ---- */
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+/* ---- SCROLL REVEAL (desktop only, skip on mobile to prevent WebKit animation reflows) ---- */
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.innerWidth >= 768) {
 
   // All .reveal elements (skip children handled by stagger groups and hero)
   const staggerParents = ['.manifest', '.system'];
-  const isDesk = window.innerWidth >= 768;
+  const isDesk = true;
   document.querySelectorAll('.reveal').forEach((el) => {
     if (staggerParents.some((sel) => el.closest(sel))) return;
     if (el.closest('.hero') || el.classList.contains('hero-art')) return;
