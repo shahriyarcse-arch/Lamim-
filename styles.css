@@ -867,53 +867,75 @@ section {
   border-top: 1px solid rgba(19, 33, 27, 0.12);
   border-bottom: 1px solid rgba(19, 33, 27, 0.12);
   gap: 16px;
-  padding: 16px 0;
+  padding: 20px 0;
 }
 
 .manifest article {
-  padding: 24px 20px;
-  border: 1px solid rgba(19, 33, 27, 0.08);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.45);
+  padding: 26px 22px 22px;
+  border: 1px solid rgba(19, 33, 27, 0.09);
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.85) 0%, rgba(246, 245, 238, 0.5) 100%);
+  box-shadow: 0 6px 24px rgba(19, 33, 27, 0.03);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.manifest article::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--mint));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.manifest article:hover::before {
+  opacity: 1;
 }
 
 .manifest article:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
   background: #ffffff;
-  border-color: rgba(43, 81, 64, 0.28);
-  box-shadow: 0 14px 36px rgba(19, 33, 27, 0.08);
+  border-color: rgba(43, 81, 64, 0.3);
+  box-shadow: 0 16px 40px rgba(19, 33, 27, 0.09);
 }
 
 .manifest b {
-  display: block;
+  display: inline-block;
   color: #2b5140;
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.3rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
+  font-family: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 10px;
   transition: transform 0.3s ease;
 }
 
 .manifest article:hover b {
-  transform: scale(1.1);
-  color: #1a382c;
+  transform: scale(1.08) translateX(2px);
+  color: #163629;
 }
 
 .manifest h3 {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.08rem, 1.3vw, 1.28rem);
   font-weight: 800;
-  color: #13211b;
-  letter-spacing: -0.025em;
+  color: #0f1c16;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
   margin-bottom: 8px;
 }
 
 .manifest p {
-  font-size: 0.92rem;
-  color: #4a5950;
-  line-height: 1.55;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-size: clamp(0.82rem, 1vw, 0.92rem);
+  color: #4a5c51;
+  line-height: 1.48;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -921,22 +943,24 @@ section {
   .manifest {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    padding: 14px 0;
   }
   .manifest article {
-    padding: 18px 12px 14px;
+    padding: 20px 14px 16px;
     border-radius: 18px;
   }
   .manifest b {
-    font-size: 1.4rem;
-    margin-bottom: 4px;
+    font-size: 1.45rem;
+    margin-bottom: 6px;
   }
   .manifest h3 {
-    font-size: 1.02rem;
-    margin-bottom: 4px;
+    font-size: 1.05rem;
+    letter-spacing: -0.025em;
+    margin-bottom: 6px;
   }
   .manifest p {
-    font-size: 0.78rem;
-    line-height: 1.38;
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
 }
 
