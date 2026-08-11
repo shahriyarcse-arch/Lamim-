@@ -368,7 +368,14 @@ const Finance = {
   },
 
   generateCardNumber() {
-    const grp = () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
+    const grp = () => {
+      if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+        const arr = new Uint8Array(4);
+        crypto.getRandomValues(arr);
+        return Array.from(arr, b => (b % 10).toString()).join('');
+      }
+      return Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
+    };
     return grp() + grp() + grp() + grp();
   },
 
