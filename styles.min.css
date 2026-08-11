@@ -1102,6 +1102,14 @@ section {
   color: #b9c7bd;
 }
 
+.visual.salah {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  min-height: auto !important;
+  padding: clamp(24px, 4vw, 38px) !important;
+  gap: 20px !important;
+}
+
 .visual.salah .v-art {
   width: 100% !important;
   max-width: 100% !important;
@@ -1110,20 +1118,20 @@ section {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  padding: 16px 0 !important;
+  padding: 16px 0 8px !important;
 }
 
 .heatmap {
   display: grid;
-  grid-template-columns: repeat(7, clamp(32px, 7.5vw, 46px));
-  gap: clamp(7px, 1.5vw, 12px);
+  grid-template-columns: repeat(7, clamp(34px, 8vw, 52px));
+  gap: clamp(8px, 1.8vw, 14px);
   transform: rotate(-3deg);
   margin: 0 auto;
 }
 
 .heatmap i {
   aspect-ratio: 1;
-  border-radius: 8px;
+  border-radius: clamp(7px, 1.5vw, 10px);
   background: #2b5140;
   transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
@@ -1135,7 +1143,7 @@ section {
 .heatmap i:hover {
   transform: scale(1.35) rotate(4deg);
   background: #cfee82 !important;
-  box-shadow: 0 0 14px rgba(207, 238, 130, 0.85);
+  box-shadow: 0 0 16px rgba(207, 238, 130, 0.9);
   z-index: 10;
 }
 
