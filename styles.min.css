@@ -1869,8 +1869,10 @@ details p {
   transform: translateY(0) scale(1);
 }
 
-.visual, .analysis-board, .profile-card, .phone, .system-row {
+.visual, .analysis-board, .profile-card, .phone, .system-row, .essence-card, .manifest article {
   transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .visual.mujahid { transform: rotate(-2deg); }
 .visual.career { transform: rotate(2deg); }
@@ -1991,7 +1993,6 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .hero p { font-size: 1rem; line-height: 1.55; }
   .hero-art { min-height: 420px; overflow: visible; }
   .reveal {
-    will-change: transform, opacity;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }

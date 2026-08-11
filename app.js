@@ -120,9 +120,12 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         }
       }
       animate(el, { opacity: [0, 1], transform: [sT, eT] }, { duration: 0.6, easing: ease }).finished.then(() => {
+        el.style.transition = 'none';
         el.classList.remove('reveal');
         el.style.opacity = '1';
         el.style.transform = '';
+        void el.offsetWidth;
+        el.style.transition = '';
       });
       return () => { };
     }, { amount: 0, margin: '0px 0px -60px 0px' });
@@ -136,7 +139,14 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const sT = isDesk ? 'translateY(' + td + ') scale(0.97)' : 'translateY(' + td + ')';
       const eT = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
       animate('.manifest article', { opacity: [0, 1], transform: [sT, eT] }, { duration: 0.6, easing: ease }).finished.then(() => {
-        document.querySelectorAll('.manifest article').forEach((a) => { a.classList.remove('reveal'); a.style.transform = ''; a.style.opacity = '1'; });
+        document.querySelectorAll('.manifest article').forEach((a) => {
+          a.style.transition = 'none';
+          a.classList.remove('reveal');
+          a.style.transform = '';
+          a.style.opacity = '1';
+          void a.offsetWidth;
+          a.style.transition = '';
+        });
       });
       return () => { };
     }, { amount: 0, margin: '0px 0px -60px 0px' });
@@ -151,9 +161,12 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const sysEnd = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
       animate('.system-row', { opacity: [0, 1], transform: [sysStart, sysEnd] }, { duration: 0.65, easing: ease }).finished.then(() => {
         document.querySelectorAll('.system-row').forEach((r) => {
+          r.style.transition = 'none';
           r.classList.remove('reveal');
           r.style.transform = '';
           r.style.opacity = '1';
+          void r.offsetWidth;
+          r.style.transition = '';
         });
       });
       return () => { };
@@ -166,7 +179,16 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     inView(faqList, () => {
       const faqStart = isDesk ? 'translateY(28px) scale(0.97)' : 'translateY(24px)';
       const faqEnd = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
-      animate('details', { opacity: [0, 1], transform: [faqStart, faqEnd] }, { duration: 0.6, easing: ease });
+      animate('details', { opacity: [0, 1], transform: [faqStart, faqEnd] }, { duration: 0.6, easing: ease }).finished.then(() => {
+        document.querySelectorAll('.faq-list details').forEach((d) => {
+          d.style.transition = 'none';
+          d.classList.remove('reveal');
+          d.style.transform = '';
+          d.style.opacity = '1';
+          void d.offsetWidth;
+          d.style.transition = '';
+        });
+      });
       return () => { };
     }, { amount: 0, margin: '0px 0px -60px 0px' });
   }
