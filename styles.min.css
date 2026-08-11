@@ -491,49 +491,53 @@ p {
   margin: 0 auto;
   min-height: auto;
   position: relative;
-  overflow: visible;
+  overflow: visible !important;
   padding-bottom: 28px;
-  opacity: 0;
+  opacity: 1;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
 @media (min-width: 1024px) {
   .hero-art {
-    overflow: visible;
+    overflow: visible !important;
   }
 }
 
 .halo {
-  position: absolute;
-  inset: 7% 0 3% 7%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 68% 28%, #d8ccec, transparent 66%);
+  position: absolute !important;
+  inset: -6% -8% -6% -6% !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 65% 35%, rgba(16, 185, 129, 0.18), rgba(94, 53, 177, 0.12) 50%, transparent 75%) !important;
+  filter: blur(28px) !important;
+  z-index: 0 !important;
 }
 
 .orbit {
-  position: absolute;
-  inset: 0;
-  border: 1px solid #5e9f7b55;
-  border-radius: 50%;
-  transform: rotate(18deg) scale(.89);
-  animation: spin 25s linear infinite;
+  position: absolute !important;
+  inset: -18px !important;
+  border: 2px dashed rgba(16, 185, 129, 0.45) !important;
+  border-radius: 50% !important;
+  transform: rotate(18deg) scale(0.98) !important;
+  animation: spin 22s linear infinite !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
 }
 
 .orbit::after {
-  content: "";
-  position: absolute;
-  right: 13%;
-  top: 12%;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--teal);
-  box-shadow: 0 0 0 9px #5e9f7b22;
+  content: "" !important;
+  position: absolute !important;
+  right: 8% !important;
+  top: 6% !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.25), 0 0 16px rgba(16, 185, 129, 0.8) !important;
 }
 
 @keyframes spin {
-  to { transform: rotate(378deg) scale(.89); }
+  to { transform: rotate(378deg) scale(.98); }
 }
 
 .app {
