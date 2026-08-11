@@ -2014,12 +2014,10 @@ a:focus-visible, button:focus-visible, input:focus-visible {
     min-height: auto;
     padding: clamp(16px, 4vw, 24px);
     gap: 16px;
-    transform: none !important;
-    -webkit-transform: none !important;
   }
-  .visual.mujahid, .visual.career, .analysis-board, .profile-card, .phone, .system-row, article {
-    transform: none !important;
-    -webkit-transform: none !important;
+  .visual.mujahid, .visual.career {
+    transform: none;
+    -webkit-transform: none;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
@@ -2055,8 +2053,8 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .profile-card, .analysis-board {
     padding: clamp(16px, 4vw, 24px);
     min-height: auto;
-    transform: none !important;
-    -webkit-transform: none !important;
+    transform: none;
+    -webkit-transform: none;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
@@ -2096,10 +2094,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .track { animation-duration: 25s; -webkit-transform: translateZ(0); transform: translateZ(0); }
 }
 
-@keyframes mobileSmoothUp {
-  0% { opacity: 0; transform: translateY(24px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
+/* JS inView handles mobile entrance animation */
 
 /* Accessibility: reduced motion — show all content immediately */
 @media (prefers-reduced-motion: reduce) {

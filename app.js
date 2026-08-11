@@ -142,12 +142,14 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     }, { amount: 0.01 });
   }
 
-  // System rows scroll reveal (prominent depth entrance)
+  // System rows scroll reveal
   const system = document.querySelector('.system');
   if (system) {
     inView(system, () => {
-      const sd = isDesk ? '48px' : '32px';
-      animate('.system-row', { opacity: [0, 1], transform: ['translateY(' + sd + ') scale(0.97)', 'translateY(0) scale(1)'] }, { duration: 0.75, easing: ease }).finished.then(() => {
+      const sd = isDesk ? '48px' : '28px';
+      const sysStart = isDesk ? 'translateY(' + sd + ') scale(0.97)' : 'translateY(' + sd + ')';
+      const sysEnd = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
+      animate('.system-row', { opacity: [0, 1], transform: [sysStart, sysEnd] }, { duration: 0.65, easing: ease }).finished.then(() => {
         document.querySelectorAll('.system-row').forEach((r) => {
           r.classList.remove('reveal');
           r.style.transform = '';
@@ -158,11 +160,13 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     }, { amount: 0.01 });
   }
 
-  // FAQ scroll reveal (prominent depth entrance)
+  // FAQ scroll reveal
   const faqList = document.querySelector('.faq-list');
   if (faqList) {
     inView(faqList, () => {
-      animate('details', { opacity: [0, 1], transform: ['translateY(28px) scale(0.97)', 'translateY(0) scale(1)'] }, { duration: 0.65, easing: ease });
+      const faqStart = isDesk ? 'translateY(28px) scale(0.97)' : 'translateY(24px)';
+      const faqEnd = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
+      animate('details', { opacity: [0, 1], transform: [faqStart, faqEnd] }, { duration: 0.6, easing: ease });
       return () => { };
     }, { amount: 0.1 });
   }
