@@ -2695,6 +2695,12 @@
         requestAnimationFrame(step);
       }
 
+      // Set initial state to 0 before animation triggers
+      statNumbers.forEach(el => {
+        const suffix = el.getAttribute('data-suffix') || '';
+        el.textContent = '0' + suffix;
+      });
+
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
@@ -2703,7 +2709,7 @@
               observer.disconnect();
             }
           });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
         observer.observe(statsSection);
       } else {
