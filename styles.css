@@ -2076,8 +2076,3 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .reveal { opacity: 1 !important; transform: none !important; }
 }
 .ledger-row b { flex-shrink: 0; }
-
-/* Accessibility: reduced motion — show all content immediately */
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1 !important; transform: none !important; }
-}
