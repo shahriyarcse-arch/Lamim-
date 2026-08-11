@@ -569,8 +569,17 @@ const Profile = {
         await DB.remove('lamim_user');
         try { localStorage.removeItem('lamim_user'); } catch {}
         
-        // Clear active user keys
-        const activeKeys = Object.keys(DB._cache).filter(k => k !== 'lamim_profiles_vault');
+        // Clear current active user's specific data keys (both scoped usr_{id}_ and active cache)
+        const userPrefix = user && user.id ? `usr_${user.id}_` : null;
+        const allKeys = DB.keys();
+        allKeys.forEach(k => {
+          if (userPrefix && k.startsWith(userPrefix)) {
+            delete DB._cache[k];
+            try { localStorage.removeItem(k); } catch {}
+            DB._asyncDelete(k);
+          }
+        });
+        const activeKeys = Object.keys(DB._cache).filter(k => k !== 'lamim_profiles_vault' && k !== 'lamim_settings' && k !== 'lamim_lang');
         activeKeys.forEach(k => {
           delete DB._cache[k];
           try { localStorage.removeItem(k); } catch {}
