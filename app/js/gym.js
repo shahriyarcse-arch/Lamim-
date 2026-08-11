@@ -56,7 +56,7 @@ const Gym = {
     if (isToday) {
       label.textContent = window.t ? window.t('Today') : 'Today';
     } else {
-      const dObj = new Date(this.selectedDate + 'T00:00:00');
+      const dObj = Utils.parseDate(this.selectedDate);
       const formatted = dObj.toLocaleDateString(
         (typeof App !== 'undefined' && App.lang === 'bn') ? 'bn-BD' : 'en-US',
         { month: 'short', day: 'numeric' }
