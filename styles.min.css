@@ -1092,59 +1092,78 @@ section {
   50% { transform: scale(1.02); }
 }
 
-/* Salah Visual */
+/* Salah Visual & Giant Heatmap Grid */
 .salah {
-  background: #173329;
-  color: var(--paper);
+  background: #173329 !important;
+  color: var(--paper) !important;
 }
 
 .salah p {
-  color: #b9c7bd;
+  color: #b9c7bd !important;
 }
 
+#feature-salah .visual.salah,
 .visual.salah {
+  display: flex !important;
   flex-direction: column !important;
-  align-items: stretch !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
   min-height: auto !important;
-  padding: clamp(24px, 4vw, 38px) !important;
-  gap: 20px !important;
+  padding: clamp(28px, 4.5vw, 48px) !important;
+  gap: 24px !important;
 }
 
+#feature-salah .visual.salah .v-info,
+.visual.salah .v-info {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: none !important;
+  text-align: center !important;
+}
+
+#feature-salah .visual.salah .v-art,
 .visual.salah .v-art {
   width: 100% !important;
   max-width: 100% !important;
   height: auto !important;
   min-height: auto !important;
+  flex: none !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  padding: 16px 0 8px !important;
+  padding: 12px 0 !important;
+  margin: 0 auto !important;
 }
 
 .heatmap {
-  display: grid;
-  grid-template-columns: repeat(7, clamp(34px, 8vw, 52px));
-  gap: clamp(8px, 1.8vw, 14px);
-  transform: rotate(-3deg);
-  margin: 0 auto;
+  display: grid !important;
+  grid-template-columns: repeat(7, clamp(38px, 9.5vw, 62px)) !important;
+  gap: clamp(10px, 2.2vw, 18px) !important;
+  transform: rotate(-3deg) !important;
+  margin: 0 auto !important;
+  justify-content: center !important;
 }
 
 .heatmap i {
-  aspect-ratio: 1;
-  border-radius: clamp(7px, 1.5vw, 10px);
-  background: #2b5140;
-  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-  position: relative;
+  aspect-ratio: 1 !important;
+  width: clamp(38px, 9.5vw, 62px) !important;
+  height: clamp(38px, 9.5vw, 62px) !important;
+  border-radius: clamp(8px, 1.8vw, 12px) !important;
+  background: #2b5140 !important;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  position: relative !important;
 }
-.heatmap i:nth-child(3n) { background: var(--teal); }
-.heatmap i:nth-child(5n) { background: var(--mint); }
+
+.heatmap i:nth-child(3n) { background: var(--teal) !important; }
+.heatmap i:nth-child(5n) { background: var(--mint) !important; }
 
 .heatmap i:hover {
-  transform: scale(1.35) rotate(4deg);
+  transform: scale(1.35) rotate(4deg) !important;
   background: #cfee82 !important;
-  box-shadow: 0 0 16px rgba(207, 238, 130, 0.9);
-  z-index: 10;
+  box-shadow: 0 0 20px rgba(207, 238, 130, 0.95) !important;
+  z-index: 10 !important;
 }
 
 /* Nafl Visual */
