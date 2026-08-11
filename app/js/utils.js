@@ -489,8 +489,9 @@ const Utils = {
     if (this._versesLoading || (window.LamimVerses && window.LamimVerses.length)) return;
     this._versesLoading = true;
     const ctrl = new AbortController();
-    const to = setTimeout(() => ctrl.abort(), 8000);
-    fetch('js/verses.json', { signal: ctrl.signal })
+    const to = setTimeout(() => ctrl.abort(), 12000);
+    const path = (typeof window !== 'undefined' && window.location.pathname.includes('/app/')) ? './js/verses.json' : 'js/verses.json';
+    fetch(path, { signal: ctrl.signal })
       .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(d => { window.LamimVerses = d; })
       .catch(e => { if (e.name !== 'AbortError') console.warn('verses load failed', e); })
