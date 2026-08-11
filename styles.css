@@ -1672,16 +1672,63 @@ section.dark .feature-copy p {
   padding: 8px !important;
 }
 
-#landing-breath-state {
-  font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.6vw, 1.35rem) !important;
+/* Smart Finance Section Typography & Visual Polish */
+#feature-finance .feature-copy .eyebrow {
+  color: #0e382b !important;
+  background: rgba(14, 56, 43, 0.08) !important;
+  border: 1px solid rgba(14, 56, 43, 0.18) !important;
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+#feature-finance .feature-copy h2 {
+  color: #08261c !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+#feature-finance .feature-copy p {
+  color: #27473b !important;
+  line-height: 1.58;
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+
+.visual.ledger {
+  background: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 22px 55px rgba(9, 38, 29, 0.1) !important;
+  padding: clamp(24px, 3.5vw, 36px) !important;
+  color: #0e382b !important;
+}
+
+#ledger-month-btn {
+  color: #0e382b !important;
+  background: rgba(14, 56, 43, 0.08) !important;
+  border: 1px solid rgba(14, 56, 43, 0.14) !important;
+  padding: 4px 12px !important;
+  border-radius: 99px !important;
   font-weight: 800 !important;
-  line-height: 1.15 !important;
-  color: #1b0f33 !important;
-  letter-spacing: 0.02em !important;
-  text-shadow: none !important;
-  display: block !important;
-  margin: 0 !important;
+}
+
+#ledger-trend-badge {
+  color: #065f46 !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-weight: 800 !important;
+  padding: 3px 10px !important;
+  border-radius: 99px !important;
+}
+
+#ledger-total-val {
+  color: #09261d !important;
+  font-weight: 800 !important;
 }
 
 #landing-breath-sub,
