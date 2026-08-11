@@ -1094,78 +1094,53 @@ section {
   50% { transform: scale(1.02); }
 }
 
-/* Salah Visual & Giant Heatmap Grid */
+/* Salah Visual & Perfect Elegant Heatmap Grid */
 .salah {
-  background: #173329 !important;
-  color: var(--paper) !important;
+  background: #173329;
+  color: var(--paper);
 }
 
 .salah p {
-  color: #b9c7bd !important;
+  color: #b9c7bd;
 }
 
-#feature-salah .visual.salah,
-.visual.salah {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  min-height: auto !important;
-  padding: clamp(28px, 4.5vw, 48px) !important;
-  gap: 24px !important;
-}
-
-#feature-salah .visual.salah .v-info,
-.visual.salah .v-info {
-  width: 100% !important;
-  max-width: 100% !important;
-  flex: none !important;
-  text-align: center !important;
-}
-
-#feature-salah .visual.salah .v-art,
 .visual.salah .v-art {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  min-height: auto !important;
-  flex: none !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  padding: 12px 0 !important;
-  margin: 0 auto !important;
+  width: auto;
+  height: auto;
+  min-width: clamp(180px, 24vw, 240px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
 }
 
 .heatmap {
-  display: grid !important;
-  grid-template-columns: repeat(7, clamp(38px, 9.5vw, 62px)) !important;
-  gap: clamp(10px, 2.2vw, 18px) !important;
-  transform: rotate(-3deg) !important;
-  margin: 0 auto !important;
-  justify-content: center !important;
+  display: grid;
+  grid-template-columns: repeat(7, clamp(20px, 2.2vw, 27px));
+  gap: clamp(5px, 0.7vw, 7px);
+  transform: rotate(-4deg);
+  margin: 0 auto;
 }
 
 .heatmap i {
-  aspect-ratio: 1 !important;
-  width: clamp(38px, 9.5vw, 62px) !important;
-  height: clamp(38px, 9.5vw, 62px) !important;
-  border-radius: clamp(8px, 1.8vw, 12px) !important;
-  background: #2b5140 !important;
-  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  cursor: pointer !important;
-  position: relative !important;
+  aspect-ratio: 1;
+  width: clamp(20px, 2.2vw, 27px);
+  height: clamp(20px, 2.2vw, 27px);
+  border-radius: 6px;
+  background: #2b5140;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  position: relative;
 }
 
-.heatmap i:nth-child(3n) { background: var(--teal) !important; }
-.heatmap i:nth-child(5n) { background: var(--mint) !important; }
+.heatmap i:nth-child(3n) { background: var(--teal); }
+.heatmap i:nth-child(5n) { background: var(--mint); }
 
 .heatmap i:hover {
-  transform: scale(1.35) rotate(4deg) !important;
+  transform: scale(1.35) rotate(4deg);
   background: #cfee82 !important;
-  box-shadow: 0 0 20px rgba(207, 238, 130, 0.95) !important;
-  z-index: 10 !important;
+  box-shadow: 0 0 14px rgba(207, 238, 130, 0.85);
+  z-index: 10;
 }
 
 /* Nafl Visual */
@@ -2071,7 +2046,22 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .v-info { width: 100%; }
   .v-info h3 { font-size: clamp(1.1rem, 3vw, 1.4rem); }
   .v-info p { font-size: 0.85rem; }
-  .v-art:not(.salah *) { width: clamp(100px, 40vw, 140px); height: clamp(100px, 40vw, 140px); }
+  .v-art { width: clamp(100px, 40vw, 140px); height: clamp(100px, 40vw, 140px); }
+  .visual.salah .v-art {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    padding: 10px 0 4px;
+  }
+  .visual.salah .heatmap {
+    grid-template-columns: repeat(7, clamp(22px, 5.5vw, 28px));
+    gap: clamp(5px, 1.2vw, 7px);
+  }
+  .visual.salah .heatmap i {
+    width: clamp(22px, 5.5vw, 28px);
+    height: clamp(22px, 5.5vw, 28px);
+    border-radius: 6px;
+  }
 
   /* Colored Section Cards — ensure separation */
   .visual.nafl, .visual.mujahid, .visual.career, .visual.ledger {
