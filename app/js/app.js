@@ -119,33 +119,11 @@ updateSectionTitle() {
       window.location.reload();
     }
     
-    // Force clear old service workers and caches ONCE to ensure the bug fix applies
-    if (!DB.rawGet('lamim_cache_cleared_v36')) {
-      DB.rawSet('lamim_cache_cleared_v36', 'true');
-      let cleanedAnything = false;
-
-      const cleanupPromises = [];
-      if ('serviceWorker' in navigator) {
-        cleanupPromises.push(
-          navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            if (registrations.length > 0) cleanedAnything = true;
-            return Promise.all(registrations.map(r => r.unregister()));
-          }).catch(() => {})
-        );
-      }
+    // Force clear old service workers and caches ONCE in background (non-blocking)
+    if (!DB.rawGet('lamim_cache_cleared_v37')) {
+      DB.rawSet('lamim_cache_cleared_v37', 'true');
       if ('caches' in window) {
-        cleanupPromises.push(
-          caches.keys().then(keys => {
-            if (keys.length > 0) cleanedAnything = true;
-            return Promise.all(keys.map(k => caches.delete(k)));
-          }).catch(() => {})
-        );
-      }
-
-      await Promise.all(cleanupPromises);
-      if (cleanedAnything) {
-        setTimeout(() => window.location.reload(), 500);
-        return; // Stop initialization until reload
+        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).catch(() => {});
       }
     }
 
