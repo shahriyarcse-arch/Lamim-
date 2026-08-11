@@ -3180,7 +3180,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   /* Hero */
   .hero { padding: 90px 0 40px; }
   .hero p { font-size: 1rem; line-height: 1.55; }
-  .hero-art { min-height: 420px; overflow: visible; opacity: 1 !important; transform: none !important; }
+  .hero-art { min-height: 420px; overflow: visible; }
   .reveal {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
