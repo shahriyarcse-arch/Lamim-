@@ -506,20 +506,20 @@ p {
 
 .halo {
   position: absolute !important;
-  inset: -6% -8% -6% -6% !important;
+  inset: 5% 5% 5% 5% !important;
   border-radius: 50% !important;
-  background: radial-gradient(circle at 65% 35%, rgba(16, 185, 129, 0.18), rgba(94, 53, 177, 0.12) 50%, transparent 75%) !important;
-  filter: blur(28px) !important;
+  background: radial-gradient(circle at 65% 35%, rgba(94, 159, 123, 0.2), rgba(94, 53, 177, 0.1) 60%, transparent 80%) !important;
+  filter: blur(24px) !important;
   z-index: 0 !important;
 }
 
 .orbit {
   position: absolute !important;
-  inset: -18px !important;
-  border: 2px dashed rgba(16, 185, 129, 0.45) !important;
+  inset: -6px !important;
+  border: 1.5px solid rgba(94, 159, 123, 0.35) !important;
   border-radius: 50% !important;
-  transform: rotate(18deg) scale(0.98) !important;
-  animation: spin 22s linear infinite !important;
+  transform: rotate(18deg) scale(0.92) !important;
+  animation: spin 25s linear infinite !important;
   z-index: 1 !important;
   pointer-events: none !important;
 }
@@ -527,17 +527,17 @@ p {
 .orbit::after {
   content: "" !important;
   position: absolute !important;
-  right: 8% !important;
-  top: 6% !important;
-  width: 16px !important;
-  height: 16px !important;
+  right: 12% !important;
+  top: 10% !important;
+  width: 12px !important;
+  height: 12px !important;
   border-radius: 50% !important;
   background: #10b981 !important;
-  box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.25), 0 0 16px rgba(16, 185, 129, 0.8) !important;
+  box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.2), 0 0 10px rgba(16, 185, 129, 0.6) !important;
 }
 
 @keyframes spin {
-  to { transform: rotate(378deg) scale(.98); }
+  to { transform: rotate(378deg) scale(.92); }
 }
 
 .app {
