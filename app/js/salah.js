@@ -861,7 +861,7 @@ this.renderPrayerCards(date, true); // true = skipAnim
       
       let html = `
         <div class="tt-header">
-          <span class="tt-date">${Utils.formatDate(new Date(dateStr), {month:'short', day:'numeric', year:'numeric'})}</span>
+          <span class="tt-date">${Utils.formatDate(Utils.parseDate(dateStr), {month:'short', day:'numeric', year:'numeric'})}</span>
           <span class="tt-score">${score.done}/5</span>
         </div>
         <div class="tt-body">
