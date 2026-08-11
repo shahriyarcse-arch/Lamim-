@@ -59,10 +59,14 @@ const PrayerNotifier = {
     const todayStr = Utils.todayStr();
 
     // Roll over to a new local day: clear sent notifications
-    if (localStorage.getItem('lamim_notified_date') !== todayStr) {
+    try {
+      if (localStorage.getItem('lamim_notified_date') !== todayStr) {
+        this._notified = {};
+        localStorage.removeItem('lamim_notified');
+        localStorage.setItem('lamim_notified_date', todayStr);
+      }
+    } catch (e) {
       this._notified = {};
-      localStorage.removeItem('lamim_notified');
-      localStorage.setItem('lamim_notified_date', todayStr);
     }
 
     // Notify for any prayer whose time has just started OR was missed while the
