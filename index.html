@@ -2679,11 +2679,6 @@
             const suffix = el.getAttribute('data-suffix') || '';
             const currentVal = Math.floor(easedProgress * target);
             el.textContent = currentVal + suffix;
-            el.style.setProperty('color', '#ffffff', 'important');
-            el.style.setProperty('font-family', "'Fraunces',Georgia,serif", 'important');
-            el.style.setProperty('font-size', 'clamp(2.6rem,5vw,4.2rem)', 'important');
-            el.style.setProperty('font-weight', '700', 'important');
-            el.style.setProperty('letter-spacing', '-0.045em', 'important');
           });
 
           if (progress < 1) {
@@ -2693,11 +2688,6 @@
               const target = el.getAttribute('data-target');
               const suffix = el.getAttribute('data-suffix') || '';
               el.textContent = target + suffix;
-              el.style.setProperty('color', '#ffffff', 'important');
-              el.style.setProperty('font-family', "'Fraunces',Georgia,serif", 'important');
-              el.style.setProperty('font-size', 'clamp(2.6rem,5vw,4.2rem)', 'important');
-              el.style.setProperty('font-weight', '700', 'important');
-              el.style.setProperty('letter-spacing', '-0.045em', 'important');
             });
           }
         }
