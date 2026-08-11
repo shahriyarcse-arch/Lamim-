@@ -1040,15 +1040,17 @@ section {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 20px 16px 18px;
+    padding: 22px 20px 22px;
     margin: 0;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
+    border-radius: 24px;
     background: linear-gradient(165deg, rgba(255, 255, 255, 0.045) 0%, rgba(207, 238, 130, 0.015) 100%);
-    gap: 6px;
+    gap: 8px;
     position: relative;
     overflow: hidden;
-    min-height: 148px;
+    min-height: 160px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .system-row .num {
@@ -3257,9 +3259,6 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
   /* Dark Sections */
   section.dark { padding: clamp(36px, 6vw, 60px) 0; }
-  .system { gap: 0; }
-  .system-row { padding: clamp(14px, 3vw, 20px) 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .system-row:last-child { border-bottom: none; }
 
   /* Stats Bar */
   .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; text-align: center; }
