@@ -230,8 +230,8 @@ p {
   z-index: 100;
   top: 12px;
   left: 50%;
-  -webkit-transform: translateX(-50%) translateZ(0);
-  transform: translateX(-50%) translateZ(0);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
   width: calc(100% - 24px);
   max-width: var(--wrap-max);
   display: flex;
@@ -243,17 +243,15 @@ p {
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--line);
   border-radius: 999px;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  transition: box-shadow 0.3s var(--ease);
   box-shadow: 0 8px 32px rgba(19, 33, 27, 0.06);
 }
 
 @media (max-width: 767px) {
-  .nav {
-    position: absolute !important;
-    top: 12px !important;
-    left: 50% !important;
-    -webkit-transform: translateX(-50%) !important;
-    transform: translateX(-50%) !important;
+  .nav, .eyebrow {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(241, 240, 233, 0.98) !important;
   }
 }
 
