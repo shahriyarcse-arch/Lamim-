@@ -51,6 +51,7 @@ const PrayerNotifier = {
     const settings = DB.getSettings();
     if (!settings.notifications) return;
     if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    if (typeof Utils === 'undefined' || !Utils.calcPrayerTimes) return;
 
     const times = Utils.calcPrayerTimes();
     if (!times || times.length === 0) return;
@@ -62,8 +63,8 @@ const PrayerNotifier = {
     try {
       if (localStorage.getItem('lamim_notified_date') !== todayStr) {
         this._notified = {};
-        localStorage.removeItem('lamim_notified');
-        localStorage.setItem('lamim_notified_date', todayStr);
+        try { localStorage.removeItem('lamim_notified'); } catch (e) {}
+        try { localStorage.setItem('lamim_notified_date', todayStr); } catch (e) {}
       }
     } catch (e) {
       this._notified = {};
