@@ -47,6 +47,7 @@ body { animation: none; }
 html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 html.lenis { scroll-behavior: auto; }
@@ -68,6 +69,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  -webkit-tap-highlight-color: transparent;
 }
 
 body::before {
