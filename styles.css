@@ -976,22 +976,25 @@ section {
   gap: 8px 14px;
   padding: 20px 14px;
   margin: 0 -14px;
-  border-bottom: 1px solid var(--line-dark);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  transition: transform 0.35s var(--ease), background 0.3s ease, border-color 0.3s ease;
-  align-items: baseline;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  align-items: center;
 }
 
 .system-row p {
   grid-column: 2 / -1;
-  font-size: 0.92rem;
-  line-height: 1.45;
+  font-size: clamp(0.88rem, 1.15vw, 0.96rem);
+  line-height: 1.5;
+  color: #b9c7bd !important;
 }
 
 @media (min-width: 640px) {
   .system-row {
-    grid-template-columns: 48px 1fr 1.3fr;
+    grid-template-columns: 46px 1.1fr 1.35fr;
     gap: 18px;
+    padding: 22px 18px;
+    margin: 0 -18px;
   }
 
   .system-row p {
@@ -999,21 +1002,67 @@ section {
   }
 }
 
+.system-row:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(207, 238, 130, 0.25);
+  transform: translateX(6px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
 .system-row h3 {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-  color: var(--paper);
+  font-weight: 800;
+  font-size: clamp(1.45rem, 2.6vw, 2.05rem);
+  color: #f1f0e9;
+  letter-spacing: -0.025em;
   transition: color 0.3s ease;
 }
 
+.system-row:hover h3 {
+  color: #ffffff !important;
+}
+
 .num {
-  color: var(--mint);
+  color: #cfee82 !important;
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  transition: transform 0.3s var(--ease), color 0.3s ease;
+  font-weight: 800;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  letter-spacing: -0.02em;
+  transition: transform 0.3s ease, color 0.3s ease;
   display: inline-block;
+}
+
+.system-row:hover .num {
+  transform: scale(1.15);
+  color: #ffffff !important;
+}
+
+section.dark .feature-copy .eyebrow {
+  color: #cfee82 !important;
+  background: rgba(207, 238, 130, 0.1);
+  border: 1px solid rgba(207, 238, 130, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+section.dark .feature-copy h2 {
+  color: #ffffff !important;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 16px 0 18px;
+}
+
+section.dark .feature-copy p {
+  color: #a3b5aa !important;
+  font-size: clamp(1rem, 1.25vw, 1.12rem);
+  line-height: 1.58;
 }
 
 
