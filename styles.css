@@ -997,11 +997,6 @@ section {
   .analysis-grid > .feature-copy {
     order: -1;
   }
-
-  /* Nafl section: show visual card (04 · Nafl Salah) first on mobile */
-  #feature-nafl .feature-copy {
-    order: 1;
-  }
 }
 
 @media (min-width: 960px) {
