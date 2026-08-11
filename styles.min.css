@@ -2077,7 +2077,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
   /* Marquee */
   .ribbon { overflow: hidden; }
-  .track { animation-duration: 25s; }
+  .track { animation-duration: 25s; -webkit-transform: translateZ(0); transform: translateZ(0); }
 }
 
 /* Accessibility: reduced motion — show all content immediately */
