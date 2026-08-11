@@ -1680,21 +1680,22 @@ section.dark .feature-copy p {
   margin: 0 !important;
 }
 
-#landing-breath-sub {
+#landing-breath-sub,
+#landing-breath-count {
   font-family: var(--font-body);
-  font-size: clamp(0.62rem, 0.9vw, 0.68rem) !important;
-  color: #ffffff !important;
-  background: #5e35b1 !important;
-  font-weight: 800 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin-top: 6px !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
-  padding: 4px 11px !important;
-  border-radius: 99px !important;
-  box-shadow: 0 4px 12px rgba(94, 53, 177, 0.28) !important;
+  font-size: clamp(0.62rem, 0.9vw, 0.68rem);
+  color: #ffffff;
+  background: #5e35b1;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 99px;
+  box-shadow: 0 4px 12px rgba(94, 53, 177, 0.28);
 }
 
 /* Gym Section Visual & Typography Polish */
