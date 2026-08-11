@@ -523,12 +523,13 @@ p {
 
 .app-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(8px, 2vw, 13px);
   margin-top: 12px;
 }
 
 .tile {
+  min-width: 0;
   padding: clamp(10px, 2.5vw, 16px);
   border-radius: 16px;
   min-height: 110px;
@@ -643,10 +644,12 @@ p {
   flex: 1;
 }
 #hero-shs-tile .kicker {
+  min-width: 0;
+}
+#hero-shs-rank {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0;
 }
 #hero-shs-percent {
   flex-shrink: 0;
@@ -3118,6 +3121,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .app-grid { gap: 8px; margin-top: 10px; }
   .tile { padding: 12px; min-height: 90px; border-radius: 14px; }
   .tile .big { font-size: 1.3rem; }
+  #hero-shs-rank { font-size: clamp(0.85rem, 4.2vw, 1.3rem); }
   .tile .kicker { font-size: 0.6rem; }
   .halo, .orbit { display: none; }
 
