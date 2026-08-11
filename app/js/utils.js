@@ -255,38 +255,70 @@ const Utils = {
     }, () => { /* denied / unavailable — keep previous location */ }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 });
   },
 
-  // Centralized robust location detection helper (GPS -> IP fallback -> Reverse geocode)
+  // Centralized robust location detection helper (GPS -> Multi-service IP fallback -> Reverse geocode)
+  // Specially optimized for iOS Safari & PWA Standalone Mode
   detectHighPrecisionLocation(onSuccess, onError) {
+    let resolved = false;
+
     const handleSuccess = (lat, lng) => {
+      if (resolved) return;
+      resolved = true;
       this.reverseGeocode(lat, lng, (name) => {
         if (onSuccess) onSuccess({ lat, lng, name });
       });
     };
 
     const tryIPFallback = async () => {
-      try {
-        if (!navigator.onLine) throw new Error("Offline");
-        const ctrl = new AbortController();
-        const to = setTimeout(() => ctrl.abort(), 8000);
-        const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
-        clearTimeout(to);
-        if (!res.ok) throw new Error(res.status);
-        const data = await res.json();
-        if (data.latitude && data.longitude) {
-          handleSuccess(data.latitude, data.longitude);
-        } else {
-          throw new Error("IP Geolocation failed");
+      if (resolved) return;
+      const providers = [
+        async () => {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 6000);
+          const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
+          clearTimeout(to);
+          if (!res.ok) throw new Error('ipapi failed');
+          const data = await res.json();
+          if (data.latitude && data.longitude) return { lat: data.latitude, lng: data.longitude };
+          throw new Error('ipapi invalid coords');
+        },
+        async () => {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 6000);
+          const res = await fetch('https://ip-api.com/json/?fields=status,lat,lon,city', { signal: ctrl.signal });
+          clearTimeout(to);
+          if (!res.ok) throw new Error('ip-api failed');
+          const data = await res.json();
+          if (data.status === 'success' && data.lat && data.lon) return { lat: data.lat, lng: data.lon };
+          throw new Error('ip-api invalid coords');
         }
-      } catch (err) {
-        if (onError) onError(err);
+      ];
+
+      for (const provider of providers) {
+        try {
+          if (!navigator.onLine) break;
+          const res = await provider();
+          if (res && res.lat && res.lng) {
+            handleSuccess(res.lat, res.lng);
+            return;
+          }
+        } catch (e) { /* try next provider */ }
+      }
+
+      if (!resolved && onError) {
+        resolved = true;
+        onError(new Error('Location detection failed'));
       }
     };
 
     if (navigator.geolocation) {
+      // iOS Safari requires enableHighAccuracy: true for GPS, but maximumAge: 300000 allows fast cached response if GPS was used recently
       navigator.geolocation.getCurrentPosition(
         (pos) => handleSuccess(pos.coords.latitude, pos.coords.longitude),
-        (err) => tryIPFallback(),
-        { enableHighAccuracy: true, timeout: 8000 }
+        (err) => {
+          // On iOS, PERMISSION_DENIED (1) or POSITION_UNAVAILABLE (2) / TIMEOUT (3)
+          tryIPFallback();
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 }
       );
     } else {
       tryIPFallback();
