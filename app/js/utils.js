@@ -741,8 +741,8 @@ const Utils = {
         if (existing.dataset.loaded === 'true') {
           resolve();
         } else {
-          existing.addEventListener('load', () => resolve());
-          existing.addEventListener('error', (e) => reject(e));
+          existing.addEventListener('load', () => resolve(), { once: true });
+          existing.addEventListener('error', (e) => reject(e), { once: true });
         }
         return;
       }
