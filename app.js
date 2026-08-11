@@ -97,7 +97,8 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.querySelectorAll('.reveal').forEach((el) => {
     if (staggerParents.some((sel) => el.closest(sel))) return;
     if (el.closest('.hero') || el.classList.contains('hero-art')) return;
-    inView(el, () => {
+    const stop = inView(el, () => {
+      if (typeof stop === 'function') stop();
       const d = isDesk ? '64px' : '30px';
       let sT = isDesk ? 'translateY(' + d + ') scale(0.96)' : 'translateY(' + d + ')';
       let eT = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
@@ -134,7 +135,8 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   // Manifest scroll reveal (prominent depth entrance)
   const manifestGrid = document.querySelector('.manifest');
   if (manifestGrid) {
-    inView(manifestGrid, () => {
+    const stop = inView(manifestGrid, () => {
+      if (typeof stop === 'function') stop();
       const td = isDesk ? '52px' : '28px';
       const sT = isDesk ? 'translateY(' + td + ') scale(0.97)' : 'translateY(' + td + ')';
       const eT = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
@@ -155,7 +157,8 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   // System rows scroll reveal
   const system = document.querySelector('.system');
   if (system) {
-    inView(system, () => {
+    const stop = inView(system, () => {
+      if (typeof stop === 'function') stop();
       const sd = isDesk ? '48px' : '28px';
       const sysStart = isDesk ? 'translateY(' + sd + ') scale(0.97)' : 'translateY(' + sd + ')';
       const sysEnd = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
@@ -176,7 +179,8 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   // FAQ scroll reveal
   const faqList = document.querySelector('.faq-list');
   if (faqList) {
-    inView(faqList, () => {
+    const stop = inView(faqList, () => {
+      if (typeof stop === 'function') stop();
       const faqStart = isDesk ? 'translateY(28px) scale(0.97)' : 'translateY(24px)';
       const faqEnd = isDesk ? 'translateY(0) scale(1)' : 'translateY(0)';
       animate('details', { opacity: [0, 1], transform: [faqStart, faqEnd] }, { duration: 0.6, easing: ease }).finished.then(() => {
