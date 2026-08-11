@@ -1104,16 +1104,24 @@ section {
   color: #b9c7bd;
 }
 
+.visual.salah .v-art {
+  width: auto !important;
+  height: auto !important;
+  min-width: clamp(210px, 58vw, 290px);
+  min-height: clamp(110px, 28vw, 150px);
+  padding: 10px;
+}
+
 .heatmap {
   display: grid;
-  grid-template-columns: repeat(7, clamp(18px, 4.2vw, 26px));
-  gap: clamp(5px, 1vw, 8px);
-  transform: rotate(-6deg);
+  grid-template-columns: repeat(7, clamp(24px, 5.5vw, 34px));
+  gap: clamp(6px, 1.2vw, 10px);
+  transform: rotate(-4deg);
 }
 
 .heatmap i {
   aspect-ratio: 1;
-  border-radius: 6px;
+  border-radius: 7px;
   background: #2b5140;
   transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
