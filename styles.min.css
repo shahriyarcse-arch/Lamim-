@@ -145,6 +145,7 @@ h1 em, h2 em {
   opacity: 0;
   transform: translateY(30px);
   pointer-events: auto;
+  transition: none !important;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }

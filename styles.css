@@ -145,6 +145,9 @@ h1 em, h2 em {
   opacity: 0;
   transform: translateY(30px);
   pointer-events: auto;
+  /* Disable any CSS transitions while JS animate() is running the reveal.
+     After reveal completes, el.classList.remove('reveal') restores hover transitions. */
+  transition: none !important;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
