@@ -2007,6 +2007,12 @@ a:focus-visible, button:focus-visible, input:focus-visible {
     min-height: auto;
     padding: clamp(16px, 4vw, 24px);
     gap: 16px;
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+  .visual.mujahid, .visual.career, .analysis-board, .profile-card, .phone {
+    transform: none !important;
+    -webkit-transform: none !important;
   }
   .v-info { width: 100%; }
   .v-info h3 { font-size: clamp(1.1rem, 3vw, 1.4rem); }
