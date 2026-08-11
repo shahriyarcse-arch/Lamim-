@@ -1630,9 +1630,79 @@ section.dark .feature-copy p {
   letter-spacing: 0.05em;
 }
 
-/* Gym Visual */
-.gym {
-  background: var(--sky);
+/* Gym Section Visual & Typography Polish */
+#feature-gym .feature-copy .eyebrow {
+  color: #1a4231 !important;
+  background: rgba(43, 81, 64, 0.08);
+  border: 1px solid rgba(43, 81, 64, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+#feature-gym .feature-copy h2 {
+  color: #13211b !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 14px 0 16px;
+}
+
+#feature-gym .feature-copy p {
+  color: #3b4d42 !important;
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  line-height: 1.58;
+}
+
+#feature-gym .btn {
+  background: #13211b;
+  color: #f1f0e9;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 28px rgba(19, 33, 27, 0.22);
+  font-weight: 700;
+}
+
+#feature-gym .btn:hover {
+  background: #1c3027;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(19, 33, 27, 0.32);
+}
+
+.visual.gym {
+  background: linear-gradient(145deg, #cdeafd 0%, #a8d9f7 100%) !important;
+  border: 1px solid rgba(13, 89, 148, 0.14) !important;
+  box-shadow: 0 18px 45px rgba(13, 89, 148, 0.08) !important;
+}
+
+.visual.gym .v-info .eyebrow {
+  color: #093c66 !important;
+  background: rgba(9, 60, 102, 0.09);
+  border: 1px solid rgba(9, 60, 102, 0.2);
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.visual.gym .v-info h3 {
+  color: #072b4a !important;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.visual.gym .v-info p {
+  color: #1e527a !important;
+  line-height: 1.52;
+  font-size: 0.88rem;
+  font-weight: 500;
 }
 
 .gym-ring {
