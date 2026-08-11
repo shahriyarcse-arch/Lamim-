@@ -211,9 +211,13 @@ const DB = {
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
         const store = transaction.objectStore('keyvalue');
-        store.clear();
-        transaction.oncomplete = () => resolve();
-        transaction.onerror = (e) => { console.error('[DB] Async clear failed:', e.target.error); resolve(); };
+        let resolved = false;
+        const done = () => { if (!resolved) { resolved = true; resolve(); } };
+        const req = store.clear();
+        req.onsuccess = done;
+        req.onerror = (e) => { console.error('[DB] Async clear failed:', e.target.error); done(); };
+        transaction.oncomplete = done;
+        transaction.onerror = done;
       } catch (e) {
         console.error('[DB] Async clear failed:', e);
         resolve();
