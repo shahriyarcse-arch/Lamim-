@@ -1159,7 +1159,7 @@ const Finance = {
 
   formatPickerDate(iso) {
     if (!iso) return 'Select date';
-    const d = new Date(iso + 'T00:00:00');
+    const d = Utils.parseDate(iso);
     if (isNaN(d.getTime())) return 'Select date';
     return d.toLocaleDateString('default', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
   },
@@ -1170,7 +1170,7 @@ const Finance = {
     if (!pop.classList.contains('hidden')) { pop.classList.add('hidden'); return; }
     document.querySelectorAll('.fin-date-pop').forEach(p => { if (p.id !== pop.id) p.classList.add('hidden'); });
     this._datePickerTarget = targetId;
-    this._datePickerView = new Date((document.getElementById(targetId).value || Utils.todayStr()) + 'T00:00:00');
+    this._datePickerView = Utils.parseDate(document.getElementById(targetId)?.value || Utils.todayStr());
     this.renderDatePop(targetId);
     pop.classList.remove('hidden');
     const trigger = document.getElementById(targetId + '-trigger');

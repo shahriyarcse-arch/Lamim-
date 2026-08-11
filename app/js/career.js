@@ -159,7 +159,7 @@ const Career = {
   },
 
   changeDay(offset) {
-    const d = new Date(this.selectedDate + 'T00:00:00');
+    const d = Utils.parseDate(this.selectedDate);
     d.setDate(d.getDate() + offset);
     const newDate = Utils.dateStr(d);
     if (newDate > Utils.todayStr()) {
