@@ -1846,6 +1846,57 @@ section.dark .feature-copy p {
   font-weight: 600 !important;
 }
 
+/* Section 12 Living Product Demo Typography & Visual Polish */
+#demo .feature-copy .eyebrow {
+  color: #cfee82 !important;
+  background: rgba(207, 238, 130, 0.12) !important;
+  border: 1px solid rgba(207, 238, 130, 0.3) !important;
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+#demo .feature-copy h2 {
+  color: #ffffff !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
+}
+
+#demo .feature-copy p {
+  color: rgba(241, 240, 233, 0.88) !important;
+  line-height: 1.58;
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+
+.demo .tab.active {
+  background: #cfee82 !important;
+  color: #11261a !important;
+  border-color: #cfee82 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 4px 14px rgba(207, 238, 130, 0.35) !important;
+}
+
+.demo .tab:not(.active) {
+  background: rgba(241, 240, 233, 0.08) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(241, 240, 233, 0.2) !important;
+  font-weight: 700 !important;
+}
+
+.demo .phone,
+.demo .app {
+  background: #173323 !important;
+  border: 2px solid rgba(207, 238, 130, 0.28) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
