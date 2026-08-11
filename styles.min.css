@@ -519,8 +519,10 @@ p {
   transition: transform .45s var(--ease);
 }
 
-.hero-art:hover .app {
-  transform: rotate(0) translateY(-6px);
+@media (hover: hover) {
+  .hero-art:hover .app {
+    transform: rotate(0) translateY(-6px);
+  }
 }
 
 .app-head {
