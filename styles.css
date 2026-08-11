@@ -841,90 +841,101 @@ section {
 }
 
 /* -------------------------------------------------------------------------- */
-/* SECTION 01: MANIFEST                                                       */
+/* SECTION 01: MANIFEST & LAMIM DIFFERENCE POLISH                */
 /* -------------------------------------------------------------------------- */
+#manifest .eyebrow {
+  color: #1a4231 !important;
+  background: rgba(43, 81, 64, 0.08);
+  border: 1px solid rgba(43, 81, 64, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+#manifest .section-head h2 {
+  color: #13211b !important;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin-top: 14px;
+}
+
+#manifest .section-head p {
+  color: #3b4d42 !important;
+  font-size: clamp(1rem, 1.25vw, 1.12rem);
+  line-height: 1.58;
+}
+
 .manifest {
   display: grid;
   grid-template-columns: 1fr;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid rgba(19, 33, 27, 0.12);
+  border-bottom: 1px solid rgba(19, 33, 27, 0.12);
+  gap: 12px;
+  padding: 16px 0;
 }
 
 .manifest article {
-  padding: 24px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 24px 20px;
+  border: 1px solid rgba(19, 33, 27, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.45);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.manifest article:last-child {
-  border-bottom: 0;
+.manifest article:hover {
+  transform: translateY(-5px);
+  background: #ffffff;
+  border-color: rgba(43, 81, 64, 0.28);
+  box-shadow: 0 14px 36px rgba(19, 33, 27, 0.08);
 }
 
 .manifest b {
   display: block;
-  color: var(--teal);
+  color: #2b5140;
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.2rem);
-  font-weight: 500;
-  margin-bottom: 4px;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  transition: transform 0.3s ease;
+}
+
+.manifest article:hover b {
+  transform: scale(1.1);
+  color: #1a382c;
 }
 
 .manifest h3 {
-  font-size: 1.15rem;
-  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #13211b;
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
 }
 
 .manifest p {
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.92rem;
+  color: #4a5950;
+  line-height: 1.55;
+  margin: 0;
 }
 
 @media (min-width: 540px) and (max-width: 1023px) {
   .manifest {
     grid-template-columns: 1fr 1fr;
   }
-
-  .manifest article {
-    padding: 24px 18px;
-  }
-
-  .manifest article:nth-child(1), .manifest article:nth-child(2) {
-    border-bottom: 1px solid var(--line);
-  }
-
-  .manifest article:nth-child(3), .manifest article:nth-child(4) {
-    border-bottom: 0;
-  }
-
-  .manifest article:nth-child(1), .manifest article:nth-child(3) {
-    border-right: 1px solid var(--line);
-  }
-
-  .manifest article:nth-child(2), .manifest article:nth-child(4) {
-    padding-left: 18px;
-  }
-
-  .manifest article:nth-child(1), .manifest article:nth-child(3) {
-    padding-left: 0;
-  }
 }
 
 @media (min-width: 1024px) {
   .manifest {
     grid-template-columns: repeat(4, 1fr);
-  }
-
-  .manifest article {
-    padding: 28px 20px 28px 0;
-    border-bottom: 0;
-    border-right: 1px solid var(--line);
-  }
-
-  .manifest article:not(:first-child) {
-    padding-left: 20px;
-  }
-
-  .manifest article:last-child {
-    border-right: 0;
   }
 }
 
