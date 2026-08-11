@@ -51,6 +51,7 @@ const DB = {
           .then(() => this._migrateFromLocalStorage())
           .then(() => {
             this.migrate();
+            this._setupMultiTabSync();
             safeResolve();
           })
           .catch((err) => {
@@ -65,6 +66,7 @@ const DB = {
         clearTimeout(timeout);
         console.error("IndexedDB onerror, falling back to localStorage", e);
         this._fallbackToLocalStorage();
+        this._setupMultiTabSync();
         safeResolve();
       };
     });
