@@ -64,10 +64,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="styles.min.css?v=20260811_v12" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="styles.min.css?v=20260811_v13" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
-    <link rel="stylesheet" href="styles.min.css?v=20260811_v12">
+    <link rel="stylesheet" href="styles.min.css?v=20260811_v13">
     <style>.reveal{opacity:1;transform:none}
     /* Brand Essence Section */
     .brand-essence { padding: 90px 0 60px; text-align: center; }
@@ -1723,6 +1723,7 @@
         // Click / Tap handler
         cell.addEventListener('click', function(e) {
           e.stopPropagation();
+          isHovered = false;
           var tapColor = glowColors[Math.floor(Math.random() * glowColors.length)];
           cell.style.setProperty('background-color', tapColor, 'important');
           cell.style.transform = 'scale(1.4) rotate(' + (Math.random() * 12 - 6).toFixed(1) + 'deg)';
@@ -1734,6 +1735,7 @@
             cell.style.transform = 'scale(1) rotate(0deg)';
             cell.style.boxShadow = 'none';
             cell.style.zIndex = '1';
+            isHovered = false;
           }, 1100);
 
           if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
@@ -1757,8 +1759,14 @@
       refreshQueue();
 
       var isHovered = false;
-      heatmap.addEventListener('mouseenter', function() { isHovered = true; });
+      var hasHoverSupport = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+      heatmap.addEventListener('mouseenter', function() {
+        if (hasHoverSupport) isHovered = true;
+      });
       heatmap.addEventListener('mouseleave', function() { isHovered = false; });
+      heatmap.addEventListener('pointerleave', function() { isHovered = false; });
+      heatmap.addEventListener('touchend', function() { isHovered = false; });
+      heatmap.addEventListener('touchcancel', function() { isHovered = false; });
 
       // Run sequential pulse wave loop
       function triggerSequentialWave() {
