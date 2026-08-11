@@ -1,9 +1,8 @@
 # 🌿 Lamim — One Day, Held With Intention
 
 [![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline%20First-059669?style=for-the-badge&logo=pwa)](https://github.com/shahriyarcse-arch/Lamim-)
-[![Playwright E2E](https://img.shields.io/badge/Playwright-60%2F60%20PASS-22c55e?style=for-the-badge&logo=playwright)](https://github.com/shahriyarcse-arch/Lamim-)
+[![Playwright E2E](https://img.shields.io/badge/Playwright-78%2F78%20PASS-22c55e?style=for-the-badge&logo=playwright)](https://github.com/shahriyarcse-arch/Lamim-)
 [![Privacy First](https://img.shields.io/badge/Data%20Privacy-100%25%20Local%20IndexedDB-6366f1?style=for-the-badge)](https://github.com/shahriyarcse-arch/Lamim-)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 > **Lamim** is a state-of-the-art, fully responsive, **offline-first Progressive Web Application (PWA)** and Landing Page designed to bring mindfulness, spiritual discipline, physical wellness, and financial control into one cohesive daily companion. 
 
@@ -69,13 +68,13 @@ Built with Vanilla JavaScript and styled using custom dark glassmorphic design t
 
 ## 🧪 Automated Testing & QA Protocol
 
-Lamim is backed by a comprehensive **Playwright End-to-End (E2E) Test Suite** with **100% PASS RATE** (60/60 tests passing):
+Lamim is backed by a comprehensive **Playwright End-to-End (E2E) Test Suite** with **100% PASS RATE** (78/78 tests passing):
 
 | Browser Project | Test Suite Specs | Result | Status |
 | :--- | :--- | :---: | :---: |
-| **Chromium Desktop** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Viewports | 20 / 20 | PASS ✅ |
-| **Mobile Chrome (Pixel 5)** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Viewports | 20 / 20 | PASS ✅ |
-| **Mobile Safari (iPhone 12)** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Viewports | 20 / 20 | PASS ✅ |
+| **Chromium Desktop** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Viewports | 26 / 26 | PASS ✅ |
+| **Mobile Chrome (Pixel 5)** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Viewports | 26 / 26 | PASS ✅ |
+| **Mobile Safari (iPhone 12)** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Viewports | 26 / 26 | PASS ✅ |
 
 ### Running E2E Tests Locally
 
@@ -83,7 +82,7 @@ Lamim is backed by a comprehensive **Playwright End-to-End (E2E) Test Suite** wi
 # Install dependencies
 npm install
 
-# Run all 60 Playwright tests headlessly
+# Run all 78 Playwright tests headlessly
 npm test
 
 # Run tests in a visible browser window

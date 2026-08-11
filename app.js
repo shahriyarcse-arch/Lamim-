@@ -1,5 +1,5 @@
 import Lenis from './lib/lenis.mjs';
-import { animate, inView, stagger } from "./lib/motion.mjs";
+import { animate, inView } from "./lib/motion.mjs";
 
 /* ---- LENIS SMOOTH SCROLL (skip if reduced motion) ---- */
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -61,6 +61,8 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   // Make hero reveal wrapper visible (has .reveal { opacity:0 } from CSS)
   const heroReveal = document.querySelector('.hero .reveal');
   if (heroReveal) { heroReveal.style.opacity = '1'; heroReveal.style.transform = 'none'; }
+
+  animate('.hero .eyebrow', { opacity: [0, 1], transform: ['translateY(10px)', 'translateY(0)'] }, { duration: 0.5, delay: 0.04, easing: ease });
 
   animate('.hero h1', { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] }, { duration: 0.8, delay: 0.08, easing: ease });
 

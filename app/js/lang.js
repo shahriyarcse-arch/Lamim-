@@ -443,22 +443,6 @@ const autoTranslateObserver = new MutationObserver((mutations) => {
 // Start observer as soon as possible
 if (document.body) {
   autoTranslateObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
-} else {
-  window.addEventListener('DOMContentLoaded', () => {
-    autoTranslateObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
-    
-    // Run an initial pass on the whole body
-    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-    if (isBn) {
-      autoTranslateObserver.disconnect();
-      const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-      let n;
-      while (n = walk.nextNode()) {
-        processTextNode(n);
-      }
-      autoTranslateObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
-    }
-  });
 }
 
 

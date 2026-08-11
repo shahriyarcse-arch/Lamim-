@@ -599,6 +599,8 @@ const DB = {
       }
       this.remove('lamim_finance_data');
     }
+  },
+
   clearAllUserData() {
     const keys = this.keys();
     keys.forEach(k => {

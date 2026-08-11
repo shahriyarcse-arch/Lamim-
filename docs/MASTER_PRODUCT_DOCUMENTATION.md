@@ -1,10 +1,10 @@
 # MASTER PRODUCT DOCUMENTATION — Lamim
 
 > **Version:** 4.0.0 (Codename: "Sovereign")  
-> **Build:** v153  
+> **Build:** v162  
 > **Type:** Offline-First Progressive Web Application (PWA)  
 > **Stack:** Vanilla JavaScript, IndexedDB, Service Worker, SVG Charts  
-> **Repository:** https://github.com/shahriyarcse-arch/Lamim  
+> **Repository:** https://github.com/shahriyarcse-arch/Lamim-  
 > **Deployment:** Vercel (https://vercel.com)
 
 ---
@@ -143,7 +143,7 @@ Lamim/
 ├── app/                       # PWA Application (complete, untouched)
 │   ├── index.html             # App shell (SPA, all pages/mods in one HTML)
 │   ├── manifest.json          # PWA manifest (93 lines, 5 shortcuts)
-│   ├── sw.js                  # Service worker (lamim-v153, cache strategies)
+│   ├── sw.js                  # Service worker (lamim-v162, cache strategies)
 │   ├── 404.html               # Custom 404 page
 │   │
 │   ├── assets/                # App icons (6 files)
@@ -362,7 +362,7 @@ Each module implements a standard lifecycle:
 
 ## 2.13 Service Worker (sw.js)
 
-**Version:** lamim-v153
+**Version:** lamim-v162
 
 **Install Strategy:** 
 1. Cache core shell ( `./`, `./index.html`, `./manifest.json` )
@@ -385,7 +385,7 @@ Each module implements a standard lifecycle:
 ## 2.14 Caching Strategy
 
 - IndexedDB (`lamim_db`): User data persistence (salah, dhikr, finance, etc.)
-- Cache API (`lamim-v153`): Static assets (JS, CSS, fonts, verses.json)
+- Cache API (`lamim-v162`): Static assets (JS, CSS, fonts, verses.json)
 - localStorage: Settings, language, notification state, FX rate cache
 - Memory cache (`DB._cache`): All IndexedDB data cached in-memory for fast reads
 

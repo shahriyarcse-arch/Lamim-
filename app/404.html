@@ -7,11 +7,11 @@
   <script>
     // SPA fallback: unknown paths on the static host route back to the app shell.
     (function () {
-      var target = '/index.html' + (window.location.search || '');
+      var target = '/app/index.html' + (window.location.search || '');
       window.location.replace(target);
     })();
   </script>
-  <meta http-equiv="refresh" content="0;url=/index.html">
+  <meta http-equiv="refresh" content="0;url=/app/index.html">
 </head>
 <body>Redirecting to Lamim…</body>
 </html>

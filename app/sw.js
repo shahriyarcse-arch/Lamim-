@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-v161';
+const CACHE_NAME = 'lamim-v162';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -15,7 +15,7 @@ self.addEventListener('install', (e) => {
     await Promise.allSettled(CORE_ASSETS.map((u) => cache.add(u)));
     try {
       const html = await (await fetch('./index.html', { cache: 'no-cache' })).text();
-      const urls = [...html.matchAll(/(?:href|src)="([^"]+\.(?:css|js)[^"]*)"/g)]
+      const urls = [...html.matchAll(/(?:href|src)="([^"]+\.(?:css|js|png|svg|ico|webp|json)[^"]*)"/g)]
         .map((m) => m[1])
         .filter((u) => !/^https?:/i.test(u) && !u.startsWith('//'));
       await Promise.allSettled(

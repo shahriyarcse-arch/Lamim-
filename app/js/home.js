@@ -156,7 +156,7 @@ const Home = {
         let statusClass = status ? `status-${status}` : '';
         const initial = p.charAt(0);
         html += `
-          <div class="timeline-node ${statusClass}" onclick="App.switchSection('salah')" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p}">
+          <div class="timeline-node ${statusClass}" onclick="App.navigateTo('salah')" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p}">
             <div class="timeline-dot">${initial}</div>
             <span class="timeline-label">${p}</span>
           </div>
