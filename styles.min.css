@@ -1991,6 +1991,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .hero-art { min-height: 420px; overflow: visible; }
   .reveal {
     animation: mobileSmoothUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 1 !important;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
