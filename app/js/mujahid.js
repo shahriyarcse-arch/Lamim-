@@ -598,7 +598,7 @@ const Mujahid = {
       if (habit.history && habit.history.length > 0) {
         const cleanEntries = habit.history.filter(h => h.clean);
         cleanEntries.forEach(entry => {
-          const entryTime = new Date(entry.date + 'T00:00:00').getTime();
+          const entryTime = Utils.parseDate(entry.date).getTime();
           if (!isNaN(entryTime)) {
             if (!startTime || entryTime < startTime) {
               startTime = entryTime;
@@ -875,10 +875,10 @@ const Mujahid = {
 
     const startTimeStr = habit.startDate;
     let startTime;
-    if (startTimeStr.includes('T')) {
+    if (startTimeStr && startTimeStr.includes('T')) {
       startTime = new Date(startTimeStr).getTime();
     } else {
-      startTime = new Date(startTimeStr + 'T00:00:00').getTime();
+      startTime = Utils.parseDate(startTimeStr).getTime();
     }
     
     const now = new Date().getTime();
