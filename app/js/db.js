@@ -171,11 +171,16 @@ const DB = {
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
         const store = transaction.objectStore('keyvalue');
-        store.delete(key);
+        const req = store.delete(key);
+        req.onsuccess = () => resolve();
+        req.onerror = (e) => {
+          console.error(`[DB] Async delete failed for key: ${key}`, e.target.error);
+          resolve();
+        };
         transaction.oncomplete = () => resolve();
         transaction.onerror = () => resolve();
       } catch (e) {
-        console.error(`[DB] Async delete failed for key: ${key}`, e);
+        console.error(`[DB] Async delete execution error for key: ${key}`, e);
         resolve();
       }
     }));
@@ -201,8 +206,30 @@ const DB = {
     return run;
   },
 
+  _getEffectiveKey(key) {
+    // Global shared keys across profiles
+    if (key === 'lamim_user' || key === 'lamim_profiles_vault' || key === 'lamim_lang' || key === 'lamim_settings' || key === 'lamim_dhikr_presets') {
+      return key;
+    }
+    // Prefix profile-specific data with active user id if present
+    try {
+      const userRaw = this._cache['lamim_user'];
+      if (userRaw) {
+        const u = JSON.parse(userRaw);
+        if (u && u.id) {
+          const prefix = `usr_${u.id}_`;
+          if (!key.startsWith(prefix)) {
+            return prefix + key;
+          }
+        }
+      }
+    } catch(e) {}
+    return key;
+  },
+
   get(key) {
-    const val = this._cache[key];
+    const realKey = this._getEffectiveKey(key);
+    const val = this._cache[realKey] || this._cache[key];
     if (!val) return null;
     try {
       return JSON.parse(val);
@@ -213,16 +240,17 @@ const DB = {
 
   set(key, val) {
     try {
+      const realKey = this._getEffectiveKey(key);
       const strVal = JSON.stringify(val);
-      this._cache[key] = strVal;
+      this._cache[realKey] = strVal;
 
       if (!this._db) {
-        try { localStorage.setItem(key, strVal); } catch {}
-      } else if (key === 'lamim_lang' || key === 'lamim_settings') {
-        try { localStorage.setItem(key, strVal); } catch {}
+        try { localStorage.setItem(realKey, strVal); } catch {}
+      } else if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user') {
+        try { localStorage.setItem(realKey, strVal); } catch {}
       }
 
-      this._asyncWrite(key, strVal);
+      this._asyncWrite(realKey, strVal);
       return true;
     } catch (e) {
       console.error(`[DB] Error in set for key: ${key}`, e);
@@ -231,24 +259,30 @@ const DB = {
   },
 
   remove(key) {
+    const realKey = this._getEffectiveKey(key);
+    delete this._cache[realKey];
     delete this._cache[key];
+    try { localStorage.removeItem(realKey); } catch {}
     try { localStorage.removeItem(key); } catch {}
-    return this._asyncDelete(key);
+    this._asyncDelete(key);
+    return this._asyncDelete(realKey);
   },
 
   rawGet(key) {
-    return this._cache[key] || null;
+    const realKey = this._getEffectiveKey(key);
+    return this._cache[realKey] || this._cache[key] || null;
   },
 
   rawSet(key, val) {
     try {
-      this._cache[key] = val;
+      const realKey = this._getEffectiveKey(key);
+      this._cache[realKey] = val;
 
-      if (key === 'lamim_lang' || key === 'lamim_settings') {
-        try { localStorage.setItem(key, val); } catch {}
+      if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user') {
+        try { localStorage.setItem(realKey, val); } catch {}
       }
 
-      this._asyncWrite(key, val);
+      this._asyncWrite(realKey, val);
       return true;
     } catch (e) {
       console.error(`[DB] Error in rawSet for key: ${key}`, e);
@@ -289,9 +323,6 @@ const DB = {
     if (!userObj || !userObj.name) return;
     const profiles = this.getProfiles();
     const existingIndex = profiles.findIndex(p => p.id === userObj.id || (p.name && p.name.toLowerCase() === userObj.name.toLowerCase()));
-    
-    const cleanCache = { ...this._cache };
-    delete cleanCache['lamim_user'];
 
     const profileSnapshot = {
       id: userObj.id || ('usr_' + Date.now()),
@@ -299,8 +330,7 @@ const DB = {
       avatar: userObj.avatar || '',
       gender: userObj.gender || 'male',
       lastActive: new Date().toISOString(),
-      userData: userObj,
-      snapshot: cleanCache
+      userData: userObj
     };
 
     if (existingIndex >= 0) {
@@ -316,35 +346,15 @@ const DB = {
     const target = profiles.find(p => p.id === profileId);
     if (!target) return false;
 
-    // Save current active profile first if exists
+    // Save current active profile metadata
     const current = this.getUser();
     if (current) {
       this.saveProfileVault(current);
     }
 
-    // Isolate active keys: clear all non-vault keys so no state bleeds over
-    const activeKeys = Object.keys(this._cache).filter(k => k !== 'lamim_profiles_vault');
-    activeKeys.forEach(k => {
-      delete this._cache[k];
-      try { localStorage.removeItem(k); } catch {}
-      this._asyncDelete(k);
-    });
-
-    // Restore target profile snapshot clean
-    if (target.snapshot) {
-      Object.keys(target.snapshot).forEach(k => {
-        if (k !== 'lamim_profiles_vault') {
-          try {
-            const rawVal = target.snapshot[k];
-            this._cache[k] = rawVal;
-            this.set(k, JSON.parse(rawVal));
-          } catch (e) {
-            this._cache[k] = target.snapshot[k];
-          }
-        }
-      });
-    }
+    // Seamless instant switch: update active user identity
     this.setUser(target.userData);
+    this._streakCache = null;
     return true;
   },
   getSettings()  { return this.get('lamim_settings') || { theme: 'light', notifications: true, jumuahMode: true, language: 'en', currency: 'USD', lat: 23.8103, lng: 90.4125 }; },
