@@ -303,14 +303,18 @@ const Dhikr = {
     const body = document.getElementById('dhikr-history-modal-body');
     if (!el || !body) return;
 
-    // Aggregate all lamim_dhikr_YYYY-MM-DD keys
+    // Aggregate all dhikr keys safely
     const dbData = {};
     const allKeys = DB.keys();
     for (let i = 0; i < allKeys.length; i++) {
       const key = allKeys[i];
-      if (key && key.startsWith('lamim_dhikr_') && key !== 'lamim_dhikr_presets') {
-        const dateStr = key.replace('lamim_dhikr_', '');
-        try { dbData[dateStr] = JSON.parse(DB.rawGet(key)); } catch (e) { }
+      if (key && (key.includes('lamim_dhikr_') || key.includes('_dhikr_')) && !key.endsWith('_presets')) {
+        const parts = key.split('_dhikr_');
+        if (parts.length === 2) {
+          const dateStr = parts[1];
+          const val = DB.getDhikr(dateStr);
+          if (val) dbData[dateStr] = val;
+        }
       }
     }
 

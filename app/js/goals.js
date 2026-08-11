@@ -42,7 +42,7 @@ const Goals = {
     const isToday = this.currentDate === Utils.todayStr();
     const label = document.getElementById('nafl-date-label');
     const sub = document.getElementById('nafl-date-sub');
-    const dObj = new Date(this.currentDate + 'T00:00:00');
+    const dObj = Utils.parseDate(this.currentDate);
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     if (label) label.textContent = isToday ? (isBn ? 'আজ' : 'Today') : dObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {month:'short', day:'numeric'});
     if (sub) sub.textContent = isToday ? dObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {weekday:'short'}) : dObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {year:'numeric'});
