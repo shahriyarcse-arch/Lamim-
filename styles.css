@@ -863,7 +863,7 @@ section {
 
 .manifest {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   border-top: 1px solid rgba(19, 33, 27, 0.12);
   border-bottom: 1px solid rgba(19, 33, 27, 0.12);
   gap: 12px;
@@ -871,9 +871,9 @@ section {
 }
 
 .manifest article {
-  padding: 24px 20px;
+  padding: 18px 12px 14px;
   border: 1px solid rgba(19, 33, 27, 0.08);
-  border-radius: 20px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.45);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -889,10 +889,10 @@ section {
   display: block;
   color: #2b5140;
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-size: clamp(1.4rem, 3vw, 2.3rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   transition: transform 0.3s ease;
 }
 
@@ -903,29 +903,39 @@ section {
 
 .manifest h3 {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: clamp(1.02rem, 1.4vw, 1.25rem);
   font-weight: 800;
   color: #13211b;
   letter-spacing: -0.025em;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .manifest p {
-  font-size: 0.92rem;
+  font-size: clamp(0.78rem, 1vw, 0.92rem);
   color: #4a5950;
-  line-height: 1.55;
+  line-height: 1.38;
   margin: 0;
 }
 
-@media (min-width: 540px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .manifest {
     grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .manifest article {
+    padding: 24px 20px;
+    border-radius: 20px;
   }
 }
 
 @media (min-width: 1024px) {
   .manifest {
     grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .manifest article {
+    padding: 24px 20px;
+    border-radius: 20px;
   }
 }
 
