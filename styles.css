@@ -247,6 +247,16 @@ p {
   box-shadow: 0 8px 32px rgba(19, 33, 27, 0.06);
 }
 
+@media (max-width: 767px) {
+  .nav {
+    position: absolute !important;
+    top: 12px !important;
+    left: 50% !important;
+    -webkit-transform: translateX(-50%) !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -2010,9 +2020,11 @@ a:focus-visible, button:focus-visible, input:focus-visible {
     transform: none !important;
     -webkit-transform: none !important;
   }
-  .visual.mujahid, .visual.career, .analysis-board, .profile-card, .phone {
+  .visual.mujahid, .visual.career, .analysis-board, .profile-card, .phone, .system-row, article {
     transform: none !important;
     -webkit-transform: none !important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
   .v-info { width: 100%; }
   .v-info h3 { font-size: clamp(1.1rem, 3vw, 1.4rem); }
