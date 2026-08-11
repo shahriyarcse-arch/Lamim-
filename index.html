@@ -64,10 +64,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="styles.min.css?v=20260811_v68" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="styles.min.css?v=20260811_v69" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
-    <link rel="stylesheet" href="styles.min.css?v=20260811_v68">
+    <link rel="stylesheet" href="styles.min.css?v=20260811_v69">
     <style>.reveal{opacity:1;transform:none}
     /* Brand Essence Section */
     .brand-essence { padding: 90px 0 60px; text-align: center; }
@@ -1152,7 +1152,7 @@
           </div>
           <!-- Live SHS Score -->
           <div class="score" id="landing-shs-score" style="transition:color 0.5s ease;">76 <small style="font-size:0.4em; color:var(--muted);">/ 100</small></div>
-          <div id="landing-shs-rank" style="font-size:.78rem; color:var(--muted); transition:opacity 0.4s;">Murid, moving toward Mujahid</div>
+          <div id="landing-shs-rank" style="font-size:.78rem; color:var(--muted); transition:opacity 0.4s;">Mindful &mdash; presence &amp; devotion in deeds</div>
           <!-- 5 Real SHS Sliders with Unique Accent Colors -->
           <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
             <div style="display:flex;align-items:center;gap:8px;">
@@ -1243,7 +1243,7 @@
                 <h3 style="font-size:1.2rem;font-weight:800;color:var(--ink);margin:0;letter-spacing:-0.02em;">Mr riyar</h3>
                 <span style="font-size:0.58rem;font-weight:800;color:#1f4e36;background:#e2f4c1;padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">PRO</span>
               </div>
-              <p style="font-size:0.8rem;color:var(--muted);margin-top:2px;" id="profile-sub-info">Dhaka &middot; Murid &middot; 18 day rhythm</p>
+              <p style="font-size:0.8rem;color:var(--muted);margin-top:2px;" id="profile-sub-info">Dhaka &middot; Mindful &middot; 18 day rhythm</p>
             </div>
           </div>
 
@@ -2629,11 +2629,13 @@
       }
 
       function rankFromScore(s) {
-        if (s >= 90) return 'Muttaqi \u2014 deeply devoted';
-        if (s >= 75) return 'Mujahid \u2014 striving with resolve';
-        if (s >= 55) return 'Murid, moving toward Mujahid';
-        if (s >= 35) return 'Talib \u2014 seeking the path';
-        return 'Nascent \u2014 every step counts';
+        if (s >= 90) return 'Ihsan \u2014 peak spiritual excellence';
+        if (s >= 80) return 'God-Conscious \u2014 taqwa guiding your path';
+        if (s >= 65) return 'Mindful \u2014 presence & devotion in deeds';
+        if (s >= 50) return 'Resilient \u2014 overcoming & pushing limits';
+        if (s >= 30) return 'Consistent \u2014 building habit momentum';
+        if (s >= 15) return 'Intentional \u2014 traveling with purpose';
+        return 'Awakening \u2014 beginning the journey';
       }
 
       function updateTrackFill(slider, val, color) {

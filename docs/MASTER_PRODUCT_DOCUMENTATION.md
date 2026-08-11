@@ -118,7 +118,7 @@ To empower every Muslim to track, improve, and celebrate their spiritual journey
 3. Zero data ever leaves your device (no accounts, no cloud, no trackers)
 4. Prayer times calculated client-side (no API calls for prayer times)
   5. 220+ Islamic finance categories across 13 sections
-  6. 7-tier spiritual ranking system (Ghafil → Musafir → Murid → Mujahid → Mukhlis → Muttaqi → Muhsin)
+  6. 7-tier spiritual ranking system (Awakening → Intentional → Consistent → Resilient → Mindful → God-Conscious → Ihsan)
   7. Habit Forge with 14 badge milestones (up to 5000 days)
 8. Breathing exercise integrated for stress/relapse recovery
 9. Bengali language support with numeral translation
@@ -1157,13 +1157,13 @@ Sidebar / Bottom nav → "Analysis" section
 ### 7 Ranking Tiers
 | Score | Rank | Color | Description |
 |-------|------|-------|-------------|
-| >= 90 | Muhsin (مُحْسِن) | Gold | Excellence in worship |
-| >= 80 | Muttaqi (مُتَّقِي) | Purple | God-consciousness |
-| >= 65 | Mukhlis (مُخْلِص) | Green | Sincere devotion |
-| >= 50 | Mujahid (مُجَاهِد) | Blue | Striving |
-| >= 30 | Murid (مُرِيد) | Amber | Willing |
-| >= 15 | Musafir (مُسَافِر) | Red | Traveler |
-| < 15 | Ghafil (غَافِل) | Red | Heedless |
+| >= 90 | Ihsan | Gold | Excellence in worship & absolute presence |
+| >= 80 | God-Conscious | Purple | Taqwa guiding every choice |
+| >= 65 | Mindful | Green | Presence and devotion in deeds |
+| >= 50 | Resilient | Blue | Overcoming obstacles & pushing limits |
+| >= 30 | Consistent | Amber | Building habit momentum & consistency |
+| >= 15 | Intentional | Red | Setting clear purpose & direction |
+| < 15 | Awakening | Red | Beginning the journey with one step |
 
 ### Radar Chart
 - 5-axis SVG polygon with concentric grid rings
@@ -2159,7 +2159,7 @@ Lamim is a comprehensive Islamic lifestyle companion that replaces 9 separate ap
 7. **How accurate are prayer times?** Uses Muslim World League method, sun-angle calculation. Adjustable Hijri offset.
 8. **Can I sync between devices?** No, by design. You can export/import your data manually.
 9. **How is the Spiritual Health Score calculated?** Salah (50%) + Nafl (15%) + Dhikr (15%) + Mujahid (10%) + Consistency (10%).
-10. **What are the 7 spiritual ranks?** Ghafil, Musafir, Murid, Mujahid, Mukhlis, Muttaqi, Muhsin.
+10. **What are the 7 spiritual ranks?** Awakening, Intentional, Consistent, Resilient, Mindful, God-Conscious, Ihsan.
 
 ## 9.14 CTA Suggestions
 
@@ -2246,7 +2246,7 @@ Variables defined in the landing page CSS (matching app design system):
 - 220+ finance categories
 - 14 habit milestones (up to 5000 days)
 - 6000+ Quran verses for daily inspiration
-- 7 spiritual ranking tiers (Ghafil → Muhsin)
+- 7 spiritual ranking tiers (Awakening → Ihsan)
 - 10 built-in dhikr presets
 - 39 CSS files | 18 JS modules
 - 100% offline capability
