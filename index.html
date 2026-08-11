@@ -1675,15 +1675,24 @@
         }
       }
 
-      // Initialize Phase 1 Header
-      updatePhaseHeader(phases[0].rank, phases[0].subtext);
-      barEl.style.width = '0%';
-      percentEl.textContent = '0%';
+      // Start sequential progression only when visible on screen
+      let isVisible = false;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!isVisible) {
+              isVisible = true;
+              startTime = null;
+              requestAnimationFrame(runPhase);
+            }
+          } else {
+            isVisible = false;
+          }
+        });
+      }, { threshold: 0.1 });
 
-      // Start sequential progression after 600ms
-      setTimeout(function() {
-        requestAnimationFrame(runPhase);
-      }, 600);
+      const section = document.getElementById('spiritual-health-live');
+      if (section) observer.observe(section);
     })();
   </script>
 
@@ -1790,14 +1799,29 @@
 
         if (pendingQueue.length === 0) refreshQueue();
 
-        // Schedule next sequence after current sequence finishes
-        var nextWaveDelay = (count * 140) + 1100;
-        setTimeout(triggerSequentialWave, nextWaveDelay);
+        // Schedule next sequence after current sequence finishes only if section is visible
+        if (isHeatmapVisible) {
+          var nextWaveDelay = (count * 140) + 1100;
+          setTimeout(triggerSequentialWave, nextWaveDelay);
+        }
       }
 
-      // Start initial sequence after 800ms
-      setTimeout(triggerSequentialWave, 800);
+      // Start initial sequence only when visible on screen
+      let isHeatmapVisible = false;
+      const heatmapObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!isHeatmapVisible) {
+              isHeatmapVisible = true;
+              triggerSequentialWave();
+            }
+          } else {
+            isHeatmapVisible = false;
+          }
+        });
+      }, { threshold: 0.1 });
 
+      heatmapObserver.observe(heatmap);
     })();
   </script>
 
