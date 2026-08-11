@@ -373,13 +373,7 @@ const Profile = {
   // Parse a stored "YYYY-MM-DD" (or ISO) DOB as a LOCAL date to avoid UTC off-by-one-day bugs.
   _parseDob(str) {
     if (!str) return null;
-    const parts = String(str).split('T')[0].split('-');
-    if (parts.length === 3) {
-      const y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
-      if (y > 0 && m >= 1 && m <= 12 && d >= 1 && d <= 31) return new Date(y, m - 1, d);
-    }
-    const fallback = new Date(str);
-    return isNaN(fallback.getTime()) ? null : fallback;
+    return Utils.parseDate(str);
   },
 
   saveSetting(key, val) {
