@@ -3099,8 +3099,8 @@ a:focus-visible, button:focus-visible, input:focus-visible {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
-  .app { position: relative; left: auto; right: auto; top: auto; bottom: auto; padding: 14px; border-radius: 20px; }
-  .float { position: relative; right: auto; bottom: auto; display: inline-block; margin-top: 12px; }
+  .app { position: relative; left: auto; right: auto; top: auto; bottom: auto; padding: 14px; border-radius: 20px; -webkit-transform: translateZ(0); transform: translateZ(0); }
+  .float { position: relative; right: auto; bottom: auto; display: inline-block; margin-top: 12px; animation: float 4s ease-in-out infinite; }
   .app-grid { gap: 8px; margin-top: 10px; }
   .tile { padding: 12px; min-height: 90px; border-radius: 14px; }
   .tile .big { font-size: 1.3rem; }

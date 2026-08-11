@@ -87,7 +87,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     animate(el, { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: 0.5, delay: 0.35 + i * 0.06, easing: ease });
   });
 
-  animate('.float', { opacity: [0, 1] }, { duration: 0.5, delay: 0.7, easing: ease });
+  animate('.float', { opacity: [0, 1], transform: ['translateY(12px) scale(0.92)', 'translateY(0) scale(1)'] }, { duration: 0.55, delay: 0.75, easing: ease });
 }
 
 /* ---- SCROLL REVEAL (Works seamlessly on Mobile & Desktop) ---- */
