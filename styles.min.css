@@ -229,7 +229,8 @@ p {
   z-index: 100;
   top: 12px;
   left: 50%;
-  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%) translateZ(0);
+  transform: translateX(-50%) translateZ(0);
   width: calc(100% - 24px);
   max-width: var(--wrap-max);
   display: flex;
@@ -241,7 +242,7 @@ p {
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--line);
   border-radius: 999px;
-  transition: all 0.3s var(--ease);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
   box-shadow: 0 8px 32px rgba(19, 33, 27, 0.06);
 }
 
