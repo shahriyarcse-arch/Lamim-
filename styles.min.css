@@ -1990,6 +1990,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .hero p { font-size: 1rem; line-height: 1.55; }
   .hero-art { min-height: 420px; overflow: visible; }
   .reveal {
+    will-change: transform, opacity;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
