@@ -2430,7 +2430,7 @@ details p {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.visual.mujahid { transform: rotate(-2deg); }
+.visual.mujahid { transform: rotate(1.8deg); }
 .visual.career { transform: rotate(2deg); }
 .visual.nafl, .visual.mujahid, .visual.career, .visual.ledger {
   background: rgba(255,255,255,0.88);
