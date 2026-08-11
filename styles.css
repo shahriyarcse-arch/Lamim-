@@ -1143,30 +1143,101 @@ section {
   z-index: 10;
 }
 
-/* Nafl Visual */
-.nafl {
+/* Nafl Visual & Typography Polish */
+#feature-nafl {
   background: var(--gold);
+}
+
+#feature-nafl .feature-copy .eyebrow {
+  color: #243b2c !important;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(19, 33, 27, 0.16);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+#feature-nafl .feature-copy h2 {
+  color: #111d17 !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 14px 0 16px;
+}
+
+#feature-nafl .feature-copy p {
+  color: rgba(17, 29, 23, 0.88) !important;
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  line-height: 1.58;
+}
+
+#feature-nafl .btn {
+  background: #13211b;
+  color: #f1f0e9;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 28px rgba(19, 33, 27, 0.22);
+  font-weight: 700;
+}
+
+#feature-nafl .btn:hover {
+  background: #1c3027;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(19, 33, 27, 0.32);
+}
+
+.visual.nafl {
+  background: #fafbf6 !important;
+  border: 1px solid rgba(19, 33, 27, 0.12) !important;
+  box-shadow: 0 14px 40px rgba(19, 33, 27, 0.08) !important;
+}
+
+.visual.nafl .v-info .eyebrow {
+  color: #1c3829 !important;
+  background: rgba(43, 81, 64, 0.08);
+  border: 1px solid rgba(43, 81, 64, 0.18);
+  padding: 4px 12px;
+  border-radius: 99px;
+  display: inline-block;
+}
+
+.visual.nafl .v-info h3 {
+  color: #111d17 !important;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.visual.nafl .v-info p {
+  color: #4a5950 !important;
+  line-height: 1.52;
 }
 
 .nafl-orbit-ring {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(19, 33, 27, 0.35);
+  border: 1.5px dashed rgba(19, 33, 27, 0.28);
   border-radius: 50%;
-  animation: spin-ring 20s linear infinite;
+  animation: spin-ring 22s linear infinite;
+  box-shadow: inset 0 0 20px rgba(43, 81, 64, 0.05);
   will-change: transform;
 }
 
 .nafl-badge {
   position: absolute;
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 99px;
-  font-size: clamp(0.6rem, 1.1vw, 0.68rem);
-  font-weight: 700;
-  box-shadow: 0 3px 8px rgba(19, 33, 27, 0.14);
+  font-size: clamp(0.62rem, 1.1vw, 0.72rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 12px rgba(19, 33, 27, 0.18);
   white-space: nowrap;
   z-index: 3;
-  animation: counter-spin 20s linear infinite;
+  animation: counter-spin 22s linear infinite;
   will-change: transform;
 }
 
@@ -1192,16 +1263,19 @@ section {
 .nafl-center-text b {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
-  font-weight: 500;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 800;
   line-height: 1;
+  color: #111d17;
+  letter-spacing: -0.02em;
 }
 
 .nafl-center-text span {
-  font-size: clamp(0.58rem, 1vw, 0.68rem);
-  color: rgba(19, 33, 27, 0.75);
+  font-size: clamp(0.6rem, 1vw, 0.72rem);
+  color: rgba(17, 29, 23, 0.75);
   display: block;
-  margin-top: 1px;
+  margin-top: 2px;
+  font-weight: 600;
 }
 
 /* Dhikr Visual */
