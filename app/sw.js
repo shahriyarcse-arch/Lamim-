@@ -51,7 +51,9 @@ self.addEventListener('fetch', (e) => {
   // Skip external database, dynamic API, and Google API calls to prevent stale data
   const skipUrls = [
     'api.bigdatacloud.net',
-    'ipapi.co',
+    'ipwho.is',
+    'ipinfo.io',
+    'get.geojs.io',
     'open.er-api.com',
     'googleapis.com'
   ];

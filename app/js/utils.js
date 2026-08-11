@@ -297,22 +297,41 @@ const Utils = {
         async () => {
           const ctrl = new AbortController();
           const to = setTimeout(() => ctrl.abort(), 6000);
-          const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
+          const res = await fetch('https://ipwho.is/', { signal: ctrl.signal });
           clearTimeout(to);
-          if (!res.ok) throw new Error('ipapi failed');
+          if (!res.ok) throw new Error('ipwho.is failed');
           const data = await res.json();
-          if (data.latitude && data.longitude) return { lat: data.latitude, lng: data.longitude };
-          throw new Error('ipapi invalid coords');
+          if (data.success && typeof data.latitude === 'number' && typeof data.longitude === 'number') {
+            return { lat: data.latitude, lng: data.longitude };
+          }
+          throw new Error('ipwho.is invalid coords');
         },
         async () => {
           const ctrl = new AbortController();
           const to = setTimeout(() => ctrl.abort(), 6000);
-          const res = await fetch('https://ip-api.com/json/?fields=status,lat,lon,city', { signal: ctrl.signal });
+          const res = await fetch('https://ipinfo.io/json', { signal: ctrl.signal });
           clearTimeout(to);
-          if (!res.ok) throw new Error('ip-api failed');
+          if (!res.ok) throw new Error('ipinfo failed');
           const data = await res.json();
-          if (data.status === 'success' && data.lat && data.lon) return { lat: data.lat, lng: data.lon };
-          throw new Error('ip-api invalid coords');
+          if (data.loc) {
+            const parts = String(data.loc).split(',').map((p) => parseFloat(p));
+            if (parts.length === 2 && isFinite(parts[0]) && isFinite(parts[1])) {
+              return { lat: parts[0], lng: parts[1] };
+            }
+          }
+          throw new Error('ipinfo invalid coords');
+        },
+        async () => {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 6000);
+          const res = await fetch('https://get.geojs.io/v1/ip/geo.json', { signal: ctrl.signal });
+          clearTimeout(to);
+          if (!res.ok) throw new Error('geojs failed');
+          const data = await res.json();
+          const lat = parseFloat(data.latitude);
+          const lng = parseFloat(data.longitude);
+          if (isFinite(lat) && isFinite(lng)) return { lat, lng };
+          throw new Error('geojs invalid coords');
         }
       ];
 
@@ -334,14 +353,17 @@ const Utils = {
     };
 
     if (navigator.geolocation) {
-      // iOS Safari requires enableHighAccuracy: true for GPS, but maximumAge: 300000 allows fast cached response if GPS was used recently
+      // iOS: use DEFAULT accuracy (WiFi/cell triangulation) which resolves fast and
+      // works indoors. Forcing enableHighAccuracy (satellite GPS) hangs or fails on
+      // iPhone without a clear sky, so it is NOT set here. maximumAge allows a recent
+      // cached fix so repeated detection is instant.
       navigator.geolocation.getCurrentPosition(
         (pos) => handleSuccess(pos.coords.latitude, pos.coords.longitude),
         (err) => {
           // On iOS, PERMISSION_DENIED (1) or POSITION_UNAVAILABLE (2) / TIMEOUT (3)
           tryIPFallback();
         },
-        { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 }
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
       );
     } else {
       tryIPFallback();
@@ -393,9 +415,9 @@ const Utils = {
         if (!navigator.onLine) { if (cb) cb(fallbackName); return; }
         const ctrl2 = new AbortController();
         const to2 = setTimeout(() => ctrl2.abort(), 8000);
-        fetch('https://ipapi.co/json/', { signal: ctrl2.signal })
+        fetch('https://ipwho.is/', { signal: ctrl2.signal })
           .then((r) => { clearTimeout(to2); if (!r.ok) throw new Error(r.status); return r.json(); })
-          .then((d) => { if (d && d.latitude && d.longitude) cacheAndEmit(d.city || '', d.country_name || ''); else if (cb) cb(fallbackName); })
+          .then((d) => { if (d && d.success && d.city) cacheAndEmit(d.city || '', d.country || ''); else if (cb) cb(fallbackName); })
           .catch(() => { if (cb) cb(fallbackName); });
       });
   },
