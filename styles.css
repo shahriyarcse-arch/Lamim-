@@ -2113,6 +2113,31 @@ details p {
   border-radius: 28px !important;
 }
 
+/* Marquee Ribbon Section Typography & Visual Polish */
+.ribbon {
+  padding: 18px 0 !important;
+  border-top: 1px solid rgba(17, 36, 26, 0.1) !important;
+  border-bottom: 1px solid rgba(17, 36, 26, 0.1) !important;
+  background: rgba(244, 241, 234, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.track {
+  color: #11241a !important;
+  font-size: clamp(0.76rem, 1.3vw, 0.84rem) !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 800 !important;
+}
+
+.track span::after {
+  content: '✦' !important;
+  color: #059669 !important;
+  font-size: 0.9rem !important;
+  margin-left: clamp(24px, 4vw, 48px) !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
