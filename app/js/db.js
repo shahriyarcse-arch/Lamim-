@@ -78,6 +78,7 @@ const DB = {
       const k = localStorage.key(i);
       if (k && k.startsWith('lamim_')) {
         this._cache[k] = localStorage.getItem(k);
+      }
     }
   },
 
