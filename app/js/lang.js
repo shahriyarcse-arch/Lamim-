@@ -266,9 +266,9 @@ const Translations = {
   'Insight Breakdown': 'ইনসাইট ব্রেকডাউন',
   'Spirit': 'স্পিরিট',
   'Total LSS': 'মোট LSS',
-  'Muhsin': 'মুহসিন',
-  'Muttaqi': 'মুত্তাকী',
-  'Mukhlis': 'মুখলিস',
+  'Muhsin': 'ইহসান',
+  'Muttaqi': 'তাকওয়াবান',
+  'Mukhlis': 'ফোকাসড',
   
   // Mujahid Section
   'The Forge of Resolve': 'সংকল্পের কামারশালা',

@@ -585,10 +585,13 @@ const Analysis = {
     const user = DB.getUser() || { name: 'User' };
 
     const getBadgeStyle = (rating) => {
-      if (rating === 'Muttaqi') return 'background: rgba(251, 191, 36, 0.15); color: #b45309; border: 1px solid rgba(251, 191, 36, 0.3);';
-      if (rating === 'Mukhlis') return 'background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3);';
-      if (rating === 'Mujahid') return 'background: rgba(56, 189, 248, 0.15); color: #0369a1; border: 1px solid rgba(56, 189, 248, 0.3);';
-      return 'background: rgba(248, 113, 113, 0.15); color: #b91c1c; border: 1px solid rgba(248, 113, 113, 0.3);';
+      if (rating === 'Ihsan') return 'background: rgba(251, 191, 36, 0.15); color: #b45309; border: 1px solid rgba(251, 191, 36, 0.3);';
+      if (rating === 'God-Conscious') return 'background: rgba(167, 139, 250, 0.15); color: #6d28d9; border: 1px solid rgba(167, 139, 250, 0.3);';
+      if (rating === 'Mindful') return 'background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3);';
+      if (rating === 'Resilient') return 'background: rgba(56, 189, 248, 0.15); color: #0369a1; border: 1px solid rgba(56, 189, 248, 0.3);';
+      if (rating === 'Consistent') return 'background: rgba(245, 158, 11, 0.15); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.3);';
+      if (rating === 'Intentional') return 'background: rgba(248, 113, 113, 0.15); color: #b91c1c; border: 1px solid rgba(248, 113, 113, 0.3);';
+      return 'background: rgba(239, 68, 68, 0.15); color: #991b1b; border: 1px solid rgba(239, 68, 68, 0.3);';
     };
 
     const innerHTML = `
