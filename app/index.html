@@ -7,7 +7,11 @@
     content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#F1F5F9">
   <script>
-    /* Apply saved theme BEFORE first paint + absolute splash fail-safe (max 1.5s) */
+    /* Prevent browser from restoring scroll position on reload — always start from the top */
+    if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+    if (!location.hash) { window.scrollTo(0, 0); }
+
+    /* Apply saved theme BEFORE first paint + absolute splash fail-safe (max 1s) */
     (function () {
       try {
         var s = JSON.parse(localStorage.getItem('lamim_settings') || '{}');
@@ -33,6 +37,7 @@
           var page = document.getElementById(pageId);
           if (page) page.classList.add('active');
         }
+        window.scrollTo(0, 0);
       }, 1000);
     })();
   </script>
