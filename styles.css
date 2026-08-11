@@ -1016,7 +1016,7 @@ section {
   .system {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 14px;
     border-top: none;
   }
 
@@ -1024,42 +1024,49 @@ section {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 18px 14px 16px;
+    padding: 20px 16px 18px;
     margin: 0;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 18px;
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.06) 0%, rgba(207, 238, 130, 0.02) 100%);
-    gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.045) 0%, rgba(207, 238, 130, 0.015) 100%);
+    gap: 6px;
     position: relative;
     overflow: hidden;
+    min-height: 148px;
   }
 
   .system-row .num {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     font-weight: 900;
     font-style: italic;
     color: #cfee82 !important;
     margin-bottom: 2px;
-    text-shadow: 0 0 12px rgba(207, 238, 130, 0.25);
+    text-shadow: 0 0 12px rgba(207, 238, 130, 0.22);
   }
 
   .system-row h3 {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.08rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: #ffffff;
     letter-spacing: -0.025em;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     line-height: 1.25;
   }
 
   .system-row p {
     grid-column: auto;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    font-size: 0.8rem;
-    line-height: 1.4;
-    color: #a4b8ab !important;
+    font-size: 0.78rem;
+    line-height: 1.38;
+    color: #9cb5a7 !important;
     font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
   }
 }
 
