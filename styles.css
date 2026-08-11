@@ -2052,8 +2052,15 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .faq-list details { padding: 14px 0; border-bottom: 1px solid var(--line); }
   .faq-list summary { font-size: 0.95rem; font-weight: 600; }
 
-  /* Profile Card */
-  .profile-card { padding: clamp(16px, 4vw, 24px); min-height: auto; }
+  /* Profile Card & Analysis Board */
+  .profile-card, .analysis-board {
+    padding: clamp(16px, 4vw, 24px);
+    min-height: auto;
+    transform: none !important;
+    -webkit-transform: none !important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
   .profile-top { flex-direction: column; text-align: center; gap: 12px; }
   .stats { gap: 12px; }
 
