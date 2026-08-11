@@ -1989,7 +1989,11 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .hero { padding: 90px 0 40px; }
   .hero p { font-size: 1rem; line-height: 1.55; }
   .hero-art { min-height: 420px; overflow: visible; }
-  .reveal { opacity: 1 !important; transform: none !important; -webkit-transform: none !important; }
+  .reveal {
+    animation: mobileSmoothUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
   .app { position: relative; left: auto; right: auto; top: auto; bottom: auto; padding: 14px; border-radius: 20px; }
   .float { position: relative; right: auto; bottom: auto; display: inline-block; margin-top: 12px; }
   .app-grid { gap: 8px; margin-top: 10px; }
@@ -2091,6 +2095,11 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   /* Marquee */
   .ribbon { overflow: hidden; }
   .track { animation-duration: 25s; -webkit-transform: translateZ(0); transform: translateZ(0); }
+}
+
+@keyframes mobileSmoothUp {
+  0% { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Accessibility: reduced motion — show all content immediately */
