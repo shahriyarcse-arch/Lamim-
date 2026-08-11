@@ -80,8 +80,8 @@ body::before {
     radial-gradient(circle at 90% 8%, #e7ddf4, transparent 28%),
     radial-gradient(circle at 48% 84%, #d5edf1, transparent 24%);
   pointer-events: none;
-  transform: translateZ(0);
-  will-change: transform;
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
 }
 
 a {
@@ -480,6 +480,10 @@ p {
   position: relative;
   overflow: visible;
   padding-bottom: 28px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
 }
 
 @media (min-width: 1024px) {
@@ -532,6 +536,10 @@ p {
   background: #fafbf6ee;
   box-shadow: 0 20px 60px rgba(19, 33, 27, 0.15);
   transform: rotate(1deg);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   transition: transform .45s var(--ease);
 }
 
