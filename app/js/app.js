@@ -342,6 +342,16 @@ updateSectionTitle() {
     }
     
     this.navigateTo(initialSection);
+
+    // Guarantee scroll-to-top on refresh/initial boot.
+    // Browser may attempt its own scroll restoration AFTER our navigateTo call,
+    // so we override it with a rAF to ensure we always start at the very top.
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+
     // Update topbar avatars
     this.updateAvatars();
     // Initialize Prayer Notifier
