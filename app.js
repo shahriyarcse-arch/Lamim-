@@ -78,7 +78,13 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     });
   });
 
-  animate('.hero-art', { opacity: [0, 1] }, { duration: 0.8, delay: 0.12, easing: ease });
+  animate('.hero-art', { opacity: [0, 1], transform: ['scale(0.94)', 'scale(1)'] }, { duration: 0.85, delay: 0.12, easing: ease });
+
+  const tiles = document.querySelectorAll('.hero-art .tile');
+  tiles.forEach((el, i) => {
+    animate(el, { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: 0.5, delay: 0.35 + i * 0.06, easing: ease });
+  });
+
   animate('.float', { opacity: [0, 1] }, { duration: 0.5, delay: 0.7, easing: ease });
 }
 
