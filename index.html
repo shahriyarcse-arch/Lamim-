@@ -64,10 +64,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="styles.min.css?v=20260811_v37" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="styles.min.css?v=20260811_v38" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
-    <link rel="stylesheet" href="styles.min.css?v=20260811_v37">
+    <link rel="stylesheet" href="styles.min.css?v=20260811_v38">
     <style>.reveal{opacity:1;transform:none}
     /* Brand Essence Section */
     .brand-essence { padding: 90px 0 60px; text-align: center; }
@@ -1720,15 +1720,36 @@
         '#e2f4c1'  // Soft Glowing Lime
       ];
 
-      // Set initial dark background for all blocks
+      var isUserInteracting = false;
+      var userInteractionTimer = null;
+
+      function triggerUserActivity() {
+        isUserInteracting = true;
+        if (userInteractionTimer) clearTimeout(userInteractionTimer);
+        userInteractionTimer = setTimeout(function() {
+          isUserInteracting = false;
+        }, 2500);
+      }
+
+      // Track user interactions on PC & Mobile Phones
+      heatmap.addEventListener('mouseenter', triggerUserActivity);
+      heatmap.addEventListener('mouseleave', function() {
+        if (userInteractionTimer) clearTimeout(userInteractionTimer);
+        userInteractionTimer = setTimeout(function() { isUserInteracting = false; }, 800);
+      });
+      heatmap.addEventListener('touchstart', triggerUserActivity, { passive: true });
+      heatmap.addEventListener('pointerdown', triggerUserActivity);
+      heatmap.addEventListener('mousedown', triggerUserActivity);
+
+      // Set initial dark background & click/tap handlers for all blocks
       cells.forEach(function(cell) {
         cell.style.setProperty('background-color', baseColor, 'important');
         cell.style.transition = 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
 
-        // Click / Tap handler
-        cell.addEventListener('click', function(e) {
-          e.stopPropagation();
-          isHovered = false;
+        function handleTileTap(e) {
+          if (e) e.stopPropagation();
+          triggerUserActivity();
+
           var tapColor = glowColors[Math.floor(Math.random() * glowColors.length)];
           cell.style.setProperty('background-color', tapColor, 'important');
           cell.style.transform = 'scale(1.4) rotate(' + (Math.random() * 12 - 6).toFixed(1) + 'deg)';
@@ -1740,11 +1761,12 @@
             cell.style.transform = 'scale(1) rotate(0deg)';
             cell.style.boxShadow = 'none';
             cell.style.zIndex = '1';
-            isHovered = false;
           }, 1100);
 
           if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
-        });
+        }
+
+        cell.addEventListener('click', handleTileTap);
       });
 
       // Fair Shuffle Queue: Ensures EVERY single cell (0 to 20) gets lit up over time!
@@ -1763,20 +1785,10 @@
       }
       refreshQueue();
 
-      var isHovered = false;
-      var hasHoverSupport = window.matchMedia && window.matchMedia('(hover: hover)').matches;
-      heatmap.addEventListener('mouseenter', function() {
-        if (hasHoverSupport) isHovered = true;
-      });
-      heatmap.addEventListener('mouseleave', function() { isHovered = false; });
-      heatmap.addEventListener('pointerleave', function() { isHovered = false; });
-      heatmap.addEventListener('touchend', function() { isHovered = false; });
-      heatmap.addEventListener('touchcancel', function() { isHovered = false; });
-
       // Run sequential pulse wave loop
       function triggerSequentialWave() {
-        if (isHovered) {
-          setTimeout(triggerSequentialWave, 1400);
+        if (isUserInteracting) {
+          setTimeout(triggerSequentialWave, 1000);
           return;
         }
 
@@ -1791,16 +1803,16 @@
         // Light up each cell in sequence with a smooth 140ms stagger delay!
         sequenceCells.forEach(function(c, seqIndex) {
           if (!c) return;
-          var staggerDelay = seqIndex * 140; // 140ms delay between consecutive blocks in the sequence
+          var staggerDelay = seqIndex * 140;
 
           setTimeout(function() {
+            if (isUserInteracting) return;
             var activeGlow = glowColors[Math.floor(Math.random() * glowColors.length)];
             c.style.setProperty('background-color', activeGlow, 'important');
             c.style.transform = 'scale(1.28)';
             c.style.boxShadow = '0 0 14px ' + activeGlow;
             c.style.zIndex = '5';
 
-            // Hold light for 900ms then smoothly return to dark base
             setTimeout(function() {
               c.style.setProperty('background-color', baseColor, 'important');
               c.style.transform = 'scale(1)';
@@ -1834,7 +1846,8 @@
         });
       }, { threshold: 0.1 });
 
-      heatmapObserver.observe(heatmap);
+      const section = document.getElementById('feature-salah');
+      if (section) heatmapObserver.observe(section);
     })();
   </script>
 
