@@ -611,22 +611,24 @@ p {
   bottom: -62px;
   padding: 10px 14px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  color: var(--paper);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  background: rgba(18, 38, 30, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   animation: float 4s ease-in-out infinite;
   font-size: 0.78rem;
+  font-weight: 500;
   z-index: 20;
   cursor: pointer;
   transition: background 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
 .float:hover {
-  background: rgba(255, 255, 255, 0.35);
-  border-color: rgba(255, 255, 255, 0.65);
+  background: rgba(18, 38, 30, 0.65);
+  border-color: rgba(207, 238, 130, 0.5);
 }
 
 .float:active,
@@ -641,6 +643,7 @@ p {
   color: var(--mint);
   font-size: 1.1rem;
   line-height: 1.1;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes float {
