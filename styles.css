@@ -1508,16 +1508,21 @@ section.dark .feature-copy p {
   line-height: 1;
 }
 
-.count span {
-  font-size: clamp(0.62rem, 1.1vw, 0.72rem);
-  color: #2b4535;
+.count span,
+.dhikr-tap-pill {
+  font-size: clamp(0.64rem, 1vw, 0.74rem);
+  color: #11261a;
   background: rgba(17, 38, 26, 0.08);
-  padding: 3px 10px;
+  border: 1px solid rgba(17, 38, 26, 0.18);
+  padding: 4px 12px;
   border-radius: 99px;
-  display: inline-block;
-  margin-top: 4px;
-  font-weight: 700;
-  border: 1px solid rgba(17, 38, 26, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
 }
 
 /* Habits / Mujahid Section Visual & Typography Polish */
