@@ -1575,12 +1575,26 @@ section.dark .feature-copy p {
 
 .visual.mujahid {
   background: linear-gradient(145deg, #ffffff 0%, #f4ebff 100%) !important;
-  border: 1px solid rgba(61, 36, 108, 0.14) !important;
-  border-radius: 38px 10px 38px 38px !important;
-  box-shadow: 0 20px 48px rgba(36, 20, 64, 0.09) !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  border-radius: 56px 18px 56px 18px !important;
+  box-shadow: 0 22px 55px rgba(61, 36, 108, 0.11), inset 0 2px 6px #ffffff !important;
   transform: rotate(1.8deg);
   position: relative;
   overflow: hidden;
+  padding: clamp(28px, 4.5vw, 40px) !important;
+}
+
+.visual.mujahid .v-art {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(94, 53, 177, 0.2);
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 10px 28px rgba(89, 59, 130, 0.1), inset 0 2px 6px #ffffff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
 }
 
 .visual.mujahid::after {
