@@ -1970,6 +1970,50 @@ details p {
   padding-bottom: 20px !important;
 }
 
+/* Section 14 Final CTA Banner Typography & Visual Polish */
+.cta .eyebrow,
+.final .eyebrow {
+  color: #11261a !important;
+  background: rgba(17, 38, 26, 0.08) !important;
+  border: 1px solid rgba(17, 38, 26, 0.2) !important;
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.cta h2,
+.final h2 {
+  color: #091b12 !important;
+  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.cta p,
+.final p {
+  color: #193a2b !important;
+  line-height: 1.58;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+
+.cta .btn,
+.final .btn {
+  background: #11261a !important;
+  color: #cfee82 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 10px 28px rgba(17, 38, 26, 0.25) !important;
+}
+
+.cta .btn:hover,
+.final .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(17, 38, 26, 0.35) !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
