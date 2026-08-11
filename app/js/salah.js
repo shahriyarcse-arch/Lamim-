@@ -993,7 +993,7 @@ this.renderPrayerCards(date, true); // true = skipAnim
   resetToday() {
     UI.showSettingsModal({
       title: 'Reset Salah Data?',
-      desc: `Clear all records for ${Utils.formatDate(new Date(this.selectedDate + 'T00:00:00'), {day:'numeric', month:'short'})}?`,
+      desc: `Clear all records for ${Utils.formatDate(Utils.parseDate(this.selectedDate), {day:'numeric', month:'short'})}?`,
       confirmText: 'Yes, Reset',
       type: 'danger',
       onConfirm: () => {
