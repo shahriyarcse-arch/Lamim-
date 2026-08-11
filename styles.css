@@ -146,6 +146,8 @@ h1 em, h2 em {
   opacity: 0;
   transform: translateY(30px);
   pointer-events: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Hero eyebrow chip — app.js sets opacity=1 instantly; CSS transition makes it smooth */
