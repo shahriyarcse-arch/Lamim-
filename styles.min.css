@@ -635,6 +635,27 @@ p {
   50% { transform: translateY(-8px); }
 }
 
+#hero-shs-subtext {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
+}
+#hero-shs-tile .kicker {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+#hero-shs-percent {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+#hero-shs-tile {
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
+}
+
 @media (min-width: 1024px) {
   .hero {
     min-height: 100vh;
