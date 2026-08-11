@@ -450,6 +450,7 @@ const Utils = {
 
   // Salah completion score for a day
   salahScore(salahData) {
+    if (!salahData || typeof salahData !== 'object') return { done: 0, total: 5, pct: 0 };
     const prayers = ['fajr','dhuhr','asr','maghrib','isha'];
     let done = 0;
     let pctScore = 0;
