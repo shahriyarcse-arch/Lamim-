@@ -37,6 +37,7 @@ const DB = {
           .catch((err) => {
             console.error("IndexedDB cache loading/migration failed, falling back", err);
             this._fallbackToLocalStorage();
+            this._setupMultiTabSync();
             resolve();
           });
       };
@@ -55,8 +56,23 @@ const DB = {
       const k = localStorage.key(i);
       if (k && k.startsWith('lamim_')) {
         this._cache[k] = localStorage.getItem(k);
-      }
     }
+  },
+
+  _setupMultiTabSync() {
+    if (typeof window === 'undefined' || this._tabSyncInitialized) return;
+    this._tabSyncInitialized = true;
+    window.addEventListener('storage', (e) => {
+      if (e.key && (e.key.startsWith('lamim_') || e.key.startsWith('usr_'))) {
+        if (e.newValue !== null) {
+          this._cache[e.key] = e.newValue;
+        } else {
+          delete this._cache[e.key];
+        }
+        this._streakCache = null;
+        window.dispatchEvent(new CustomEvent('lamim:data-updated'));
+      }
+    });
   },
 
   _loadCache() {
