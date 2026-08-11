@@ -482,6 +482,7 @@ p {
   position: relative;
   overflow: visible;
   padding-bottom: 28px;
+  opacity: 0;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
