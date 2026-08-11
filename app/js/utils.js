@@ -21,8 +21,8 @@ const Utils = {
     return new Date(Date.now() - (3 * 60 * 60 * 1000));
   },
 
-  todayStr() { 
-    return this.dateStr(this.getOffsetDate()); 
+  todayStr() {
+    return this.dateStr(this.getOffsetDate());
   },
 
   // Use local date components to avoid timezone shift
@@ -74,28 +74,28 @@ const Utils = {
   toHijri(date) {
     const settings = DB.getSettings();
     const offset = settings.hijriOffset || 0;
-    
+
     // Convert to modified Julian Day
     const jd = Math.floor((date.getTime() / 86400000) + 2440588) + offset;
     let l = jd - 1948440 + 10632;
     const n = Math.floor((l - 1) / 10631);
     l = l - 10631 * n + 354;
     const j = (Math.floor((10985 - l) / 5316)) * (Math.floor((50 * l) / 17719)) +
-              (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
+      (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
     l = l - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) -
-        (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+      (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
     const month = Math.floor((24 * l) / 709);
     const day = l - Math.floor((709 * month) / 24);
     const year = 30 * n + j - 30;
     const mIdx = Math.max(0, Math.min(11, (month || 1) - 1));
-    const months = ['Muharram','Safar','Rabi al-Awwal','Rabi al-Thani','Jumada al-Awwal','Jumada al-Thani','Rajab',"Sha'ban",'Ramadan','Shawwal',"Dhu al-Qi'dah",'Dhu al-Hijjah'];
+    const months = ['Muharram', 'Safar', 'Rabi al-Awwal', 'Rabi al-Thani', 'Jumada al-Awwal', 'Jumada al-Thani', 'Rajab', "Sha'ban", 'Ramadan', 'Shawwal', "Dhu al-Qi'dah", 'Dhu al-Hijjah'];
     let monthName = months[mIdx];
     let dateStr = `${day} ${monthName} ${year} AH`;
-    
+
     if (typeof App !== 'undefined' && App.lang === 'bn') {
-      const bnMonths = ['মুহাররম','সফর','রবিউল আউয়াল','রবিউস সানি','জুমাদাল উলা','জুমাদাস সানি','রজব','শাবান','রমজান','শাওয়াল','জিলকদ','জিলহজ'];
+      const bnMonths = ['মুহাররম', 'সফর', 'রবিউল আউয়াল', 'রবিউস সানি', 'জুমাদাল উলা', 'জুমাদাস সানি', 'রজব', 'শাবান', 'রমজান', 'শাওয়াল', 'জিলকদ', 'জিলহজ'];
       monthName = bnMonths[mIdx];
-      const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+      const bnNums = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
       const bnDay = String(day).split('').map(d => bnNums[d] || d).join('');
       const bnYear = String(year).split('').map(d => bnNums[d] || d).join('');
       dateStr = `${bnDay} ${monthName} ${bnYear} হিজরি`;
@@ -103,7 +103,7 @@ const Utils = {
       monthName = window.t(monthName);
       dateStr = `${day} ${monthName} ${year} AH`;
     }
-    
+
     return dateStr;
   },
 
@@ -116,9 +116,9 @@ const Utils = {
     if (this._cachedTimes && nowMs - this._cachedTimesAt < 60000) {
       return this._cachedTimes;
     }
-    
+
     const settings = DB.getSettings();
-    
+
     // Fallback coordinates (Dhaka)
     let lat = settings.lat || 23.8103;
     let lng = settings.lng || 90.4125;
@@ -136,7 +136,7 @@ const Utils = {
         window.dispatchEvent(new CustomEvent('lamim:data-updated'));
       }, null, { timeout: 5000 });
     }
-    
+
     const now = new Date();
     const dayOfYear = this._dayOfYear(now);
     const tzOffset = now.getTimezoneOffset() / -60;
@@ -151,7 +151,7 @@ const Utils = {
     const e = 23.439 - 0.00000036 * D; // obliquity
     const eRad = e * Math.PI / 180;
     const decl = Math.asin(Math.sin(eRad) * Math.sin(LRad)); // declination
-    
+
     // Equation of time (simplified)
     const RA = Math.atan2(Math.cos(eRad) * Math.sin(LRad), Math.cos(LRad));
     const EqT = (q - (RA * 180 / Math.PI)) / 360 * 24 * 60; // in minutes
@@ -167,7 +167,7 @@ const Utils = {
     const hourAngle = (angle) => {
       const angleRad = angle * Math.PI / 180;
       const cosHA = (Math.sin(angleRad) - Math.sin(latRad) * Math.sin(decl)) /
-                    (Math.cos(latRad) * Math.cos(decl));
+        (Math.cos(latRad) * Math.cos(decl));
       if (cosHA > 1 || cosHA < -1) return 0;
       return Math.acos(cosHA) * 180 / Math.PI / 15; // in hours
     };
@@ -198,11 +198,11 @@ const Utils = {
     };
 
     const times = [
-      { name: 'fajr',    time: makeTime(fajr),    label: this.formatTime(makeTime(fajr)) },
-      { name: 'dhuhr',   time: makeTime(dhuhr),   label: this.formatTime(makeTime(dhuhr)) },
-      { name: 'asr',     time: makeTime(asr),     label: this.formatTime(makeTime(asr)) },
+      { name: 'fajr', time: makeTime(fajr), label: this.formatTime(makeTime(fajr)) },
+      { name: 'dhuhr', time: makeTime(dhuhr), label: this.formatTime(makeTime(dhuhr)) },
+      { name: 'asr', time: makeTime(asr), label: this.formatTime(makeTime(asr)) },
       { name: 'maghrib', time: makeTime(maghrib), label: this.formatTime(makeTime(maghrib)) },
-      { name: 'isha',    time: makeTime(isha),     label: this.formatTime(makeTime(isha)) },
+      { name: 'isha', time: makeTime(isha), label: this.formatTime(makeTime(isha)) },
     ];
     this._cachedTimes = times;
     this._cachedTimesAt = nowMs;
@@ -233,7 +233,7 @@ const Utils = {
     const h = Math.floor(diff / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   },
 
   // Auto re-detect location when the user has travelled to a new area.
@@ -434,17 +434,17 @@ const Utils = {
 
   // Confetti
   confetti() {
-    const colors = ['#d4a843','#f0c456','#3fb950','#58a6ff','#bc8cff','#f85149'];
+    const colors = ['#d4a843', '#f0c456', '#3fb950', '#58a6ff', '#bc8cff', '#f85149'];
     for (let i = 0; i < 60; i++) {
       setTimeout(() => {
         const el = document.createElement('div');
         el.className = 'confetti-piece';
         const size = Math.random() * 10 + 6;
         el.style.cssText = `
-          left:${Math.random()*100}vw; width:${size}px; height:${size}px;
-          background:${colors[Math.floor(Math.random()*colors.length)]};
-          animation-delay:${Math.random()*1}s;
-          animation-duration:${2 + Math.random()*1.5}s;
+          left:${Math.random() * 100}vw; width:${size}px; height:${size}px;
+          background:${colors[Math.floor(Math.random() * colors.length)]};
+          animation-delay:${Math.random() * 1}s;
+          animation-duration:${2 + Math.random() * 1.5}s;
         `;
         document.body.appendChild(el);
         setTimeout(() => el.remove(), 4000);
@@ -457,10 +457,10 @@ const Utils = {
   // Salah completion score for a day
   salahScore(salahData) {
     if (!salahData || typeof salahData !== 'object') return { done: 0, total: 5, pct: 0 };
-    const prayers = ['fajr','dhuhr','asr','maghrib','isha'];
+    const prayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
     let done = 0;
     let pctScore = 0;
-    prayers.forEach(p => { 
+    prayers.forEach(p => {
       const s = salahData[p];
       if (s && s !== 'missed') {
         done++;
@@ -479,7 +479,7 @@ const Utils = {
       { arabic: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ', translation: 'জেনে রেখো, আল্লাহর স্মরণেই কেবল অন্তরসমূহ প্রশান্তি পায়। (১৩:২৮)' },
       { arabic: 'وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ', translation: 'ধৈর্য ও সালাতের মাধ্যমে তোমরা সাহায্য প্রার্থনা করো। (২:৪৫)' },
     ];
-    
+
     // Use the 6000+ fetched verses if available, else fallback
     const quotes = (window.LamimVerses && window.LamimVerses.length > 0) ? window.LamimVerses : defaultQuotes;
 
@@ -522,13 +522,13 @@ const Utils = {
       muts.forEach(m => {
         const el = m.target;
         if (el.classList.contains('hidden')) {
-          if (el._prevFocus && el._prevFocus.focus) { try { el._prevFocus.focus({ preventScroll: true }); } catch (e) {} }
+          if (el._prevFocus && el._prevFocus.focus) { try { el._prevFocus.focus({ preventScroll: true }); } catch (e) { } }
         } else {
           el._prevFocus = document.activeElement;
           setTimeout(() => {
             const f = focusablesIn(el);
             const target = (f.find(x => x.tagName === 'INPUT' || x.tagName === 'TEXTAREA' || x.tagName === 'SELECT')) || f[0] || el;
-            try { target.focus({ preventScroll: true }); } catch (e) {}
+            try { target.focus({ preventScroll: true }); } catch (e) { }
           }, 60);
         }
       });
@@ -548,7 +548,7 @@ const Utils = {
       this._modalObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
       if (!el.classList.contains('hidden')) {
         el._prevFocus = document.activeElement;
-        setTimeout(() => { const f = focusablesIn(el); try { (f[0] || el).focus({ preventScroll: true }); } catch (e) {} }, 60);
+        setTimeout(() => { const f = focusablesIn(el); try { (f[0] || el).focus({ preventScroll: true }); } catch (e) { } }, 60);
       }
     };
     document.querySelectorAll('.modal-overlay').forEach(enhanceModal);
@@ -641,7 +641,7 @@ const Utils = {
     const msgEl = document.getElementById('confirm-msg');
     const iconEl = document.getElementById('confirm-icon-box');
     const btn = document.getElementById('confirm-yes-btn');
-    
+
     if (!modal || !titleEl || !msgEl || !btn) {
       if (window.confirm(msg)) onConfirm();
       return;
@@ -654,7 +654,7 @@ const Utils = {
     };
 
     const config = types[type] || types.warning;
-    
+
     titleEl.textContent = title;
     msgEl.textContent = msg;
     if (iconEl) {
