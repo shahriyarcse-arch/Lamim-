@@ -74,16 +74,15 @@ body {
 
 body::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
+  height: 100vh;
   z-index: -1;
   background:
     radial-gradient(circle at 10% 4%, #e2f4c1, transparent 24%),
     radial-gradient(circle at 90% 8%, #e7ddf4, transparent 28%),
     radial-gradient(circle at 48% 84%, #d5edf1, transparent 24%);
   pointer-events: none;
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
 }
 
 a {
