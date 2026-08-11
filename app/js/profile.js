@@ -832,6 +832,7 @@ const Profile = {
       if (!updatedUser) return;
       updatedUser.avatar = dataUrl; 
       DB.setUser(updatedUser);
+      DB.saveProfileVault(updatedUser);
       Profile.renderProfile();
       Profile.renderSettings();
       if (typeof App !== 'undefined') App.updateAvatars();
@@ -850,6 +851,7 @@ const Profile = {
     if (!updatedUser) return;
     delete updatedUser.avatar;
     DB.setUser(updatedUser);
+    DB.saveProfileVault(updatedUser);
     Profile.renderProfile();
     Profile.renderSettings();
     if (typeof App !== 'undefined') App.updateAvatars();
