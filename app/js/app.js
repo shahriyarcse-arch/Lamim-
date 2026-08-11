@@ -120,8 +120,8 @@ updateSectionTitle() {
     }
     
     // Force clear old service workers and caches ONCE in background (non-blocking)
-    if (!DB.rawGet('lamim_cache_cleared_v37')) {
-      DB.rawSet('lamim_cache_cleared_v37', 'true');
+    if (!DB.rawGet('lamim_cache_cleared_v38')) {
+      DB.rawSet('lamim_cache_cleared_v38', 'true');
       if ('caches' in window) {
         caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).catch(() => {});
       }

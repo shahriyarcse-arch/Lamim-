@@ -85,11 +85,15 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="mobile-web-app-capable" content="yes">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; frame-src 'self' data: blob:; child-src 'self' data: blob:; connect-src 'self' https://ipwho.is https://ipinfo.io https://get.geojs.io https://api.bigdatacloud.net https://open.er-api.com https://cdn.jsdelivr.net; worker-src 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; frame-src 'self' data: blob:; child-src 'self' data: blob:; connect-src 'self' https://ipwho.is https://ipinfo.io https://get.geojs.io https://freeipapi.com https://api.ipapi.is https://api.bigdatacloud.net https://open.er-api.com https://cdn.jsdelivr.net; worker-src 'self';">
   <title>Lamim — Islamic Lifestyle Tracker | Salah, Dhikr, Goals & Finance</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ipwho.is">
+  <link rel="preconnect" href="https://ipinfo.io">
+  <link rel="preconnect" href="https://get.geojs.io">
+  <link rel="preconnect" href="https://freeipapi.com">
+  <link rel="preconnect" href="https://api.ipapi.is">
   <link rel="preconnect" href="https://api.bigdatacloud.net">
   <link rel="preconnect" href="https://open.er-api.com">
   <link rel="preload" as="style"
@@ -205,7 +209,7 @@
   <script>
     // AUTO CACHE BUSTER — runs once per version to ensure fresh assets
     (function () {
-      var APP_BUILD = 'v158';
+      var APP_BUILD = 'v159';
       var lastBuild = localStorage.getItem('lamim_app_build');
       if (lastBuild !== APP_BUILD) {
         localStorage.setItem('lamim_app_build', APP_BUILD);
@@ -2456,7 +2460,7 @@
 
     <!-- Core Engine -->
     <script defer src="js/lang.js?v=129"></script>
-    <script defer src="js/utils.js?v=225"></script>
+    <script defer src="js/utils.js?v=226"></script>
     <script defer src="js/db.js?v=217"></script>
     <script defer src="js/auth.js?v=154"></script>
 

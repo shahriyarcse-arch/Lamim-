@@ -332,6 +332,30 @@ const Utils = {
           const lng = parseFloat(data.longitude);
           if (isFinite(lat) && isFinite(lng)) return { lat, lng };
           throw new Error('geojs invalid coords');
+        },
+        async () => {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 6000);
+          const res = await fetch('https://freeipapi.com/api/json', { signal: ctrl.signal });
+          clearTimeout(to);
+          if (!res.ok) throw new Error('freeipapi failed');
+          const data = await res.json();
+          const lat = parseFloat(data.latitude);
+          const lng = parseFloat(data.longitude);
+          if (isFinite(lat) && isFinite(lng)) return { lat, lng };
+          throw new Error('freeipapi invalid coords');
+        },
+        async () => {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 6000);
+          const res = await fetch('https://api.ipapi.is/', { signal: ctrl.signal });
+          clearTimeout(to);
+          if (!res.ok) throw new Error('ipapi.is failed');
+          const data = await res.json();
+          const lat = parseFloat(data.lat);
+          const lng = parseFloat(data.lon);
+          if (isFinite(lat) && isFinite(lng)) return { lat, lng };
+          throw new Error('ipapi.is invalid coords');
         }
       ];
 

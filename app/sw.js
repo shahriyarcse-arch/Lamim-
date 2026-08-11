@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-v162';
+const CACHE_NAME = 'lamim-v163';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -54,6 +54,8 @@ self.addEventListener('fetch', (e) => {
     'ipwho.is',
     'ipinfo.io',
     'get.geojs.io',
+    'freeipapi.com',
+    'api.ipapi.is',
     'open.er-api.com',
     'googleapis.com'
   ];
