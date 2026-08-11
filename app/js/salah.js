@@ -584,20 +584,19 @@ this.renderPrayerCards(date, true); // true = skipAnim
     return t ? t.label : '';
   },
 
-  /* ---- Date nav ---- */
   bindDateNav() {
     if (this.navBound) return; // Guard against duplicate listeners
-    
+    this.navBound = true;
     document.getElementById('salah-prev-day')?.addEventListener('click', (e) => {
       e.preventDefault();
-      const d = new Date(this.selectedDate + 'T00:00:00');
+      const d = Utils.parseDate(this.selectedDate);
       d.setDate(d.getDate() - 1);
       this.selectedDate = Utils.dateStr(d);
       this.renderAll(false); // full animation when navigating dates
     });
     document.getElementById('salah-next-day')?.addEventListener('click', (e) => {
       e.preventDefault();
-      const d = new Date(this.selectedDate + 'T00:00:00');
+      const d = Utils.parseDate(this.selectedDate);
       d.setDate(d.getDate() + 1);
       if (Utils.dateStr(d) <= Utils.todayStr()) {
         this.selectedDate = Utils.dateStr(d);
