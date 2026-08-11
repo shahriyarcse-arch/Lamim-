@@ -1897,6 +1897,77 @@ section.dark .feature-copy p {
   box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
 }
 
+/* Section 13 FAQ Accordion Typography & Visual Polish */
+#faq .feature-copy .eyebrow,
+#faq .faq-head .eyebrow {
+  color: #11241a !important;
+  background: rgba(17, 36, 26, 0.08) !important;
+  border: 1px solid rgba(17, 36, 26, 0.18) !important;
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+#faq .feature-copy h2,
+#faq .faq-head h2 {
+  color: #0b1a13 !important;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.faq-list {
+  border-top: 1px solid rgba(17, 36, 26, 0.12) !important;
+}
+
+details {
+  border-bottom: 1px solid rgba(17, 36, 26, 0.12) !important;
+}
+
+summary {
+  color: #11241a !important;
+  font-weight: 800 !important;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem) !important;
+  padding: 22px 0 !important;
+  transition: color 0.25s ease !important;
+}
+
+summary:hover {
+  color: #059669 !important;
+}
+
+summary::after {
+  content: '+';
+  font-size: 1.25rem !important;
+  color: #059669 !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  display: grid !important;
+  place-items: center !important;
+  font-weight: 900 !important;
+}
+
+details[open] summary::after {
+  content: '−';
+  color: #047857 !important;
+  background: #cfee82 !important;
+  border-color: #cfee82 !important;
+}
+
+details p {
+  color: #27473b !important;
+  line-height: 1.62 !important;
+  font-size: 0.98rem !important;
+  font-weight: 500 !important;
+  padding-bottom: 20px !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
