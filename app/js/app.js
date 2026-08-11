@@ -343,14 +343,16 @@ updateSectionTitle() {
     
     this.navigateTo(initialSection);
 
-    // Guarantee scroll-to-top on refresh/initial boot.
-    // Browser may attempt its own scroll restoration AFTER our navigateTo call,
-    // so we override it with a rAF to ensure we always start at the very top.
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
+    // Guarantee scroll-to-top on page refresh/initial boot.
+    // We fire TWO rounds: rAF (before first paint) + 150ms (after browser's own
+    // scroll restoration fires), so we always win the race regardless of timing.
+    const forceTop = () => {
+      try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
-    });
+    };
+    requestAnimationFrame(forceTop);
+    setTimeout(forceTop, 150);
 
     // Update topbar avatars
     this.updateAvatars();
@@ -461,8 +463,14 @@ updateSectionTitle() {
     // Close sidebar on mobile
     if (window.innerWidth <= 1024) this.closeSidebar();
 
-    // Restore this section's last scroll position (back/forward) or go to top
-    window.scrollTo(0, this._scrollPos[sectionId] || 0);
+    // Restore this section's last scroll position (back/forward) or go to top.
+    // Use 'instant' behavior so the browser cannot asynchronously override our position.
+    const targetY = this._scrollPos[sectionId] || 0;
+    try {
+      window.scrollTo({ top: targetY, behavior: 'instant' });
+    } catch (e) {
+      window.scrollTo(0, targetY);
+    }
   },
 
   bindNav() {

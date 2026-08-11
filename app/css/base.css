@@ -12,7 +12,9 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
+  /* scroll-behavior is intentionally NOT set to smooth here so that programmatic
+     window.scrollTo({ behavior: 'instant' }) on section-switch cannot be
+     asynchronously overridden by the browser's native scroll restoration. */
   -webkit-text-size-adjust: 100%;
   background-color: var(--color-bg-primary);
   color-scheme: dark;
