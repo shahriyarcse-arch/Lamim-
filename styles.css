@@ -2014,6 +2014,41 @@ details p {
   box-shadow: 0 14px 34px rgba(17, 38, 26, 0.35) !important;
 }
 
+/* Section 15 Footer Typography & Visual Polish */
+.footer h3 {
+  color: #cfee82 !important;
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 0 10px rgba(207, 238, 130, 0.25) !important;
+}
+
+.footer-links a {
+  color: #9cbcae !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  transition: color 0.22s ease, transform 0.22s ease !important;
+}
+
+.footer-links a:hover {
+  color: #cfee82 !important;
+  transform: translateX(3px) !important;
+}
+
+.footer-brand p {
+  color: #9cb5a8 !important;
+  font-size: 0.92rem !important;
+  line-height: 1.55 !important;
+  font-weight: 500 !important;
+}
+
+.bottom span {
+  color: #6a8c7c !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
