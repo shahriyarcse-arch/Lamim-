@@ -762,8 +762,10 @@ p {
 /* STATS BAR                                                                  */
 /* -------------------------------------------------------------------------- */
 .stats-bar {
-  padding: 48px 0;
-  border-bottom: 1px solid var(--line);
+  padding: clamp(48px, 6vw, 72px) 0;
+  background: #0d1d15;
+  border-top: 1px solid rgba(207, 238, 130, 0.12);
+  border-bottom: 1px solid rgba(207, 238, 130, 0.12);
 }
 
 .stats-grid {
@@ -777,25 +779,34 @@ p {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  position: relative;
+  transition: transform 0.3s ease;
+  padding: 8px 12px;
+}
+
+.stat-item:hover {
+  transform: translateY(-4px);
 }
 
 .stat-number {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  font-weight: 900;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
   line-height: 1;
-  background: linear-gradient(135deg, #184430 0%, #3d7a5a 60%, #529671 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #cfee82 !important;
+  text-shadow: 0 0 24px rgba(207, 238, 130, 0.28);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
 }
 
 .stat-label {
-  font-size: clamp(0.78rem, 1vw, 0.85rem);
-  color: var(--muted);
-  font-weight: 500;
+  font-size: clamp(0.78rem, 1vw, 0.86rem);
+  color: #e4f5bd !important;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-top: 10px;
+  margin-bottom: 6px;
 }
 
 @media (min-width: 640px) {
