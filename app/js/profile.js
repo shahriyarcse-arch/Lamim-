@@ -636,7 +636,7 @@ const Profile = {
       const keys = DB.keys();
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        if (key.startsWith('lamim_')) {
+        if (key.startsWith('lamim_') || key.startsWith('usr_')) {
           const raw = DB.rawGet(key);
           if (raw !== null && raw !== undefined) {
             try {
@@ -699,7 +699,7 @@ const Profile = {
         throw new Error('Invalid JSON format');
       }
 
-      const keys = Object.keys(data).filter(k => k.startsWith('lamim_'));
+      const keys = Object.keys(data).filter(k => k.startsWith('lamim_') || k.startsWith('usr_'));
       if (keys.length === 0) {
         Utils.toast(isBn ? 'বৈধ ব্যাকআপ ফাইল পাওয়া যায়নি' : 'No valid backup data found in file', 'error');
         return;
