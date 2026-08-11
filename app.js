@@ -3,13 +3,16 @@ import { animate, inView, stagger } from "./lib/motion.mjs";
 
 /* ---- LENIS SMOOTH SCROLL (skip if reduced motion) ---- */
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   const lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation: 'vertical',
     smoothWheel: true,
+    smoothTouch: false,
+    syncTouch: false,
     wheelMultiplier: 1,
-    touchMultiplier: 1.8,
+    touchMultiplier: isTouch ? 1 : 1.8,
   });
 
   function raf(time) {
