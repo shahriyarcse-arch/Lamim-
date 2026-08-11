@@ -239,18 +239,19 @@ updateSectionTitle() {
       this._bootComplete = true;
     }, 800);
 
-    // Safety fallback
+    // Safety fallback - guarantees splash screen disappears within 2 seconds under any circumstance
     setTimeout(() => {
       if (this._bootComplete) return; 
-      console.warn('[Boot] Safety fallback triggered');
+      console.warn('[Boot] Quick safety fallback triggered');
       this._hideSplash();
       if (DB.getUser()) {
         this.showDashboard();
         this.checkBackupReminder();
+      } else {
+        this.showPage('setup');
       }
-      else this.showPage('setup');
       this._bootComplete = true;
-    }, 8000);
+    }, 2000);
 
     // Nav bindings
     this.bindNav();

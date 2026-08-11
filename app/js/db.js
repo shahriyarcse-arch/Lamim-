@@ -8,14 +8,32 @@ const DB = {
 
   init() {
     return new Promise((resolve) => {
+      let resolved = false;
+      const safeResolve = () => {
+        if (!resolved) {
+          resolved = true;
+          resolve();
+        }
+      };
+
+      // Guaranteed 3s timeout fallback so DB stalls never freeze the splash boot
+      const timeout = setTimeout(() => {
+        console.warn("[DB] Boot timeout exceeded 3000ms, using cache/localStorage fallback");
+        if (!this._cache || Object.keys(this._cache).length === 0) {
+          this._fallbackToLocalStorage();
+        }
+        safeResolve();
+      }, 3000);
+
       // 1. Open IndexedDB
       let request;
       try {
         request = indexedDB.open('lamim_db', 1);
       } catch (err) {
         console.error("IndexedDB.open failed, falling back to localStorage", err);
+        clearTimeout(timeout);
         this._fallbackToLocalStorage();
-        resolve();
+        safeResolve();
         return;
       }
 
@@ -27,25 +45,27 @@ const DB = {
       };
 
       request.onsuccess = (e) => {
+        clearTimeout(timeout);
         this._db = e.target.result;
         this._loadCache()
           .then(() => this._migrateFromLocalStorage())
           .then(() => {
             this.migrate();
-            resolve();
+            safeResolve();
           })
           .catch((err) => {
             console.error("IndexedDB cache loading/migration failed, falling back", err);
             this._fallbackToLocalStorage();
             this._setupMultiTabSync();
-            resolve();
+            safeResolve();
           });
       };
 
       request.onerror = (e) => {
+        clearTimeout(timeout);
         console.error("IndexedDB onerror, falling back to localStorage", e);
         this._fallbackToLocalStorage();
-        resolve();
+        safeResolve();
       };
     });
   },
