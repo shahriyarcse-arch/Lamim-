@@ -445,7 +445,7 @@ const Salah = {
     this.selectedDate = date;
     const salah = DB.getSalah(date);
     const settings = DB.getSettings();
-    const isFriday = new Date(date + 'T00:00:00').getDay() === 5;
+    const isFriday = Utils.parseDate(date).getDay() === 5;
     const showJumuah = settings.jumuahMode !== false && isFriday; // default true if undefined
     const container = document.getElementById('salah-cards');
     if (!container) return;
