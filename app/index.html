@@ -18,7 +18,7 @@
         }
       } catch (e) {}
 
-      // Absolute Splash Removal Fail-safe (Guarantees splash is hidden within 1500ms even if JS delays)
+      // Absolute Splash Removal Fail-safe (Guarantees splash is hidden & app page activated)
       setTimeout(function() {
         var sp = document.getElementById('splash');
         if (sp && !sp.dataset.hidden) {
@@ -26,7 +26,14 @@
           sp.classList.add('hidden');
           setTimeout(function() { sp.style.display = 'none'; }, 500);
         }
-      }, 1500);
+        // Ensure at least one page is active so screen is never blank
+        if (!document.querySelector('.page.active')) {
+          var u = localStorage.getItem('lamim_user');
+          var pageId = u ? 'page-dashboard' : 'page-setup';
+          var page = document.getElementById(pageId);
+          if (page) page.classList.add('active');
+        }
+      }, 1000);
     })();
   </script>
   <meta name="description"
