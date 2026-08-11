@@ -187,14 +187,15 @@ const DB = {
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
         const store = transaction.objectStore('keyvalue');
-        const req = store.delete(key);
-        req.onsuccess = () => resolve();
+        let resolved = false;
+        const done = () => { if (!resolved) { resolved = true; resolve(); } };
+        req.onsuccess = done;
         req.onerror = (e) => {
           console.error(`[DB] Async delete failed for key: ${key}`, e.target.error);
-          resolve();
+          done();
         };
-        transaction.oncomplete = () => resolve();
-        transaction.onerror = () => resolve();
+        transaction.oncomplete = done;
+        transaction.onerror = done;
       } catch (e) {
         console.error(`[DB] Async delete execution error for key: ${key}`, e);
         resolve();
