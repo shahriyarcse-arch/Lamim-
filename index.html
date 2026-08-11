@@ -64,10 +64,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" as="style" href="styles.min.css?v=20260811_v92" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="styles.min.css?v=20260811_v93" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
-    <link rel="stylesheet" href="styles.min.css?v=20260811_v92">
+    <link rel="stylesheet" href="styles.min.css?v=20260811_v93">
     <style>.reveal{opacity:1;transform:none}
     /* Brand Essence Section */
     .brand-essence { padding: 90px 0 60px; text-align: center; }
@@ -124,7 +124,7 @@
     p{color:var(--muted);max-width:65ch}
     .eyebrow{font-size:clamp(.68rem,1vw,.75rem);letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--teal)}
     .wrap{width:100%;max-width:var(--wrap-max);padding-left:var(--wrap-pad);padding-right:var(--wrap-pad);margin:0 auto}
-    .nav{position:fixed;z-index:100;top:12px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:var(--wrap-max);display:flex;align-items:center;justify-content:space-between;padding:8px 12px 8px 16px;background:rgba(var(--paper-rgb),.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:999px;box-shadow:0 8px 32px rgba(19,33,27,.06)}
+    .nav{position:fixed;z-index:100;top:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:1100px;display:flex;align-items:center;justify-content:space-between;padding:8px 14px 8px 20px;background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(190%);-webkit-backdrop-filter:blur(24px) saturate(190%);border:1.5px solid rgba(255,255,255,.85);border-radius:99px;box-shadow:0 16px 40px rgba(17,36,26,.08),inset 0 1px 1px rgba(255,255,255,.9)}
     .brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display,"Fraunces",Georgia,serif);font-style:italic;font-weight:700;font-size:1.36rem;line-height:1;letter-spacing:-.015em;color:var(--ink);text-decoration:none}
     .brand>span{display:inline-block;transform:translateY(1px);line-height:1}
     .brand-icon{height:20px;width:auto;display:block;flex-shrink:0;object-fit:contain}
@@ -140,7 +140,7 @@
     .menu{display:flex;align-items:center;justify-content:center;background:transparent;border:0;width:44px;height:44px;font-size:20px;color:var(--ink);border-radius:50%}
     .nav-overlay{position:fixed;top:66px;left:12px;right:12px;background:rgba(241,240,233,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:24px;padding:20px 16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 20px 50px rgba(19,33,27,.18);opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);z-index:99}
     .nav.mobile-active .nav-overlay{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
-    @media(min-width:768px){.links{display:flex}.menu,.nav-overlay{display:none!important}.nav{top:16px;padding:9px 12px 9px 16px}}
+    @media(min-width:768px){.links{display:flex}.menu,.nav-overlay{display:none!important}.nav{top:14px;padding:8px 14px 8px 20px}}
     .hero{padding:110px 0 60px}
     .hero-grid{display:flex;flex-direction:column;gap:clamp(28px,5vw,60px)}
     .hero p{font-size:clamp(1rem,1.8vw,1.18rem);line-height:1.5;margin:clamp(20px,4vw,32px) 0;max-width:44ch}
