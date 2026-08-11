@@ -128,13 +128,13 @@ const Analysis = {
   },
 
   getRating(score) {
-    if (score >= 90) return { label: 'Muhsin', color: '#fbbf24', desc: 'You worship as if you see Him. The pinnacle of Ihsan.' };
-    if (score >= 80) return { label: 'Muttaqi', color: '#a78bfa', desc: 'God-consciousness guides your every step. Remarkable.' };
-    if (score >= 65) return { label: 'Mukhlis', color: '#10b981', desc: 'Sincerity shines through your deeds. Stay steadfast.' };
-    if (score >= 50) return { label: 'Mujahid', color: '#38bdf8', desc: 'Keep pushing your limits. Great things take time.' };
-    if (score >= 30) return { label: 'Murid', color: '#f59e0b', desc: 'Your intention is set. Now let your actions follow your heart.' };
-    if (score >= 15) return { label: 'Musafir', color: '#f87171', desc: "You've started walking. Keep your eyes on the path ahead." };
-    return { label: 'Ghafil', color: '#ef4444', desc: 'Awaken your soul. The journey of a thousand miles begins with one step.' };
+    if (score >= 90) return { label: 'Ihsan', color: '#fbbf24', desc: 'Worshipping with absolute presence & excellence.' };
+    if (score >= 80) return { label: 'God-Conscious', color: '#a78bfa', desc: 'Taqwa guides your choices with clarity.' };
+    if (score >= 65) return { label: 'Mindful', color: '#10b981', desc: 'Presence and mindfulness fill your deeds.' };
+    if (score >= 50) return { label: 'Resilient', color: '#38bdf8', desc: 'Overcoming obstacles & pushing limits.' };
+    if (score >= 30) return { label: 'Consistent', color: '#f59e0b', desc: 'Building habit momentum. Consistency is key.' };
+    if (score >= 15) return { label: 'Intentional', color: '#f87171', desc: 'Your intention is set. Every step now has purpose.' };
+    return { label: 'Awakening', color: '#ef4444', desc: 'Awaken your soul. The journey begins with one step.' };
   },
 
   getMonthDailyTrend(year, month) {
