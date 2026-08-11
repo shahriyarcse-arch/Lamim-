@@ -571,18 +571,14 @@ const DB = {
       }
       this.remove('lamim_finance_data');
     }
-  }
-,
   clearAllUserData() {
     const keys = this.keys();
     keys.forEach(k => {
-      if (k.startsWith('lamim_') && k !== 'lamim_settings') {
+      if ((k.startsWith('lamim_') || k.startsWith('usr_')) && k !== 'lamim_settings' && k !== 'lamim_profiles_vault') {
         this.remove(k);
       }
     });
-  }
-
-,
+  },
   getDhikrPresets() { return this.get('lamim_dhikr_presets') || []; }
 
 };
