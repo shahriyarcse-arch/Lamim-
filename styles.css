@@ -2151,6 +2151,69 @@ details p {
   margin-left: clamp(24px, 4vw, 48px) !important;
 }
 
+/* Ultra-Modern Floating Glass Navbar Polish */
+.nav {
+  position: fixed !important;
+  z-index: 100 !important;
+  top: 14px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: calc(100% - 32px) !important;
+  max-width: 1100px !important;
+  padding: 8px 14px 8px 20px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.85) !important;
+  border-radius: 99px !important;
+  box-shadow: 0 16px 40px rgba(17, 36, 26, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.nav.scrolled {
+  top: 10px !important;
+  padding: 6px 12px 6px 18px !important;
+  background: rgba(244, 241, 234, 0.88) !important;
+  box-shadow: 0 20px 48px rgba(17, 36, 26, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.95) !important;
+}
+
+.links {
+  gap: 6px !important;
+}
+
+.links a {
+  padding: 8px 16px !important;
+  border-radius: 99px !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  color: #27473b !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.links a:hover {
+  background: rgba(17, 36, 26, 0.07) !important;
+  color: #0b1a13 !important;
+  transform: translateY(-1px) !important;
+}
+
+.navcta {
+  background: #11261a !important;
+  color: #cfee82 !important;
+  font-weight: 900 !important;
+  font-size: 0.88rem !important;
+  padding: 0 22px !important;
+  min-height: 42px !important;
+  border-radius: 99px !important;
+  box-shadow: 0 8px 22px rgba(17, 36, 26, 0.22) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.navcta:hover {
+  transform: scale(1.04) translateY(-1px) !important;
+  box-shadow: 0 12px 28px rgba(17, 36, 26, 0.32) !important;
+  background: #173323 !important;
+}
+
 #landing-breath-sub,
 #landing-breath-count {
   font-family: var(--font-body);
