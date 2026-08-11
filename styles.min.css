@@ -504,16 +504,7 @@ p {
   }
 }
 
-.halo {
-  position: absolute !important;
-  inset: 0% !important;
-  border-radius: 50% !important;
-  background: radial-gradient(circle at 65% 35%, rgba(16, 185, 129, 0.15), rgba(94, 53, 177, 0.08) 60%, transparent 80%) !important;
-  filter: blur(40px) !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
+.halo,
 .orbit {
   display: none !important;
 }
