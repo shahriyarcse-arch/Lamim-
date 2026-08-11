@@ -1,6 +1,12 @@
 /* =============================================
    LAMIM — UTILITIES
    ============================================= */
+// Global runtime error boundary: Catch unexpected UI/script errors silently without crashing the app shell
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+  console.error('[Global Error Boundary]', { msg, url, lineNo, columnNo, error });
+  return true; // Suppress default browser error crash dialog
+};
+
 // Catch unhandled promise rejections (e.g. AbortController timeouts)
 window.addEventListener('unhandledrejection', (event) => {
   if (event && event.reason && (event.reason.name === 'AbortError' || event.reason.name === 'TypeError')) {
