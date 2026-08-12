@@ -1961,23 +1961,20 @@ select.input option:disabled {
   position: relative;
   display: inline-block;
   color: inherit;
-  text-align: center;
-  font-family: var(--font-display, 'Fraunces', Georgia, serif);
-  font-style: italic;
   letter-spacing: 0 !important;
 }
 
 .i-green-dot::after {
   content: "";
   position: absolute;
-  top: 0.05em;
-  left: 48%;
+  top: 0.04em;
+  left: 50%;
   transform: translateX(-50%);
-  width: .22em;
-  height: .22em;
+  width: 0.26em;
+  height: 0.26em;
   background-color: #97D84C;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(151, 216, 76, 0.75);
+  box-shadow: 0 0 10px rgba(151, 216, 76, 0.85);
   pointer-events: none;
   -webkit-text-fill-color: initial;
 }
