@@ -207,7 +207,8 @@ const Salah = {
   },
 
   onDataUpdated() {
-    this._debouncedRender();
+    if (this._isSelfUpdate) return;
+    if (typeof this._debouncedRender === 'function') this._debouncedRender();
   },
 
   /* ---- HEADER ---- */
@@ -559,11 +560,14 @@ const Salah = {
     // Allow updates even if already set, so user can correct mistakes
     salah[prayer] = status;
     this._correcting = null;
+
+    this._isSelfUpdate = true;
     DB.setSalah(date, salah);
+    this._isSelfUpdate = false;
 
     // Partial update instead of full renderAll to prevent blinking
-this.renderPrayerCards(date, true); // true = skipAnim
-     this.renderCalendar();
+    this.renderPrayerCards(date, true); // true = skipAnim
+    this.renderCalendar();
 
     const sm = this.statusMeta[status];
     const result = sm.result === 'successful' ? '' : sm.result === 'qaza' ? '⏰' : '';
