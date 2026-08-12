@@ -1153,6 +1153,12 @@ select.input option:disabled {
   transition: background 0.2s ease;
 }
 
+@media (max-width: 768px) {
+  .topbar-hamburger {
+    display: none !important;
+  }
+}
+
 .topbar-hamburger:hover {
   background: rgba(255, 255, 255, 0.06);
 }
