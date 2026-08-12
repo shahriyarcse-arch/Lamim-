@@ -62,7 +62,6 @@ const Goals = {
     this.renderTahajjud(data.tahajjud, data.tahajjud_rakat);
     this.renderWitr(data.witr);
     this.renderCelestialProgress(data, skipAnim);
-    this.renderGoals();
   },
 
   renderCelestialProgress(data, skipAnim = false) {
@@ -642,76 +641,13 @@ const Goals = {
     document.getElementById('nafl-history-modal')?.classList.add('hidden');
   },
 
-  renderGoals() {
-    const container = document.getElementById('nafl-goals-list');
-    if (!container) return;
-    const heading = document.getElementById('nafl-goals-heading');
-    const goals = DB.getGoals();
-    if (heading) heading.style.display = goals.length ? '' : 'none';
-    const n = window.n ? window.n : (x) => x;
-    const categories = { salah: 'Salah', dhikr: 'Dhikr', quran: 'Quran', charity: 'Charity', learning: 'Learning', other: 'Other' };
-
-    container.innerHTML = goals.length ? goals.map((g) => {
-      const prio = g.priority || 'medium';
-      const unit = g.unit ? ' ' + Utils.escapeHTML(g.unit) : '';
-      const target = g.target > 0 ? `${n(g.target)}${unit}` : 'Open-ended';
-      const deadline = g.deadline ? Utils.formatDate(new Date(g.deadline + 'T00:00:00'), { day: 'numeric', month: 'short' }) : '';
-      const recurring = g.recurring ? `<span class="goal-category"> · ${Utils.escapeHTML(g.recurring)}</span>` : '';
-      return `<div class="goal-card">
-        <div class="goal-header">
-          <div>
-            <div class="goal-title">${Utils.escapeHTML(g.title)}</div>
-            <div class="goal-category">${categories[g.category] || (g.category ? Utils.escapeHTML(g.category) : 'Goal')}${recurring}</div>
-          </div>
-          <button class="btn btn-icon-sm btn-ghost" onclick="Goals.deleteGoal('${String(g.id).replace(/[^a-zA-Z0-9_]/g, '')}')"
-            title="Delete goal" aria-label="Delete goal">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18M6 6l12 12"/>
-            </svg>
-          </button>
-        </div>
-        ${g.description ? `<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.45;">${Utils.escapeHTML(g.description)}</p>` : ''}
-        <div class="goal-footer">
-          <span class="goal-deadline"><span class="priority-dot priority-${prio}"></span>${deadline ? ' Due ' + deadline : ''}</span>
-          <span class="goal-deadline">Target: ${target}</span>
-        </div>
-      </div>`;
-    }).join('') : '<div class="goal-card" style="opacity:.78"><div class="goal-title">No goals yet</div><div class="goal-category">Tap “+ Goal” to set a nafl, worship, or growth goal.</div></div>';
-  },
-
-  deleteGoal(id) {
-    const goals = DB.getGoals();
-    DB.setGoals(goals.filter((g) => String(g.id) !== String(id)));
-    this.renderGoals();
-    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-    Utils.toast('Goal deleted', 'info');
-  },
-
   _resetGoalForm() {
-    ['goal-id-field', 'goal-title-field', 'goal-desc-field', 'goal-target-field', 'goal-unit-field',
-     'goal-category-field', 'goal-priority-field', 'goal-deadline-field', 'goal-recurring-field', 'goal-milestone-field']
+    ['goal-id-field', 'goal-title', 'goal-description', 'goal-target', 'goal-unit',
+     'goal-category', 'goal-priority', 'goal-deadline-field', 'goal-recurring-field', 'goal-milestone-field']
       .forEach((id) => { const el = document.getElementById(id); if (el) el.value = ''; });
-    const category = document.getElementById('goal-category-field');
-    if (category) category.selectedIndex = 0;
-    const priority = document.getElementById('goal-priority-field');
-    if (priority) priority.value = 'medium';
-    const target = document.getElementById('goal-target-field');
-    if (target) target.value = '1';
-    const titleEl = document.getElementById('goal-title-field');
-    titleEl?.classList.remove('input-error');
+    document.getElementById('goal-title')?.classList.remove('input-error');
   },
 
-  showModal() {
-    const modal = document.getElementById('goal-modal');
-    if (!modal) return;
-    this._resetGoalForm();
-    const titleEl = document.getElementById('goal-modal-title');
-    if (titleEl) titleEl.textContent = 'New Goal';
-    modal.classList.remove('hidden');
-    const f = document.getElementById('goal-title-field');
-    if (f) setTimeout(() => f.focus(), 60);
-  },
 
   hideModal() {
     document.getElementById('goal-modal')?.classList.add('hidden');
@@ -720,17 +656,17 @@ const Goals = {
 
   saveGoal() {
     if (this._savingGoal) return;
-    const get = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
-    const title = get('goal-title-field');
-    const titleEl = document.getElementById('goal-title-field');
+    const get = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+    const title = get('goal-title').trim();
+    const titleEl = document.getElementById('goal-title');
     if (!title) {
       Utils.toast('Goal title is required', 'error');
       titleEl?.classList.add('input-error');
       titleEl?.focus();
       return;
     }
-    const targetRaw = get('goal-target-field');
-    let target = parseFloat(targetRaw.replace(/,/g, ''));
+    const targetRaw = get('goal-target').trim();
+    let target = parseFloat(targetRaw);
     if (targetRaw && (isNaN(target) || target <= 0)) {
       Utils.toast('Target must be a positive number', 'error');
       return;
@@ -739,16 +675,14 @@ const Goals = {
 
     this._savingGoal = true;
     try {
-      const milestones = document.getElementById('goal-milestone-field')
-        ? document.getElementById('goal-milestone-field').value.split('\n').map((s) => s.trim()).filter(Boolean)
-        : [];
+      const milestones = get('goal-milestone-field').split('\n').map((s) => s.trim()).filter(Boolean);
       const goal = {
         title,
-        description: get('goal-desc-field'),
+        description: get('goal-description').trim(),
         target,
-        unit: get('goal-unit-field'),
-        category: get('goal-category-field'),
-        priority: get('goal-priority-field'),
+        unit: get('goal-unit').trim(),
+        category: get('goal-category').trim(),
+        priority: get('goal-priority').trim(),
         deadline: get('goal-deadline-field'),
         recurring: get('goal-recurring-field'),
         milestones,
@@ -767,7 +701,6 @@ const Goals = {
       }
       if (typeof this.updateHomeSummary === 'function') this.updateHomeSummary();
       window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-      this.renderGoals();
       this.hideModal();
     } catch (e) {
       console.error('[Goals] saveGoal error', e);

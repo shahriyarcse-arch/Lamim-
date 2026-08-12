@@ -469,7 +469,7 @@ const Gym = {
     const gapEl = document.getElementById('gym-sleep-gap-val');
     const badge = document.getElementById('gym-recovery-badge');
     const inDisp = document.getElementById('gym-sleep-time-display');
-    const outDisp = document.getElementById('gym-wake-time-label');
+    const outDisp = document.getElementById('gym-wake-time-display');
     const gauge = document.getElementById('gym-sleep-gauge-val');
 
     if (!sleep || !sleep.sleepTime || !sleep.wakeTime) {
@@ -496,10 +496,7 @@ const Gym = {
     const goal = 8.0;
     const gap = hours - goal;
 
-    if (ringWrap && window.Charts) {
-      if (!ringWrap.querySelector('svg')) Charts.ring(ringWrap, { size: 88, thickness: 7, value: 0, color: 'currentColor' });
-      Charts.animateRing(ringWrap, score, { size: 88, thickness: 7 });
-    }
+    if (ringWrap && window.Charts) Charts.animateRing(ringWrap, score, { size: 88, thickness: 7 });
     if (gauge) gauge.textContent = n(score);
     if (durEl) durEl.textContent = n(hours.toFixed(1)) + 'h';
     if (recEl) recEl.textContent = n(score);

@@ -28,7 +28,7 @@ const DB = {
       // 1. Open IndexedDB
       let request;
       try {
-        request = indexedDB.open('lamim_db', 2);
+        request = indexedDB.open('lamim_db', 1);
       } catch (err) {
         console.error("IndexedDB.open failed, falling back to localStorage", err);
         clearTimeout(timeout);
@@ -612,21 +612,6 @@ const DB = {
       if ((k.startsWith('lamim_') || k.startsWith('usr_')) && k !== 'lamim_settings' && k !== 'lamim_profiles_vault') {
         this.remove(k);
       }
-    });
-  },
-  clearEverything() {
-    this._cache = {};
-    localStorage.clear();
-    sessionStorage.clear();
-    if (this._db) {
-      try { this._db.close(); } catch(e){}
-      this._db = null;
-    }
-    return new Promise((resolve) => {
-      const req = indexedDB.deleteDatabase('lamim_db');
-      req.onsuccess = () => resolve(true);
-      req.onerror = () => resolve(false);
-      req.onblocked = () => resolve(false);
     });
   },
   getDhikrPresets() { return this.get('lamim_dhikr_presets') || []; }

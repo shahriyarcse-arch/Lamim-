@@ -256,10 +256,6 @@
 [data-theme="light"] .gh-hero-card { background: linear-gradient(135deg, rgba(8,145,178,0.02), rgba(255,255,255,1)); border-color: rgba(15, 23, 42, 0.08); box-shadow: 0 8px 30px rgba(0,0,0,0.04); }
 .gh-hero-left { display: flex; flex-direction: column; gap: 14px; flex: 1; }
 .gh-hero-right { display: flex; flex-direction: column; gap: 16px; flex-shrink: 0; min-width: 110px; }
-.gh-hero-ring-wrap { position: relative; width: 132px; height: 132px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin: 0 auto; }
-.gh-hero-ring { position: absolute; inset: 0; }
-.gh-hero-ring-num { position: relative; font-size: 34px; font-weight: 800; line-height: 1; background: linear-gradient(135deg, var(--gh-primary), var(--gh-secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.gh-hero-spark { width: 100%; max-width: 220px; height: 44px; color: var(--gh-primary); margin: 0 auto; }
 .gh-hero-eyebrow {
   display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
   background: rgba(34, 211, 238, 0.1); color: var(--gh-primary); align-self: flex-start;
