@@ -334,8 +334,13 @@ updateSectionTitle() {
     if (dash) dash.classList.add('active');
 
     if (!initialSection) {
-      initialSection = new URLSearchParams(location.search).get('section');
       const valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'mujahid', 'finance', 'gym', 'career'];
+      initialSection = new URLSearchParams(location.search).get('section');
+      // On mobile a refresh often carries the active section in history.state
+      // rather than the URL query — fall back to it before defaulting to home.
+      if ((!initialSection || !valid.includes(initialSection)) && history.state && history.state.section) {
+        initialSection = history.state.section;
+      }
       if (!initialSection || !valid.includes(initialSection)) {
         initialSection = 'home';
       }

@@ -41,6 +41,43 @@
       }, 1000);
     })();
   </script>
+
+  <!--
+    Resolve the initial section as early as possible (right after the DOM is
+    parsed, long before the 800ms boot timeout / splash fade). This prevents a
+    refresh from briefly flashing the default Home panel on mobile, where the
+    active section is often carried in history.state rather than ?section=.
+    The splash covers the screen during this window, so only the final correct
+    section is ever seen once the splash fades.
+  -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      try {
+        var valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'mujahid', 'finance', 'gym', 'career'];
+        var sec = new URLSearchParams(location.search).get('section');
+        if ((!sec || valid.indexOf(sec) === -1) && history.state && history.state.section) {
+          sec = history.state.section;
+        }
+        if (!sec || valid.indexOf(sec) === -1 || sec === 'home') return;
+        var panel = document.getElementById('section-' + sec);
+        if (!panel) return;
+        var home = document.getElementById('section-home');
+        if (home) home.classList.remove('active');
+        panel.classList.add('active');
+        document.querySelectorAll('.nav-item, .bottom-nav-item').forEach(function (el) {
+          if (el.dataset.section === sec) {
+            el.classList.add('active');
+            el.setAttribute('aria-current', 'page');
+          } else {
+            el.classList.remove('active');
+            el.removeAttribute('aria-current');
+          }
+        });
+        document.body.classList.remove('home-active');
+      } catch (e) {}
+    });
+  </script>
+
   <meta name="description"
     content="Lamim — Track your salah, dhikr, nafl goals, spiritual progress, gym, career, and halal finance in one offline Islamic lifestyle tracker. No account required.">
   <meta name="robots" content="index, follow">

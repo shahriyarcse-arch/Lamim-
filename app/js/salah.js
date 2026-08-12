@@ -43,7 +43,7 @@ const Salah = {
   },
 
   renderAll(skipAnim = false) {
-    this.renderPrayerTimes();
+    this.renderPrayerTimes(skipAnim);
     this.renderPrayerCards(this.selectedDate, skipAnim);
     this.renderCalendar();
   },
@@ -241,7 +241,7 @@ const Salah = {
   },
 
   /* ---- Prayer time pills (Blink-Free) ---- */
-  renderPrayerTimes() {
+  renderPrayerTimes(skipAnim = false) {
     const times = Utils.calcPrayerTimes();
     const next  = Utils.getNextPrayer(times);
     const row   = document.getElementById('salah-times-row');
@@ -277,7 +277,7 @@ const Salah = {
       return `
         <div class="prayer-time-pill ${isNext ? 'next' : ''}" 
              onclick="Salah.scrollToPrayer('${t.name}')"
-             style="animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: ${idx * 0.05}s;">
+             style="${skipAnim ? '' : `animation: fadeIn 0.3s ease both; animation-delay: ${idx * 0.05}s;`}">
           <div class="pill-icon" style="filter:drop-shadow(${meta.glow})">${meta.icon}</div>
           <div class="pill-name">${translatedLabel}</div>
           <div class="pill-time">${formattedTime}</div>
@@ -520,7 +520,7 @@ const Salah = {
                           const sm = this.statusMeta[s];
                           return `
                             <button class="salah-option-btn ${s}"
-                                    style="${skipAnim ? '' : `animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: ${0.2 + (btnIdx * 0.05)}s;`}"
+                                    style="${skipAnim ? '' : `animation: fadeIn 0.3s ease both; animation-delay: ${0.2 + (btnIdx * 0.05)}s;`}"
                                     onclick="Salah.selectStatus('${p}','${s}','${date}')">
                               <span class="salah-opt-icon" style="filter:drop-shadow(${sm.glow})">${sm.icon}</span>
                               <span class="salah-opt-label">${window.t ? window.t(sm.label) : sm.label}</span>
