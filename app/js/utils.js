@@ -456,12 +456,12 @@ const Utils = {
   },
 
   // Toast
-  toast(msg, type = 'info', duration = 3000) {
+  toast(msg, type = 'info', duration = 3000, action = null) {
     const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
-    let container = document.getElementById('toast-container');
+    let container = document.getElementById('toast_container');
     if (!container) {
       container = document.createElement('div');
-      container.id = 'toast-container';
+      container.id = 'toast_container';
       container.className = 'toast-container';
       document.body.appendChild(container);
     }
@@ -474,6 +474,19 @@ const Utils = {
     msgSpan.textContent = msg;
     el.appendChild(iconSpan);
     el.appendChild(msgSpan);
+    // Optional action button (e.g. Undo) — renders a safe, click-handled control
+    if (action && action.label && typeof action.onClick === 'function') {
+      const btn = document.createElement('button');
+      btn.className = 'toast-action';
+      btn.type = 'button';
+      btn.textContent = action.label; // textContent → no XSS
+      btn.addEventListener('click', () => {
+        try { action.onClick(); } catch (e) { console.error(e); }
+        el.classList.add('hiding');
+        setTimeout(() => el.remove(), 350);
+      });
+      el.appendChild(btn);
+    }
     container.appendChild(el);
     setTimeout(() => { el.classList.add('hiding'); setTimeout(() => el.remove(), 350); }, duration);
   },

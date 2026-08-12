@@ -199,7 +199,9 @@ const Auth = {
     const dobInput = document.getElementById('setup-dob');
     const bioInput = document.getElementById('setup-bio');
 
-    if (!latInput || !latInput.value || isNaN(parseFloat(latInput.value)) || !lngInput || !lngInput.value || isNaN(parseFloat(lngInput.value))) {
+    const latVal = latInput && latInput.value ? parseFloat(latInput.value) : NaN;
+    const lngVal = lngInput && lngInput.value ? parseFloat(lngInput.value) : NaN;
+    if (isNaN(latVal) || latVal < -90 || latVal > 90 || isNaN(lngVal) || lngVal < -180 || lngVal > 180) {
       Utils.toast('Please detect your location or enter coordinates manually', 'warning');
       const err = document.getElementById('setup-loc-err');
       if (err) { err.textContent = 'Location is required'; err.classList.add('show'); }

@@ -20,13 +20,11 @@ const Salah = {
     missed: { label: 'Missed',  icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"><animate attributeName="opacity" values="1; 0.6; 1" dur="1.5s" repeatCount="indefinite"/></circle><line x1="15" y1="9" x2="9" y2="15"><animate attributeName="opacity" values="1; 0.5; 1" dur="1.2s" repeatCount="indefinite"/></line><line x1="9" y1="9" x2="15" y2="15"><animate attributeName="opacity" values="0.5; 1; 0.5" dur="1.2s" repeatCount="indefinite"/></line></svg>', color: '#f85149', bgAlpha: 'rgba(248,81,73,0.12)', borderAlpha: 'rgba(248,81,73,0.4)', desc: 'Not prayed',    result: 'unsuccessful', points: 0, glow: '0 0 12px rgba(248,81,73,0.6)' }
   },
 
-  // Backward compat labels
-  prayerLabels: { fajr:'Fajr', dhuhr:'Dhuhr', asr:"Asr", maghrib:'Maghrib', isha:'Isha' },
-  statusLabels: { jamaat:'Jama\'at', alone:'Alone', qaza:'Qaza', missed:'Missed' },
-
   init() {
     this.selectedDate = Utils.todayStr();
-    this.renderAll();
+    const skip = !!this._inited;
+    this._inited = true;
+    this.renderAll(skip);
 
     // Debounced re-render, driven by the app-level data-update bus (App.routeDataUpdate)
     if (!this._debouncedRender) {
@@ -443,6 +441,7 @@ const Salah = {
   renderPrayerCards(date, skipAnim = false) {
     date = date || this.selectedDate;
     this.selectedDate = date;
+    this.renderNotes();
     const salah = DB.getSalah(date);
     const settings = DB.getSettings();
     const isFriday = Utils.parseDate(date).getDay() === 5;
@@ -472,6 +471,8 @@ const Salah = {
           }
           const currentStatus = salah[p];
           const isLocked = !!currentStatus;
+          const forceEdit = !!(this._correcting && this._correcting.date === date && this._correcting.prayer === p);
+          const showSelector = !isLocked || forceEdit;
           const statusInfo = currentStatus ? this.statusMeta[currentStatus] : null;
           
           const isNext = isToday && nextPrayer && nextPrayer.name === p;
@@ -510,36 +511,37 @@ const Salah = {
               </div>
 
               <!-- Status Selection or Locked Result -->
-              ${isLocked
-                ? `<div class="salah-locked-result">
-                     <div class="salah-locked-icon" style="color:${statusInfo.color};filter:drop-shadow(${statusInfo.glow})">${statusInfo.icon}</div>
-                     <div class="salah-locked-info">
-                       <div class="salah-locked-status" style="color:${statusInfo.color}">${window.t ? window.t(statusInfo.label) : statusInfo.label}</div>
-                       <div class="salah-locked-desc" style="display:flex;align-items:center;gap:3px">
-                         ${statusInfo.result === 'successful' ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-green);filter:drop-shadow(0 0 4px rgba(16,185,129,0.6))"><polyline points="20 6 9 17 4 12"></polyline></svg> ${window.t ? window.t('Successful') : 'Successful'}` : statusInfo.result === 'qaza' ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-amber);filter:drop-shadow(0 0 4px rgba(251,191,36,0.6))"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${window.t ? window.t('Qaza') : 'Qaza'}` : `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-red);filter:drop-shadow(0 0 4px rgba(248,81,73,0.6))"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Unsuccessful') : 'Unsuccessful'}`} 
-                         <span style="opacity:0.5;margin:0 2px">•</span> +${window.n ? window.n(statusInfo.points) : statusInfo.points} ${window.t ? window.t('pts') : 'pts'}
-                       </div>
-                     </div>
-                     <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: lockPulse 2s ease-in-out infinite"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                   </div>`
-                : `<div class="salah-status-selector">
+              ${showSelector
+                ? `<div class="salah-status-selector">
                      <div class="salah-options-label">${window.t ? window.t('How did you pray?') : 'How did you pray?'}</div>
                      <div class="salah-options-grid">
-                       ${this.statuses.map((s, btnIdx) => {
-                         const sm = this.statusMeta[s];
-                         return `
-                           <button class="salah-option-btn ${s}"
-                                   style="${skipAnim ? '' : `animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: ${0.2 + (btnIdx * 0.05)}s;`}"
-                                   onclick="Salah.selectStatus('${p}','${s}','${date}')">
-                             <span class="salah-opt-icon" style="filter:drop-shadow(${sm.glow})">${sm.icon}</span>
-                             <span class="salah-opt-label">${window.t ? window.t(sm.label) : sm.label}</span>
-                             <span class="salah-opt-desc">${window.t ? window.t(sm.desc) : sm.desc}</span>
-                             <span class="salah-opt-pts">+${window.n ? window.n(sm.points) : sm.points} ${window.t ? window.t('pts') : 'pts'}</span>
-                           </button>
-                         `;
-                       }).join('')}
-                     </div>
-                   </div>`
+                        ${this.statuses.map((s, btnIdx) => {
+                          const sm = this.statusMeta[s];
+                          return `
+                            <button class="salah-option-btn ${s}"
+                                    style="${skipAnim ? '' : `animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: ${0.2 + (btnIdx * 0.05)}s;`}"
+                                    onclick="Salah.selectStatus('${p}','${s}','${date}')">
+                              <span class="salah-opt-icon" style="filter:drop-shadow(${sm.glow})">${sm.icon}</span>
+                              <span class="salah-opt-label">${window.t ? window.t(sm.label) : sm.label}</span>
+                              <span class="salah-opt-desc">${window.t ? window.t(sm.desc) : sm.desc}</span>
+                              <span class="salah-opt-pts">+${window.n ? window.n(sm.points) : sm.points} ${window.t ? window.t('pts') : 'pts'}</span>
+                            </button>
+                          `;
+                        }).join('')}
+                      </div>
+                    </div>`
+                : `<div class="salah-locked-result">
+                     <div class="salah-locked-icon" style="color:${statusInfo.color};filter:drop-shadow(${statusInfo.glow})">${statusInfo.icon}</div>
+                     <div class="salah-locked-info">
+                        <div class="salah-locked-status" style="color:${statusInfo.color}">${window.t ? window.t(statusInfo.label) : statusInfo.label}</div>
+                        <div class="salah-locked-desc" style="display:flex;align-items:center;gap:3px">
+                          ${statusInfo.result === 'successful' ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-green);filter:drop-shadow(0 0 4px rgba(16,185,129,0.6))"><polyline points="20 6 9 17 4 12"></polyline></svg> ${window.t ? window.t('Successful') : 'Successful'}` : statusInfo.result === 'qaza' ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-amber);filter:drop-shadow(0 0 4px rgba(251,191,36,0.6))"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${window.t ? window.t('Qaza') : 'Qaza'}` : `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-red);filter:drop-shadow(0 0 4px rgba(248,81,73,0.6))"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Unsuccessful') : 'Unsuccessful'}`}
+                          <span style="opacity:0.5;margin:0 2px">•</span> +${window.n ? window.n(statusInfo.points) : statusInfo.points} ${window.t ? window.t('pts') : 'pts'}
+                        </div>
+                      </div>
+                      <button class="salah-correct-btn" type="button" onclick="Salah.editStatus('${p}','${date}')">${window.t ? window.t('Correct') : 'Correct'}</button>
+                      <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: lockPulse 2s ease-in-out infinite"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>`
               }
             </div>
           `;
@@ -551,11 +553,12 @@ const Salah = {
     this.renderStats();
   },
 
-  /* ---- Select status (permanent — no undo) ---- */
+  /* ---- Select status (re-selectable so mistakes can be corrected) ---- */
   selectStatus(prayer, status, date) {
     const salah = DB.getSalah(date);
     // Allow updates even if already set, so user can correct mistakes
     salah[prayer] = status;
+    this._correcting = null;
     DB.setSalah(date, salah);
 
     // Partial update instead of full renderAll to prevent blinking
@@ -575,8 +578,11 @@ this.renderPrayerCards(date, true); // true = skipAnim
     }
   },
 
-  /* ---- Backward compat ---- */
-  statusColor(s) { return { jamaat:'green', alone:'blue', qaza:'amber', missed:'red' }[s] || 'blue'; },
+  // Re-open the status selector for a locked prayer so the user can correct it.
+  editStatus(prayer, date) {
+    this._correcting = { date, prayer };
+    this.renderPrayerCards(date, true);
+  },
 
   getPrayerTime(p) {
     const times = Utils.calcPrayerTimes();
@@ -592,7 +598,7 @@ this.renderPrayerCards(date, true); // true = skipAnim
       const d = Utils.parseDate(this.selectedDate);
       d.setDate(d.getDate() - 1);
       this.selectedDate = Utils.dateStr(d);
-      this.renderAll(false); // full animation when navigating dates
+      this.renderAll(true); // instant swap when navigating dates
     });
     document.getElementById('salah-next-day')?.addEventListener('click', (e) => {
       e.preventDefault();
@@ -600,7 +606,7 @@ this.renderPrayerCards(date, true); // true = skipAnim
       d.setDate(d.getDate() + 1);
       if (Utils.dateStr(d) <= Utils.todayStr()) {
         this.selectedDate = Utils.dateStr(d);
-        this.renderAll(false);
+        this.renderAll(true);
       }
     });
   },
@@ -608,7 +614,7 @@ this.renderPrayerCards(date, true); // true = skipAnim
 
   jumpToDate(date) {
     this.selectedDate = date;
-    this.renderAll(false);
+    this.renderAll(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
@@ -923,12 +929,12 @@ this.renderPrayerCards(date, true); // true = skipAnim
       tooltip.style.transform = `scale(1) translateY(0)`;
     };
 
-    cal.addEventListener('mouseover', (e) => {
+    const mouseoverHandler = (e) => {
       if (window.matchMedia("(pointer: coarse)").matches) return; // Ignore on touch
       showTooltip(e);
-    });
+    };
 
-    cal.addEventListener('click', (e) => {
+    const clickHandler = (e) => {
       const cell = e.target.closest('.salah-cal-cell');
       if (!cell || !cell.dataset.date) return;
       
@@ -948,9 +954,9 @@ this.renderPrayerCards(date, true); // true = skipAnim
       } else {
         Salah.jumpToDate(dateStr);
       }
-    });
+    };
 
-    cal.addEventListener('mouseout', (e) => {
+    const mouseoutHandler = (e) => {
       if (window.matchMedia("(pointer: coarse)").matches) return;
       const cell = e.target.closest('.salah-cal-cell');
       if (cell) {
@@ -960,7 +966,14 @@ this.renderPrayerCards(date, true); // true = skipAnim
           tooltip.dataset.activeDate = '';
         }, 100);
       }
-    });
+    };
+
+    // Store references so destroy() can remove them (prevents duplicate
+    // listeners stacking up on destroy()→init() cycles).
+    this._calHandlers = { mouseoverHandler, clickHandler, mouseoutHandler };
+    cal.addEventListener('mouseover', mouseoverHandler);
+    cal.addEventListener('click', clickHandler);
+    cal.addEventListener('mouseout', mouseoutHandler);
 
     // Dismiss on mobile when clicking outside
     if (this._docClickHandler) {
@@ -982,6 +995,13 @@ this.renderPrayerCards(date, true); // true = skipAnim
     if (this._docClickHandler) {
       document.removeEventListener('click', this._docClickHandler);
       this._docClickHandler = null;
+    }
+    const cal = document.getElementById('salah-calendar');
+    if (cal && this._calHandlers) {
+      cal.removeEventListener('mouseover', this._calHandlers.mouseoverHandler);
+      cal.removeEventListener('click', this._calHandlers.clickHandler);
+      cal.removeEventListener('mouseout', this._calHandlers.mouseoutHandler);
+      this._calHandlers = null;
     }
     const tooltip = document.getElementById('salah-cal-tooltip');
     if (tooltip) {
@@ -1005,6 +1025,29 @@ this.renderPrayerCards(date, true); // true = skipAnim
         Utils.toast('Salah data cleared', 'info');
       }
     });
+  },
+
+  renderNotes() {
+    const wrap = document.getElementById('salah-notes-container');
+    if (!wrap) return;
+    const data = DB.getSalah(this.selectedDate);
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const note = (typeof data.notes === 'string') ? data.notes : '';
+    const ph = isBn ? 'এই দিনের জন্য নোট লিখুন...' : 'Write a note for this day...';
+    wrap.innerHTML = `
+      <div class="card-header" style="margin-bottom:10px">
+        <div class="card-title">${isBn ? 'নোট' : 'Notes'}</div>
+      </div>
+      <textarea id="salah-notes-input" class="input" rows="3" maxlength="500"
+        placeholder="${ph}" oninput="Salah.saveNotes(this.value)"
+        style="width:100%;resize:vertical">${Utils.escapeHTML(note)}</textarea>
+    `;
+  },
+
+  saveNotes(v) {
+    const data = DB.getSalah(this.selectedDate);
+    data.notes = (v || '').slice(0, 500);
+    DB.setSalah(this.selectedDate, data);
   }
 };
 window.Salah = Salah;

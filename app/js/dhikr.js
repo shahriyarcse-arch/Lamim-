@@ -371,7 +371,7 @@ const Dhikr = {
             <div class="dhikr-history-item" ${preset.color ? `style="--dc:${preset.color}"` : ''}>
               <div class="dhikr-history-item-left">
                 <span class="dhikr-history-item-icon">${preset.icon}</span>
-                <span class="dhikr-history-item-name">${preset.latin}</span>
+                <span class="dhikr-history-item-name">${Utils.escapeHTML(preset.latin)}</span>
               </div>
               <span class="dhikr-history-item-count">${cnt}</span>
             </div>
@@ -424,7 +424,7 @@ const Dhikr = {
     let targetNum = parseInt(targetRaw, 10);
     if (isNaN(targetNum) || targetNum < 1 || targetNum > 10000) targetNum = 33;
     if (!latin) { Utils.toast(this.getLang() === 'bn' ? 'নাম দেওয়া আবশ্যক' : 'Name is required', 'error'); return; }
-    const preset = { id: Utils.uid(), latin, meaning: `${this.getLang() === 'bn' ? 'লক্ষ্য: ' : 'Target: '}${targetNum}`, category: 'general', icon: Icons.tasbeeh };
+    const preset = { id: Utils.uid(), latin, meaning: `${this.getLang() === 'bn' ? 'লক্ষ্য: ' : 'Target: '}${targetNum}`, category: 'general', icon: Icons.tasbeeh, target: targetNum };
     const presets = DB.getDhikrPresets();
     presets.push(preset);
     DB.setDhikrPresets(presets);

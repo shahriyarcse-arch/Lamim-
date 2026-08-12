@@ -349,7 +349,9 @@ const Mujahid = {
   init() {
     this.loadHabits();
     this.migrateIcons();
-    this.render();
+    const skip = !!this._inited;
+    this._inited = true;
+    this.render(skip);
 
     if (!this.initialized) {
       this.startLiveCounter();
@@ -370,22 +372,21 @@ const Mujahid = {
   },
 
   migrateIcons() {
-    const iconMap = {
-      '': this.defaultHabits.find(h => h.id === 'porn').icon,
-      '': this.defaultHabits.find(h => h.id === 'masturbation').icon,
-      '': this.defaultHabits.find(h => h.id === 'smoking').icon,
-      '': this.defaultHabits.find(h => h.id === 'social_media').icon,
-      '': this.defaultHabits.find(h => h.id === 'gaming').icon,
-      '': this.defaultHabits.find(h => h.id === 'overeating').icon,
-      '': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 8-8 8"/><path d="m8 8 8 8"/></svg>'
-    };
+    // Previous version used an object literal with all-empty string keys, which
+    // collapsed into a single entry and silently mutated habits on first load.
+    // Correct behaviour: assign a sensible default icon to any habit whose icon
+    // is missing/empty, matched by habit id. Habits that already have an icon
+    // are left untouched (non-destructive).
+    const fallbackIcon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 8-8 8"/><path d="m8 8 8 8"/></svg>';
 
     let changed = false;
-    this.habits.forEach(h => {
-      if (iconMap[h.icon]) {
-        h.icon = iconMap[h.icon];
-        changed = true;
-      }
+    (this.habits || []).forEach(h => {
+      if (!h || typeof h !== 'object') return;
+      const hasIcon = typeof h.icon === 'string' && h.icon.trim() !== '';
+      if (hasIcon) return;
+      const def = (this.defaultHabits || []).find(d => d.id === h.id);
+      h.icon = (def && def.icon) || fallbackIcon;
+      changed = true;
     });
 
     if (changed) this.saveHabits();
@@ -672,8 +673,13 @@ const Mujahid = {
       return;
     }
 
-    let isoString = new Date(dateStr).toISOString();
-    
+    const parsed = new Date(dateStr);
+    if (isNaN(parsed.getTime())) {
+      Utils.toast('Please enter a valid start date', 'error');
+      return;
+    }
+    const isoString = parsed.toISOString();
+
     this.setStartDate(habitId, isoString);
     this.hideStartDateModal();
   },
@@ -929,7 +935,7 @@ const Mujahid = {
     list.innerHTML = this.defaultHabits.map(h => `
       <div class="mujahid-habit-option" role="button" tabindex="0" onclick="Mujahid.selectDefaultHabit('${h.id}')" style="--habit-color: ${h.color || '#6366f1'};">
         <span class="mujahid-habit-option-icon">${h.icon}</span>
-        <span class="mujahid-habit-option-label">${h.label}</span>
+        <span class="mujahid-habit-option-label">${Utils.escapeHTML(h.label)}</span>
       </div>
     `).join('');
 
@@ -1052,9 +1058,6 @@ const Mujahid = {
     }
 
     try {
-      // Security: Escape user input
-      const escapedLabel = Utils.escapeHTML(label);
-      
       const startInput = document.getElementById('mujahid-new-habit-start');
       let startDate;
       
@@ -1302,9 +1305,30 @@ const Mujahid = {
     this.saveHabits();
     this.render(true);
     this.hideRelapseModal();
-    
-    // Show Undo Toast
-    Utils.toast('Relapse recorded. Tap Undo in the habit card to restore.', 'warning');
+
+    // Show Undo Toast with a real, working Undo action (lastRelapse is preserved
+    // for exactly this purpose — previously advertised but never wired up).
+    Utils.toast('Relapse recorded.', 'warning', 6000, {
+      label: 'Undo',
+      onClick: () => this.undoRelapse(id)
+    });
+  },
+
+  undoRelapse(id) {
+    const snap = this.lastRelapse;
+    if (!snap || snap.id !== id) {
+      Utils.toast('Nothing to undo', 'info');
+      return;
+    }
+    const habit = (this.habits || []).find(h => h.id === id);
+    if (!habit) return;
+    habit.startDate = snap.oldStartDate;
+    habit.history = snap.oldHistory;
+    habit.customStart = !!(snap.oldStartDate);
+    this.lastRelapse = null;
+    this.saveHabits();
+    this.render(true);
+    Utils.toast('Relapse undone. Streak restored.', 'success');
   },
 
 

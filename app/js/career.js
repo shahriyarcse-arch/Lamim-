@@ -34,27 +34,14 @@ const Career = {
 
   _GOAL_MAX_LEN: 120,
 
-  _emojiRe: /^(?:|||||||️||)\s*/u,
-
   init() {
     this.selectedDate = Utils.todayStr();
     this._migrateChecklist();
-    this.renderAll();
+    const skip = !!this._inited;
+    this._inited = true;
+    this.renderAll(skip);
     this.bindEvents();
     this.initTimer();
-  },
-
-  destroy() {
-    if (this._handlers) {
-      this._handlers.forEach(h => {
-        try { h.el.removeEventListener(h.type, h.fn); } catch (e) { /* ignore */ }
-      });
-      this._handlers = [];
-    }
-    if (this._timerRAF) {
-      cancelAnimationFrame(this._timerRAF);
-      this._timerRAF = null;
-    }
   },
 
   _migrateChecklist() {
@@ -77,14 +64,12 @@ const Career = {
       if (typeof item.id !== 'number') { item.id = i + 1; changed = true; }
       if (typeof item.text !== 'string') { item.text = ''; changed = true; }
       if (typeof item.done !== 'boolean') { item.done = false; changed = true; }
-      const cleaned = item.text.replace(this._emojiRe, '');
-      if (cleaned !== item.text) { item.text = cleaned; changed = true; }
       if ('category' in item) { delete item.category; changed = true; }
     }
     if (changed) DB.setCareer(today, data);
   },
 
-  renderAll() {
+  renderAll(skipAnim = false) {
     this.renderHeader();
     this.renderHero();
     this.renderStatStrip();
@@ -94,7 +79,7 @@ const Career = {
     this.renderHeatMap();
     this.renderSkillProgress();
     this.renderAchievements();
-    this.updateHeroMetrics();
+    this.updateHeroMetrics(skipAnim);
     this.switchProgressTab(this._activeProgressTab || 'weekly');
   },
 
@@ -124,7 +109,7 @@ const Career = {
     if (prev) this._bind(prev, 'click', () => this.changeDay(-1));
     if (next) this._bind(next, 'click', () => this.changeDay(1));
     const todayBtn = document.getElementById('career-today-btn');
-    if (todayBtn) this._bind(todayBtn, 'click', () => { this.selectedDate = Utils.todayStr(); this.renderAll(); });
+    if (todayBtn) this._bind(todayBtn, 'click', () => { this.selectedDate = Utils.todayStr(); this.renderAll(true); });
 
     const goalForm = document.getElementById('career-goal-form');
     if (goalForm) this._bind(goalForm, 'submit', (e) => { e.preventDefault(); this.addChecklistItem(); });
@@ -167,7 +152,7 @@ const Career = {
       return;
     }
     this.selectedDate = newDate;
-    this.renderAll();
+    this.renderAll(true);
   },
 
   /* ---------- HERO scorecard ---------- */
@@ -198,11 +183,14 @@ const Career = {
     return Math.round(studyPct * 0.6 + goalPct * 0.4);
   },
 
-  updateHeroMetrics() {
+  updateHeroMetrics(skipAnim = false) {
     const data = DB.getCareer(this.selectedDate);
     const score = this._focusScore(data);
     const ringWrap = document.getElementById('career-hero-ring');
-    if (ringWrap && window.Charts) Charts.animateRing(ringWrap, score, { size: 132, thickness: 10 });
+    if (ringWrap && window.Charts) {
+      if (skipAnim) Charts.ring(ringWrap, { size: 132, thickness: 10, value: score, color: 'currentColor', colorEnd: 'var(--cb-secondary)' });
+      else Charts.animateRing(ringWrap, score, { size: 132, thickness: 10 });
+    }
 
     const num = document.getElementById('career-hero-ring-num');
     if (num) num.textContent = window.n ? window.n(score) : score;
@@ -295,7 +283,9 @@ const Career = {
 
   saveStudyLog() {
     const topic = (document.getElementById('career-study-topic') || {}).value || '';
-    const dur = parseInt((document.getElementById('career-study-duration') || {}).value, 10) || 0;
+    let dur = parseInt((document.getElementById('career-study-duration') || {}).value, 10);
+    if (isNaN(dur)) dur = 0;
+    dur = Math.max(0, Math.min(1440, dur)); // clamp: 0..24h, no negatives/garbage
     const notes = (document.getElementById('career-study-notes') || {}).value || '';
     const sel = document.getElementById('career-study-category');
     const category = (sel && sel.value) || 'coding';
@@ -1319,6 +1309,10 @@ const Career = {
         if (h.el && h.el.removeEventListener) h.el.removeEventListener(h.type, h.fn);
       });
       this._handlers = [];
+    }
+    if (this._timerRAF) {
+      cancelAnimationFrame(this._timerRAF);
+      this._timerRAF = null;
     }
   }
 };

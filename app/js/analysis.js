@@ -21,17 +21,20 @@ const Analysis = {
   init() {
     this._cachedHabits = null;
 
+    const noAnim = !!this._inited;
+    this._inited = true;
+
     if (!this._debouncedRender) {
       this._debouncedRender = Utils.debounce(() => {
         if (document.getElementById('section-analysis')?.classList.contains('active')) {
-          this.render();
+          this.render(!!this._inited);
         }
       }, 300);
     }
 
     // Render immediately on first open — no debounce delay
     if (document.getElementById('section-analysis')?.classList.contains('active')) {
-      this.render();
+      this.render(noAnim);
     } else {
       this._debouncedRender();
     }
@@ -39,6 +42,7 @@ const Analysis = {
 
   onDataUpdated() {
     this._cachedHabits = null; // Invalidate cache on data change
+    this._trendCache = null;   // Invalidate monthly trend cache on data change
     this._debouncedRender();
   },
 
@@ -86,8 +90,11 @@ const Analysis = {
         // Only count this habit if it was started on or before the current date
         const habitStartDateStr = typeof h.startDate === 'string' ? h.startDate.split('T')[0] : (h.startDate instanceof Date ? Utils.dateStr(h.startDate) : null);
         if (habitStartDateStr && date >= habitStartDateStr) {
-          activeHabitsForDay++;
           const history = h.history || [];
+          // A habit with no logged history at all has never been acted on — it
+          // must NOT count as a success (that would inflate the score).
+          if (history.length === 0) return;
+          activeHabitsForDay++;
           const relapsedToday = history.find(entry => entry.date === date && entry.clean === false);
           if (!relapsedToday) successfulHabits++;
         }
@@ -138,6 +145,10 @@ const Analysis = {
   },
 
   getMonthDailyTrend(year, month) {
+    // Memoize per (year,month) so re-renders don't recompute up to 31 SHS scores.
+    const cacheKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+    if (this._trendCache && this._trendCache.key === cacheKey) return this._trendCache.data;
+
     const todayOffset = Utils.getOffsetDate();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const days = [];
@@ -155,11 +166,13 @@ const Analysis = {
         color: shs.rating.color
       });
     }
+
+    this._trendCache = { key: cacheKey, data: days };
     return days;
   },
 
 
-  render() {
+  render(noAnim = false) {
     const container = document.getElementById('analysis-content');
     if (!container) return;
 
@@ -233,7 +246,7 @@ const Analysis = {
         </div>
 
         <!-- NEW: Radar Chart Balance -->
-        <div class="radar-chart-container anim-fade-in" style="margin-top: -15px; margin-bottom: 20px; flex-direction: column;">
+        <div class="radar-chart-container ${noAnim ? '' : 'anim-fade-in'}" style="margin-top: -15px; margin-bottom: 20px; flex-direction: column;">
           <div style="width: 100%; text-align: center; margin-bottom: 5px;">
             <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; color: #a78bfa;">Spiritual Balance</span>
           </div>
@@ -311,19 +324,19 @@ const Analysis = {
         <div class="shs-grid">
           ${this.renderCard('Salah', shs.breakdown.salah, 50, '#f87171', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H4c-1 0-2-1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4c0 1-1 2-2 2z"/><path d="M12 10V3"/><path d="M8 6h8"/></svg>
-          `)}
+          `, null, noAnim)}
           ${this.renderCard('Nafl', shs.breakdown.nafl, 15, '#a855f7', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          `)}
+          `, null, noAnim)}
           ${this.renderCard('Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>
-          `, `Lvl ${shs.level.dhikr}`)}
+          `, `Lvl ${shs.level.dhikr}`, noAnim)}
           ${this.renderCard('Mujahid', shs.breakdown.mujahid, 10, '#fbbf24', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          `)}
+          `, null, noAnim)}
           ${this.renderCard('Spirit', shs.breakdown.consistency, 10, '#10b981', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-          `)}
+          `, null, noAnim)}
         </div>
 
         <div style="height:40px"></div>

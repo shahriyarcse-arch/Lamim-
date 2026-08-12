@@ -16,6 +16,7 @@ html {
      window.scrollTo({ behavior: 'instant' }) on section-switch cannot be
      asynchronously overridden by the browser's native scroll restoration. */
   -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
   background-color: var(--color-bg-primary);
   color-scheme: dark;
 }
@@ -28,6 +29,7 @@ body {
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
   line-height: 1.6;
+  touch-action: manipulation;
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: clip;

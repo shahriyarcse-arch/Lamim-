@@ -33,7 +33,9 @@ const Goals = {
   ],
 
   init() {
-    this.render(false);
+    const skip = !!this._inited;
+    this._inited = true;
+    this.render(skip);
   },
 
   render(skipAnim = false) {
@@ -62,6 +64,68 @@ const Goals = {
     this.renderTahajjud(data.tahajjud, data.tahajjud_rakat);
     this.renderWitr(data.witr);
     this.renderCelestialProgress(data, skipAnim);
+    this.renderGoalsList();
+  },
+
+  renderGoalsList() {
+    const el = document.getElementById('nafl-goals-list');
+    if (!el) return;
+    const goals = DB.getGoals() || [];
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    if (!goals.length) {
+      el.innerHTML = `<div style="padding:14px;text-align:center;color:var(--color-text-muted);font-size:13px;font-weight:600">${isBn ? 'এখনও কোন লক্ষ্য যোগ করা হয়নি' : 'No goals yet — add one to stay on track.'}</div>`;
+      return;
+    }
+    el.innerHTML = goals.map(g => `
+      <div class="nafl-goal-item" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--color-border,#e2e8f0);border-radius:12px;margin-bottom:8px;background:var(--color-surface,#fff);cursor:pointer" role="button" tabindex="0" onclick="Goals.editGoal('${g.id}')">
+        <div class="nafl-goal-main" style="flex:1;min-width:0">
+          <div class="nafl-goal-title" style="font-weight:700;font-size:14px;color:var(--color-text-primary,#111)">${Utils.escapeHTML(g.title)}</div>
+          ${g.description ? `<div class="nafl-goal-desc" style="font-size:12px;color:var(--color-text-muted,#64748b);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${Utils.escapeHTML(g.description)}</div>` : ''}
+          <div class="nafl-goal-meta" style="font-size:11px;color:var(--color-text-muted,#64748b);margin-top:4px;text-transform:capitalize">
+            ${g.target ? `${Utils.escapeHTML(String(g.target))} ${Utils.escapeHTML(g.unit || '')}` : ''}
+            ${g.category ? ` &middot; ${Utils.escapeHTML(g.category)}` : ''}
+            ${g.priority ? ` &middot; ${Utils.escapeHTML(g.priority)}` : ''}
+          </div>
+        </div>
+        <button class="nafl-goal-edit" style="border:none;background:transparent;font-size:16px;color:var(--color-text-muted,#64748b);cursor:pointer" title="Edit" onclick="event.stopPropagation(); Goals.editGoal('${g.id}')">&#9998;</button>
+      </div>
+    `).join('');
+  },
+
+  showGoalModal() {
+    this._resetGoalForm();
+    const title = document.getElementById('goal-modal-title');
+    if (title) title.textContent = (typeof App !== 'undefined' && App.lang === 'bn') ? 'নতুন লক্ষ্য' : 'New Goal';
+    document.getElementById('goal-modal')?.classList.remove('hidden');
+    setTimeout(() => document.getElementById('goal-title-field')?.focus(), 50);
+  },
+
+  editGoal(id) {
+    const goals = DB.getGoals() || [];
+    const g = goals.find(x => x.id === id);
+    if (!g) return;
+    this._resetGoalForm();
+    const set = (fid, val) => { const el = document.getElementById(fid); if (el) el.value = val || ''; };
+    set('goal-id-field', g.id);
+    set('goal-title-field', g.title);
+    set('goal-desc-field', g.description);
+    set('goal-target-field', g.target);
+    set('goal-unit-field', g.unit);
+    set('goal-category-field', g.category);
+    set('goal-priority-field', g.priority);
+    set('goal-deadline-field', g.deadline);
+    set('goal-recurring-field', g.recurring);
+    set('goal-milestone-field', (g.milestones || []).join('\n'));
+    const title = document.getElementById('goal-modal-title');
+    if (title) title.textContent = (typeof App !== 'undefined' && App.lang === 'bn') ? 'লক্ষ্য সম্পাদনা' : 'Edit Goal';
+    document.getElementById('goal-modal')?.classList.remove('hidden');
+  },
+
+  _resetGoalForm() {
+    const ids = ['goal-id-field','goal-title-field','goal-desc-field','goal-unit-field','goal-category-field','goal-priority-field','goal-deadline-field','goal-recurring-field','goal-milestone-field'];
+    ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    const tgt = document.getElementById('goal-target-field'); if (tgt) tgt.value = '1';
+    const pr = document.getElementById('goal-priority-field'); if (pr) pr.value = 'medium';
   },
 
   renderCelestialProgress(data, skipAnim = false) {
@@ -136,7 +200,7 @@ const Goals = {
     const nextDate = Utils.dateStr(d);
     if (nextDate > Utils.todayStr()) return;
     this.currentDate = nextDate;
-    this.render(false); // Play animations on date change
+    this.render(true); // Skip animations on date change
   },
 
   resetToday() {
@@ -657,15 +721,15 @@ const Goals = {
   saveGoal() {
     if (this._savingGoal) return;
     const get = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
-    const title = get('goal-title').trim();
-    const titleEl = document.getElementById('goal-title');
+    const title = get('goal-title-field').trim();
+    const titleEl = document.getElementById('goal-title-field');
     if (!title) {
       Utils.toast('Goal title is required', 'error');
       titleEl?.classList.add('input-error');
       titleEl?.focus();
       return;
     }
-    const targetRaw = get('goal-target').trim();
+    const targetRaw = get('goal-target-field').trim();
     let target = parseFloat(targetRaw);
     if (targetRaw && (isNaN(target) || target <= 0)) {
       Utils.toast('Target must be a positive number', 'error');
@@ -678,11 +742,11 @@ const Goals = {
       const milestones = get('goal-milestone-field').split('\n').map((s) => s.trim()).filter(Boolean);
       const goal = {
         title,
-        description: get('goal-description').trim(),
+        description: get('goal-desc-field').trim(),
         target,
-        unit: get('goal-unit').trim(),
-        category: get('goal-category').trim(),
-        priority: get('goal-priority').trim(),
+        unit: get('goal-unit-field').trim(),
+        category: get('goal-category-field').trim(),
+        priority: get('goal-priority-field').trim(),
         deadline: get('goal-deadline-field'),
         recurring: get('goal-recurring-field'),
         milestones,

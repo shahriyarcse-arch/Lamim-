@@ -377,67 +377,85 @@ window.n = function(num) {
   return String(num).replace(/\d/g, d => bnNums[d]);
 };
 // Auto-Translator MutationObserver
+let _translatePending = false;
+let _translateMutations = [];
 const autoTranslateObserver = new MutationObserver((mutations) => {
-  const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-  const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-  const enNums = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
-
+  // Accumulate and coalesce bursts into a single per-frame pass so we don't
+  // re-walk the entire document on every render / characterData change.
+  for (let i = 0; i < mutations.length; i++) _translateMutations.push(mutations[i]);
   autoTranslateObserver.disconnect();
 
-  function processTextNode(node) {
-    const p = node.parentElement;
-    if (!p) return;
-    // Skip script, style, SVG internals, inputs, textareas, and code blocks
-    const tag = p.tagName;
-    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'CODE' || tag === 'PRE') return;
-    if (p.closest('svg')) return; // Never touch SVG content - breaks viewBox, coordinates, etc.
-    if (p.closest('[data-no-translate], [contenteditable="true"], .notranslate')) return; // Allow opting out
-    let text = node.nodeValue;
-    if (!text || !text.trim()) return;
+  if (!_translatePending) {
+    _translatePending = true;
+    const run = () => {
+      _translatePending = false;
+      const batch = _translateMutations;
+      _translateMutations = [];
 
-    let changed = false;
-    
-    // 1. Text Translation
-    let trimmed = text.trim();
-    if (isBn && Translations[trimmed]) {
-      text = text.replace(trimmed, Translations[trimmed]);
-      changed = true;
-    }
+      const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+      const enNums = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
 
-    // 2. Number Translation
-    if (isBn && /\d/.test(text)) {
-      text = text.replace(/\d/g, d => bnNums[d]);
-      changed = true;
-    } else if (!isBn && /[০-৯]/.test(text)) {
-      text = text.replace(/[০-৯]/g, d => enNums[d]);
-      changed = true;
-    }
+      function processTextNode(node) {
+        const p = node.parentElement;
+        if (!p) return;
+        // Skip script, style, SVG internals, inputs, textareas, and code blocks
+        const tag = p.tagName;
+        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'CODE' || tag === 'PRE') return;
+        if (p.closest('svg')) return; // Never touch SVG content - breaks viewBox, coordinates, etc.
+        if (p.closest('[data-no-translate], [contenteditable="true"], .notranslate')) return; // Allow opting out
+        let text = node.nodeValue;
+        if (!text || !text.trim()) return;
 
-    if (changed && node.nodeValue !== text) {
-      node.nodeValue = text;
-    }
-  }
+        let changed = false;
 
-  for (let m of mutations) {
-    if (m.type === 'characterData') {
-      processTextNode(m.target);
-    } else if (m.type === 'childList') {
-      m.addedNodes.forEach(node => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          processTextNode(node);
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-           if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE') return;
-           const walk = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
-           let n;
-           while (n = walk.nextNode()) {
-             processTextNode(n);
-           }
+        // 1. Text Translation
+        let trimmed = text.trim();
+        if (isBn && Translations[trimmed]) {
+          text = text.replace(trimmed, Translations[trimmed]);
+          changed = true;
         }
-      });
-    }
-  }
 
-  autoTranslateObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+        // 2. Number Translation
+        if (isBn && /\d/.test(text)) {
+          text = text.replace(/\d/g, d => bnNums[d]);
+          changed = true;
+        } else if (!isBn && /[০-৯]/.test(text)) {
+          text = text.replace(/[০-৯]/g, d => enNums[d]);
+          changed = true;
+        }
+
+        if (changed && node.nodeValue !== text) {
+          node.nodeValue = text;
+        }
+      }
+
+      for (let m of batch) {
+        if (m.type === 'characterData') {
+          processTextNode(m.target);
+        } else if (m.type === 'childList') {
+          m.addedNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              processTextNode(node);
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE') return;
+              const walk = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
+              let n;
+              while (n = walk.nextNode()) {
+                processTextNode(n);
+              }
+            }
+          });
+        }
+      }
+
+      autoTranslateObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+    };
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(run);
+    else run();
+  } else {
+    autoTranslateObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
 });
 
 // Start observer as soon as possible

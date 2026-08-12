@@ -51,6 +51,7 @@ const DB = {
           .then(() => this._migrateFromLocalStorage())
           .then(() => {
             this.migrate();
+            this._rescopeOrphans();
             this._setupMultiTabSync();
             safeResolve();
           })
@@ -76,7 +77,7 @@ const DB = {
     this._cache = {};
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (k && k.startsWith('lamim_')) {
+      if (k && (k.startsWith('lamim_') || k.startsWith('usr_'))) {
         this._cache[k] = localStorage.getItem(k);
       }
     }
@@ -85,6 +86,9 @@ const DB = {
   _setupMultiTabSync() {
     if (typeof window === 'undefined' || this._tabSyncInitialized) return;
     this._tabSyncInitialized = true;
+
+    // Cross-tab sync for the localStorage fallback path (storage events only fire
+    // for localStorage writes, which is what the fallback path uses).
     window.addEventListener('storage', (e) => {
       if (e.key && (e.key.startsWith('lamim_') || e.key.startsWith('usr_'))) {
         if (e.newValue !== null) {
@@ -96,6 +100,35 @@ const DB = {
         window.dispatchEvent(new CustomEvent('lamim:data-updated'));
       }
     });
+
+    // IndexedDB writes do NOT trigger storage events in other tabs, so propagate
+    // them explicitly via BroadcastChannel. Other tabs update their in-memory
+    // cache and re-render, preventing divergence / last-write-wins clobber.
+    if (typeof BroadcastChannel !== 'undefined') {
+      try {
+        this._bc = new BroadcastChannel('lamim_db_sync');
+        this._bc.onmessage = (ev) => {
+          const msg = ev.data || {};
+          if (!msg.key) return;
+          if (msg.type === 'clear') {
+            this._cache = {};
+          } else if (msg.value !== null && msg.value !== undefined) {
+            this._cache[msg.key] = msg.value;
+          } else {
+            delete this._cache[msg.key];
+          }
+          this._streakCache = null;
+          window.dispatchEvent(new CustomEvent('lamim:data-updated'));
+        };
+      } catch (e) { /* BroadcastChannel unsupported — storage listener still covers fallback */ }
+    }
+  },
+
+  // Notify other tabs of a write (IndexedDB path). No-op when unsupported.
+  _broadcast(key, value, type) {
+    if (this._bc && this._bc.postMessage) {
+      try { this._bc.postMessage({ key, value: value === undefined ? null : value, type: type || 'set' }); } catch (e) {}
+    }
   },
 
   _loadCache() {
@@ -155,7 +188,7 @@ const DB = {
 
         transaction.oncomplete = () => {
           keysToMigrate.forEach(key => {
-            if (key !== 'lamim_lang' && key !== 'lamim_settings') {
+            if (key !== 'lamim_lang' && key !== 'lamim_settings' && key !== 'lamim_user' && key !== 'lamim_profiles_vault') {
               localStorage.removeItem(key);
             }
           });
@@ -181,7 +214,7 @@ const DB = {
         const store = transaction.objectStore('keyvalue');
         const req = store.put(val, key);
 
-        req.onsuccess = () => resolve();
+        req.onsuccess = () => { this._broadcast(key, val); resolve(); };
         req.onerror = (e) => {
           const err = e.target.error;
           console.error(`[DB] Async write failed for key: ${key}`, err);
@@ -213,7 +246,7 @@ const DB = {
         const req = store.delete(key);
         let resolved = false;
         const done = () => { if (!resolved) { resolved = true; resolve(); } };
-        req.onsuccess = done;
+        req.onsuccess = () => { this._broadcast(key, null); done(); };
         req.onerror = (e) => {
           console.error(`[DB] Async delete failed for key: ${key}`, e.target.error);
           done();
@@ -238,7 +271,7 @@ const DB = {
         let resolved = false;
         const done = () => { if (!resolved) { resolved = true; resolve(); } };
         const req = store.clear();
-        req.onsuccess = done;
+        req.onsuccess = () => { this._broadcast('*', null, 'clear'); done(); };
         req.onerror = (e) => { console.error('[DB] Async clear failed:', e.target.error); done(); };
         transaction.oncomplete = done;
         transaction.onerror = done;
@@ -291,7 +324,7 @@ const DB = {
 
       if (!this._db) {
         try { localStorage.setItem(realKey, strVal); } catch {}
-      } else if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user') {
+      } else if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user' || realKey === 'lamim_profiles_vault') {
         try { localStorage.setItem(realKey, strVal); } catch {}
       }
 
@@ -604,6 +637,38 @@ const DB = {
       }
       this.remove('lamim_finance_data');
     }
+  },
+
+  /*
+   * Re-scope legacy unscoped profile data (lamim_* keys written before the
+   * multi-profile feature) under the active user's prefix (usr_<id>_). This
+   * prevents the `get()` fallback from returning one profile's data to another
+   * (cross-profile leakage) while preserving existing single-user data intact.
+   * Idempotent: already-scoped keys are left alone; global whitelist untouched.
+   */
+  _rescopeOrphans() {
+    try {
+      const userRaw = this._cache['lamim_user'];
+      if (!userRaw) return; // No active profile → nothing to scope to
+      const u = JSON.parse(userRaw);
+      if (!u || !u.id) return;
+      const prefix = `usr_${u.id}_`;
+      const GLOBAL = new Set(['lamim_user', 'lamim_profiles_vault', 'lamim_lang', 'lamim_settings', 'lamim_dhikr_presets']);
+      let changed = false;
+      for (const k of Object.keys(this._cache)) {
+        if (GLOBAL.has(k) || k.startsWith('usr_')) continue;
+        if (!k.startsWith('lamim_')) continue; // only app data, never other namespaces
+        const scoped = prefix + k;
+        if (!this._cache[scoped]) {
+          this._cache[scoped] = this._cache[k];
+          this._asyncWrite(scoped, this._cache[k]);
+          delete this._cache[k];
+          this._asyncDelete(k);
+          changed = true;
+        }
+      }
+      if (changed) console.info('[DB] Rescoped legacy unscoped data to active profile');
+    } catch (e) { /* best-effort migration */ }
   },
 
   clearAllUserData() {

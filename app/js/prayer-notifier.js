@@ -11,11 +11,27 @@ const PrayerNotifier = {
   _catchUpWindow: 30 * 60 * 1000, // Catch up on prayers missed up to 30 min ago (tab throttled)
 
   init() {
+    // (Re)arm if eligible. Safe to call repeatedly — no-op if already running.
+    this._arm();
+
+    // If not armed yet (e.g. permission not granted at startup, or notifications
+    // were off), keep re-checking when the tab regains focus / visibility so the
+    // notifier starts automatically once the user enables notifications or grants
+    // permission — without silently staying broken until a manual reload.
+    if (!this._armWatcher) {
+      this._armWatcher = true;
+      const recheck = () => this._arm();
+      if (typeof window !== 'undefined') window.addEventListener('focus', recheck);
+      if (typeof document !== 'undefined') document.addEventListener('visibilitychange', recheck);
+    }
+  },
+
+  _arm() {
     if (this._intervalId) return;
-    
+
     const settings = DB.getSettings();
     if (!settings.notifications) return;
-    
+
     // Only start if permission is already granted — NEVER auto-prompt here
     if (!('Notification' in window) || Notification.permission !== 'granted') {
       return;
@@ -33,10 +49,9 @@ const PrayerNotifier = {
 
     // Start the checker loop
     this._intervalId = setInterval(() => this.check(), this._checkInterval);
-    
+
     // Also check immediately
     setTimeout(() => this.check(), 2000);
-    
   },
 
   stop() {

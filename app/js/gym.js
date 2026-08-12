@@ -24,7 +24,9 @@ const Gym = {
 
   init() {
     this.selectedDate = Utils.todayStr();
-    this.renderAll();
+    const skip = !!this._inited;
+    this._inited = true;
+    this.renderAll(skip);
     this.bindEvents();
   },
 
@@ -37,7 +39,7 @@ const Gym = {
     }
   },
 
-  renderAll() {
+  renderAll(skipAnim = false) {
     this.renderHeader();
     this.renderHero();
     this.renderStatStrip();
@@ -46,7 +48,7 @@ const Gym = {
     this.renderDiet();
     this.renderWater();
     this.renderBodyMetrics();
-    this.updateHeroMetrics();
+    this.updateHeroMetrics(skipAnim);
   },
 
   renderHeader() {
@@ -84,7 +86,7 @@ const Gym = {
     if (next) this._bind(next, 'click', () => this.changeDay(1));
     if (todayBtn) this._bind(todayBtn, 'click', () => {
       this.selectedDate = Utils.todayStr();
-      this.renderAll();
+      this.renderAll(true);
     });
 
     const exInput = document.getElementById('gym-exercise-name');
@@ -112,7 +114,7 @@ const Gym = {
   notifyDataChanged() {
     if (!this._debouncedNotify) {
       this._debouncedNotify = Utils.debounce(() => {
-        this.notifyDataChanged();
+        window.dispatchEvent(new CustomEvent('lamim:data-updated'));
       }, 200);
     }
     this._debouncedNotify();
@@ -127,7 +129,7 @@ const Gym = {
       return;
     }
     this.selectedDate = newDate;
-    this.renderAll();
+    this.renderAll(true);
   },
 
   /* ---------- HERO scorecard ---------- */
@@ -167,13 +169,14 @@ const Gym = {
     return Math.round(recovery * 0.4 + waterPct * 0.25 + nutritionPct * 0.2 + workoutScore * 0.15);
   },
 
-  updateHeroMetrics() {
+  updateHeroMetrics(skipAnim = false) {
     const gym = DB.getGym(this.selectedDate);
     const readiness = this._readinessFor(gym);
 
     const ringWrap = document.getElementById('gym-hero-ring');
     if (ringWrap && window.Charts) {
-      Charts.animateRing(ringWrap, readiness, { size: 132, thickness: 10 });
+      if (skipAnim) Charts.ring(ringWrap, { size: 132, thickness: 10, value: readiness, color: 'currentColor', colorEnd: 'var(--gh-secondary)' });
+      else Charts.animateRing(ringWrap, readiness, { size: 132, thickness: 10 });
     }
     const num = document.getElementById('gym-hero-ring-num');
     if (num) num.textContent = window.n ? window.n(readiness) : readiness;
@@ -211,10 +214,6 @@ const Gym = {
     // Note: Hydration percentage is updated via renderWater(), but we can also update it here if needed
     const waterPct = (gym.water && gym.water.goal) ? Math.min(100, (gym.water.amount / gym.water.goal) * 100) : 0;
     setText('gym-stat-hydration-val', n(Math.round(waterPct)) + '%');
-  },
-
-  _dayVolume(exercises) {
-    return exercises.reduce((s, e) => s + ((Number(e.sets) || 0) * (Number(e.reps) || 0) * (Number(e.weight) || 0)), 0);
   },
 
   /* ---------- workout logger ---------- */
@@ -276,7 +275,7 @@ const Gym = {
       name,
       sets: Math.max(1, parseInt(setsEl.value, 10) || 3),
       reps: Math.max(1, parseInt(repsEl.value, 10) || 10),
-      weight: Math.max(0, parseFloat(weightEl.value) || 0)
+      weight: Math.max(0, Math.min(1000, parseFloat(weightEl.value) || 0))
     };
 
     const data = DB.getGym(this.selectedDate);
@@ -549,7 +548,7 @@ const Gym = {
           const div = document.createElement('div');
           div.className = 'gh-meal-item';
           div.innerHTML =
-            `<span class="gh-meal-type ${m.type || 'snack'}">${window.t ? window.t(m.type || 'snack') : (m.type || 'snack')}</span>` +
+            `<span class="gh-meal-type ${Utils.escapeHTML(m.type || 'snack')}">${Utils.escapeHTML(window.t ? window.t(m.type || 'snack') : (m.type || 'snack'))}</span>` +
             `<span class="gh-meal-desc">${Utils.escapeHTML(m.desc || '')}</span>` +
             `<div class="gh-meal-right">` +
               `<button class="gh-meal-del" onclick="Gym.deleteMeal(${i})"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>` +
@@ -585,6 +584,13 @@ const Gym = {
               `<button class="gh-seg-btn" data-type="snack">Snack</button>` +
             `</div>` +
           `</div>` +
+          `<div class="gh-modal-field">` +
+            `<label class="gh-meta-label">Nutrition (optional)</label>` +
+            `<div style="display:flex; gap:10px;">` +
+              `<input type="number" min="0" inputmode="numeric" class="gh-input" id="gh-meal-calories" placeholder="kcal" aria-label="Calories">` +
+              `<input type="number" min="0" inputmode="numeric" class="gh-input" id="gh-meal-protein" placeholder="protein g" aria-label="Protein grams">` +
+            `</div>` +
+          `</div>` +
         `</div>` +
         `<div class="gh-modal-actions">` +
           `<button class="gh-btn gh-btn-ghost" onclick="Gym.closeMealModal()">Cancel</button>` +
@@ -613,7 +619,11 @@ const Gym = {
     if (!desc) { if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter what you ate', 'error'); return; }
     const active = document.querySelector('#gh-meal-modal .gh-seg-btn.active');
     const type = active ? active.dataset.type : 'snack';
-    this.addMeal(desc, 0, 0, type, 0, 0);
+    const calEl = document.getElementById('gh-meal-calories');
+    const protEl = document.getElementById('gh-meal-protein');
+    const calories = Math.max(0, Math.min(100000, parseInt(calEl && calEl.value, 10) || 0));
+    const protein = Math.max(0, Math.min(100000, parseInt(protEl && protEl.value, 10) || 0));
+    this.addMeal(desc, protein, calories, type, 0, 0);
     this.closeMealModal();
   },
 
@@ -693,22 +703,29 @@ const Gym = {
     const wInput = document.getElementById('gym-body-weight');
     const bfInput = document.getElementById('gym-body-fat');
     if (!wInput && !bfInput) return;
-    const weight = parseFloat(wInput && wInput.value) || 0;
-    const bodyFat = parseFloat(bfInput && bfInput.value) || 0;
-    if (!weight && !bodyFat) return;
+    const wRaw = wInput && wInput.value.trim();
+    const bfRaw = bfInput && bfInput.value.trim();
+    // Distinguish "empty" from a literal 0 so a legitimate 0 entry isn't dropped.
+    const weight = wRaw !== '' ? parseFloat(wRaw) : null;
+    const bodyFat = bfRaw !== '' ? parseFloat(bfRaw) : null;
+    if (weight === null && bodyFat === null) return;
 
-    if (weight < 0 || weight > 300) {
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter valid body weight (1-300kg)', 'error');
+    if (weight !== null && (isNaN(weight) || weight < 0 || weight > 300)) {
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter valid body weight (0-300kg)', 'error');
       return;
     }
-    if (bodyFat < 0 || bodyFat > 80) {
+    if (bodyFat !== null && (isNaN(bodyFat) || bodyFat < 0 || bodyFat > 80)) {
       if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter valid body fat % (0-80%)', 'error');
       return;
     }
 
     const metrics = DB.getBodyMetrics();
     const idx = metrics.entries.findIndex(e => e.date === this.selectedDate);
-    const entry = { date: this.selectedDate, weight, bodyFat };
+    const entry = {
+      date: this.selectedDate,
+      weight: weight === null ? 0 : weight,
+      bodyFat: bodyFat === null ? 0 : bodyFat
+    };
     if (idx >= 0) metrics.entries[idx] = entry;
     else metrics.entries.push(entry);
     // keep sorted & cap to 90 entries
@@ -815,7 +832,7 @@ const Gym = {
         <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center">${r.dur ? r.dur.toFixed(1) + 'h' : '—'}</td>
         <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center">${r.recovery || '—'}</td>
         <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center">${r.water} ml</td>
-        <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:left;max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${r.foodIntake}">${r.foodIntake}</td>
+        <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:left;max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${Utils.escapeHTML(r.foodIntake)}">${Utils.escapeHTML(r.foodIntake)}</td>
       </tr>`;
     }).join('');
 

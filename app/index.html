@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
-    content="width=device-width,initial-scale=1,viewport-fit=cover">
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#F1F5F9">
   <script>
     /* Prevent browser from restoring scroll position on reload — always start from the top */
@@ -285,7 +285,7 @@
             <div class="brand-badge-glow" style="padding: 10px; border-radius: 20px; background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.18); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.15);">
               <img src="assets/logo-mark.png" alt="lamim Logo" style="width: 44px; height: 44px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(168, 85, 247, 0.3));">
             </div>
-            <div class="auth-logo-name" style="font-size: 28px; letter-spacing: -0.02em; line-height: 1;">lam<span class="i-green-dot">&#305;</span>m</div>
+            <div class="auth-logo-name" style="font-size: 28px; letter-spacing: -0.02em; line-height: 1;">lam<span class="i-green-dot" style="font-family: inherit; font-style: normal;">i</span>m</div>
           </div>
           <!-- Progress dots — 4 steps -->
           <div class="setup-progress-dots" style="margin-bottom: 20px;">
@@ -871,6 +871,9 @@
             <!-- Prayer Cards -->
             <div id="salah-cards"></div>
 
+            <!-- Notes -->
+            <div id="salah-notes-container" class="card mt-4"></div>
+
             <!-- Calendar -->
             <div class="card mt-4">
               <div class="card-header">
@@ -1109,6 +1112,15 @@
             <div class="night-prayers-container nafl-grid" id="nafl-night-grid">
               <div id="tahajjud-card-container"></div>
               <div id="witr-card-container"></div>
+            </div>
+
+            <!-- My Goals -->
+            <div class="card mt-4">
+              <div class="card-header">
+                <div class="card-title">My Goals</div>
+                <button class="btn btn-sm btn-secondary" onclick="Goals.showGoalModal()">+ Add Goal</button>
+              </div>
+              <div id="nafl-goals-list" class="nafl-goals-list"></div>
             </div>
 
           </section>

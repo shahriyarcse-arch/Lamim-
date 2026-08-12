@@ -291,7 +291,7 @@ const Finance = {
       if (raw) {
         const p = JSON.parse(raw);
         if (p && p.rate && p.rate !== this.exchangeRate) {
-          this.exchangeRate = p.rate;
+          this.exchangeRate = (typeof p.rate === 'number' && isFinite(p.rate) && p.rate > 0 && p.rate <= 100000) ? p.rate : 118;
           if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
         }
       }
@@ -308,8 +308,9 @@ const Finance = {
       const data = await res.json();
       if (data && data.rates && data.rates.BDT) {
         const newRate = data.rates.BDT;
-        if (newRate !== this.exchangeRate) {
-          this.exchangeRate = newRate;
+        const safeRate = (typeof newRate === 'number' && isFinite(newRate) && newRate > 0 && newRate <= 100000) ? newRate : 118;
+        if (safeRate !== this.exchangeRate) {
+          this.exchangeRate = safeRate;
           if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
           const modal = document.getElementById('finance-modal-overlay');
           if (modal && modal.classList.contains('show')) {
@@ -325,6 +326,16 @@ const Finance = {
   },
 
   getSymbol() { return DB.getSettings().currency === 'BDT' ? '৳' : '$'; },
+
+  // Return a sane, finite, positive exchange rate (USD→BDT). Guards against
+  // tampered/NaN/Infinity/zero rates that would corrupt every BDT→USD conversion
+  // and could bypass the insufficient-funds guard. Falls back to the default.
+  _getFXRate() {
+    const r = this.exchangeRate;
+    if (typeof r !== 'number' || !isFinite(r) || r <= 0) return 118;
+    if (r > 100000) return 100000;
+    return r;
+  },
 
   setCurrency(code) {
     const s = DB.getSettings(); s.currency = code; DB.setSettings(s);
@@ -344,7 +355,7 @@ const Finance = {
   },
 
   formatVal(val) {
-    const converted = DB.getSettings().currency === 'BDT' ? val * this.exchangeRate : val;
+    const converted = DB.getSettings().currency === 'BDT' ? val * this._getFXRate() : val;
     return converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   },
 
@@ -1064,7 +1075,7 @@ const Finance = {
     const totalBalance = allIncome - allExpenses;
 
     let amountInBase = a;
-    if (DB.getSettings().currency === 'BDT') amountInBase = a / this.exchangeRate;
+    if (DB.getSettings().currency === 'BDT') amountInBase = a / this._getFXRate();
 
     // Check if expense exceeds total balance
     if (amountInBase > totalBalance + 0.0001) {
@@ -1159,7 +1170,7 @@ const Finance = {
     let a = parseFloat(document.getElementById('finance-income-amount').value); 
     const d = document.getElementById('finance-income-date').value || Utils.todayStr(); 
     if (!desc || isNaN(a) || a <= 0) return Utils.toast('Fill valid fields','error'); 
-    if (DB.getSettings().currency==='BDT') a /= this.exchangeRate; 
+    if (DB.getSettings().currency==='BDT') a /= this._getFXRate(); 
     this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d }); 
     this.saveData(); this.closeModal(); this.render(); 
   },
@@ -1405,7 +1416,7 @@ const Finance = {
     const name = nameInput ? nameInput.value.trim() : '';
     let target = parseFloat(document.getElementById('finance-savings-target')?.value || '');
     if (!name || isNaN(target) || target <= 0) return Utils.toast('Fill valid fields', 'error');
-    if (DB.getSettings().currency === 'BDT') target /= this.exchangeRate;
+    if (DB.getSettings().currency === 'BDT') target /= this._getFXRate();
     this.data.savings.push({ id: Utils.uid(), name, target, saved: 0 });
     this.saveData(); this.closeModal(); this.render();
     if (document.getElementById('finance-vault-overlay')?.classList.contains('show')) {
@@ -1422,7 +1433,7 @@ const Finance = {
       return Utils.toast('Goal already achieved!', 'info');
     }
 
-    const mult = DB.getSettings().currency === 'BDT' ? this.exchangeRate : 1;
+    const mult = DB.getSettings().currency === 'BDT' ? this._getFXRate() : 1;
     const remaining = Math.max(0, (goal.target - goal.saved) * mult);
 
     const html = `
@@ -1470,11 +1481,11 @@ const Finance = {
       return Utils.toast('Invalid amount entered', 'error');
     }
 
-    const mult = DB.getSettings().currency === 'BDT' ? this.exchangeRate : 1;
+    const mult = DB.getSettings().currency === 'BDT' ? this._getFXRate() : 1;
     const remainingInBase = goal.target - goal.saved; // USD base
     
     let amountInBase = amount;
-    if (DB.getSettings().currency === 'BDT') amountInBase = amount / this.exchangeRate;
+    if (DB.getSettings().currency === 'BDT') amountInBase = amount / this._getFXRate();
 
     // Genuine behaviour: cannot deposit more cash than you actually have on hand
     const allIncome = this.data.income.reduce((s, o) => s + o.amount, 0);
@@ -1732,7 +1743,7 @@ const Finance = {
     container.innerHTML = `<div class="vault-overlay-grid">${filtered.map(v => this.renderSavingsItem(v)).join('')}</div>`;
   },
   showToolsModal() {
-    const exchangeRateText = this.exchangeRate ? `1 USD = ${this.exchangeRate.toFixed(2)} BDT` : 'Loading rates...';
+    const exchangeRateText = this.exchangeRate ? `1 USD = ${this._getFXRate().toFixed(2)} BDT` : 'Loading rates...';
 
     const html = `
       <div class="finance-modal-content">
@@ -2275,6 +2286,10 @@ const Finance = {
 
   destroy() {
     this._removeGlobalListeners();
+    if (this.mainChart) {
+      try { this.mainChart.destroy(); } catch (e) {}
+      this.mainChart = null;
+    }
     if (this._debouncedDataUpdate) {
       this._debouncedDataUpdate.cancel();
       this._debouncedDataUpdate = null;

@@ -38,7 +38,7 @@ const Profile = {
       <div class="profile-name" id="prof-display-name"></div>
       <div class="profile-bio" id="prof-display-bio"></div>
       <div class="profile-meta">
-        ${user.gender ? `<span class="profile-chip gender-${user.gender}">${user.gender === 'male'
+        ${(user.gender === 'male' || user.gender === 'female') ? `<span class="profile-chip gender-${Utils.escapeHTML(user.gender)}">${user.gender === 'male'
           ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><line x1="19" y1="5" x2="13.5" y2="10.5"></line><line x1="15" y1="2" x2="22" y2="9"></line><line x1="14" y1="9" x2="21" y2="16"></line></svg> Male'
           : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><line x1="12" y1="14" x2="12" y2="22"></line><line x1="9" y1="19" x2="15" y2="19"></line></svg> Female'}</span>` : ''}
         ${user.createdAt ? `<span class="profile-chip">Joined ${new Date(user.createdAt).toLocaleDateString('en-US', {month:'short', year:'numeric'})}</span>` : ''}
@@ -46,7 +46,7 @@ const Profile = {
 
       <div class="profile-stats">
         <div class="streak-badge active streak-perfect" style="background:rgba(255,214,10,0.1); border-color:rgba(255,214,10,0.3); color:var(--color-accent-gold);" title="Your Lamim Spiritual Score (LSS)">
-          <span class="badge-icon"></span>${user.spirit_level || 'Awakening'} · ${Math.round(user.spirit_score || 0)} Power
+          <span class="badge-icon"></span>${Utils.escapeHTML(user.spirit_level || 'Awakening')} · ${Math.round(user.spirit_score || 0)} Power
         </div>
         <div class="streak-badge ${streak.consistency > 0 ? 'active' : ''} streak-consistency" title="Consecutive days with 4+ prayers logged">
           <span class="badge-icon">${pIcons.consistency}</span>${streak.consistency}d Consistent
@@ -163,7 +163,7 @@ const Profile = {
         </div>
       </div>
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.detectLocation(event)">
-        <div class="settings-item-left"><div class="settings-item-icon ic-teal">${icons.globe}</div><div><div class="settings-item-label">Detect Location</div><div class="settings-item-value">${settings.locationName || (settings.lat ? settings.lat.toFixed(2) + ', ' + settings.lng.toFixed(2) : 'Not set')}</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-teal">${icons.globe}</div><div><div class="settings-item-label">Detect Location</div>        <div class="settings-item-value">${Utils.escapeHTML(settings.locationName) || (settings.lat ? settings.lat.toFixed(2) + ', ' + settings.lng.toFixed(2) : 'Not set')}</div></div></div>
         <div class="settings-item-right"><span>↻</span></div>
       </div>
       <div class="settings-item" style="cursor:default">
@@ -700,32 +700,67 @@ const Profile = {
       const text = await file.text();
       const data = JSON.parse(text);
 
-      if (!data || typeof data !== 'object') {
+      if (!data || typeof data !== 'object' || Array.isArray(data)) {
         throw new Error('Invalid JSON format');
       }
 
-      const keys = Object.keys(data).filter(k => k.startsWith('lamim_') || k.startsWith('usr_'));
-      if (keys.length === 0) {
+      const currentUser = DB.getUser();
+      const currentId = currentUser && currentUser.id;
+      const prefix = currentId ? `usr_${currentId}_` : null;
+      const GLOBAL_ALLOW = new Set(['lamim_settings', 'lamim_lang', 'lamim_user', 'lamim_profiles_vault', 'lamim_dhikr_presets']);
+
+      // Only restore keys that belong to the active profile or the safe global
+      // whitelist. This blocks cross-profile injection (usr_<otherid>_* keys)
+      // and arbitrary key writes. Unscoped lamim_* app data is allowed and later
+      // re-scoped to the active profile (legacy single-profile backups).
+      // Known, safe app-data key shapes. Restricting import to these patterns
+      // prevents a malicious backup from injecting an unknown `lamim_*` key whose
+      // render path might not escape user input (defense-in-depth over render-layer
+      // escaping). Legit backups only ever contain these keys.
+      const KNOWN_LAMIM = /^lamim_(salah_|dhikr_|gym_|career_|mujahid_habits|goals|finance|settings|lang|user|profiles_vault)$/;
+
+      const allowedKeys = [];
+      for (const k of Object.keys(data)) {
+        if (GLOBAL_ALLOW.has(k)) { allowedKeys.push(k); continue; }
+        if (k.startsWith('usr_')) {
+          if (prefix && k.startsWith(prefix)) allowedKeys.push(k); // own profile only
+          continue; // reject other profiles
+        }
+        if (KNOWN_LAMIM.test(k)) allowedKeys.push(k); // known app data (re-scoped below)
+      }
+
+      if (allowedKeys.length === 0) {
         Utils.toast(isBn ? 'বৈধ ব্যাকআপ ফাইল পাওয়া যায়নি' : 'No valid backup data found in file', 'error');
         return;
       }
 
       Utils.confirm(
         isBn ? 'ডাটা রিস্টোর করুন' : 'Restore Backup Data',
-        isBn ? `${keys.length}টি ডাটা এন্ট্রি রিস্টোর করা হবে। বর্তমান লোকাল ডাটা ওভাররাইট হবে। আপনি কি নিশ্চিত?`
-             : `This will restore ${keys.length} data entries and overwrite matching local data. Are you sure?`,
+        isBn ? `${allowedKeys.length}টি ডাটা এন্ট্রি রিস্টোর করা হবে। বর্তমান লোকাল ডাটা ওভাররাইট হবে। আপনি কি নিশ্চিত?`
+             : `This will restore ${allowedKeys.length} data entries and overwrite matching local data. Are you sure?`,
         async () => {
-          for (let i = 0; i < keys.length; i++) {
-            const k = keys[i];
-            const val = data[k];
-            if (val !== undefined && val !== null) {
-              DB.rawSet(k, typeof val === 'string' ? val : JSON.stringify(val));
-            }
+          for (let i = 0; i < allowedKeys.length; i++) {
+            const k = allowedKeys[i];
+            let val = data[k];
+            if (val === undefined || val === null) continue;
+
+            // Sanitize high-risk objects to prevent stored XSS / bad data
+            if (k === 'lamim_user') val = Profile._sanitizeImportUser(val, currentUser);
+            else if (k === 'lamim_profiles_vault') val = Profile._sanitizeImportVault(val);
+
+            const strVal = (typeof val === 'string') ? val : JSON.stringify(val);
+            DB.rawSet(k, strVal);
           }
+
+          // Re-scope any legacy unscoped app data restored for the active profile
+          DB._rescopeOrphans();
 
           const s = DB.getSettings();
           s.lastBackupDate = Utils.todayStr();
           DB.setSettings(s);
+
+          // Recompute spirit score from real data (discards any injected label)
+          if (typeof DB.refreshSpiritScore === 'function') DB.refreshSpiritScore();
 
           Utils.toast(isBn ? 'ব্যাকআপ সফলভাবে রিস্টোর হয়েছে!' : 'Backup restored successfully!', 'success');
           setTimeout(() => window.location.reload(), 1000);
@@ -738,6 +773,52 @@ const Profile = {
     } finally {
       e.target.value = '';
     }
+  },
+
+  // Sanitize a restored user object: keep identity, validate every field, and
+  // drop anything that could become stored XSS (e.g. script-containing avatar,
+  // unknown gender, bogus spirit_level). Unknown fields are preserved as-is only
+  // when they are plain JSON-safe values (no code execution surface).
+  _sanitizeImportUser(raw, currentUser) {
+    if (!raw || typeof raw !== 'object') return currentUser || { id: 'usr_' + Date.now() };
+    const safe = currentUser ? JSON.parse(JSON.stringify(currentUser)) : {};
+    const cleanStr = (v, max) => {
+      if (typeof v !== 'string') return '';
+      const t = v.trim().replace(/\s+/g, ' ');
+      return max ? t.slice(0, max) : t;
+    };
+    if (typeof raw.name === 'string') safe.name = cleanStr(raw.name, 50) || (currentUser && currentUser.name) || 'Anonymous';
+    if (typeof raw.bio === 'string') safe.bio = cleanStr(raw.bio, 150);
+    if (raw.gender === 'male' || raw.gender === 'female' || raw.gender === null || raw.gender === '') {
+      safe.gender = (raw.gender === '') ? null : raw.gender;
+    }
+    if (typeof raw.avatar === 'string' && /^data:image\//i.test(raw.avatar)) safe.avatar = raw.avatar;
+    else safe.avatar = (currentUser && currentUser.avatar) || null;
+    safe.id = (currentUser && currentUser.id) || (typeof raw.id === 'string' && raw.id) || ('usr_' + Date.now());
+    if (typeof raw.createdAt === 'string' && !isNaN(Date.parse(raw.createdAt))) safe.createdAt = raw.createdAt;
+    else if (!safe.createdAt) safe.createdAt = new Date().toISOString();
+    const KNOWN = new Set(['Ihsan', 'God-Conscious', 'Mindful', 'Resilient', 'Consistent', 'Intentional', 'Awakening']);
+    if (KNOWN.has(raw.spirit_level)) safe.spirit_level = raw.spirit_level; else delete safe.spirit_level;
+    if (typeof raw.spirit_score === 'number' && isFinite(raw.spirit_score)) safe.spirit_score = Math.max(0, Math.min(100, Math.round(raw.spirit_score)));
+    else delete safe.spirit_score;
+    return safe;
+  },
+
+  _sanitizeImportVault(raw) {
+    if (!Array.isArray(raw)) return DB.getProfiles();
+    const out = [];
+    for (const p of raw) {
+      if (!p || typeof p !== 'object' || typeof p.name !== 'string') continue;
+      out.push({
+        id: (typeof p.id === 'string' && p.id) ? p.id : ('usr_' + Date.now() + Math.random().toString(36).slice(2, 7)),
+        name: p.name.trim().slice(0, 50) || 'Profile',
+        avatar: (typeof p.avatar === 'string' && /^data:image\//i.test(p.avatar)) ? p.avatar : '',
+        gender: (p.gender === 'male' || p.gender === 'female') ? p.gender : 'male',
+        lastActive: (typeof p.lastActive === 'string') ? p.lastActive : new Date().toISOString(),
+        userData: Profile._sanitizeImportUser(p.userData || p, null)
+      });
+    }
+    return out;
   },
 
 
@@ -757,10 +838,11 @@ const Profile = {
 
         try {
           // 1. Local update
-          user.avatar = null;
-          DB.setUser(user);
-          
-          // 2. UI update
+           user.avatar = null;
+           DB.setUser(user);
+           DB.saveProfileVault(user);
+           
+           // 2. UI update
           Profile.renderProfile();
           Profile.renderSettings();
           if (typeof App !== 'undefined') App.updateAvatars();
@@ -856,19 +938,6 @@ const Profile = {
       e.target.value = ''; // Reset input to allow selecting the same file again
     }
   },
-
-  removeAvatar() {
-    const updatedUser = DB.getUser();
-    if (!updatedUser) return;
-    delete updatedUser.avatar;
-    DB.setUser(updatedUser);
-    DB.saveProfileVault(updatedUser);
-    Profile.renderProfile();
-    Profile.renderSettings();
-    if (typeof App !== 'undefined') App.updateAvatars();
-    Utils.toast('Photo removed!', 'info');
-  },
-
 
   async detectLocation(e) {
     if (this._isSyncingLocation) return;
