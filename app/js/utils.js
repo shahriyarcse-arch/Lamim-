@@ -736,6 +736,88 @@ const Utils = {
     if (modal) modal.classList.add('hidden');
   },
 
+  // Themed text-input prompt — replaces native window.prompt() in the PWA
+  // so we never block the UI with an unstyled browser dialog.
+  // opts: { confirmText, validate: (val) => true | errorMessage, onConfirm: (val) => void }
+  inputPrompt(title, message, defaultValue = '', opts = {}) {
+    const prev = document.getElementById('utils-input-prompt');
+    if (prev) prev.remove();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = 'utils-input-prompt';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', title || 'Input');
+
+    const panel = document.createElement('div');
+    panel.className = 'modal custom-confirm-panel';
+
+    const h3 = document.createElement('h3');
+    h3.className = 'confirm-title';
+    h3.textContent = title || 'Input';
+
+    const p = document.createElement('p');
+    p.className = 'confirm-msg';
+    p.textContent = message || '';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'utils-prompt-input';
+    input.value = defaultValue || '';
+    input.setAttribute('aria-label', title || 'Input');
+    input.style.cssText = 'width:100%;margin:14px 0 4px;padding:10px 12px;border-radius:10px;border:1px solid var(--color-border);background:var(--color-glass);color:var(--color-text-primary);font-size:15px;outline:none;';
+
+    const errEl = document.createElement('div');
+    errEl.style.cssText = 'color:var(--fin-red, #ef4444);font-size:12px;min-height:16px;margin-bottom:8px;';
+
+    const actions = document.createElement('div');
+    actions.className = 'confirm-actions';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'confirm-btn cancel';
+    cancelBtn.textContent = 'Cancel';
+
+    const okBtn = document.createElement('button');
+    okBtn.className = 'confirm-btn proceed';
+    okBtn.textContent = opts.confirmText || 'OK';
+
+    actions.appendChild(cancelBtn);
+    actions.appendChild(okBtn);
+    panel.appendChild(h3);
+    panel.appendChild(p);
+    panel.appendChild(input);
+    panel.appendChild(errEl);
+    panel.appendChild(actions);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    const close = () => { overlay.remove(); document.removeEventListener('keydown', onKey); };
+    const submit = () => {
+      const val = input.value.trim();
+      if (opts.validate) {
+        const res = opts.validate(val);
+        if (res !== true) {
+          errEl.textContent = typeof res === 'string' ? res : 'Invalid input';
+          input.focus();
+          return;
+        }
+      }
+      close();
+      if (opts.onConfirm) opts.onConfirm(val);
+    };
+
+    cancelBtn.onclick = close;
+    okBtn.onclick = submit;
+    overlay.onclick = (e) => { if (e.target === overlay) close(); };
+    const onKey = (e) => {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'Enter') submit();
+    };
+    document.addEventListener('keydown', onKey);
+    setTimeout(() => input.focus(), 50);
+  },
+
   // Themed confirmation for destructive actions (Logout / Delete / Factory Reset).
   // opts: { title, message, icon, color, confirmText, onConfirm }
   dangerConfirm(opts) {

@@ -129,6 +129,14 @@ textarea:disabled,
     transition: none !important;
     scroll-behavior: auto !important;
   }
+  /* Re-enable essential loading/progress indicators (accessibility: users
+     still need to know work is in flight, just without decorative motion). */
+  .rotating, .spin, .loader, .spinner, [class*="loader"], [class*="spinner"] {
+    animation-name: spin !important;
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+    animation-timing-function: linear !important;
+  }
 }
 
 /* ---------- SKIP LINK (keyboard users) ---------- */

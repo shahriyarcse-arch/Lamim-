@@ -731,7 +731,7 @@
   background: rgba(0, 0, 0, 0.4);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  z-index: 2000;
+  z-index: var(--z-deco);
   display: flex;
   justify-content: flex-end;
   opacity: 0;
@@ -944,7 +944,7 @@
   background: rgba(0, 0, 0, 0.4);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  z-index: 2000;
+  z-index: var(--z-deco);
   display: flex;
   justify-content: flex-end;
   opacity: 0;

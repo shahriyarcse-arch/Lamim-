@@ -717,10 +717,9 @@ const Career = {
   resetTodayData() {
     if (typeof Utils !== 'undefined' && Utils.confirm) {
       Utils.confirm('Reset Career Data', "Reset all of today's career data?", () => this._doReset());
-      return;
+    } else {
+      this._doReset();
     }
-    if (!confirm("Reset today's career data?")) return;
-    this._doReset();
   },
 
   _doReset() {

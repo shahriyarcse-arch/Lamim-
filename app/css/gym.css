@@ -866,7 +866,7 @@
 
 /* ---------- meal modal ---------- */
 .gh-modal-overlay {
-  position: fixed; inset: 0; z-index: 1000;
+  position: fixed; inset: 0; z-index: var(--z-panel);
   background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center; padding: 20px;
   padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));

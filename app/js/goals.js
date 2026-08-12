@@ -443,16 +443,23 @@ const Goals = {
     if (data.tahajjud_rakat !== 0 && data.tahajjud_rakat !== undefined) {
       return;
     }
-    const r = prompt("Enter custom Rakat number (e.g. 14, 20):");
-    if (r) {
-      const num = parseInt(r, 10);
-      if (!isNaN(num) && num > 0 && num <= 100) {
-        this.setTahajjudRakat(num);
-      } else {
-        const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-        Utils.toast(isBn ? '১ থেকে ১০০ এর মধ্যে সঠিক রাকাত সংখ্যা লিখুন' : 'Please enter a valid rakat count between 1 and 100', 'error');
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    Utils.inputPrompt(
+      isBn ? 'কাস্টম রাকাত' : 'Custom Rakat',
+      isBn ? 'কাস্টম রাকাত সংখ্যা লিখুন (যেমন ১৪, ২০):' : 'Enter custom Rakat number (e.g. 14, 20):',
+      '',
+      {
+        confirmText: isBn ? 'সেভ' : 'Save',
+        validate: (val) => {
+          const num = parseInt(val, 10);
+          if (isNaN(num) || num <= 0 || num > 100) {
+            return isBn ? '১ থেকে ১০০ এর মধ্যে সঠিক রাকাত সংখ্যা লিখুন' : 'Please enter a valid rakat count between 1 and 100';
+          }
+          return true;
+        },
+        onConfirm: (val) => { this.setTahajjudRakat(parseInt(val, 10)); }
       }
-    }
+    );
   },
 
   renderWitr(rakat, skipAnim = false) {

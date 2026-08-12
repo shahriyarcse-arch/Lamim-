@@ -740,10 +740,9 @@ const Gym = {
   resetTodayData() {
     if (typeof Utils !== 'undefined' && Utils.confirm) {
       Utils.confirm('Reset Gym Data', 'Reset all of today\'s gym data? This cannot be undone.', () => this._doReset());
-      return;
+    } else {
+      this._doReset();
     }
-    if (!confirm('Reset all of today\'s gym data?')) return;
-    this._doReset();
   },
 
   _doReset() {
