@@ -96,17 +96,10 @@
       --wrap-max:1280px;--wrap-pad:clamp(16px,4vw,40px);
       --font-display:"Fraunces",Georgia,serif;--font-body:"Inter",system-ui,sans-serif;
     }
-    /* Permanently disable text selection & blue overlay across the entire landing page */
+    /* Box-sizing reset only — text selection stays enabled for accessibility and copy/paste */
     *, *::before, *::after {
       box-sizing: border-box;
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-      -webkit-touch-callout: none !important;
     }
-    ::selection { background: transparent; color: inherit; }
-    ::-moz-selection { background: transparent; color: inherit; }
     html{-webkit-text-size-adjust:100%}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body,"Inter",system-ui,sans-serif);font-size:clamp(.95rem,1.2vw,1.05rem);line-height:1.55;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased}
     body::before{display:none !important}
@@ -660,14 +653,14 @@
           <span>Habits with mercy</span>
           <span>Career with direction</span>
           <span>Money with clarity</span>
-          <span>Zero cloud, zero tracking</span>
+          <span>Local-first. Zero tracking.</span>
           <span>Salah with presence</span>
           <span>Nafl with intention</span>
           <span>Dhikr with rhythm</span>
           <span>Habits with mercy</span>
           <span>Career with direction</span>
           <span>Money with clarity</span>
-          <span>Zero cloud, zero tracking</span>
+          <span>Local-first. Zero tracking.</span>
         </div>
       </div>
     </div>
@@ -752,7 +745,7 @@
         <div class="stat-item">
           <span class="stat-number" data-target="100" data-suffix="%" style="font-family:'Fraunces',Georgia,serif;font-size:clamp(2.8rem,5vw,4.2rem);font-weight:900;letter-spacing:-0.04em;line-height:1;display:block;margin-bottom:8px;color:#cfee82;text-shadow:0 0 24px rgba(207,238,130,0.28);transition:all 0.3s ease">0%</span>
           <span class="stat-label" style="color:#e4f5bd;font-size:clamp(0.78rem,1vw,0.86rem);font-weight:800;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:6px">Private &amp; offline</span>
-          <span class="stat-desc" style="color:#a0c2b2;font-size:clamp(0.8rem,1vw,0.88rem);display:block;max-width:22ch;margin:0 auto;line-height:1.5;font-weight:500">Zero cloud &mdash; all data stays on your device</span>
+          <span class="stat-desc" style="color:#a0c2b2;font-size:clamp(0.8rem,1vw,0.88rem);display:block;max-width:22ch;margin:0 auto;line-height:1.5;font-weight:500">All data stays on your device &mdash; saved 100% locally</span>
         </div>
 
       </div>
@@ -2864,18 +2857,18 @@
           stats: [
             { num: '< 50ms', label: 'Cold Launch' },
             { num: '60 fps', label: 'Animations' },
-            { num: '0 req', label: 'Network Calls' }
+            { num: '0', label: 'Trackers' }
           ],
           bullets: [
             'Service Worker precaches the full app shell — works even with 0 bars of signal',
-            'Prayer times use a local solar-angle engine — no third-party API needed',
+            'Prayer times use a local solar-angle engine, with optional IP-based city detection',
             'IndexedDB RAM-sync caching delivers sub-millisecond data reads on every interaction'
           ]
         },
         secure: {
           badge: 'Privacy First',
-          title: '100% Local. Zero Cloud. Zero Tracking.',
-          desc: 'Your Salah logs, Dhikr counts, daily habits, gym records, and financial ledger never leave your device. No account, no password, no email — nothing is collected or transmitted.',
+          title: '100% Local. Private by Design. Zero Tracking.',
+          desc: 'Your Salah logs, Dhikr counts, daily habits, gym records, and financial ledger live in on-device IndexedDB and never leave it. A few optional features (precise location detection and live currency rates) call third-party services for public data — your personal entries are never uploaded or transmitted.',
           stats: [
             { num: '0 bytes', label: 'Cloud Sent' },
             { num: '100%', label: 'Local IndexedDB' },

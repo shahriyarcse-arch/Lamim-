@@ -145,15 +145,18 @@ updateSectionTitle() {
     );
 
     if ('serviceWorker' in navigator) {
-      if (isLocalhost) {
-        // Auto-unregister Service Worker on localhost to make development hassle-free
+      // Dev opt-out: append ?nosw or set localStorage lamim_disable_sw=1 to disable the SW locally
+      const disableSW = new URLSearchParams(window.location.search).has('nosw') ||
+        window.localStorage.getItem('lamim_disable_sw') === '1';
+      if (disableSW) {
+        // Unregister Service Worker for hassle-free development
         navigator.serviceWorker.getRegistrations().then((registrations) => {
           for (let registration of registrations) {
             registration.unregister();
           }
         }).catch(() => {});
       } else {
-        // Register service worker with auto-update system on production
+        // Register service worker with auto-update system (localhost + production)
         navigator.serviceWorker.register('./sw.js')
           .then((registration) => {
             // Force immediate update check on reload

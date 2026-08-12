@@ -97,14 +97,13 @@
   <link rel="preconnect" href="https://api.bigdatacloud.net">
   <link rel="preconnect" href="https://open.er-api.com">
   <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap">
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap">
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" media="print" onload="this.media='all'">
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" media="print" onload="this.media='all'">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180x180.png">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=Manrope:ital,wght@0,400..800;1,400..800&display=swap" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/variables.css?v=146">
   <link rel="stylesheet" href="css/base.css?v=5">
   <link rel="stylesheet" href="css/animations.css">
@@ -209,7 +208,7 @@
   <script>
     // AUTO CACHE BUSTER — runs once per version to ensure fresh assets
     (function () {
-      var APP_BUILD = 'v159';
+      var APP_BUILD = 'v164';
       var lastBuild = localStorage.getItem('lamim_app_build');
       if (lastBuild !== APP_BUILD) {
         localStorage.setItem('lamim_app_build', APP_BUILD);
@@ -512,6 +511,31 @@
                   </div>
                   <div class="field-error" id="setup-loc-err"></div>
 
+                  <!-- Optional Preferences -->
+                  <div class="anim-target" style="margin-top: var(--space-5); display:flex; flex-direction:column; gap:16px;">
+                    <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent-primary); text-align: center;">Optional Preferences</div>
+                    <div style="display:flex; flex-direction:column; gap:12px; max-width: 360px; margin: 0 auto; width: 100%;">
+                      <div class="input-group">
+                        <label class="input-label" for="setup-lang">Language</label>
+                        <select class="premium-input" id="setup-lang" aria-label="Language">
+                          <option value="en">English</option>
+                          <option value="bn">বাংলা (Bengali)</option>
+                        </select>
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label" for="setup-currency">Currency</label>
+                        <select class="premium-input" id="setup-currency" aria-label="Currency">
+                          <option value="USD">USD ($)</option>
+                          <option value="BDT">BDT (৳)</option>
+                        </select>
+                      </div>
+                      <div class="input-group">
+                        <label class="input-label" for="setup-bio">Bio <span style="color:var(--color-text-muted); font-weight:400;">(optional)</span></label>
+                        <textarea class="premium-input" id="setup-bio" rows="2" maxlength="160" placeholder="A short status about you" aria-label="Bio"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="setup-actions-row">
                     <button type="button" class="btn-xoss btn-secondary" onclick="Auth.prevStep(4)">← Back</button>
                     <button type="button" class="btn-xoss purple-btn-xoss" id="setup-finish-btn"
@@ -756,6 +780,35 @@
                       <span class="insight-label">Day Streak</span>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- Today's Journey Focus -->
+              <div class="bento-item bento-full journey-today-card glass-card" style="padding: 16px;">
+                <div class="card-header-flex">
+                  <h3 class="card-title-sm">Today's Focus</h3>
+                </div>
+                <div class="journey-focus-grid" style="margin-top: 8px;">
+                  <div class="focus-item">
+                    <div class="focus-label">Salah</div>
+                    <div class="focus-value" id="journey-salah-focus">0 / 5</div>
+                  </div>
+                  <div class="focus-divider"></div>
+                  <div class="focus-item">
+                    <div class="focus-label">Dhikr</div>
+                    <div class="focus-value" id="journey-dhikr-focus">0 / 100</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mentor Message -->
+              <div class="bento-item bento-full glass-card" style="padding: 16px; display:flex; gap:12px; align-items:flex-start;">
+                <div style="flex-shrink:0; width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-teal)); display:flex; align-items:center; justify-content:center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                </div>
+                <div>
+                  <div class="card-title-sm" style="margin-bottom:4px;">Mentor's Note</div>
+                  <p id="home-mentor-message" style="margin:0; font-size:14px; line-height:1.5; color:var(--color-text-secondary);">...</p>
                 </div>
               </div>
 
@@ -1061,6 +1114,13 @@
                     <circle cx="12" cy="12" r="10" />
                   </svg>
                 </button>
+                <button class="btn btn-icon-sm btn-ghost history-btn-premium" onclick="Goals.showModal()"
+                  title="Add Goal" aria-label="Add Goal">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5v14" />
+                  </svg>
+                </button>
                 <div class="nafl-date-nav-modern"
                   style="display: flex; align-items: center; gap: 4px; background: linear-gradient(135deg, rgba(168,85,247,0.10), rgba(236,72,153,0.08)); border: 1px solid rgba(168,85,247,0.22); border-radius: 22px; padding: 4px; box-shadow: 0 6px 18px -10px rgba(168,85,247,0.5), inset 0 1px 0 rgba(255,255,255,0.04); backdrop-filter: blur(10px);">
                   <button class="btn btn-icon-sm" id="nafl-prev-btn" onclick="Goals.changeDate(-1)"
@@ -1110,6 +1170,12 @@
               <div id="tahajjud-card-container"></div>
               <div id="witr-card-container"></div>
             </div>
+
+            <!-- Goals (hydrated by Goals.renderGoals) -->
+            <div class="nafl-section-title" id="nafl-goals-heading" style="display:none">
+              <span class="nafl-section-title-text">My Goals</span>
+            </div>
+            <div id="nafl-goals-list"></div>
 
           </section>
 
@@ -1167,8 +1233,8 @@
               <div class="gh-hero-glow"></div>
               <div class="gh-hero-left">
                 <span class="gh-hero-eyebrow">PERFORMANCE OS</span>
-                <h3 class="gh-hero-title">Train with focus.<br>Recover with intention.</h3>
-                <p class="gh-hero-sub">Track every session, keep nutrition aligned, and turn your routine into a
+                <h3 class="gh-hero-title" id="gh-hero-title">Train with focus.<br>Recover with intention.</h3>
+                <p class="gh-hero-sub" id="gh-hero-sub">Track every session, keep nutrition aligned, and turn your routine into a
                   clearer, more disciplined system.</p>
                 <div class="gh-hero-links">
                   <button onclick="Gym.scrollToCard('card-workout-diet')" class="gh-hero-link">
@@ -1196,6 +1262,53 @@
                     Log Hydration
                   </button>
                 </div>
+              </div>
+              <div class="gh-hero-right">
+                <div class="gh-hero-ring-wrap">
+                  <div class="gh-hero-ring" id="gym-hero-ring"></div>
+                  <div class="gh-hero-ring-num" id="gym-hero-ring-num">--</div>
+                </div>
+                <div class="gh-hero-spark" id="gym-hero-spark"></div>
+              </div>
+            </div>
+
+            <!-- Readiness stat strip -->
+            <div class="gh-stat-strip-new">
+              <div class="gh-stat-tile-new">
+                <span class="gh-stat-ico-new ico-workout-new">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6.5 6.5 17.5 17.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    <path d="m10.2 9-1.7 5.2 5.2-1.7" />
+                    <path d="M14.8 9l1.7 5.2-5.2 1.7" />
+                  </svg>
+                </span>
+                <span class="gh-stat-value-new" id="gym-stat-exercises">0</span>
+                <span class="gh-stat-label-new">EXERCISES</span>
+              </div>
+              <div class="gh-stat-tile-new">
+                <span class="gh-stat-ico-new ico-sleep-new">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                </span>
+                <span class="gh-stat-value-new" id="gym-stat-recovery-score" style="color:#8b5cf6">--</span>
+                <span class="gh-stat-label-new">RECOVERY</span>
+              </div>
+              <div class="gh-stat-tile-new">
+                <span class="gh-stat-ico-new ico-water-new">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5S12 2 12 2 9 6.5 8 9.5a7 7 0 0 0 4 12.5z" />
+                  </svg>
+                </span>
+                <span class="gh-stat-value-new" id="gym-stat-hydration-val" style="color:var(--gh-water)">0%</span>
+                <span class="gh-stat-label-new">HYDRATION</span>
+              </div>
+              <div class="gh-stat-tile-new">
+                <div class="gh-sleep-ring" id="gym-sleep-ring-svg" title="Sleep recovery ring"></div>
+                <span class="gh-stat-label-new">SLEEP</span>
               </div>
             </div>
 
@@ -1505,6 +1618,38 @@
                 </div>
               </div>
 
+              <!-- Body Metrics -->
+              <div class="gh-card" id="card-body-metrics">
+                <div class="gh-card-head" style="margin-bottom:24px;">
+                  <div class="gh-card-title" style="color:var(--gh-secondary)">
+                    <span class="gh-card-title-ico ico-workout"
+                      style="background:transparent; color:inherit; width:auto; height:auto; padding-right:4px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 2v11a5 5 0 0 0 5 5M22 2v11a5 5 0 0 1-5 5M14 22l-2-4-2 4M12 18v6" />
+                        <path d="M9.5 8 7 2h10l-2.5 6" />
+                      </svg>
+                    </span>
+                    Body Metrics
+                  </div>
+                </div>
+                <div class="gh-body-grid">
+                  <div class="gh-param-chip">
+                    <span class="gh-param-label">Weight (kg)</span>
+                    <input type="number" class="gh-param-input" id="gym-body-weight" value="" min="1" max="300"
+                      step="0.1" placeholder="—" aria-label="Body weight in kilograms">
+                  </div>
+                  <div class="gh-param-chip">
+                    <span class="gh-param-label">Body Fat %</span>
+                    <input type="number" class="gh-param-input" id="gym-body-fat" value="" min="0" max="80" step="0.1"
+                      placeholder="—" aria-label="Body fat percentage">
+                  </div>
+                </div>
+                <div class="gh-body-trend" id="gym-body-trend">
+                  <div class="gh-body-empty">Log your weight &amp; body fat — changes save automatically</div>
+                </div>
+              </div>
+
             </div>
           </section>
 
@@ -1556,21 +1701,29 @@
             </div>
 
             <!-- Interactive Hero Scorecard (CAREER OS) -->
-            <div class="gh-hero-card" id="card-career-os" style="margin-bottom: 24px;">
+            <div class="gh-hero-card cb-hero-card" id="card-career-os" style="margin-bottom: 24px;">
               <div class="gh-hero-glow"
                 style="background: radial-gradient(circle at center, var(--cb-glow, rgba(129, 140, 248, 0.25)), transparent 70%);">
               </div>
-              <div class="gh-hero-left" style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+              <div class="cb-hero-ring-wrap">
+                <div id="career-hero-ring"></div>
+                <div class="cb-hero-ring-center">
+                  <div class="cb-hero-ring-num" id="career-hero-ring-num">--</div>
+                  <div class="cb-hero-ring-label">FOCUS</div>
+                </div>
+              </div>
+              <div class="gh-hero-left" style="display: flex; flex-direction: column; gap: 14px; flex: 1; min-width: 0;">
                 <span class="cb-hero-eyebrow" style="align-self: center;">CAREER OS</span>
-                <h3 class="gh-hero-title"
+                <h3 class="gh-hero-title" id="cb-hero-title"
                   style="font-size: 28px; font-weight: 800; line-height: 1.3; margin: 0; text-align: center; background: linear-gradient(135deg, var(--cb-text), var(--cb-text-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Outfit', 'Inter', sans-serif;">
                   Build with discipline.<br>Execute with purpose.
                 </h3>
-                <p class="gh-hero-sub"
+                <p class="gh-hero-sub" id="cb-hero-sub"
                   style="font-size: 14px; color: var(--cb-text-2); line-height: 1.6; margin: 0; text-align: center;">
                   Log study sessions, track core skill developments, hit your checklist goals, and turn daily small
                   victories into your absolute professional edge.
                 </p>
+                <div class="gh-hero-spark cb-hero-spark" id="career-hero-spark"></div>
                 <div class="gh-hero-links"
                   style="display: flex; gap: 14px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
                   <button onclick="document.getElementById('career-new-goal-text').scrollIntoView({behavior:'smooth'})"
@@ -1594,6 +1747,89 @@
                     </svg>
                     Progress
                   </button>
+                </div>
+              </div>
+              <div class="cb-hero-streak">
+                <div class="cb-hero-streak-num" id="cb-hero-streak-num">0</div>
+                <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cb-text-muted);margin-top:2px;">Day Streak</div>
+              </div>
+            </div>
+
+            <!-- Stat Strip -->
+            <div class="cb-stat-strip" style="margin-bottom:24px;">
+              <div class="cb-stat-tile">
+                <div class="cb-stat-tile-head">
+                  <span class="cb-stat-label">Day Streak</span>
+                  <span class="cb-stat-ico cb-stat-ico--streak"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
+                </div>
+                <div class="cb-stat-value" id="cb-stat-streak">0</div>
+                <div class="cb-stat-value-sub" id="cb-stat-streak-sub">days</div>
+              </div>
+              <div class="cb-stat-tile">
+                <div class="cb-stat-tile-head">
+                  <span class="cb-stat-label">Study Today</span>
+                  <span class="cb-stat-ico cb-stat-ico--study"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                </div>
+                <div class="cb-stat-value" id="cb-stat-study">0</div>
+                <div class="cb-stat-value-sub" id="cb-stat-study-sub">minutes</div>
+              </div>
+              <div class="cb-stat-tile">
+                <div class="cb-stat-tile-head">
+                  <span class="cb-stat-label">Goals Done</span>
+                  <span class="cb-stat-ico cb-stat-ico--goals"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+                </div>
+                <div class="cb-stat-value" id="cb-stat-goals">0</div>
+                <div class="cb-stat-value-sub" id="cb-stat-goals-sub">done today</div>
+              </div>
+              <div class="cb-stat-tile">
+                <div class="cb-stat-tile-head">
+                  <span class="cb-stat-label">This Month</span>
+                  <span class="cb-stat-ico cb-stat-ico--month"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                </div>
+                <div class="cb-stat-value" id="cb-stat-month">0</div>
+                <div class="cb-stat-value-sub" id="cb-stat-month-sub">hours this mo.</div>
+              </div>
+            </div>
+
+            <!-- Card: Study Log -->
+            <div class="cb-card" style="margin-bottom:24px;">
+              <div class="cb-card-head">
+                <div class="cb-card-title"><span class="cb-card-title-ico ico-study"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Study Log</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <input class="cb-input" id="career-study-topic" placeholder="What are you focusing on?" aria-label="Focus topic">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
+                    <span style="font-size:12px;font-weight:700;color:var(--cb-text-muted);">Duration</span>
+                    <span class="cb-duration-label" id="career-study-duration-val">0 mins</span>
+                  </div>
+                  <input type="range" class="cb-range" id="career-study-duration" min="0" max="600" step="5" value="0"
+                    oninput="var v=+this.value;document.getElementById('career-study-duration-val').textContent=v>=60?Math.floor(v/60)+'h '+(v%60)+'m':v+' mins';" aria-label="Study duration in minutes">
+                </div>
+                <div class="cb-chips" id="career-category-chips-container"></div>
+                <select class="cb-input" id="career-study-category" aria-label="Category">
+                  <option value="coding">Coding</option>
+                  <option value="reading">Reading</option>
+                  <option value="language">Language</option>
+                  <option value="business">Business</option>
+                  <option value="general">General</option>
+                </select>
+                <textarea class="cb-input" id="career-study-notes" rows="2" placeholder="Notes (optional)" style="resize:vertical;font-family:inherit;" aria-label="Notes"></textarea>
+                <button type="button" class="cb-btn cb-btn-primary" onclick="Career.saveStudyLog()">Save Session</button>
+              </div>
+            </div>
+
+            <!-- Card: Focus Timer -->
+            <div class="cb-card" style="margin-bottom:24px;">
+              <div class="cb-card-head">
+                <div class="cb-card-title"><span class="cb-card-title-ico ico-study"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Focus Timer</div>
+              </div>
+              <div class="cb-timer">
+                <div class="cb-timer-display" id="cb-timer-display">00:00</div>
+                <div class="cb-timer-actions">
+                  <button type="button" class="cb-timer-btn start" id="cb-timer-start">Start</button>
+                  <button type="button" class="cb-timer-btn stop" id="cb-timer-stop" style="display:none;">Stop</button>
+                  <button type="button" class="cb-timer-btn log" id="cb-timer-log">Log</button>
                 </div>
               </div>
             </div>
@@ -1630,6 +1866,45 @@
               </form>
 
               <div id="career-checklist-container" class="cb-checklist"></div>
+
+              <div class="cb-goals-progress">
+                <div class="cb-goals-progress-head">
+                  <div class="cb-goals-progress-num"><span id="cb-goals-num">0</span> / <span id="cb-goals-den">0</span></div>
+                  <div class="cb-goals-progress-pct" id="cb-goals-pct">0%</div>
+                </div>
+                <div class="cb-goals-progress-track"><div class="cb-goals-progress-fill" id="cb-goals-fill" style="width:0%"></div></div>
+                <div style="margin-top:10px;"><span class="gh-badge" id="cb-goals-badge">0 / 0</span></div>
+              </div>
+              <div class="cb-suggested" id="career-suggested-goals"></div>
+            </div>
+
+            <!-- Card: Skill Progress -->
+            <div class="cb-card" style="margin-bottom:24px;">
+              <div class="cb-card-head">
+                <div class="cb-card-title"><span class="cb-card-title-ico ico-study"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Skill Progress</div>
+              </div>
+              <div class="cb-skills" id="career-skill-bars"></div>
+            </div>
+
+            <!-- Card: Consistency Heatmap -->
+            <div class="cb-card" style="margin-bottom:24px;">
+              <div class="cb-card-head">
+                <div class="cb-card-title"><span class="cb-card-title-ico ico-heatmap"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>Consistency Heatmap</div>
+              </div>
+              <div class="cb-heatmap-stats">
+                <div class="cb-heatmap-stat">Consistency<strong id="career-heatmap-consistency-pct">0%</strong></div>
+                <div class="cb-heatmap-stat">Streak<strong id="career-heatmap-streak">0 days</strong></div>
+                <div class="cb-heatmap-stat">Total<strong id="career-heatmap-total-hours">0h</strong></div>
+              </div>
+              <div class="cb-heatmap-wrap"><div id="career-heatmap-monthly-container"></div></div>
+            </div>
+
+            <!-- Card: Achievements -->
+            <div class="cb-card" style="margin-bottom:24px;">
+              <div class="cb-card-head">
+                <div class="cb-card-title"><span class="cb-card-title-ico ico-study"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>Achievements</div>
+              </div>
+              <div class="cb-achievements" id="cb-achievements"></div>
             </div>
 
             <!-- Card 3: Progress -->
@@ -1655,6 +1930,7 @@
               </div>
               <div class="cb-progress-stats" id="cb-progress-stats"></div>
               <div class="cb-progress-chart" id="cb-progress-chart"></div>
+              <div class="cb-progress-extra" id="cb-progress-extra"></div>
             </div>
 
           </section>
@@ -1800,6 +2076,10 @@
 
                 <div class="ver-section-title">This Device</div>
                 <div class="ver-device" id="ver-device"></div>
+
+                <button id="pwa-install-btn" class="btn btn-primary btn-full pwa-install-btn" style="display:none" onclick="App.triggerInstall()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Install App
+                </button>
 
                 <div class="modal-footer ver-footer">
                   <button class="btn btn-primary btn-full" onclick="Profile.closeVersionModal()">Done</button>
@@ -2168,6 +2448,9 @@
                       style="padding:6px 14px; border-radius:8px; border:none; font-size:12px; font-weight:800; cursor:pointer;">PM</button>
                   </div>
                 </div>
+                <!-- Legacy custom date/time value holders (reset on modal open) -->
+                <input type="hidden" id="mujahid-custom-date-val" value="">
+                <input type="hidden" id="mujahid-custom-time-val" value="">
               </div>
             </div>
 
