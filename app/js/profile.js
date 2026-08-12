@@ -709,6 +709,14 @@ const Profile = {
       const prefix = currentId ? `usr_${currentId}_` : null;
       const GLOBAL_ALLOW = new Set(['lamim_settings', 'lamim_lang', 'lamim_user', 'lamim_profiles_vault', 'lamim_dhikr_presets']);
 
+      // On a fresh restore (no active user yet — e.g. an installed PWA with
+      // separate iOS storage), the backup's own user becomes the active profile,
+      // so its scoped data must be accepted too. This is what lets a Safari-
+      // exported backup actually land in the freshly-installed standalone app.
+      let _bu = null;
+      try { const raw = data['lamim_user']; if (raw) _bu = (typeof raw === 'string' ? JSON.parse(raw) : raw); } catch (_) { }
+      const backupUserId = _bu && _bu.id;
+
       // Only restore keys that belong to the active profile or the safe global
       // whitelist. This blocks cross-profile injection (usr_<otherid>_* keys)
       // and arbitrary key writes. Unscoped lamim_* app data is allowed and later
@@ -723,7 +731,8 @@ const Profile = {
       for (const k of Object.keys(data)) {
         if (GLOBAL_ALLOW.has(k)) { allowedKeys.push(k); continue; }
         if (k.startsWith('usr_')) {
-          if (prefix && k.startsWith(prefix)) allowedKeys.push(k); // own profile only
+          if (prefix && k.startsWith(prefix)) { allowedKeys.push(k); continue; } // active profile only
+          if (!prefix && backupUserId && k.startsWith(`usr_${backupUserId}_`)) { allowedKeys.push(k); continue; } // fresh restore of backup owner's data
           continue; // reject other profiles
         }
         if (KNOWN_LAMIM.test(k)) allowedKeys.push(k); // known app data (re-scoped below)
