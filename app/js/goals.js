@@ -61,8 +61,8 @@ const Goals = {
     if (data.tahajjud_rakat === undefined) data.tahajjud_rakat = 0;
 
     this.renderSunnah(data.sunnah, skipAnim);
-    this.renderTahajjud(data.tahajjud, data.tahajjud_rakat);
-    this.renderWitr(data.witr);
+    this.renderTahajjud(data.tahajjud, data.tahajjud_rakat, skipAnim);
+    this.renderWitr(data.witr, skipAnim);
     this.renderCelestialProgress(data, skipAnim);
     this.renderGoalsList();
   },
@@ -323,7 +323,7 @@ const Goals = {
   },
 
 
-  renderTahajjud(active, rakat) {
+  renderTahajjud(active, rakat, skipAnim = false) {
     const container = document.getElementById('tahajjud-card-container');
     if (!container) return;
 
@@ -335,7 +335,7 @@ const Goals = {
     let bgGradient = 'linear-gradient(135deg, #818cf8, #6366f1)';
 
     let html = `
-      <div class="salah-prayer-card nafl-sunnah-card-modern anim-fade-in ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
+      <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
            id="tahajjud-salah-card"
            style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
         
@@ -455,7 +455,7 @@ const Goals = {
     }
   },
 
-  renderWitr(rakat) {
+  renderWitr(rakat, skipAnim = false) {
     const container = document.getElementById('witr-card-container');
     if (!container) return;
 
@@ -467,7 +467,7 @@ const Goals = {
     let bgGradient = 'linear-gradient(135deg, #fbbf24, #f59e0b)';
 
     let html = `
-      <div class="salah-prayer-card nafl-sunnah-card-modern anim-fade-in ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
+      <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
            id="witr-salah-card"
            style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
         
