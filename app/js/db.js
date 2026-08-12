@@ -127,7 +127,7 @@ const DB = {
   // Notify other tabs of a write (IndexedDB path). No-op when unsupported.
   _broadcast(key, value, type) {
     if (this._bc && this._bc.postMessage) {
-      try { this._bc.postMessage({ key, value: value === undefined ? null : value, type: type || 'set' }); } catch (e) {}
+      try { this._bc.postMessage({ key, value: value === undefined ? null : value, type: type || 'set' }); } catch (e) { }
     }
   },
 
@@ -233,7 +233,7 @@ const DB = {
       }
     }));
     // Keep the chain alive even if a write rejects, so later writes still run
-    this._writeChain = run.catch(() => {});
+    this._writeChain = run.catch(() => { });
     return run;
   },
 
@@ -258,7 +258,7 @@ const DB = {
         resolve();
       }
     }));
-    this._writeChain = run.catch(() => {});
+    this._writeChain = run.catch(() => { });
     return run;
   },
 
@@ -280,7 +280,7 @@ const DB = {
         resolve();
       }
     }));
-    this._writeChain = run.catch(() => {});
+    this._writeChain = run.catch(() => { });
     return run;
   },
 
@@ -301,7 +301,7 @@ const DB = {
           }
         }
       }
-    } catch(e) {}
+    } catch (e) { }
     return key;
   },
 
@@ -323,9 +323,9 @@ const DB = {
       this._cache[realKey] = strVal;
 
       if (!this._db) {
-        try { localStorage.setItem(realKey, strVal); } catch {}
+        try { localStorage.setItem(realKey, strVal); } catch { }
       } else if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user' || realKey === 'lamim_profiles_vault') {
-        try { localStorage.setItem(realKey, strVal); } catch {}
+        try { localStorage.setItem(realKey, strVal); } catch { }
       }
 
       this._asyncWrite(realKey, strVal);
@@ -340,8 +340,8 @@ const DB = {
     const realKey = this._getEffectiveKey(key);
     delete this._cache[realKey];
     delete this._cache[key];
-    try { localStorage.removeItem(realKey); } catch {}
-    try { localStorage.removeItem(key); } catch {}
+    try { localStorage.removeItem(realKey); } catch { }
+    try { localStorage.removeItem(key); } catch { }
     this._asyncDelete(key);
     return this._asyncDelete(realKey);
   },
@@ -357,7 +357,7 @@ const DB = {
       this._cache[realKey] = val;
 
       if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user') {
-        try { localStorage.setItem(realKey, val); } catch {}
+        try { localStorage.setItem(realKey, val); } catch { }
       }
 
       this._asyncWrite(realKey, val);
@@ -377,7 +377,7 @@ const DB = {
         if (k && (k.startsWith('lamim_') || k.startsWith('usr_'))) keysToRemove.push(k);
       }
       keysToRemove.forEach(k => localStorage.removeItem(k));
-    } catch {}
+    } catch { }
     await this._asyncClear();
   },
 
@@ -390,9 +390,9 @@ const DB = {
   },
 
   // User & Multi-Profile Vault
-  getUser()      { return this.get('lamim_user'); },
-  setUser(u)     { return this.set('lamim_user', u); },
-  
+  getUser() { return this.get('lamim_user'); },
+  setUser(u) { return this.set('lamim_user', u); },
+
   getProfiles() {
     return this.get('lamim_profiles_vault') || [];
   },
@@ -439,38 +439,38 @@ const DB = {
     this._streakCache = null;
     return true;
   },
-  getSettings()  { return this.get('lamim_settings') || { theme: 'light', notifications: true, jumuahMode: true, language: 'en', currency: 'USD', lat: 23.8103, lng: 90.4125 }; },
+  getSettings() { return this.get('lamim_settings') || { theme: 'light', notifications: true, jumuahMode: true, language: 'en', currency: 'USD', lat: 23.8103, lng: 90.4125 }; },
   setSettings(s) { return this.set('lamim_settings', s); },
 
   // Salah — keyed by date YYYY-MM-DD
-  getSalah(date)  { return this.get(`lamim_salah_${date}`) || { fajr: null, dhuhr: null, asr: null, maghrib: null, isha: null, tahajjud: false, jummah: false, notes: {} }; },
-  setSalah(date, d) { 
-    const res = this.set(`lamim_salah_${date}`, d); 
+  getSalah(date) { return this.get(`lamim_salah_${date}`) || { fajr: null, dhuhr: null, asr: null, maghrib: null, isha: null, tahajjud: false, jummah: false, notes: {} }; },
+  setSalah(date, d) {
+    const res = this.set(`lamim_salah_${date}`, d);
     this._streakCache = null; // Invalidate streak cache
     this.refreshSpiritScore();
     return res;
   },
 
   // Dhikr — keyed by date
-  getDhikr(date)  { return this.get(`lamim_dhikr_${date}`) || {}; },
-  setDhikr(date, d) { 
+  getDhikr(date) { return this.get(`lamim_dhikr_${date}`) || {}; },
+  setDhikr(date, d) {
     const res = this.set(`lamim_dhikr_${date}`, d);
     this.refreshSpiritScore();
     return res;
   },
 
   // Goals
-  getGoals()     { return this.get('lamim_goals') || []; },
-  setGoals(g)    { return this.set('lamim_goals', g); },
-  
+  getGoals() { return this.get('lamim_goals') || []; },
+  setGoals(g) { return this.set('lamim_goals', g); },
+
   // Mujahid
-  getMujahid()    { return this.get('lamim_mujahid_habits') || []; },
-  setMujahid(h)   {
+  getMujahid() { return this.get('lamim_mujahid_habits') || []; },
+  setMujahid(h) {
     const res = this.set('lamim_mujahid_habits', h);
     this.refreshSpiritScore();
     return res;
   },
-  addGoal(goal)  { const g = this.getGoals(); g.push(goal); return this.setGoals(g); },
+  addGoal(goal) { const g = this.getGoals(); g.push(goal); return this.setGoals(g); },
   updateGoal(id, patch) {
     const goals = this.getGoals();
     const idx = goals.findIndex(g => g.id === id);
@@ -488,15 +488,15 @@ const DB = {
     let perfect = 0; let consistency = 0;
     let perfectActive = true; let consistencyActive = true;
     let d = Utils.getOffsetDate();
-    
+
     for (let i = 0; i < 365; i++) {
       const ds = Utils.dateStr(d);
       const salah = this.getSalah(ds);
       let done = 0;
-      ['fajr','dhuhr','asr','maghrib','isha'].forEach(p => { 
-        if (salah[p] && salah[p] !== 'missed') done++; 
+      ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].forEach(p => {
+        if (salah[p] && salah[p] !== 'missed') done++;
       });
-      
+
       const isPerfect = done === 5;
       const isConsistent = done >= 4;
 
@@ -511,11 +511,11 @@ const DB = {
           if (isConsistent) consistency++; else consistencyActive = false;
         }
       }
-      
+
       if (!perfectActive && !consistencyActive) break;
       d.setDate(d.getDate() - 1);
     }
-    
+
     const result = { perfect, consistency };
     this._streakCache = { date: today, data: result };
     return result;
