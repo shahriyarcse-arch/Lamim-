@@ -210,6 +210,7 @@ const DB = {
       try {
         const transaction = this._db.transaction(['keyvalue'], 'readwrite');
         const store = transaction.objectStore('keyvalue');
+        const req = store.delete(key);
         let resolved = false;
         const done = () => { if (!resolved) { resolved = true; resolve(); } };
         req.onsuccess = done;
