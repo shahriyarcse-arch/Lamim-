@@ -563,7 +563,8 @@ const Profile = {
       onConfirm: async () => {
         const user = DB.getUser();
         if (user && user.name) {
-          const profiles = DB.getProfiles().filter(p => p.name.toLowerCase() !== user.name.toLowerCase() && p.id !== user.id);
+          // Remove ONLY the active profile — by exact id; fall back to name for legacy id-less profiles.
+          const profiles = DB.getProfiles().filter(p => (user.id ? p.id !== user.id : true) && (!user.id ? !(p.name && p.name.toLowerCase() === user.name.toLowerCase()) : true));
           DB.set('lamim_profiles_vault', profiles);
         }
         await DB.remove('lamim_user');
@@ -579,7 +580,8 @@ const Profile = {
             DB._asyncDelete(k);
           }
         });
-        const activeKeys = Object.keys(DB._cache).filter(k => k !== 'lamim_profiles_vault' && k !== 'lamim_settings' && k !== 'lamim_lang');
+        // Clear legacy/unscoped leftover keys ONLY — never touch other users' scoped data (usr_*)
+        const activeKeys = Object.keys(DB._cache).filter(k => k !== 'lamim_profiles_vault' && k !== 'lamim_settings' && k !== 'lamim_lang' && !k.startsWith('usr_'));
         activeKeys.forEach(k => {
           delete DB._cache[k];
           try { localStorage.removeItem(k); } catch {}

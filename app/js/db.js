@@ -367,7 +367,11 @@ const DB = {
   saveProfileVault(userObj) {
     if (!userObj || !userObj.name) return;
     const profiles = this.getProfiles();
-    const existingIndex = profiles.findIndex(p => p.id === userObj.id || (p.name && p.name.toLowerCase() === userObj.name.toLowerCase()));
+    // Match by id first (exact identity); only fall back to name for legacy profiles with no id.
+    let existingIndex = userObj.id ? profiles.findIndex(p => p.id === userObj.id) : -1;
+    if (existingIndex < 0) {
+      existingIndex = profiles.findIndex(p => !p.id && p.name && p.name.toLowerCase() === userObj.name.toLowerCase());
+    }
 
     const profileSnapshot = {
       id: userObj.id || ('usr_' + Date.now()),
