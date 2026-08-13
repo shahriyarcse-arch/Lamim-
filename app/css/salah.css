@@ -1384,23 +1384,18 @@
 /* Ensure the count text is clean and professional */
 .dhikr-tap-count {
   position: relative;
-  z-index: 10;
-  font-size: 110px;
-  font-weight: 900;
-  color: #FFFFFF;
-  text-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  letter-spacing: -5px;
-  transform: none !important; /* Remove any rotation */
-  animation: none !important;
-}
-
-.dhikr-tap-count {
-  font-size: 100px !important;
+  z-index: 10 !important;
+  font-size: clamp(3.5rem, 12vw, 5.5rem) !important;
   font-weight: 900 !important;
   color: #FFFFFF !important;
-  text-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
-  letter-spacing: -4px;
-  z-index: 10 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 0.15em !important;
+  letter-spacing: 0 !important;
+  overflow: visible !important;
+  transform: none !important;
+  animation: none !important;
 }
 
 .tap-wave.wave-1 {
