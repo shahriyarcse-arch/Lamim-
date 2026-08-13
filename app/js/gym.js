@@ -197,18 +197,21 @@ const Gym = {
     const num = document.getElementById('gym-hero-ring-num');
     if (num) num.textContent = window.n ? window.n(readiness) : readiness;
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const titleEl = document.getElementById('gh-hero-title');
     if (titleEl) {
-      if (readiness >= 80) titleEl.textContent = 'Peak Readiness';
-      else if (readiness >= 60) titleEl.textContent = 'Strong Day';
-      else if (readiness >= 35) titleEl.textContent = 'Getting There';
-      else titleEl.textContent = 'Rest & Recover';
+      if (readiness >= 80) titleEl.textContent = isBn ? 'সর্বোত্তম প্রস্তুতি' : 'Peak Readiness';
+      else if (readiness >= 60) titleEl.textContent = isBn ? 'শক্তিশালী দিন' : 'Strong Day';
+      else if (readiness >= 35) titleEl.textContent = isBn ? 'অগ্রগতি হচ্ছে' : 'Getting There';
+      else titleEl.textContent = isBn ? 'বিশ্রাম ও পুনরুদ্ধার' : 'Rest & Recover';
     }
     const subEl = document.getElementById('gh-hero-sub');
     if (subEl) {
       const ex = (gym.exercises || []).length;
       const water = (gym.water && gym.water.amount) || 0;
-      subEl.textContent = `${window.n ? window.n(ex) : ex} exercises · ${window.n ? window.n(water) : water} ml`;
+      subEl.textContent = isBn 
+        ? `${window.n ? window.n(ex) : ex}টি ব্যায়াম · ${window.n ? window.n(water) : water} মি.লি.`
+        : `${window.n ? window.n(ex) : ex} exercises · ${window.n ? window.n(water) : water} ml`;
     }
   },
 
@@ -520,9 +523,10 @@ const Gym = {
       gapEl.className = 'gh-gap-val ' + (gap >= -0.2 ? 'positive' : 'negative');
     }
     if (badge) {
-      let cls = 'poor', txt = 'POOR';
-      if (score >= 80) { cls = 'excellent'; txt = 'EXCELLENT'; }
-      else if (score >= 60) { cls = 'good'; txt = 'GOOD'; }
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+      let cls = 'poor', txt = isBn ? 'দুর্বল' : 'POOR';
+      if (score >= 80) { cls = 'excellent'; txt = isBn ? 'চমৎকার' : 'EXCELLENT'; }
+      else if (score >= 60) { cls = 'good'; txt = isBn ? 'ভালো' : 'GOOD'; }
       badge.textContent = txt; badge.className = 'gh-badge ' + cls;
     }
     if (inDisp) inDisp.textContent = this.formatTime12h(sleep.sleepTime);
@@ -557,8 +561,9 @@ const Gym = {
 
     if (listEl) {
       listEl.innerHTML = '';
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
       if (meals.length === 0) {
-        listEl.innerHTML = `<div style="text-align:center;padding:18px;color:var(--gh-text-muted);font-size:13px;font-weight:600">No meals logged yet</div>`;
+        listEl.innerHTML = `<div style="text-align:center;padding:18px;color:var(--gh-text-muted);font-size:13px;font-weight:600">${isBn ? 'এখনো কোনো খাবার যোগ করা হয়নি' : 'No meals logged yet'}</div>`;
       } else {
         meals.forEach((m, i) => {
           const div = document.createElement('div');
@@ -707,8 +712,9 @@ const Gym = {
 
     if (trendEl && window.Charts) {
       const entries = metrics.entries.slice(-14);
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
       if (entries.length < 2) {
-        trendEl.innerHTML = '<div style="font-size:12px;color:var(--gh-text-muted);text-align:center;padding:18px 0">Need 2+ days of logs to show weight trend</div>';
+        trendEl.innerHTML = `<div style="font-size:12px;color:var(--gh-text-muted);text-align:center;padding:18px 0">${isBn ? 'ওজন এর ট্রেন্ড দেখতে ২+ দিনের রেকর্ড প্রয়োজন' : 'Need 2+ days of logs to show weight trend'}</div>`;
       } else {
         Charts.lineChart(trendEl, entries.map(e => ({ label: '', value: e.weight || 0 })), { color: 'var(--gh-secondary)', height: 70 });
       }
