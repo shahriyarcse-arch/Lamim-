@@ -140,7 +140,7 @@ const Profile = {
       </div>
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.toggleNotifications()">
         <div class="settings-item-left"><div class="settings-item-icon ic-amber">${icons.bell}</div><div><div class="settings-item-label">Prayer Notifications</div><div class="settings-item-value">Alerts for next waqt</div></div></div>
-        <div class="settings-item-right"><div class="toggle ${settings.notifications?'active':''}"></div></div>
+        <div class="settings-item-right"><div class="toggle ${settings.notifications !== false?'active':''}"></div></div>
       </div>
     `;
 
@@ -225,14 +225,17 @@ const Profile = {
   editField(field) {
     const user = DB.getUser();
     if (!user) return;
-    const labels = { name: 'Your Name', bio: 'Bio / Status', dob: 'Date of Birth' };
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const labels = isBn
+      ? { name: 'আপনার নাম', bio: 'বায়ো / স্ট্যাটাস', dob: 'জন্ম তারিখ' }
+      : { name: 'Your Name', bio: 'Bio / Status', dob: 'Date of Birth' };
     this._editingField = field;
     const modal = document.getElementById('profile-edit-modal');
     const title = document.getElementById('profile-edit-title');
     const label = document.getElementById('profile-edit-label');
     const input = document.getElementById('profile-edit-input');
     if (!modal || !title || !label || !input) return;
-    title.textContent = 'Edit ' + (labels[field] || field);
+    title.textContent = isBn ? (labels[field] || field) + ' পরিবর্তন' : 'Edit ' + (labels[field] || field);
     label.textContent = labels[field] || field;
     if (field === 'dob') {
       input.type = 'date';
@@ -241,7 +244,7 @@ const Profile = {
     } else {
       input.type = 'text';
       input.value = user[field] || '';
-      input.placeholder = 'Enter ' + (labels[field] || field).toLowerCase();
+      input.placeholder = isBn ? (labels[field] || field) + ' লিখুন' : 'Enter ' + (labels[field] || field).toLowerCase();
     }
     input.style.display = 'block';
 
@@ -290,15 +293,16 @@ const Profile = {
     // Sanitize: Trim and replace multiple spaces with a single space
     const val = input.value.trim().replace(/\s+/g, ' ');
     
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     if (this._editingField === 'name' && !val) {
-      Utils.toast('This field cannot be empty', 'error');
+      Utils.toast(isBn ? 'এই ফিল্ড খালি রাখা যাবে না' : 'This field cannot be empty', 'error');
       return;
     }
     
     // Validation: Name length
     if (this._editingField === 'name') {
       if (val.length < 2 || val.length > 50) {
-        Utils.toast('Name must be between 2 and 50 characters', 'error');
+        Utils.toast(isBn ? 'নাম ২ থেকে ৫০ অক্ষরের মধ্যে হতে হবে' : 'Name must be between 2 and 50 characters', 'error');
         return;
       }
     }
@@ -306,7 +310,7 @@ const Profile = {
     // Validation: Bio length
     if (this._editingField === 'bio') {
       if (val.length > 150) {
-        Utils.toast('Bio cannot exceed 150 characters', 'error');
+        Utils.toast(isBn ? 'বায়ো ১৫০ অক্ষরের বেশি হতে পারবে না' : 'Bio cannot exceed 150 characters', 'error');
         return;
       }
     }
@@ -316,7 +320,7 @@ const Profile = {
       const selectedDate = Profile._parseDob(val) || new Date(val);
       
       if (isNaN(selectedDate.getTime())) {
-        Utils.toast('Please enter a valid date', 'error');
+        Utils.toast(isBn ? 'সঠিক তারিখ দিন' : 'Please enter a valid date', 'error');
         return;
       }
       
@@ -325,15 +329,17 @@ const Profile = {
       minDate.setFullYear(today.getFullYear() - 120); // Max 120 years old
       
       if (selectedDate > today) {
-        Utils.toast('Date of birth cannot be in the future', 'error');
+        Utils.toast(isBn ? 'জন্ম তারিখ ভবিষ্যতে হতে পারে না' : 'Date of birth cannot be in the future', 'error');
         return;
       }
       if (selectedDate < minDate) {
-        Utils.toast('Please enter a valid date of birth', 'error');
+        Utils.toast(isBn ? 'সঠিক জন্ম তারিখ দিন' : 'Please enter a valid date of birth', 'error');
         return;
       }
     }
-    const labels = { name: 'Your Name', bio: 'Bio / Status', dob: 'Date of Birth' };
+    const labels = isBn
+      ? { name: 'আপনার নাম', bio: 'বায়ো / স্ট্যাটাস', dob: 'জন্ম তারিখ' }
+      : { name: 'Your Name', bio: 'Bio / Status', dob: 'Date of Birth' };
     const field = this._editingField;
     user[field] = val;
     DB.setUser(user);
@@ -342,9 +348,9 @@ const Profile = {
     this.renderSettings();
     if (typeof App !== 'undefined') App.updateAvatars();
     if (field === 'dob' && !val) {
-      Utils.toast('Date of Birth cleared', 'info');
+      Utils.toast(isBn ? 'জন্ম তারিখ মুছে ফেলা হয়েছে' : 'Date of Birth cleared', 'info');
     } else {
-      Utils.toast((labels[field] || field) + ' updated!', 'success');
+      Utils.toast((labels[field] || field) + (isBn ? ' আপডেট হয়েছে!' : ' updated!'), 'success');
     }
     
     this._editingField = null;
@@ -370,7 +376,8 @@ const Profile = {
     DB.setUser(user);
     this.renderProfile();
     this.renderSettings();
-    Utils.toast(user.gender ? 'Gender updated!' : 'Gender cleared', 'success');
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    Utils.toast(isBn ? (user.gender ? 'জেন্ডার আপডেট হয়েছে!' : 'জেন্ডার মুছে ফেলা হয়েছে') : (user.gender ? 'Gender updated!' : 'Gender cleared'), 'success');
   },
 
   // Parse a stored "YYYY-MM-DD" (or ISO) DOB as a LOCAL date to avoid UTC off-by-one-day bugs.
@@ -383,15 +390,10 @@ const Profile = {
     const s = DB.getSettings();
     s[key] = val;
     DB.setSettings(s);
-    
     const user = DB.getUser();
     if (user && key === 'madhab') { user.madhab = val; DB.setUser(user); }
-    
-    // Re-render settings UI
-    Profile.renderSettings();
-    
-    // If it's a critical app setting, notify App
-    if (key === 'currency') this.renderSettings();
+    this.renderSettings();
+    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
   },
 
   toggleTheme() {
@@ -475,13 +477,7 @@ const Profile = {
     Utils.toast(isBn ? (s.jumuahMode ? 'জুমআ মোড চালু হয়েছে' : 'জুমআ মোড বন্ধ হয়েছে') : (s.jumuahMode ? "Jumu'ah Mode enabled" : "Jumu'ah Mode disabled"), 'success');
   },
 
-  saveSetting(key, val) {
-    const s = DB.getSettings();
-    s[key] = val;
-    DB.setSettings(s);
-    this.renderSettings();
-    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-  },
+
 
 
 
@@ -840,12 +836,13 @@ const Profile = {
 
   // Task 1: Avatar Upload (Local Storage Only)
   removeAvatar() {
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     Utils.dangerConfirm({
-      title: 'Remove Photo',
-      message: 'Remove your current profile picture? You can add a new one anytime.',
+      title: isBn ? 'ছবি সরান' : 'Remove Photo',
+      message: isBn ? 'আপনার বর্তমান প্রোফাইল ছবি সরাতে চান? যেকোনো সময় নতুন ছবি যোগ করতে পারবেন।' : 'Remove your current profile picture? You can add a new one anytime.',
       icon: '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="22" y2="22"></line><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"></path><line x1="13.5" y1="13.5" x2="6" y2="21"></line><line x1="18" y1="12" x2="21" y2="15"></line><path d="M3.59 3.59A2 2 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.05-.22 1.41-.59"></path><path d="M21 15V5a2 2 0 0 0-2-2H9"></path></svg>',
       color: '#64748b',
-      confirmText: 'Remove',
+      confirmText: isBn ? 'সরান' : 'Remove',
       onConfirm: () => {
         const user = DB.getUser();
         if (!user) return;
@@ -861,10 +858,10 @@ const Profile = {
           Profile.renderSettings();
           if (typeof App !== 'undefined') App.updateAvatars();
           
-          Utils.toast("Profile picture removed", "success");
+          Utils.toast(isBn ? "প্রোফাইল ছবি সরানো হয়েছে" : "Profile picture removed", "success");
         } catch (err) {
           console.error("Remove Avatar Error:", err);
-          Utils.toast("Failed to remove photo", "error");
+          Utils.toast(isBn ? "ছবি সরাতে ব্যর্থ" : "Failed to remove photo", "error");
         }
       }
     });
@@ -873,23 +870,24 @@ const Profile = {
   async handleAvatarUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
-    
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+
     // Robustness: File type check
     if (!file.type.startsWith('image/')) {
-      Utils.toast('Please select a valid image file (JPG, PNG, etc.)', 'error');
-      e.target.value = '';
-      return;
-    }
-    
-    // Size limit before compression
-    const MAX_MB = 10;
-    if (file.size > MAX_MB * 1024 * 1024) {
-      Utils.toast(`Image is too large. Please select an image under ${MAX_MB}MB`, 'error');
+      Utils.toast(isBn ? 'সঠিক ইমেজ ফাইল নির্বাচন করুন (JPG, PNG ইত্যাদি)' : 'Please select a valid image file (JPG, PNG, etc.)', 'error');
       e.target.value = '';
       return;
     }
 
-    Utils.toast('Processing image...', 'info');
+    // Size limit before compression
+    const MAX_MB = 10;
+    if (file.size > MAX_MB * 1024 * 1024) {
+      Utils.toast(isBn ? `ইমেজ অনেক বড়। ${MAX_MB}MB এর নিচে নির্বাচন করুন` : `Image is too large. Please select an image under ${MAX_MB}MB`, 'error');
+      e.target.value = '';
+      return;
+    }
+
+    Utils.toast(isBn ? 'ইমেজ প্রসেস হচ্ছে...' : 'Processing image...', 'info');
 
     // 1. Client-side Image Compression (Safe for localStorage limit)
     const compressImage = (file) => {
@@ -944,10 +942,10 @@ const Profile = {
       Profile.renderSettings();
       if (typeof App !== 'undefined') App.updateAvatars();
 
-      Utils.toast('Photo updated!', 'success');
+      Utils.toast(isBn ? 'ছবি আপডেট হয়েছে!' : 'Photo updated!', 'success');
     } catch (err) {
       console.error(err);
-      Utils.toast('Failed to process image', 'error');
+      Utils.toast(isBn ? 'ইমেজ প্রসেস করতে ব্যর্থ' : 'Failed to process image', 'error');
     } finally {
       e.target.value = ''; // Reset input to allow selecting the same file again
     }
