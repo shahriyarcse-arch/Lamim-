@@ -356,7 +356,8 @@ const Finance = {
 
   formatVal(val) {
     const converted = DB.getSettings().currency === 'BDT' ? val * this._getFXRate() : val;
-    return converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    return converted.toLocaleString(isBn ? 'bn-BD' : 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   },
 
   loadData() {
@@ -613,12 +614,13 @@ const Finance = {
 
   renderExpensesList(v) {
     const m = v.getMonth(), y = v.getFullYear(), sym = this.getSymbol();
-    const exps = this.data.expenses.filter(e => { const d = new Date(e.date); return d.getMonth() === m && d.getFullYear() === y; });
-    const incs = this.data.income.filter(e => { const d = new Date(e.date); return d.getMonth() === m && d.getFullYear() === y; });
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const exps = this.data.expenses.filter(e => { const d = Utils.parseDate(e.date); return d.getMonth() === m && d.getFullYear() === y; });
+    const incs = this.data.income.filter(e => { const d = Utils.parseDate(e.date); return d.getMonth() === m && d.getFullYear() === y; });
     
     const allActivity = [...exps.map(e => ({...e, type: 'expense'})), ...incs.map(i => ({...i, type: 'income'}))]
       .sort((a, b) => {
-        const dateDiff = new Date(b.date) - new Date(a.date);
+        const dateDiff = Utils.parseDate(b.date) - Utils.parseDate(a.date);
         if (dateDiff !== 0) return dateDiff;
         if (b.id && a.id) return b.id.localeCompare(a.id);
         return 0;
@@ -626,7 +628,7 @@ const Finance = {
 
     const totalExp = exps.filter(e => e.category !== 'transfer').reduce((s, e) => s + e.amount, 0);
 
-    if (!allActivity.length) return `<div class="fin-section-title">${v.toLocaleString('default',{month:'long'})} Activity</div><div style="text-align:center;padding:48px 20px;"><div style="font-size:40px;margin-bottom:12px;opacity:0.4;"></div><div style="font-size:14px;color:var(--color-text-secondary);font-weight:500;">No records for this month</div><div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">Tap + to add your first transaction</div></div>`;
+    if (!allActivity.length) return `<div class="fin-section-title">${v.toLocaleString(isBn ? 'bn-BD' : 'default',{month:'long'})} ${isBn ? 'এর লেনদেন' : 'Activity'}</div><div style="text-align:center;padding:48px 20px;"><div style="font-size:40px;margin-bottom:12px;opacity:0.4;"></div><div style="font-size:14px;color:var(--color-text-secondary);font-weight:500;">${isBn ? 'এই মাসে কোনো লেনদেন নেই' : 'No records for this month'}</div><div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">${isBn ? 'নতুন লেনদেন যোগ করতে + চাপুন' : 'Tap + to add your first transaction'}</div></div>`;
 
     const groups = {};
     allActivity.forEach(e => {
@@ -634,7 +636,7 @@ const Finance = {
       groups[e.date].push(e);
     });
 
-    const sortedDates = Object.keys(groups).sort((a,b) => new Date(b) - new Date(a));
+    const sortedDates = Object.keys(groups).sort((a,b) => Utils.parseDate(b) - Utils.parseDate(a));
 
     let count = 0;
     const LIMIT = 8;
@@ -647,14 +649,14 @@ const Finance = {
         break;
       }
 
-      const dObj = new Date(date);
+      const dObj = Utils.parseDate(date);
       const isToday = date === Utils.todayStr();
       const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
       const isYesterday = date === Utils.dateStr(yesterday);
       
-      let label = dObj.toLocaleDateString('default', { day: 'numeric', month: 'short' });
-      if (isToday) label = 'Today';
-      else if (isYesterday) label = 'Yesterday';
+      let label = dObj.toLocaleDateString(isBn ? 'bn-BD' : 'default', { day: 'numeric', month: 'short' });
+      if (isToday) label = isBn ? 'আজ' : 'Today';
+      else if (isYesterday) label = isBn ? 'গতকাল' : 'Yesterday';
 
       let itemsHtml = "";
       for (const e of groups[date]) {
