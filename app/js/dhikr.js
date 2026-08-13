@@ -108,7 +108,7 @@ const Dhikr = {
     const infoEl = document.getElementById('dhikr-current-info');
     const beadsEl = document.getElementById('dhikr-beads-container');
 
-    if (countEl) countEl.textContent = this.count;
+    if (countEl) countEl.textContent = window.n ? window.n(this.count) : this.count;
 
     if (infoEl) {
       const currentName = infoEl.querySelector('.latin-name');
@@ -251,8 +251,9 @@ const Dhikr = {
 
       if (itemEl) {
         const countEl = document.getElementById(`session-count-${id}`);
-        if (countEl && countEl.textContent !== cnt.toString()) {
-          countEl.textContent = cnt;
+        if (countEl && countEl.dataset.rawVal !== cnt.toString()) {
+          countEl.dataset.rawVal = cnt.toString();
+          countEl.textContent = window.n ? window.n(cnt) : cnt;
           countEl.style.transform = 'scale(1.1)';
           if (countEl.timeoutId) clearTimeout(countEl.timeoutId);
           countEl.timeoutId = setTimeout(() => { countEl.style.transform = 'scale(1)'; }, 100);
@@ -261,10 +262,12 @@ const Dhikr = {
         if (bar) { bar.style.width = pct + '%'; bar.style.background = color; }
         if (target > 0) {
           const tEl = itemEl.querySelector('.ds-target');
-          if (tEl) tEl.textContent = `/ ${target}`;
+          if (tEl) tEl.textContent = `/ ${window.n ? window.n(target) : target}`;
         }
       } else {
         const temp = document.createElement('div');
+        const formattedCnt = window.n ? window.n(cnt) : cnt;
+        const formattedTgt = window.n ? window.n(target) : target;
         temp.innerHTML = `
           <div class="dhikr-session-item anim-fade-in" id="session-item-${id}" ${color ? `style="--dc:${color}"` : ''}>
             <div class="ds-icon">${preset.icon}</div>
@@ -272,8 +275,8 @@ const Dhikr = {
               ${preset.arabic ? `<div class="ds-arabic">${preset.arabic}</div>` : ''}
               <div class="ds-name">${Utils.escapeHTML(preset.latin)}</div>
               <div class="ds-count-row">
-                <span class="ds-count" id="session-count-${id}" style="transition: all 0.15s ease; display: inline-block;">${cnt}</span>
-                ${target > 0 ? `<span class="ds-target">/ ${target}</span>` : ''}
+                <span class="ds-count" id="session-count-${id}" data-raw-val="${cnt}" style="transition: all 0.15s ease; display: inline-block;">${formattedCnt}</span>
+                ${target > 0 ? `<span class="ds-target">/ ${formattedTgt}</span>` : ''}
               </div>
               ${target > 0 ? `<div class="ds-bar"><div class="ds-bar-fill" style="width:${pct}%;background:${color}"></div></div>` : ''}
             </div>
@@ -340,10 +343,10 @@ const Dhikr = {
       const isBn = this.getLang() === 'bn';
       let html = `
         <div class="dhikr-hist-summary">
-          <div class="dhs-card"><span class="dhs-val">${totalAll}</span><span class="dhs-label">${isBn ? 'মোট যিকির' : 'Total Dhikr'}</span></div>
-          <div class="dhs-card"><span class="dhs-val">${activeDays}</span><span class="dhs-label">${isBn ? 'সক্রিয় দিন' : 'Active Days'}</span></div>
-          <div class="dhs-card"><span class="dhs-val">${best}</span><span class="dhs-label">${isBn ? 'সেরা দিন' : 'Best Day'}</span></div>
-          <div class="dhs-card"><span class="dhs-val">${streak}</span><span class="dhs-label">${isBn ? 'ধারাবাহিক' : 'Streak'}</span></div>
+          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(totalAll) : totalAll}</span><span class="dhs-label">${isBn ? 'মোট যিকির' : 'Total Dhikr'}</span></div>
+          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(activeDays) : activeDays}</span><span class="dhs-label">${isBn ? 'সক্রিয় দিন' : 'Active Days'}</span></div>
+          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(best) : best}</span><span class="dhs-label">${isBn ? 'সেরা দিন' : 'Best Day'}</span></div>
+          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(streak) : streak}</span><span class="dhs-label">${isBn ? 'ধারাবাহিক' : 'Streak'}</span></div>
         </div>
         <div class="dhikr-hist-list">
       `;
@@ -353,14 +356,15 @@ const Dhikr = {
         let displayDate = date;
         if (date === Utils.todayStr()) displayDate = isBn ? 'আজ' : 'Today';
         else {
-          const dt = new Date(date);
-          displayDate = dt.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          const dt = Utils.parseDate(date);
+          const formattedDt = dt.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          displayDate = window.n ? window.n(formattedDt) : formattedDt;
         }
         html += `
           <div class="dhikr-history-card">
             <div class="dhikr-history-header">
               <span class="dhikr-history-date">${displayDate}</span>
-              <span class="dhikr-history-total">${d.total} ${isBn ? 'টি' : ''}</span>
+              <span class="dhikr-history-total">${window.n ? window.n(d.total) : d.total} ${isBn ? 'টি' : ''}</span>
             </div>
             <div class="dhikr-history-list">
         `;
@@ -373,7 +377,7 @@ const Dhikr = {
                 <span class="dhikr-history-item-icon">${preset.icon}</span>
                 <span class="dhikr-history-item-name">${Utils.escapeHTML(preset.latin)}</span>
               </div>
-              <span class="dhikr-history-item-count">${cnt}</span>
+              <span class="dhikr-history-item-count">${window.n ? window.n(cnt) : cnt}</span>
             </div>
           `;
         });
@@ -406,7 +410,10 @@ const Dhikr = {
 
   showAddModal() {
     const m = document.getElementById('dhikr-add-modal');
-    if (m) m.classList.remove('hidden');
+    if (m) {
+      m.classList.remove('hidden');
+      setTimeout(() => document.getElementById('custom-latin')?.focus(), 50);
+    }
   },
 
   hideAddModal() {
