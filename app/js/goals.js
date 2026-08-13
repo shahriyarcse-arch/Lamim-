@@ -82,6 +82,8 @@ const Goals = {
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const formattedDone = window.n ? window.n(done) : done;
     const formattedTotal = window.n ? window.n(total) : total;
+    const statText = isBn ? `${formattedDone} / ${formattedTotal} ইবাদত সম্পন্ন` : `${formattedDone} / ${formattedTotal} Deeds Complete`;
+
     // Update existing progress in-place to prevent flicker
     const existingBar = hero.querySelector('.nafl-progress-bar');
     const existingStat = hero.querySelector('.nafl-progress-stat');
