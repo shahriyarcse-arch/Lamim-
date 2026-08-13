@@ -558,8 +558,8 @@ updateSectionTitle() {
       return;
     }
 
-    const lastDate = new Date(lastBackup + 'T00:00:00');
-    const currDate = new Date(today + 'T00:00:00');
+    const lastDate = Utils.parseDate(lastBackup);
+    const currDate = Utils.parseDate(today);
     if (isNaN(lastDate.getTime()) || isNaN(currDate.getTime())) return;
     const diffTime = Math.abs(currDate - lastDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
