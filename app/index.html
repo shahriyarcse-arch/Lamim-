@@ -201,8 +201,8 @@
   <link rel="stylesheet" href="css/dhikr-session.css?v=2">
   <link rel="stylesheet" href="css/dhikr-cards.css?v=3">
   <link rel="stylesheet" href="css/dhikr-modal.css?v=1">
-  <link rel="stylesheet" href="css/gym.css?v=213">
-  <link rel="stylesheet" href="css/career.css?v=213">
+  <link rel="stylesheet" href="css/gym.css?v=214">
+  <link rel="stylesheet" href="css/career.css?v=214">
   <link rel="stylesheet" href="css/goals.css?v=146">
   <link rel="stylesheet" href="css/analysis.css">
   <link rel="stylesheet" href="css/profile.css?v=144">
@@ -242,7 +242,7 @@
   <script>
     // AUTO CACHE BUSTER — runs once per version to ensure fresh assets
     (function () {
-      var APP_BUILD = 'v176';
+      var APP_BUILD = 'v177';
       var lastBuild = localStorage.getItem('lamim_app_build');
       if (lastBuild !== APP_BUILD) {
         localStorage.setItem('lamim_app_build', APP_BUILD);
@@ -1175,7 +1175,16 @@
                   </svg></button>
               </div>
 
-              <div class="gh-header-actions">
+              <div class="gh-header-actions" style="display:flex; align-items:center; gap:8px;">
+                <button class="section-settings-btn" onclick="Gym.resetToday()" title="Reset Today's Gym Data">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+                    </path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
                 <button class="gh-today-btn" id="gym-today-btn" style="display:none;">Today</button>
                 <button class="gh-btn-export" onclick="Gym.exportPDF()">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -1566,7 +1575,16 @@
                   </svg></button>
               </div>
 
-              <div class="gh-header-actions">
+              <div class="gh-header-actions" style="display:flex; align-items:center; gap:8px;">
+                <button class="section-settings-btn" onclick="Career.resetToday()" title="Reset Today's Career Data">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+                    </path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
                 <button class="gh-today-btn" id="career-today-btn"
                   style="display:none; background: linear-gradient(135deg, var(--cb-primary), var(--cb-primary-strong)); box-shadow: 0 4px 12px var(--cb-glow);">Today</button>
                 <button class="gh-btn-export" onclick="Career.exportPDF()"
@@ -2495,8 +2513,8 @@
     <!-- App Modules -->
     <script defer src="js/charts.js?v=2"></script>
     <script defer src="js/salah.js?v=221"></script>
-    <script defer src="js/gym.js?v=217"></script>
-    <script defer src="js/career.js?v=216"></script>
+    <script defer src="js/gym.js?v=218"></script>
+    <script defer src="js/career.js?v=217"></script>
     <script defer src="js/dhikr.js?v=217"></script>
     <script defer src="js/goals.js?v=143"></script>
     <script defer src="js/finance.js?v=277"></script>

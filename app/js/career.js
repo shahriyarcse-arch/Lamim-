@@ -159,6 +159,21 @@ const Career = {
     this._handlers.push({ el, type, fn });
   },
 
+  notifyDataChanged() {
+    if (!this._debouncedNotify) {
+      this._debouncedNotify = Utils.debounce(() => {
+        window.dispatchEvent(new CustomEvent('lamim:data-updated'));
+      }, 200);
+    }
+    this._debouncedNotify();
+  },
+
+  onDataUpdated() {
+    if (document.getElementById('section-career')?.classList.contains('active')) {
+      this.renderAll(true);
+    }
+  },
+
   changeDay(offset) {
     const d = Utils.parseDate(this.selectedDate);
     d.setDate(d.getDate() + offset);
@@ -735,20 +750,33 @@ const Career = {
   },
 
   /* ---------- reset ---------- */
+  resetToday() {
+    UI.showSettingsModal({
+      title: (typeof App !== 'undefined' && App.lang === 'bn') ? 'ক্যারিয়ার ডেটা রিসেট করবেন?' : 'Reset Career Data?',
+      desc: (typeof App !== 'undefined' && App.lang === 'bn')
+        ? `আজকের সকল ফোকাস টপিক, মাইলস্টোন ও টাস্ক মুছে ফেলতে চান?`
+        : `Clear all focus topics, milestones, tasks & notes for ${Utils.formatDate(Utils.parseDate(this.selectedDate), {day:'numeric', month:'short'})}?`,
+      confirmText: (typeof App !== 'undefined' && App.lang === 'bn') ? 'হ্যাঁ, রিসেট করুন' : 'Yes, Reset',
+      type: 'danger',
+      onConfirm: () => {
+        this._doReset();
+      }
+    });
+  },
+
   resetTodayData() {
-    if (typeof Utils !== 'undefined' && Utils.confirm) {
-      Utils.confirm('Reset Career Data', "Reset all of today's career data?", () => this._doReset());
-    } else {
-      this._doReset();
-    }
+    this.resetToday();
   },
 
   _doReset() {
     const def = { focusTopic: "", category: "coding", studyDuration: 0, notes: "", checklist: [] };
     DB.setCareer(this.selectedDate, def);
-    this.renderAll();
-    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-    if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Today reset', 'success');
+    this.renderAll(true);
+    this.notifyDataChanged();
+    if (typeof Home !== 'undefined' && typeof Home.render === 'function') Home.render();
+    if (typeof Utils !== 'undefined' && Utils.toast) {
+      Utils.toast((typeof App !== 'undefined' && App.lang === 'bn') ? 'আজকের ক্যারিয়ার ডেটা রিসেট হয়েছে' : 'Career data cleared for today', 'info');
+    }
   },
 
   /* ---------- PDF export ---------- */

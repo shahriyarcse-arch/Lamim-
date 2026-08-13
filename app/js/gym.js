@@ -758,20 +758,44 @@ const Gym = {
     if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Body metrics saved', 'success');
   },
 
-  /* ---------- reset ---------- */
-  resetTodayData() {
-    if (typeof Utils !== 'undefined' && Utils.confirm) {
-      Utils.confirm('Reset Gym Data', 'Reset all of today\'s gym data? This cannot be undone.', () => this._doReset());
-    } else {
-      this._doReset();
+  onDataUpdated() {
+    if (document.getElementById('section-gym')?.classList.contains('active')) {
+      this.renderAll(true);
     }
   },
 
+  /* ---------- reset ---------- */
+  resetToday() {
+    UI.showSettingsModal({
+      title: (typeof App !== 'undefined' && App.lang === 'bn') ? 'জিম ডেটা রিসেট করবেন?' : 'Reset Gym Data?',
+      desc: (typeof App !== 'undefined' && App.lang === 'bn') 
+        ? `আজকের সকল ওয়ার্কআউট, নিউট্রিশন, ঘুম ও পানির রেকর্ড মুছে ফেলতে চান?` 
+        : `Clear all workouts, nutrition, sleep & water records for ${Utils.formatDate(Utils.parseDate(this.selectedDate), {day:'numeric', month:'short'})}?`,
+      confirmText: (typeof App !== 'undefined' && App.lang === 'bn') ? 'হ্যাঁ, রিসেট করুন' : 'Yes, Reset',
+      type: 'danger',
+      onConfirm: () => {
+        this._doReset();
+      }
+    });
+  },
+
+  resetTodayData() {
+    this.resetToday();
+  },
+
   _doReset() {
-    DB.setGym(this.selectedDate, { exercises: [], sleep: { sleepTime: "", wakeTime: "", quality: "", duration: 0 }, diet: { meals: [], proteinGoal: 150, carbsGoal: 200, fatsGoal: 65, caloriesLevel: "moderate" }, water: { amount: 0, goal: 3000 } });
-    this.renderAll();
+    DB.setGym(this.selectedDate, {
+      exercises: [],
+      sleep: { sleepTime: "", wakeTime: "", quality: "", duration: 0 },
+      diet: { meals: [], proteinGoal: 150, carbsGoal: 200, fatsGoal: 65, caloriesLevel: "moderate" },
+      water: { amount: 0, goal: 3000 }
+    });
+    this.renderAll(true);
     this.notifyDataChanged();
-    if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Today reset', 'success');
+    if (typeof Home !== 'undefined' && typeof Home.render === 'function') Home.render();
+    if (typeof Utils !== 'undefined' && Utils.toast) {
+      Utils.toast((typeof App !== 'undefined' && App.lang === 'bn') ? 'আজকের জিম ডেটা রিসেট হয়েছে' : 'Gym data cleared for today', 'info');
+    }
   },
 
   formatTime12h(timeStr) {
