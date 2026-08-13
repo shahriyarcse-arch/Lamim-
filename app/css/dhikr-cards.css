@@ -798,11 +798,15 @@
 [data-theme] .dhikr-preset-scroll {
   display: flex !important;
   overflow-x: auto !important;
+  overflow-y: hidden !important;
   gap: 12px !important;
   padding: 8px 4px 16px 4px !important;
   margin-bottom: 24px !important;
   scroll-behavior: smooth !important;
   -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x pan-y !important;
+  overscroll-behavior-x: contain !important;
+  overscroll-behavior-y: auto !important;
 }
 
 [data-theme] .dhikr-preset-scroll::-webkit-scrollbar {
@@ -823,6 +827,7 @@
   display: flex !important;
   gap: 12px !important;
   width: max-content !important;
+  touch-action: pan-x pan-y !important;
 }
 
 [data-theme] .dhikr-session-grid {

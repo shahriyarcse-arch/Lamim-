@@ -14,19 +14,18 @@ const Icons = {
   circle: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>',
   tasbeeh: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/><circle cx="12" cy="2" r="2"/></svg>'
 };
-
 const Dhikr = {
   presets: [
-    { id: 'subhanallah', arabic: 'سُبْحَانَ اللَّهِ', latin: 'SubhanAllah', meaning: 'Glory be to Allah', category: 'general', icon: Icons.sparkles },
-    { id: 'alhamdulillah', arabic: 'الْحَمْدُ لِلَّهِ', latin: 'Alhamdulillah', meaning: 'All praise is due to Allah', category: 'general', icon: Icons.heart },
-    { id: 'allhuakbar', arabic: 'اللَّهُ أَكْبَرُ', latin: 'AllhuAkbar', meaning: 'Allah is the Greatest', category: 'general', icon: Icons.kaaba },
-    { id: 'la-ilaha', arabic: 'لَا إِلَٰهَ إِلَّا اللَّهُ', latin: 'La ilaha illallah', meaning: 'There is no god but Allah', category: 'general', icon: Icons.circle },
-    { id: 'astghfirullah', arabic: 'أَسْتَغْفِرُ اللَّهَ', latin: 'Astghfirullah', meaning: 'I seek forgiveness of Allah', category: 'morning', icon: Icons.hands },
-    { id: 'salawat', arabic: 'صَلَّى اللَّهُ عَلَيْهِ وَسَلَّমَ', latin: 'Allahumma Salli', meaning: "Prayers upon the Prophet", category: 'general', icon: Icons.star },
-    { id: 'hasbunallah', arabic: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ', latin: 'Hasbunallah', meaning: 'Allah is Sufficient for us', category: 'morning', icon: Icons.water },
-    { id: 'ya-hayyu', arabic: 'يَا حَيُّ يَا قَيُّومُ', latin: 'Ya Hayyu Ya Qayyum', meaning: 'O Ever-Living, O Sustainer', category: 'evening', icon: Icons.moon },
-    { id: 'subhanallahi-wabihamdihi', arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', latin: 'SubhanAllahi Wabihamdihi', meaning: 'Glory and praise be to Allah', category: 'after-prayer', icon: Icons.sparkles },
-    { id: 'la-hawla', arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', latin: 'La Hawla Wala Quwwata', meaning: 'There is no power except with Allah', category: 'general', icon: Icons.circle },
+    { id: 'subhanallah', arabic: 'سُبْحَانَ اللَّهِ', latin: 'SubhanAllah', meaning: 'Glory be to Allah', category: 'general', icon: Icons.sparkles, target: 33 },
+    { id: 'alhamdulillah', arabic: 'الْحَمْدُ لِلَّهِ', latin: 'Alhamdulillah', meaning: 'All praise is due to Allah', category: 'general', icon: Icons.heart, target: 33 },
+    { id: 'allhuakbar', arabic: 'اللَّهُ أَكْبَرُ', latin: 'AllhuAkbar', meaning: 'Allah is the Greatest', category: 'general', icon: Icons.kaaba, target: 33 },
+    { id: 'la-ilaha', arabic: 'لَا إِلَٰهَ إِلَّا اللَّهُ', latin: 'La ilaha illallah', meaning: 'There is no god but Allah', category: 'general', icon: Icons.circle, target: 33 },
+    { id: 'astghfirullah', arabic: 'أَسْتَغْفِرُ اللَّهَ', latin: 'Astghfirullah', meaning: 'I seek forgiveness of Allah', category: 'morning', icon: Icons.hands, target: 33 },
+    { id: 'salawat', arabic: 'صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ', latin: 'Allahumma Salli', meaning: "Prayers upon the Prophet", category: 'general', icon: Icons.star, target: 33 },
+    { id: 'hasbunallah', arabic: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ', latin: 'Hasbunallah', meaning: 'Allah is Sufficient for us', category: 'morning', icon: Icons.water, target: 33 },
+    { id: 'ya-hayyu', arabic: 'يَا حَيُّ يَا قَيُّومُ', latin: 'Ya Hayyu Ya Qayyum', meaning: 'O Ever-Living, O Sustainer', category: 'evening', icon: Icons.moon, target: 33 },
+    { id: 'subhanallahi-wabihamdihi', arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', latin: 'SubhanAllahi Wabihamdihi', meaning: 'Glory and praise be to Allah', category: 'after-prayer', icon: Icons.sparkles, target: 33 },
+    { id: 'la-hawla', arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', latin: 'La Hawla Wala Quwwata', meaning: 'There is no power except with Allah', category: 'general', icon: Icons.circle, target: 33 },
   ],
 
   hadith: {
@@ -244,8 +243,8 @@ const Dhikr = {
 
     entries.forEach(([id, cnt]) => {
       const itemEl = document.getElementById(`session-item-${id}`);
-      const preset = this.getAllPresets().find(p => p.id === id) || { latin: id, icon: Icons.tasbeeh, target: 0, color: '' };
-      const target = preset.target || 0;
+      const preset = this.getAllPresets().find(p => p.id === id) || { latin: id, icon: Icons.tasbeeh, target: 33, color: '' };
+      const target = preset.target || 33;
       const pct = target > 0 ? Math.min(100, Math.round((cnt / target) * 100)) : 0;
       const color = preset.color || '#14b8a6';
 
