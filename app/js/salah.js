@@ -53,7 +53,7 @@ const Salah = {
     this.renderCalendar();
   },
 
-  renderCalendar() {
+  renderCalendar(targetDate = null) {
     const cal = document.getElementById('salah-calendar');
     if (!cal) return;
 
@@ -63,7 +63,7 @@ const Salah = {
     const monthKey = `${year}-${month}`;
 
     if (this._lastCalMonth === monthKey && cal.children.length > 7) {
-      this._updateCalendarCells(cal, year, month);
+      this._updateCalendarCells(cal, year, month, targetDate);
       return;
     }
     this._lastCalMonth = monthKey;
@@ -171,8 +171,11 @@ const Salah = {
     this.initCalendarTooltip();
   },
 
-  _updateCalendarCells(cal, year, month) {
-    const cells = cal.querySelectorAll('.salah-cal-cell[data-date]');
+  _updateCalendarCells(cal, year, month, targetDate = null) {
+    const selector = targetDate 
+      ? `.salah-cal-cell[data-date="${targetDate}"]`
+      : '.salah-cal-cell[data-date]';
+    const cells = cal.querySelectorAll(selector);
     cells.forEach(cell => {
       const dateStr = cell.dataset.date;
       if (!dateStr) return;
@@ -690,7 +693,7 @@ const Salah = {
 
     // Partial update targeted to this specific prayer to guarantee zero DOM thrashing & 0 blinking
     this.renderPrayerCards(date, true, prayer);
-    this.renderCalendar();
+    this.renderCalendar(date);
 
     const sm = this.statusMeta[status];
     const result = sm.result === 'successful' ? '' : sm.result === 'qaza' ? '⏰' : '';
