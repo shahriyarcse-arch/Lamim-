@@ -35,7 +35,7 @@ test.describe('Landing Page Interactive Widgets Suite', () => {
   });
 
   test('03 - Habits 4-7-8 breathing circle starts cycle on click', async ({ page }) => {
-    const HabitsSection = page.locator('#feature-Habits');
+    const HabitsSection = page.locator('#feature-habits');
     await HabitsSection.scrollIntoViewIfNeeded();
     const circle = page.locator('#landing-breath-circle');
     await expect(circle).toBeVisible();
@@ -71,13 +71,13 @@ test.describe('Landing Page Interactive Widgets Suite', () => {
     await expect(pctEl).toContainText('33%');
   });
 
-  test('05 - Stats counter section renders numbers with bright gradient text fill', async ({ page }) => {
-    const statsSection = page.locator('.stats-bar');
-    await statsSection.scrollIntoViewIfNeeded();
-    await expect(statsSection).toBeVisible();
+  test('05 - Career focus card and streak pill render on landing page', async ({ page }) => {
+    const careerCard = page.locator('#landing-career-card');
+    await careerCard.scrollIntoViewIfNeeded();
+    await expect(careerCard).toBeVisible();
 
-    const statNumbers = page.locator('.stats-bar .stat-number');
-    await expect(statNumbers).toHaveCount(4);
+    const streakBadge = page.locator('#landing-career-streak');
+    await expect(streakBadge).toBeVisible();
   });
 
   test('06 - Text selection is prevented on interactive cards and buttons', async ({ page }) => {
