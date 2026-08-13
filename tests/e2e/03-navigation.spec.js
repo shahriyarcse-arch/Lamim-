@@ -9,6 +9,9 @@ test.describe('PWA 9-Section Navigation Suite', () => {
       await splash.first().waitFor({ state: 'hidden', timeout: 8000 }).catch(() => {});
     }
 
+    // Wait for App module to be fully defined & initialized
+    await page.waitForFunction(() => typeof App !== 'undefined' && typeof App.navigateTo === 'function').catch(() => {});
+
     // Bypass setup wizard if visible
     await page.evaluate(() => {
       const nameInput = document.getElementById('setup-name');

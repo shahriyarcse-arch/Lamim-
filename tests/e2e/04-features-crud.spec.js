@@ -6,6 +6,8 @@ test.describe('Features & Data Persistence (CRUD) Suite', () => {
     await page.goto('/app/index.html');
     await page.waitForTimeout(2000);
 
+    await page.waitForFunction(() => typeof App !== 'undefined' && typeof App.navigateTo === 'function').catch(() => {});
+
     await page.evaluate(() => {
       const nameInput = document.getElementById('setup-name');
       if (nameInput) nameInput.value = 'Playwright Tester';
