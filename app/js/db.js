@@ -467,6 +467,10 @@ const DB = {
   getHabits() { return this.get('lamim_habits') || []; },
   setHabits(h) {
     const res = this.set('lamim_habits', h);
+    if (typeof Analysis !== 'undefined') {
+      if (Analysis._cachedHabits !== undefined) Analysis._cachedHabits = null;
+      if (Analysis._trendCache !== undefined) Analysis._trendCache = null;
+    }
     this.refreshSpiritScore();
     return res;
   },

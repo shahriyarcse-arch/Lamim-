@@ -20,6 +20,7 @@ const Analysis = {
 
   init() {
     this._cachedHabits = null;
+    this._trendCache = null;
 
     const noAnim = !!this._inited;
     this._inited = true;
