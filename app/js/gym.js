@@ -47,14 +47,12 @@ const Gym = {
     this._renderedSig = sig;
 
     this.renderHeader();
-    this.renderHero();
     this.renderStatStrip();
     this.renderExercises();
     this.renderSleep();
     this.renderDiet();
     this.renderWater();
     this.renderBodyMetrics();
-    this.updateHeroMetrics(skipAnim);
   },
 
   _renderSig() {
@@ -148,72 +146,6 @@ const Gym = {
     this.renderAll(true);
   },
 
-  /* ---------- HERO scorecard ---------- */
-  renderHero() {
-    const wrap = document.getElementById('gym-hero-ring');
-    if (wrap && window.Charts) {
-      Charts.ring(wrap, { size: 132, thickness: 10, value: 0, color: 'currentColor', colorEnd: 'var(--gh-secondary)' });
-    }
-    this.renderHeroSpark();
-  },
-
-  renderHeroSpark() {
-    const el = document.getElementById('gym-hero-spark');
-    if (!el || !window.Charts) return;
-    const data = [];
-    for (let i = 6; i >= 0; i--) {
-      const d = Utils.parseDate(this.selectedDate);
-      d.setDate(d.getDate() - i);
-      const ds = Utils.dateStr(d);
-      const g = DB.getGym(ds);
-      data.push(this._readinessFor(g));
-    }
-    Charts.sparkline(el, data, { color: 'var(--gh-primary)', fillColor: 'var(--gh-primary)', height: 44 });
-  },
-
-  _readinessFor(gym) {
-    const sleep = (gym && gym.sleep) || {};
-    const recovery = this._calcRecoveryScore(sleep);
-    const water = (gym && gym.water) || {};
-    const waterPct = water.goal ? Math.min(100, (water.amount / water.goal) * 100) : 0;
-    const diet = (gym && gym.diet) || {};
-    const meals = diet.meals || [];
-    const protein = meals.reduce((s, m) => s + (Number(m.protein) || 0), 0);
-    const nutritionPct = diet.proteinGoal ? Math.min(100, (protein / diet.proteinGoal) * 100) : 0;
-    const exercises = (gym && gym.exercises) || [];
-    const workoutScore = Math.min(100, exercises.length * 25);
-    return Math.round(recovery * 0.4 + waterPct * 0.25 + nutritionPct * 0.2 + workoutScore * 0.15);
-  },
-
-  updateHeroMetrics(skipAnim = false) {
-    const gym = DB.getGym(this.selectedDate);
-    const readiness = this._readinessFor(gym);
-
-    const ringWrap = document.getElementById('gym-hero-ring');
-    if (ringWrap && window.Charts) {
-      if (skipAnim) Charts.ring(ringWrap, { size: 132, thickness: 10, value: readiness, color: 'currentColor', colorEnd: 'var(--gh-secondary)' });
-      else Charts.animateRing(ringWrap, readiness, { size: 132, thickness: 10 });
-    }
-    const num = document.getElementById('gym-hero-ring-num');
-    if (num) num.textContent = window.n ? window.n(readiness) : readiness;
-
-    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    const titleEl = document.getElementById('gh-hero-title');
-    if (titleEl) {
-      if (readiness >= 80) titleEl.textContent = isBn ? 'সর্বোত্তম প্রস্তুতি' : 'Peak Readiness';
-      else if (readiness >= 60) titleEl.textContent = isBn ? 'শক্তিশালী দিন' : 'Strong Day';
-      else if (readiness >= 35) titleEl.textContent = isBn ? 'অগ্রগতি হচ্ছে' : 'Getting There';
-      else titleEl.textContent = isBn ? 'বিশ্রাম ও পুনরুদ্ধার' : 'Rest & Recover';
-    }
-    const subEl = document.getElementById('gh-hero-sub');
-    if (subEl) {
-      const ex = (gym.exercises || []).length;
-      const water = (gym.water && gym.water.amount) || 0;
-      subEl.textContent = isBn 
-        ? `${window.n ? window.n(ex) : ex}টি ব্যায়াম · ${window.n ? window.n(water) : water} মি.লি.`
-        : `${window.n ? window.n(ex) : ex} exercises · ${window.n ? window.n(water) : water} ml`;
-    }
-  },
 
   /* ---------- stat strip ---------- */
   renderStatStrip() {
@@ -221,16 +153,8 @@ const Gym = {
     const n = window.n ? window.n : (x => x);
 
     const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-    
-    // Update Exercises count
     const exCount = (gym.exercises || []).length;
     setText('gym-stat-exercises', n(exCount));
-    
-    // Update Recovery Score
-    const recoveryScore = (gym.sleep && gym.sleep.recoveryScore) ? gym.sleep.recoveryScore : '--';
-    setText('gym-stat-recovery-score', recoveryScore !== '--' ? n(Math.round(recoveryScore)) : '--');
-    
-    // Note: Hydration percentage is updated via renderWater(), but we can also update it here if needed
     const waterPct = (gym.water && gym.water.goal) ? Math.min(100, (gym.water.amount / gym.water.goal) * 100) : 0;
     setText('gym-stat-hydration-val', n(Math.round(waterPct)) + '%');
   },
@@ -316,7 +240,6 @@ const Gym = {
     repsEl.value = '';
     weightEl.value = '';
     this.renderExercises();
-    this.updateHeroMetrics();
     this.renderStatStrip();
     this.notifyDataChanged();
   },
@@ -327,7 +250,6 @@ const Gym = {
     data.exercises.splice(idx, 1);
     DB.setGym(this.selectedDate, data);
     this.renderExercises();
-    this.updateHeroMetrics();
     this.renderStatStrip();
     this.notifyDataChanged();
   },
@@ -453,7 +375,6 @@ const Gym = {
     data.sleep.quality = (document.getElementById('gym-sleep-quality') || {}).value || 'deep';
     DB.setGym(this.selectedDate, data);
     this.updateSleepStats(data.sleep);
-    this.updateHeroMetrics();
     this.renderStatStrip();
     this.notifyDataChanged();
   },
@@ -664,7 +585,6 @@ const Gym = {
     data.diet.meals.splice(idx, 1);
     DB.setGym(this.selectedDate, data);
     this.renderDiet();
-    this.updateHeroMetrics();
     this.notifyDataChanged();
   },
 
@@ -699,7 +619,6 @@ const Gym = {
     data.water.amount = Math.min(20000, Math.max(0, (data.water.amount || 0) + amount));
     DB.setGym(this.selectedDate, data);
     this.renderWater();
-    this.updateHeroMetrics();
     this.renderStatStrip();
     this.notifyDataChanged();
   },
@@ -956,7 +875,6 @@ const Gym = {
     data.diet.meals.push({ desc, protein: Number(protein) || 0, calories: Number(calories) || 0, carbs: Number(carbs) || 0, fats: Number(fats) || 0, type });
     DB.setGym(this.selectedDate, data);
     this.renderDiet();
-    this.updateHeroMetrics();
     this.notifyDataChanged();
   }
 
