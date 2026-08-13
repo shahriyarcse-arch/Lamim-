@@ -278,6 +278,7 @@ const Goals = {
       return `
         <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
              id="sunnah-card-${item.id}"
+             data-status="${isLocked ? (isPrayed ? 'prayed' : 'missed') : 'pending'}"
              style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
           
           <!-- Prayer Header -->
@@ -420,6 +421,7 @@ const Goals = {
     let html = `
       <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
            id="tahajjud-salah-card"
+           data-status="${isLocked ? (isPrayed ? `prayed_${rakat}` : 'missed') : 'pending'}"
            style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
         
         <!-- Prayer Header -->
@@ -610,6 +612,7 @@ const Goals = {
     let html = `
       <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
            id="witr-salah-card"
+           data-status="${isLocked ? (isPrayed ? 'prayed' : 'missed') : 'pending'}"
            style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
         
         <!-- Prayer Header -->

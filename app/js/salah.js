@@ -594,6 +594,9 @@ const Salah = {
           return `
             <div class="salah-prayer-card ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}"
                  id="salah-card-${p}"
+                 data-status="${currentStatus || 'pending'}"
+                 data-edit="${forceEdit ? '1' : '0'}"
+                 data-isnext="${(isNext && !isLocked) ? '1' : '0'}"
                  style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
                
               <!-- Prayer Header -->
