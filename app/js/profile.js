@@ -653,41 +653,149 @@ const Profile = {
   },
 
   exportData() {
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const user = DB.getUser() || { name: 'User' };
+    const profiles = DB.getProfiles();
+    const profilesCount = Math.max(1, profiles.length || 1);
+
+    // Create / reuse custom export modal
+    let modal = document.getElementById('profile-export-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'profile-export-modal';
+      modal.className = 'modal-backdrop hidden';
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+      <div class="modal-card anim-scale-up" style="max-width:420px; width:90%; padding:24px; border-radius:24px; background:var(--color-surface); border:1px solid var(--color-border); box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:36px; height:36px; border-radius:12px; background:rgba(20,184,166,0.15); color:#14b8a6; display:flex; align-items:center; justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
+            <div>
+              <div style="font-weight:800; font-size:16px; color:var(--color-text-primary);">${isBn ? 'ব্যাকআপ এক্সপোর্ট করুন' : 'Export Data Backup'}</div>
+              <div style="font-size:11px; color:var(--color-text-secondary);">${isBn ? 'এক্সপোর্টের ধরন বেছে নিন' : 'Choose export scope'}</div>
+            </div>
+          </div>
+          <button type="button" onclick="document.getElementById('profile-export-modal').classList.add('hidden')" style="background:none; border:none; color:var(--color-text-muted); cursor:pointer; padding:6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Option 1: Current Active Profile -->
+          <div role="button" tabindex="0" onclick="Profile.performExport('current')" style="display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px; background:var(--color-surface-elevated, var(--color-glass)); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;">
+            <div style="width:42px; height:42px; border-radius:14px; background:rgba(99,102,241,0.15); color:#6366f1; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <div style="flex:1; text-align:left;">
+              <div style="font-weight:700; font-size:14px; color:var(--color-text-primary);">${isBn ? `শুধু ${Utils.escapeHTML(user.name)}-এর ব্যাকআপ` : `Only ${Utils.escapeHTML(user.name)}'s Profile`}</div>
+              <div style="font-size:12px; color:var(--color-text-secondary); margin-top:2px;">${isBn ? 'শুধুমাত্র বর্তমান অ্যাকাউন্টের আমল ও হিস্ট্রি' : 'Records & history for this active account only'}</div>
+            </div>
+            <span style="color:var(--color-text-muted); font-size:18px;">›</span>
+          </div>
+
+          <!-- Option 2: Full Vault (All Profiles) -->
+          <div role="button" tabindex="0" onclick="Profile.performExport('full')" style="display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px; background:var(--color-surface-elevated, var(--color-glass)); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;">
+            <div style="width:42px; height:42px; border-radius:14px; background:rgba(16,185,129,0.15); color:#10b981; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><path d="M22 6l-10 7L2 6"></path></svg>
+            </div>
+            <div style="flex:1; text-align:left;">
+              <div style="font-weight:700; font-size:14px; color:var(--color-text-primary);">${isBn ? 'সম্পূর্ণ ভল্ট ব্যাকআপ (সকল প্রোফাইল)' : 'Full Vault Backup (All Accounts)'}</div>
+              <div style="font-size:12px; color:var(--color-text-secondary); margin-top:2px;">${isBn ? `${window.n ? window.n(profilesCount) : profilesCount}টি প্রোফাইলের সম্পূর্ণ ডেটাবেজ ব্যাকআপ` : `All ${profilesCount} profiles & database in one file`}</div>
+            </div>
+            <span style="color:var(--color-text-muted); font-size:18px;">›</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.classList.add('hidden');
+    };
+  },
+
+  performExport(type = 'current') {
+    const modal = document.getElementById('profile-export-modal');
+    if (modal) modal.classList.add('hidden');
+
     try {
+      const user = DB.getUser() || { name: 'User' };
       const data = {};
       const keys = DB.keys();
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        if (key.startsWith('lamim_') || key.startsWith('usr_')) {
-          const raw = DB.rawGet(key);
+
+      if (type === 'current') {
+        // Active Profile Only
+        const currentId = user.id;
+        const prefix = currentId ? `usr_${currentId}_` : null;
+
+        data._exportType = 'single_profile';
+        data._exportedUser = user;
+        data.lamim_user = user;
+        
+        // Include shared settings and dictionary
+        const sharedKeys = ['lamim_settings', 'lamim_lang', 'lamim_dhikr_presets'];
+        sharedKeys.forEach(k => {
+          const raw = DB.rawGet(k);
           if (raw !== null && raw !== undefined) {
-            try {
-              data[key] = JSON.parse(raw);
-            } catch {
-              data[key] = raw;
+            try { data[k] = JSON.parse(raw); } catch { data[k] = raw; }
+          }
+        });
+
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          if (prefix && key.startsWith(prefix)) {
+            const raw = DB.rawGet(key);
+            if (raw !== null && raw !== undefined) {
+              try { data[key] = JSON.parse(raw); } catch { data[key] = raw; }
+            }
+          }
+        }
+      } else {
+        // Full Vault Backup (All Profiles)
+        data._exportType = 'full_vault';
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          if (key.startsWith('lamim_') || key.startsWith('usr_')) {
+            const raw = DB.rawGet(key);
+            if (raw !== null && raw !== undefined) {
+              try { data[key] = JSON.parse(raw); } catch { data[key] = raw; }
             }
           }
         }
       }
-      
+
+      const safeName = (user.name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const filename = type === 'current'
+        ? `lamim_${safeName}_backup_${Utils.todayStr()}.json`
+        : `lamim_full_vault_backup_${Utils.todayStr()}.json`;
+
       const jsonStr = JSON.stringify(data, null, 2);
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `lamim_backup_${Utils.todayStr()}.json`;
+      a.download = filename;
       a.target = '_blank';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      
+
       const s = DB.getSettings();
       s.lastBackupDate = Utils.todayStr();
       DB.setSettings(s);
 
       const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-      Utils.toast(isBn ? 'ব্যাকআপ সফলভাবে এক্সপোর্ট হয়েছে!' : 'Data exported successfully!', 'success');
+      Utils.toast(
+        type === 'current'
+          ? (isBn ? `${user.name}-এর ব্যাকআপ সফলভাবে এক্সপোর্ট হয়েছে!` : `${user.name}'s backup exported successfully!`)
+          : (isBn ? 'সম্পূর্ণ ভল্ট ব্যাকআপ সফলভাবে এক্সপোর্ট হয়েছে!' : 'Full vault backup exported successfully!'),
+        'success'
+      );
     } catch (e) {
       console.error(e);
       Utils.toast('Failed to export data', 'error');
@@ -721,22 +829,63 @@ const Profile = {
         throw new Error('Invalid JSON format');
       }
 
+      const isSingleProfile = (data._exportType === 'single_profile') || (data.lamim_user && !data.lamim_profiles_vault);
       const currentUser = DB.getUser();
-      const currentId = (currentUser && currentUser.id) || (data.lamim_user && data.lamim_user.id) || (Array.isArray(data.lamim_profiles_vault) && data.lamim_profiles_vault[0] && data.lamim_profiles_vault[0].id);
-      const prefix = currentId ? `usr_${currentId}_` : null;
-      const GLOBAL_ALLOW = new Set(['lamim_settings', 'lamim_lang', 'lamim_user', 'lamim_profiles_vault', 'lamim_dhikr_presets']);
 
-      // Known, safe app-data key shapes.
+      if (isSingleProfile && data.lamim_user) {
+        // SINGLE PROFILE IMPORT: Seamlessly merge into recipient's vault!
+        const importedUser = Profile._sanitizeImportUser(data.lamim_user, null);
+        if (!importedUser || !importedUser.id) {
+          Utils.toast(isBn ? 'অকার্যকর প্রোফাইল ডেটা' : 'Invalid profile data', 'error');
+          return;
+        }
+
+        const userPrefix = `usr_${importedUser.id}_`;
+        const profileKeys = Object.keys(data).filter(k => k.startsWith(userPrefix) || (k.startsWith('lamim_') && k !== 'lamim_profiles_vault' && k !== 'lamim_user'));
+
+        Utils.confirm(
+          isBn ? 'প্রোফাইল ইমপোর্ট করুন' : 'Import Profile Data',
+          isBn ? `"${importedUser.name}"-এর প্রোফাইল ও ${profileKeys.length}টি এন্ট্রি ইমপোর্ট করা হবে। ডিভাইসের অন্য কোনো প্রোফাইল মুছে যাবে না। এগিয়ে যেতে চান?`
+               : `Import "${importedUser.name}" and ${profileKeys.length} data entries. Other existing profiles will remain untouched. Proceed?`,
+          async () => {
+            // 1. Save / Merge imported profile into Vault
+            DB.saveProfileVault(importedUser);
+            // 2. Set as active user
+            DB.setUser(importedUser);
+
+            // 3. Write imported user data
+            for (let i = 0; i < profileKeys.length; i++) {
+              const k = profileKeys[i];
+              let val = data[k];
+              if (val === undefined || val === null) continue;
+              const effectiveKey = k.startsWith('usr_') ? k : (userPrefix + k);
+              const strVal = (typeof val === 'string') ? val : JSON.stringify(val);
+              DB.rawSet(effectiveKey, strVal);
+            }
+
+            const s = DB.getSettings();
+            s.lastBackupDate = Utils.todayStr();
+            DB.setSettings(s);
+
+            Utils.toast(isBn ? 'প্রোফাইল সফলভাবে রিস্টোর হয়েছে!' : 'Profile restored successfully!', 'success');
+            setTimeout(() => window.location.reload(), 800);
+          }
+        );
+        return;
+      }
+
+      // FULL VAULT IMPORT:
+      const GLOBAL_ALLOW = new Set(['lamim_settings', 'lamim_lang', 'lamim_user', 'lamim_profiles_vault', 'lamim_dhikr_presets']);
       const KNOWN_LAMIM = /^lamim_(salah_|dhikr_|gym_|career_|habits|goals|finance|settings|lang|user|profiles_vault|body_metrics|prs)/;
 
       const allowedKeys = [];
       for (const k of Object.keys(data)) {
         if (GLOBAL_ALLOW.has(k)) { allowedKeys.push(k); continue; }
         if (k.startsWith('usr_')) {
-          if (!prefix || k.startsWith(prefix)) allowedKeys.push(k); // own profile or onboarding restore
+          allowedKeys.push(k);
           continue;
         }
-        if (KNOWN_LAMIM.test(k)) allowedKeys.push(k); // known app data (re-scoped below)
+        if (KNOWN_LAMIM.test(k)) allowedKeys.push(k);
       }
 
       if (allowedKeys.length === 0) {
@@ -745,16 +894,15 @@ const Profile = {
       }
 
       Utils.confirm(
-        isBn ? 'ডাটা রিস্টোর করুন' : 'Restore Backup Data',
-        isBn ? `${allowedKeys.length}টি ডাটা এন্ট্রি রিস্টোর করা হবে। বর্তমান লোকাল ডাটা ওভাররাইট হবে। আপনি কি নিশ্চিত?`
-             : `This will restore ${allowedKeys.length} data entries and overwrite matching local data. Are you sure?`,
+        isBn ? 'সম্পূর্ণ ভল্ট রিস্টোর' : 'Restore Full Vault',
+        isBn ? `${allowedKeys.length}টি ডেটা এন্ট্রি এবং সকল প্রোফাইল রিস্টোর করা হবে। আপনি কি নিশ্চিত?`
+             : `This will restore ${allowedKeys.length} data entries across all profiles. Are you sure?`,
         async () => {
           for (let i = 0; i < allowedKeys.length; i++) {
             const k = allowedKeys[i];
             let val = data[k];
             if (val === undefined || val === null) continue;
 
-            // Sanitize high-risk objects to prevent stored XSS / bad data
             if (k === 'lamim_user') val = Profile._sanitizeImportUser(val, currentUser);
             else if (k === 'lamim_profiles_vault') val = Profile._sanitizeImportVault(val);
 
@@ -762,24 +910,19 @@ const Profile = {
             DB.rawSet(k, strVal);
           }
 
-          // Re-scope any legacy unscoped app data restored for the active profile
           DB._rescopeOrphans();
 
           const s = DB.getSettings();
           s.lastBackupDate = Utils.todayStr();
           DB.setSettings(s);
 
-          // Recompute spirit score from real data (discards any injected label)
-          if (typeof DB.refreshSpiritScore === 'function') DB.refreshSpiritScore();
-
-          Utils.toast(isBn ? 'ব্যাকআপ সফলভাবে রিস্টোর হয়েছে!' : 'Backup restored successfully!', 'success');
-          setTimeout(() => window.location.reload(), 1000);
-        },
-        'info'
+          Utils.toast(isBn ? 'সম্পূর্ণ ভল্ট সফলভাবে রিস্টোর হয়েছে!' : 'Full vault restored successfully!', 'success');
+          setTimeout(() => window.location.reload(), 800);
+        }
       );
     } catch (err) {
-      console.error('[Profile] importData error:', err);
-      Utils.toast(isBn ? 'ব্যাকআপ ফাইল পড়তে ব্যর্থ হয়েছে' : 'Failed to read backup file', 'error');
+      console.error(err);
+      Utils.toast(isBn ? 'ফাইল পড়তে সমস্যা হয়েছে' : 'Failed to import backup file', 'error');
     } finally {
       e.target.value = '';
     }
@@ -804,7 +947,7 @@ const Profile = {
     }
     if (typeof raw.avatar === 'string' && /^data:image\//i.test(raw.avatar)) safe.avatar = raw.avatar;
     else safe.avatar = (currentUser && currentUser.avatar) || null;
-    safe.id = (currentUser && currentUser.id) || (typeof raw.id === 'string' && raw.id) || ('usr_' + Date.now());
+    safe.id = (typeof raw.id === 'string' && raw.id) || (currentUser && currentUser.id) || ('usr_' + Date.now());
     if (typeof raw.createdAt === 'string' && !isNaN(Date.parse(raw.createdAt))) safe.createdAt = raw.createdAt;
     else if (!safe.createdAt) safe.createdAt = new Date().toISOString();
     const KNOWN = new Set(['Ihsan', 'God-Conscious', 'Mindful', 'Resilient', 'Consistent', 'Intentional', 'Awakening']);
