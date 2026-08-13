@@ -167,16 +167,18 @@
 .splash-wordmark .i-dot::after {
   content: "";
   position: absolute;
-  top: 0.05em;
+  top: -0.02em;
   left: 50%;
   transform: translateX(-50%);
-  width: 0.2em;
-  height: 0.2em;
+  width: 0.36em;
+  height: 0.36em;
   background-color: #97D84C;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(151, 216, 76, 0.8);
   animation: dotPulse 0.3s ease-out 0.45s both;
   pointer-events: none;
+  -webkit-text-fill-color: initial;
+  z-index: 2;
 }
 
 @keyframes dotPulse {
