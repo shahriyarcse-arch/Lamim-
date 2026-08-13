@@ -2329,3 +2329,31 @@
     filter: drop-shadow(0 0 2px rgba(239,68,68,0.3));
   }
 }
+
+/* Mobile: drop the live backdrop blur on the always-rendered prayer cards to
+   avoid compositing jank during section transitions on low-end phones.
+   The translucent --color-glass background is retained, so the visual design
+   stays intact while layout/paint cost drops significantly. */
+@media (max-width: 768px) {
+  .salah-prayer-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* Accessibility: honor the OS "reduce motion" preference. Disables Salah's
+   entrance + infinite ambient animations (card fade-in, stat-card borderBreath,
+   locked-card lockPulse, next-prayer pulse) so motion-sensitive users aren't
+   subjected to continuous/auto motion. Elements still render in their final
+   state (no content hidden). */
+@media (prefers-reduced-motion: reduce) {
+  .salah-prayer-card.anim-fade-in,
+  .salah-stat-card,
+  .salah-lock-svg,
+  #section-salah .pill-next-badge {
+    animation: none !important;
+  }
+  .salah-prayer-card {
+    transition: none !important;
+  }
+}

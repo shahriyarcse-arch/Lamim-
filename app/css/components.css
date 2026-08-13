@@ -1960,5 +1960,15 @@ select.input option:disabled {
   color: var(--fin-red);
 }
 
+/* Accessibility: don't scale/animate the active bottom-nav icon when motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav-item .bnav-icon {
+    transition: none !important;
+  }
+  .bottom-nav-item.active .bnav-icon {
+    transform: none !important;
+  }
+}
+
 
 

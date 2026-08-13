@@ -22,8 +22,13 @@ const Salah = {
 
   init() {
     this.selectedDate = Utils.todayStr();
-    const skip = !!this._inited;
+    this._reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    // Play the staggered entrance animation only on the very first mount ever,
+    // not on every cold start / refresh / PWA reopen (avoids a re-animation flash).
+    const introDone = DB.rawGet('lamim_salah_intro_done');
+    const skip = !!this._inited || !!introDone;
     this._inited = true;
+    if (!introDone) DB.rawSet('lamim_salah_intro_done', '1');
     this.renderAll(skip);
 
     // Debounced re-render, driven by the app-level data-update bus (App.routeDataUpdate)
@@ -298,6 +303,9 @@ const Salah = {
         notice.hidden = true;
       }
     }
+
+    // Reduced-motion: strip SMIL icon animations from the freshly built pills.
+    if (this._reduceMotion) this._stripSmil(row);
   },
 
   scrollToPrayer(prayer) {
@@ -442,7 +450,6 @@ const Salah = {
   renderPrayerCards(date, skipAnim = false) {
     date = date || this.selectedDate;
     this.selectedDate = date;
-    this.renderNotes();
     const salah = DB.getSalah(date);
     const settings = DB.getSettings();
     const isFriday = Utils.parseDate(date).getDay() === 5;
@@ -453,6 +460,21 @@ const Salah = {
     const nextPrayer = Utils.getNextPrayer(Utils.calcPrayerTimes());
     const isToday = date === Utils.todayStr();
     const isFuture = date > Utils.todayStr();
+
+    // Skip the expensive full card-grid re-render when nothing visible changed
+    // and this is a re-render (skipAnim). Prevents the lag/blink felt when
+    // switching back to Salah, while taps/date-nav still re-render correctly.
+    const corr = this._correcting ? (this._correcting.prayer + this._correcting.date) : '';
+    const key = date + '|' + this.prayers.map(p => salah[p] || '-').join(',') + '|' +
+      (nextPrayer ? nextPrayer.name : '') + '|' + isToday + '|' + isFuture + '|' + corr;
+    if (skipAnim && this._cardsKey === key && container.children.length) {
+      this.renderHeader();
+      this.renderStats();
+      return;
+    }
+    this._cardsKey = key;
+
+    this.renderNotes();
 
     const titleLocked = window.t ? window.t('Future Date Locked') : 'Future Date Locked';
     const descLocked = window.t ? window.t('You can only record prayers for today or past dates.') : 'You can only record prayers for today or past dates.';
@@ -552,6 +574,18 @@ const Salah = {
 
     this.renderHeader();
     this.renderStats();
+
+    // Reduced-motion: SMIL <animate>/<animateTransform> (prayer/status/stat icons)
+    // can't be disabled via CSS, so strip them from the rendered DOM. Runs after
+    // renderStats so the stat icons are covered too. Invisible to other users.
+    if (this._reduceMotion) {
+      this._stripSmil(document.getElementById('section-salah'));
+    }
+  },
+
+  _stripSmil(root) {
+    if (!root) return;
+    root.querySelectorAll('animate, animateTransform').forEach(n => n.remove());
   },
 
   /* ---- Select status (re-selectable so mistakes can be corrected) ---- */

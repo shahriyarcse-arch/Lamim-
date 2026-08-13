@@ -40,6 +40,12 @@ const Gym = {
   },
 
   renderAll(skipAnim = false) {
+    // Skip the full rebuild when re-entering with byte-identical data.
+    // Prevents switch lag without any staleness risk (any data change alters the sig).
+    const sig = this._renderSig();
+    if (skipAnim && this._renderedSig === sig) return;
+    this._renderedSig = sig;
+
     this.renderHeader();
     this.renderHero();
     this.renderStatStrip();
@@ -49,6 +55,16 @@ const Gym = {
     this.renderWater();
     this.renderBodyMetrics();
     this.updateHeroMetrics(skipAnim);
+  },
+
+  _renderSig() {
+    try {
+      const d = this.selectedDate || Utils.todayStr();
+      return 'gym|' + d + '|' + (App.lang || '') + '|' +
+        JSON.stringify([DB.getGym(d), DB.getBodyMetrics(), DB.getPRs()]);
+    } catch (e) {
+      return 'gym|' + Date.now();
+    }
   },
 
   renderHeader() {

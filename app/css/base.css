@@ -296,3 +296,10 @@ p { color: var(--color-text-secondary); }
     box-shadow: none;
   }
 }
+
+/* Accessibility: don't auto-animate section panels when motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  .section-panel {
+    animation: none !important;
+  }
+}

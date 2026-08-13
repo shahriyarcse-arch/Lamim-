@@ -70,6 +70,12 @@ const Career = {
   },
 
   renderAll(skipAnim = false) {
+    // Skip the full rebuild when re-entering with byte-identical data.
+    // Prevents switch lag without any staleness risk (any data change alters the sig).
+    const sig = this._renderSig();
+    if (skipAnim && this._renderedSig === sig) return;
+    this._renderedSig = sig;
+
     this.renderHeader();
     this.renderHero();
     this.renderStatStrip();
@@ -81,6 +87,16 @@ const Career = {
     this.renderAchievements();
     this.updateHeroMetrics(skipAnim);
     this.switchProgressTab(this._activeProgressTab || 'weekly');
+  },
+
+  _renderSig() {
+    try {
+      const d = this.selectedDate || Utils.todayStr();
+      return 'career|' + d + '|' + (this._activeProgressTab || '') + '|' + (App.lang || '') + '|' +
+        JSON.stringify([DB.getCareer(d), DB.getCareerAchievements(), DB.getCareerStreak(), DB.getCareerTimer()]);
+    } catch (e) {
+      return 'career|' + Date.now();
+    }
   },
 
   renderHeader() {
