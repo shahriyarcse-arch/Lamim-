@@ -243,9 +243,7 @@ const Dhikr = {
 
     entries.forEach(([id, cnt]) => {
       const itemEl = document.getElementById(`session-item-${id}`);
-      const preset = this.getAllPresets().find(p => p.id === id) || { latin: id, icon: Icons.tasbeeh, target: 33, color: '' };
-      const target = preset.target || 33;
-      const pct = target > 0 ? Math.min(100, Math.round((cnt / target) * 100)) : 0;
+      const preset = this.getAllPresets().find(p => p.id === id) || { latin: id, icon: Icons.tasbeeh, color: '' };
       const color = preset.color || '#14b8a6';
 
       if (itemEl) {
@@ -257,29 +255,18 @@ const Dhikr = {
           if (countEl.timeoutId) clearTimeout(countEl.timeoutId);
           countEl.timeoutId = setTimeout(() => { countEl.style.transform = 'scale(1)'; }, 100);
         }
-        const bar = itemEl.querySelector('.ds-bar-fill');
-        if (bar) { bar.style.width = pct + '%'; bar.style.background = color; }
-        if (target > 0) {
-          const tEl = itemEl.querySelector('.ds-target');
-          if (tEl) tEl.textContent = `/ ${window.n ? window.n(target) : target}`;
-        }
       } else {
         const temp = document.createElement('div');
         const formattedCnt = window.n ? window.n(cnt) : cnt;
-        const formattedTgt = window.n ? window.n(target) : target;
         temp.innerHTML = `
           <div class="dhikr-session-item anim-fade-in" id="session-item-${id}" ${color ? `style="--dc:${color}"` : ''}>
             <div class="ds-icon">${preset.icon}</div>
             <div class="ds-info">
-              ${preset.arabic ? `<div class="ds-arabic">${preset.arabic}</div>` : ''}
               <div class="ds-name">${Utils.escapeHTML(preset.latin)}</div>
               <div class="ds-count-row">
                 <span class="ds-count" id="session-count-${id}" data-raw-val="${cnt}" style="transition: all 0.15s ease; display: inline-block;">${formattedCnt}</span>
-                ${target > 0 ? `<span class="ds-target">/ ${formattedTgt}</span>` : ''}
               </div>
-              ${target > 0 ? `<div class="ds-bar"><div class="ds-bar-fill" style="width:${pct}%;background:${color}"></div></div>` : ''}
             </div>
-            ${target > 0 && cnt >= target ? '<div class="ds-done"></div>' : ''}
           </div>
         `;
         grid.appendChild(temp.firstElementChild);
