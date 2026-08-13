@@ -144,9 +144,6 @@ const Career = {
   },
 
   /* ---------- checklist / goals ---------- */
-    }
-  },
-
   renderChecklist() {
     const container = document.getElementById('career-checklist-container');
     if (!container) return;
