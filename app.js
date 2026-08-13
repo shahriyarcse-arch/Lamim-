@@ -56,7 +56,10 @@ const ease = [0.16, 1, 0.3, 1];
 
 /* ---- HERO ENTRANCE (on load, skip if reduced motion) ---- */
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  animate('.nav', { opacity: [0, 1] }, { duration: 0.5, easing: ease });
+  animate('.nav', { opacity: [0, 1] }, { duration: 0.5, easing: ease }).finished.then(() => {
+    const navEl = document.querySelector('.nav');
+    if (navEl) navEl.style.opacity = '1';
+  });
 
   // Make hero reveal wrapper visible (has .reveal { opacity:0 } from CSS)
   const heroReveal = document.querySelector('.hero .reveal');
