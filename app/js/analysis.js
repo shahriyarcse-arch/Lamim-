@@ -138,13 +138,14 @@ const Analysis = {
   },
 
   getRating(score) {
-    if (score >= 90) return { label: 'Ihsan', color: '#fbbf24', desc: 'Worshipping with absolute presence & excellence.' };
-    if (score >= 80) return { label: 'God-Conscious', color: '#a78bfa', desc: 'Taqwa guides your choices with clarity.' };
-    if (score >= 65) return { label: 'Mindful', color: '#10b981', desc: 'Presence and mindfulness fill your deeds.' };
-    if (score >= 50) return { label: 'Resilient', color: '#38bdf8', desc: 'Overcoming obstacles & pushing limits.' };
-    if (score >= 30) return { label: 'Consistent', color: '#f59e0b', desc: 'Building habit momentum. Consistency is key.' };
-    if (score >= 15) return { label: 'Intentional', color: '#f87171', desc: 'Your intention is set. Every step now has purpose.' };
-    return { label: 'Awakening', color: '#ef4444', desc: 'Awaken your soul. The journey begins with one step.' };
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    if (score >= 90) return { label: 'Ihsan', color: '#fbbf24', desc: isBn ? 'সর্বোচ্চ একাগ্রতা ও নিষ্ঠার সাথে ইবাদত।' : 'Worshipping with absolute presence & excellence.' };
+    if (score >= 80) return { label: 'God-Conscious', color: '#a78bfa', desc: isBn ? 'তাকওয়া আপনার সিদ্ধান্তকে স্পষ্ট করে।' : 'Taqwa guides your choices with clarity.' };
+    if (score >= 65) return { label: 'Mindful', color: '#10b981', desc: isBn ? 'আপনার আমলে সচেতনতা ও মনোযোগ বিদ্যমান।' : 'Presence and mindfulness fill your deeds.' };
+    if (score >= 50) return { label: 'Resilient', color: '#38bdf8', desc: isBn ? 'বাধা পেরিয়ে এগিয়ে চলার দৃঢ় মানসিকতা।' : 'Overcoming obstacles & pushing limits.' };
+    if (score >= 30) return { label: 'Consistent', color: '#f59e0b', desc: isBn ? 'অভ্যাসের গতি বাড়ছে। ধারাবাহিকতাই মূল।' : 'Building habit momentum. Consistency is key.' };
+    if (score >= 15) return { label: 'Intentional', color: '#f87171', desc: isBn ? 'উদ্দেশ্য স্থির হয়েছে। প্রতিটি পদক্ষেপ অর্থবহ।' : 'Your intention is set. Every step now has purpose.' };
+    return { label: 'Awakening', color: '#ef4444', desc: isBn ? 'আত্মার জাগরণ। একটি পদক্ষেপ দিয়েই যাত্রা শুরু।' : 'Awaken your soul. The journey begins with one step.' };
   },
 
   getMonthDailyTrend(year, month) {
@@ -248,7 +249,7 @@ const Analysis = {
         <!-- NEW: Radar Chart Balance -->
         <div class="radar-chart-container ${noAnim ? '' : 'anim-fade-in'}" style="margin-top: -15px; margin-bottom: 20px; flex-direction: column;">
           <div style="width: 100%; text-align: center; margin-bottom: 5px;">
-            <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; color: #a78bfa;">Spiritual Balance</span>
+            <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; color: #a78bfa;">${isBn ? 'আত্মিক ভারসাম্য' : 'Spiritual Balance'}</span>
           </div>
           <div class="radar-chart-wrapper">
             ${this.renderRadarChart(shs.breakdown)}
@@ -258,7 +259,7 @@ const Analysis = {
         <!-- Weekly Trend (Bulletproof Scientific Style) -->
         <div class="weekly-trend-container" style="margin-top: 10px;">
           <div style="width: 100%; text-align: center; margin-bottom: 15px;">
-            <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; opacity: 0.5; color: var(--color-accent-gold);">Progress Timeline</span>
+            <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; opacity: 0.5; color: var(--color-accent-gold);">${isBn ? 'অগ্রগতির টাইমলাইন' : 'Progress Timeline'}</span>
           </div>
           
           <div class="weekly-chart-wrapper">
@@ -319,22 +320,22 @@ const Analysis = {
 
         <!-- Detailed Breakdown (Compact Style) -->
         <div style="width: 100%; text-align: center; margin-top: 25px; margin-bottom: 15px;">
-          <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; opacity: 0.5; color: #34d399;">Insight Breakdown</span>
+          <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; opacity: 0.5; color: #34d399;">${isBn ? 'বিশদ বিবরণ' : 'Insight Breakdown'}</span>
         </div>
         <div class="shs-grid">
-          ${this.renderCard('Salah', shs.breakdown.salah, 50, '#f87171', `
+          ${this.renderCard(isBn ? 'ফরয নামাজ' : 'Salah', shs.breakdown.salah, 50, '#f87171', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H4c-1 0-2-1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4c0 1-1 2-2 2z"/><path d="M12 10V3"/><path d="M8 6h8"/></svg>
           `, null, noAnim)}
-          ${this.renderCard('Nafl', shs.breakdown.nafl, 15, '#a855f7', `
+          ${this.renderCard(isBn ? 'নফল ও সুন্নত' : 'Nafl', shs.breakdown.nafl, 15, '#a855f7', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           `, null, noAnim)}
-          ${this.renderCard('Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `
+          ${this.renderCard(isBn ? 'যিকির' : 'Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>
           `, `Lvl ${shs.level.dhikr}`, noAnim)}
-          ${this.renderCard('Habits', shs.breakdown.habits, 10, '#fbbf24', `
+          ${this.renderCard(isBn ? 'অভ্যাস' : 'Habits', shs.breakdown.habits, 10, '#fbbf24', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           `, null, noAnim)}
-          ${this.renderCard('Spirit', shs.breakdown.consistency, 10, '#10b981', `
+          ${this.renderCard(isBn ? 'ধারাবাহিকতা' : 'Spirit', shs.breakdown.consistency, 10, '#10b981', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
           `, null, noAnim)}
         </div>
@@ -377,6 +378,7 @@ const Analysis = {
   selectDate(dateStr) {
     if (this.selectedDateStr === dateStr) return; // Already selected
     this.selectedDateStr = dateStr;
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     
     // Manual DOM updates to prevent any blinking/flickering
     const shs = this.calculateSHS(dateStr);
@@ -387,7 +389,7 @@ const Analysis = {
     if (aura) aura.style.setProperty('--aura-color', rating.color);
     
     const val = document.querySelector('.shs-val');
-    if (val) val.innerText = Math.round(shs.total);
+    if (val) val.innerText = window.n ? window.n(Math.round(shs.total)) : Math.round(shs.total);
     
     const badge = document.getElementById('shs-rating-badge');
     if (badge) {
@@ -399,7 +401,7 @@ const Analysis = {
     
     const [y, m, d] = dateStr.split('-');
     const dateObj = new Date(y, m - 1, d);
-    const scoreSubLabel = dateObj.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+    const scoreSubLabel = dateObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
     const dateDesc = document.querySelector('.date-desc');
     if (dateDesc) dateDesc.innerHTML = ` ${scoreSubLabel}`;
     
@@ -410,11 +412,11 @@ const Analysis = {
     const grid = document.querySelector('.shs-grid');
     if (grid) {
       grid.innerHTML = `
-        ${this.renderCard('Salah', shs.breakdown.salah, 50, '#f87171', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H4c-1 0-2-1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4c0 1-1 2-2 2z"/><path d="M12 10V3"/><path d="M8 6h8"/></svg>`, null, true)}
-        ${this.renderCard('Nafl', shs.breakdown.nafl, 15, '#a855f7', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`, null, true)}
-        ${this.renderCard('Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>`, `Lvl ${shs.level.dhikr}`, true)}
-        ${this.renderCard('Habits', shs.breakdown.habits, 10, '#fbbf24', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, null, true)}
-        ${this.renderCard('Spirit', shs.breakdown.consistency, 10, '#10b981', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`, null, true)}
+        ${this.renderCard(isBn ? 'ফরয নামাজ' : 'Salah', shs.breakdown.salah, 50, '#f87171', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H4c-1 0-2-1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4c0 1-1 2-2 2z"/><path d="M12 10V3"/><path d="M8 6h8"/></svg>`, null, true)}
+        ${this.renderCard(isBn ? 'নফল ও সুন্নত' : 'Nafl', shs.breakdown.nafl, 15, '#a855f7', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`, null, true)}
+        ${this.renderCard(isBn ? 'যিকির' : 'Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>`, `Lvl ${shs.level.dhikr}`, true)}
+        ${this.renderCard(isBn ? 'অভ্যাস' : 'Habits', shs.breakdown.habits, 10, '#fbbf24', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, null, true)}
+        ${this.renderCard(isBn ? 'ধারাবাহিকতা' : 'Spirit', shs.breakdown.consistency, 10, '#10b981', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`, null, true)}
       `;
     }
     
@@ -592,7 +594,8 @@ const Analysis = {
     }
 
     if (daysAnalyzed === 0) {
-      Utils.toast('No data available for this month yet.', 'error');
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'এই মাসের জন্য কোনো ডেটা পাওয়া যায়নি।' : 'No data available for this month yet.', 'error');
       return;
     }
 

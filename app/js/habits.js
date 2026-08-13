@@ -1042,7 +1042,8 @@ const Habits = {
         modalBody.scrollTo({ top: modalBody.scrollHeight, behavior: 'smooth' });
       }
       
-      Utils.toast(`Selected ${defaultHabit.label}. Set your start time below.`, 'info');
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? `${defaultHabit.label} নির্বাচিত হয়েছে। শুরুর সময় নির্ধারণ করুন।` : `Selected ${defaultHabit.label}. Set your start time below.`, 'info');
     }
   },
 
@@ -1052,9 +1053,10 @@ const Habits = {
     setTimeout(() => { this._forging = false; }, 400);
     const input = document.getElementById('habits-custom-habit-input');
     const label = input ? input.value.trim() : '';
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     
     if (!label) {
-      Utils.toast('Please select or type a habit name', 'error');
+      Utils.toast(isBn ? 'অনুগ্রহ করে অভ্যাসের নাম লিখুন' : 'Please select or type a habit name', 'error');
       return;
     }
 
@@ -1098,11 +1100,11 @@ const Habits = {
       // Render and notify
       this.render(true);
       if (input) input.value = '';
-      Utils.toast('Habit forged! Your journey begins ️', 'success');
+      Utils.toast(isBn ? 'অভ্যাস যুক্ত হয়েছে! আপনার যাত্রা শুরু হলো 🛡️' : 'Habit forged! Your journey begins 🛡️', 'success');
 
     } catch (error) {
       console.error('Habits: Failed to forge habit:', error);
-      Utils.toast('Failed to forge habit. Please check console.', 'error');
+      Utils.toast(isBn ? 'অভ্যাস যুক্ত করতে সমস্যা হয়েছে।' : 'Failed to forge habit. Please check console.', 'error');
     }
   },
 
@@ -1307,18 +1309,19 @@ const Habits = {
     this.render(true);
     this.hideRelapseModal();
 
-    // Show Undo Toast with a real, working Undo action (lastRelapse is preserved
-    // for exactly this purpose — previously advertised but never wired up).
-    Utils.toast('Relapse recorded.', 'warning', 6000, {
-      label: 'Undo',
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    // Show Undo Toast with a real, working Undo action
+    Utils.toast(isBn ? 'স্লিপ রেকর্ড করা হয়েছে।' : 'Relapse recorded.', 'warning', 6000, {
+      label: isBn ? 'বাতিল' : 'Undo',
       onClick: () => this.undoRelapse(id)
     });
   },
 
   undoRelapse(id) {
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     const snap = this.lastRelapse;
     if (!snap || snap.id !== id) {
-      Utils.toast('Nothing to undo', 'info');
+      Utils.toast(isBn ? 'বাতিল করার কিছু নেই' : 'Nothing to undo', 'info');
       return;
     }
     const habit = (this.habits || []).find(h => h.id === id);
@@ -1329,7 +1332,7 @@ const Habits = {
     this.lastRelapse = null;
     this.saveHabits();
     this.render(true);
-    Utils.toast('Relapse undone. Streak restored.', 'success');
+    Utils.toast(isBn ? 'স্লিপ বাতিল হয়েছে। স্ট্রিক পুনঃস্থাপন করা হয়েছে।' : 'Relapse undone. Streak restored.', 'success');
   },
 
 
@@ -1362,6 +1365,7 @@ const Habits = {
     }
     
     const slips = (habit.history || []).filter(h => !h.clean).sort((a, b) => new Date(b.date) - new Date(a.date));
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     
     let html = '';
     
@@ -1370,8 +1374,8 @@ const Habits = {
         <div class="iw-relapse-empty-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
         </div>
-        <p>No relapses recorded yet.</p>
-        <span>Keep up the great work!</span>
+        <p>${isBn ? 'এখনো কোনো স্লিপ বা রিল্যাপ্স রেকর্ড নেই' : 'No relapses recorded yet.'}</p>
+        <span>${isBn ? 'চমৎকার অগ্রগতি ধরে রাখুন!' : 'Keep up the great work!'}</span>
       </div>`;
     } else {
       html += slips.map(s => {
@@ -1385,7 +1389,7 @@ const Habits = {
               <span class="iw-relapse-date">${dateStr}</span>
               <span class="iw-relapse-time">${timeStr}</span>
             </div>
-            <div class="iw-relapse-reason">${Utils.escapeHTML(s.reason || 'No reason recorded.')}</div>
+            <div class="iw-relapse-reason">${Utils.escapeHTML(s.reason || (isBn ? 'কোনো কারণ উল্লেখ করা হয়নি।' : 'No reason recorded.'))}</div>
           </div>
         `;
       }).join('');
@@ -1477,9 +1481,10 @@ const Habits = {
   },
 
   clearAllHistory() {
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     this.showConfirm(
-      'Wipe History',
-      'Are you sure you want to permanently delete the relapse history for ALL habits? Your streaks will remain.',
+      isBn ? 'সকল হিস্ট্রি মুছবেন?' : 'Wipe History',
+      isBn ? 'আপনি কি নিশ্চিত যে সকল অভ্যাসের রিল্যাপ্স হিস্ট্রি মুছে ফেলবেন? আপনার স্ট্রিক অপরিবর্তিত থাকবে।' : 'Are you sure you want to permanently delete the relapse history for ALL habits? Your streaks will remain.',
       () => {
         this.habits.forEach(habit => {
           habit.history = [];
@@ -1487,15 +1492,16 @@ const Habits = {
         this.saveHabits();
         this.render(true);
         this.hideHistoryModal();
-        Utils.toast('All history logs cleared', 'success');
+        Utils.toast(isBn ? 'সকল হিস্ট্রি লগ মুছে ফেলা হয়েছে' : 'All history logs cleared', 'success');
       }
     );
   },
 
   clearHabitHistory(habitId) {
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     this.showConfirm(
-      'Clear History',
-      'This will permanently delete all relapse logs for this specific habit. Continue?',
+      isBn ? 'হিস্ট্রি মুছবেন?' : 'Clear History',
+      isBn ? 'এই অভ্যাসের সমস্ত রিল্যাপ্স রেকর্ড স্থায়ীভাবে মুছে যাবে। চালিয়ে যেতে চান?' : 'This will permanently delete all relapse logs for this specific habit. Continue?',
       () => {
         const habit = this.getHabit(habitId);
         if (!habit) return;
@@ -1504,15 +1510,16 @@ const Habits = {
         this.saveHabits();
         this.render(true);
         this.hideHistoryModal();
-        Utils.toast('Habit history cleared', 'success');
+        Utils.toast(isBn ? 'অভ্যাসের হিস্ট্রি মুছে ফেলা হয়েছে' : 'Habit history cleared', 'success');
       }
     );
   },
 
   resetAllStartDates() {
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     this.showConfirm(
-      'Reset All Timers',
-      'Reset all start dates to right now?',
+      isBn ? 'সকল টাইমার রিসেট করবেন?' : 'Reset All Timers',
+      isBn ? 'সব অভ্যাসের শুরুর সময় বর্তমান সময়ে রিসেট করতে চান?' : 'Reset all start dates to right now?',
       () => {
         this.habits.forEach(habit => {
           habit.startDate = new Date().toISOString();
@@ -1521,20 +1528,21 @@ const Habits = {
         this.saveHabits();
         this.render(true);
         this.hideToolsModal();
-        Utils.toast('All timers reset to right now', 'success');
+        Utils.toast(isBn ? 'সব টাইমার বর্তমানে রিসেট করা হয়েছে' : 'All timers reset to right now', 'success');
       }
     );
   },
 
   deleteHabit(habitId) {
+    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     this.showConfirm(
-      'Delete Tracker',
-      'This will permanently remove this habit and all its history. Are you ready to abandon this path?',
+      isBn ? 'অভ্যাস মুছবেন?' : 'Delete Tracker',
+      isBn ? 'এটি স্থায়ীভাবে এই অভ্যাস এবং এর সমস্ত ইতিহাস মুছে ফেলবে। আপনি কি নিশ্চিত?' : 'This will permanently remove this habit and all its history. Are you ready to abandon this path?',
       () => {
         this.habits = this.habits.filter(h => h.id !== habitId);
         this.saveHabits();
         this.render(true);
-        Utils.toast('Habit removed', 'info');
+        Utils.toast(isBn ? 'অভ্যাস মুছে ফেলা হয়েছে' : 'Habit removed', 'info');
       }
     );
   },

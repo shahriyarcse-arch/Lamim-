@@ -1069,7 +1069,8 @@ const Finance = {
   saveExpense() {
     let a = parseFloat(document.getElementById('finance-expense-amount').value);
     const c = this.selectedCategory, d = document.getElementById('finance-expense-date').value, obj = this.categories.find(o => o.id === c);
-    if (isNaN(a) || a <= 0) return Utils.toast('Enter valid amount', 'error');
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    if (isNaN(a) || a <= 0) return Utils.toast(isBn ? 'সঠিক পরিমাণ লিখুন' : 'Enter valid amount', 'error');
 
     // Calculate absolute total balance in USD (base currency)
     const allIncome = this.data.income.reduce((s, o) => s + o.amount, 0);
@@ -1082,7 +1083,7 @@ const Finance = {
     // Check if expense exceeds total balance
     if (amountInBase > totalBalance + 0.0001) {
       const sym = this.getSymbol();
-      return Utils.toast(`Insufficient balance! Available: ${sym}${this.formatVal(totalBalance)}`, 'error');
+      return Utils.toast(isBn ? `অপর্যাপ্ত ব্যালেন্স! বিদ্যমান: ${sym}${this.formatVal(totalBalance)}` : `Insufficient balance! Available: ${sym}${this.formatVal(totalBalance)}`, 'error');
     }
 
     this.data.expenses.push({ id: Utils.uid(), description: obj.name, amount: amountInBase, category: c, date: d });
@@ -1171,7 +1172,8 @@ const Finance = {
     const desc = (document.getElementById('finance-income-desc').value || '').trim(); 
     let a = parseFloat(document.getElementById('finance-income-amount').value); 
     const d = document.getElementById('finance-income-date').value || Utils.todayStr(); 
-    if (!desc || isNaN(a) || a <= 0) return Utils.toast('Fill valid fields','error'); 
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    if (!desc || isNaN(a) || a <= 0) return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields','error'); 
     if (DB.getSettings().currency==='BDT') a /= this._getFXRate(); 
     this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d }); 
     this.saveData(); this.closeModal(); this.render(); 
@@ -1417,7 +1419,8 @@ const Finance = {
     const nameInput = document.getElementById('finance-savings-name');
     const name = nameInput ? nameInput.value.trim() : '';
     let target = parseFloat(document.getElementById('finance-savings-target')?.value || '');
-    if (!name || isNaN(target) || target <= 0) return Utils.toast('Fill valid fields', 'error');
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    if (!name || isNaN(target) || target <= 0) return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields', 'error');
     if (DB.getSettings().currency === 'BDT') target /= this._getFXRate();
     this.data.savings.push({ id: Utils.uid(), name, target, saved: 0 });
     this.saveData(); this.closeModal(); this.render();
@@ -1431,8 +1434,9 @@ const Finance = {
     const goal = this.data.savings.find(s => s.id === id);
     if (!goal) return;
 
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     if (goal.saved >= goal.target) {
-      return Utils.toast('Goal already achieved!', 'info');
+      return Utils.toast(isBn ? 'লক্ষ্য ইতিমধ্যে অর্জিত হয়েছে!' : 'Goal already achieved!', 'info');
     }
 
     const mult = DB.getSettings().currency === 'BDT' ? this._getFXRate() : 1;
@@ -1441,15 +1445,15 @@ const Finance = {
     const html = `
       <div class="finance-modal-content" style="max-width:400px;">
         <div class="fin-modal-header">
-          <div class="fin-modal-title">Deposit to ${Utils.escapeHTML(goal.name)}</div>
+          <div class="fin-modal-title">${isBn ? `${Utils.escapeHTML(goal.name)}-এ জমা দিন` : `Deposit to ${Utils.escapeHTML(goal.name)}`}</div>
           <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
         
         <p style="font-size:12px; color:var(--color-text-subtitle); margin-bottom:16px; line-height:1.4;">
-          Enter the amount you would like to transfer to this savings vault.
-          ${remaining > 0 ? `<br><span style="color:var(--fin-green); font-weight:800; display:inline-block; margin-top:4px;">Target Remaining: ${sym}${this.formatVal(goal.target - goal.saved)}</span>` : ''}
+          ${isBn ? 'এই সেভিংস ভল্টে স্থানান্তর করার জন্য পরিমাণ লিখুন।' : 'Enter the amount you would like to transfer to this savings vault.'}
+          ${remaining > 0 ? `<br><span style="color:var(--fin-green); font-weight:800; display:inline-block; margin-top:4px;">${isBn ? 'বাকি লক্ষ্য:' : 'Target Remaining:'} ${sym}${this.formatVal(goal.target - goal.saved)}</span>` : ''}
         </p>
 
         <div class="fin-modal-amount-wrap" style="margin-bottom:20px;">
@@ -1466,7 +1470,7 @@ const Finance = {
         </div>
 
         <div class="fin-modal-actions">
-          <button class="fin-save-btn" style="background:var(--fin-green); width:100%; height:48px; border-radius:14px; font-weight:800;" onclick="Finance.confirmVaultDeposit('${id}')">Confirm Deposit</button>
+          <button class="fin-save-btn" style="background:var(--fin-green); width:100%; height:48px; border-radius:14px; font-weight:800;" onclick="Finance.confirmVaultDeposit('${id}')">${isBn ? 'জমা নিশ্চিত করুন' : 'Confirm Deposit'}</button>
         </div>
       </div>
     `;
@@ -1478,9 +1482,10 @@ const Finance = {
     const goal = this.data.savings.find(s => s.id === id);
     if (!goal) return;
 
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     let amount = parseFloat(document.getElementById('vault-deposit-amount').value);
     if (isNaN(amount) || amount <= 0) {
-      return Utils.toast('Invalid amount entered', 'error');
+      return Utils.toast(isBn ? 'সঠিক পরিমাণ লিখুন' : 'Invalid amount entered', 'error');
     }
 
     const mult = DB.getSettings().currency === 'BDT' ? this._getFXRate() : 1;
@@ -1495,14 +1500,14 @@ const Finance = {
     const availCash = allIncome - allExpenses;
     if (amountInBase > availCash + 0.0001) {
       const sym = this.getSymbol();
-      return Utils.toast(`Insufficient balance! Available: ${sym}${this.formatVal(availCash)}`, 'error');
+      return Utils.toast(isBn ? `অপর্যাপ্ত ব্যালেন্স! বিদ্যমান: ${sym}${this.formatVal(availCash)}` : `Insufficient balance! Available: ${sym}${this.formatVal(availCash)}`, 'error');
     }
 
     // Strict validation: Prevent depositing more than remaining target (with a 0.01 tolerance for currency conversions)
     if (amountInBase > remainingInBase + 0.0001) {
       const remainingDisplay = remainingInBase * mult;
       const sym = this.getSymbol();
-      return Utils.toast(`Cannot exceed remaining target! Needed: ${sym}${this.formatVal(remainingDisplay)}`, 'error');
+      return Utils.toast(isBn ? `বাকি লক্ষ্যের চেয়ে বেশি জমা দেওয়া যাবে না! প্রয়োজন: ${sym}${this.formatVal(remainingDisplay)}` : `Cannot exceed remaining target! Needed: ${sym}${this.formatVal(remainingDisplay)}`, 'error');
     }
 
     const wasComplete = goal.saved >= goal.target;
@@ -1526,9 +1531,9 @@ const Finance = {
       this.renderVaultOverlayItems();
     }
 
-    Utils.toast(`Deposited successfully!`, 'success');
+    Utils.toast(isBn ? 'সফলভাবে জমা হয়েছে!' : 'Deposited successfully!', 'success');
     if (!wasComplete && goal.saved >= goal.target) {
-      setTimeout(() => Utils.toast(`Goal "${goal.name}" Completed!`, 'success'), 500);
+      setTimeout(() => Utils.toast(isBn ? `লক্ষ্য "${goal.name}" সম্পন্ন হয়েছে!` : `Goal "${goal.name}" Completed!`, 'success'), 500);
     }
   },
 
@@ -1798,36 +1803,48 @@ const Finance = {
 
   resetCurrentMonth() {
     const m = this.currentViewDate.getMonth(), y = this.currentViewDate.getFullYear();
-    const monthName = this.currentViewDate.toLocaleString('default', { month: 'long' });
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const monthName = this.currentViewDate.toLocaleString(isBn ? 'bn-BD' : 'default', { month: 'long' });
     
-    Utils.confirm('Reset Month', `Delete all transactions and records for ${monthName} ${y}?`, () => {
-      // Decrement any vault savings that were funded by transfers in this month
-      this.data.expenses.forEach(e => {
-        if (e.category === 'transfer' && e.vaultId) {
-          const d = new Date(e.date);
-          if (d.getMonth() === m && d.getFullYear() === y) {
-            const v = this.data.savings.find(s => s.id === e.vaultId);
-            if (v) v.saved = Math.max(0, (Number(v.saved) || 0) - e.amount);
+    Utils.confirm(
+      isBn ? 'মাসিক ডেটা রিসেট' : 'Reset Month', 
+      isBn ? `${monthName} ${y}-এর সকল লেনদেন ও রেকর্ড মুছে ফেলতে চান?` : `Delete all transactions and records for ${monthName} ${y}?`, 
+      () => {
+        // Decrement any vault savings that were funded by transfers in this month
+        this.data.expenses.forEach(e => {
+          if (e.category === 'transfer' && e.vaultId) {
+            const d = new Date(e.date);
+            if (d.getMonth() === m && d.getFullYear() === y) {
+              const v = this.data.savings.find(s => s.id === e.vaultId);
+              if (v) v.saved = Math.max(0, (Number(v.saved) || 0) - e.amount);
+            }
           }
-        }
-      });
-      this.data.expenses = this.data.expenses.filter(e => { const d = new Date(e.date); return !(d.getMonth() === m && d.getFullYear() === y); });
-      this.data.income = this.data.income.filter(i => { const d = new Date(i.date); return !(d.getMonth() === m && d.getFullYear() === y); });
-      this.saveData();
-      this.closeModal();
-      this.render();
-      Utils.toast(`${monthName} data cleared`, 'info');
-    }, 'warning');
+        });
+        this.data.expenses = this.data.expenses.filter(e => { const d = new Date(e.date); return !(d.getMonth() === m && d.getFullYear() === y); });
+        this.data.income = this.data.income.filter(i => { const d = new Date(i.date); return !(d.getMonth() === m && d.getFullYear() === y); });
+        this.saveData();
+        this.closeModal();
+        this.render();
+        Utils.toast(isBn ? `${monthName}-এর ডেটা মুছে ফেলা হয়েছে` : `${monthName} data cleared`, 'info');
+      }, 
+      'warning'
+    );
   },
 
   resetAllData() {
-    Utils.confirm('WIPE ALL DATA', 'This will delete ALL transactions, income, and vaults forever across all years. This action is irreversible. Proceed?', () => {
-      this.data = { expenses: [], savings: [], income: [] };
-      this.saveData();
-      this.closeModal();
-      this.render();
-      Utils.toast('All finance history wiped', 'info');
-    }, 'danger');
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    Utils.confirm(
+      isBn ? 'সকল আর্থিক ডেটা মুছবেন?' : 'WIPE ALL DATA', 
+      isBn ? 'এটি চিরতরে আপনার সমস্ত লেনদেন, আয় এবং ভল্ট মুছে ফেলবে। এই কাজটি অপরিবর্তনীয়। এগিয়ে যেতে চান?' : 'This will delete ALL transactions, income, and vaults forever across all years. This action is irreversible. Proceed?', 
+      () => {
+        this.data = { expenses: [], savings: [], income: [] };
+        this.saveData();
+        this.closeModal();
+        this.render();
+        Utils.toast(isBn ? 'সকল আর্থিক ইতিহাস মুছে ফেলা হয়েছে' : 'All finance history wiped', 'info');
+      }, 
+      'danger'
+    );
   },
 
   exportPDF() {
