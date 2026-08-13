@@ -281,8 +281,7 @@ const Salah = {
       const formattedTime = window.n ? window.n(t.label) : t.label;
       return `
         <div class="prayer-time-pill ${isNext ? 'next' : ''}" 
-             onclick="Salah.scrollToPrayer('${t.name}')"
-             style="${skipAnim ? '' : `animation: fadeIn 0.3s ease both; animation-delay: ${idx * 0.05}s;`}">
+             onclick="Salah.scrollToPrayer('${t.name}')">
           <div class="pill-icon" style="filter:drop-shadow(${meta.glow})">${meta.icon}</div>
           <div class="pill-name">${translatedLabel}</div>
           <div class="pill-time">${formattedTime}</div>
@@ -474,8 +473,6 @@ const Salah = {
     }
     this._cardsKey = key;
 
-    this.renderNotes();
-
     const titleLocked = window.t ? window.t('Future Date Locked') : 'Future Date Locked';
     const descLocked = window.t ? window.t('You can only record prayers for today or past dates.') : 'You can only record prayers for today or past dates.';
 
@@ -505,9 +502,9 @@ const Salah = {
           const formattedTime = window.n ? window.n(this.getPrayerTime(p)) : this.getPrayerTime(p);
 
           return `
-            <div class="salah-prayer-card ${skipAnim ? '' : 'anim-fade-in'} ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}"
+            <div class="salah-prayer-card ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}"
                  id="salah-card-${p}"
-                 style="${skipAnim ? '' : `animation-delay: ${idx * 0.04}s;`} ${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
+                 style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
                
               <!-- Prayer Header -->
               <div class="salah-prayer-header">
@@ -542,7 +539,6 @@ const Salah = {
                           const sm = this.statusMeta[s];
                           return `
                             <button class="salah-option-btn ${s}"
-                                    style="${skipAnim ? '' : `animation: fadeIn 0.3s ease both; animation-delay: ${0.2 + (btnIdx * 0.05)}s;`}"
                                     onclick="Salah.selectStatus('${p}','${s}','${date}')">
                               <span class="salah-opt-icon" style="filter:drop-shadow(${sm.glow})">${sm.icon}</span>
                               <span class="salah-opt-label">${window.t ? window.t(sm.label) : sm.label}</span>
@@ -1063,29 +1059,6 @@ const Salah = {
         Utils.toast('Salah data cleared', 'info');
       }
     });
-  },
-
-  renderNotes() {
-    const wrap = document.getElementById('salah-notes-container');
-    if (!wrap) return;
-    const data = DB.getSalah(this.selectedDate);
-    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    const note = (typeof data.notes === 'string') ? data.notes : '';
-    const ph = isBn ? 'এই দিনের জন্য নোট লিখুন...' : 'Write a note for this day...';
-    wrap.innerHTML = `
-      <div class="card-header" style="margin-bottom:10px">
-        <div class="card-title">${isBn ? 'নোট' : 'Notes'}</div>
-      </div>
-      <textarea id="salah-notes-input" class="input" rows="3" maxlength="500"
-        placeholder="${ph}" oninput="Salah.saveNotes(this.value)"
-        style="width:100%;resize:vertical">${Utils.escapeHTML(note)}</textarea>
-    `;
-  },
-
-  saveNotes(v) {
-    const data = DB.getSalah(this.selectedDate);
-    data.notes = (v || '').slice(0, 500);
-    DB.setSalah(this.selectedDate, data);
   }
 };
 window.Salah = Salah;
