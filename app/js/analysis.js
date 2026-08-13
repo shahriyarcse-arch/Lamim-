@@ -55,19 +55,24 @@ const Analysis = {
     const salahScore = Utils.salahScore(salahData);
     const pointsSalah = (salahScore.pct / 100) * this.weights.salah;
 
+    // 2. Nafl & Sunnah Score (Max 15) - Matched to Goals Nafl Engine
     let pointsNafl = 0;
-    let sunnahRakatCount = 0;
     if (salahData.sunnah) {
-      if (salahData.sunnah.fajr_s) sunnahRakatCount += 2;
-      if (salahData.sunnah.dhuhr_s_b) sunnahRakatCount += 4;
-      if (salahData.sunnah.dhuhr_s_a) sunnahRakatCount += 2;
-      if (salahData.sunnah.maghrib_s) sunnahRakatCount += 2;
-      if (salahData.sunnah.isha_s) sunnahRakatCount += 2;
+      const sunnahKeys = ['fajr_s', 'dhuhr_s_b', 'dhuhr_s_a', 'maghrib_s', 'isha_s'];
+      sunnahKeys.forEach(key => {
+        const val = salahData.sunnah[key];
+        if (val === true || val === 'prayed') pointsNafl += 2;
+      });
     }
-    
-    pointsNafl += (Math.min(sunnahRakatCount, 12) / 12) * 8;
-    if (salahData.tahajjud) pointsNafl += 4;
-    if (salahData.witr > 0) pointsNafl += 3;
+
+    if (salahData.tahajjud === true || salahData.tahajjud === 'prayed' || salahData.tahajjud_rakat > 0) {
+      pointsNafl += 3;
+    }
+
+    if (salahData.witr === true || salahData.witr === 'prayed' || salahData.witr > 0) {
+      pointsNafl += 2;
+    }
+    pointsNafl = Math.min(15, pointsNafl);
 
     // 3. Dhikr Score (Max 15) - Proportional Level Logic
     const totalDhikrCount = Object.values(dhikrData).reduce((a, b) => {
