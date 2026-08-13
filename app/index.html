@@ -1939,61 +1939,6 @@
       </div>
     </div>
 
-    <!-- GOAL MODAL -->
-    <div class="modal-overlay hidden" id="goal-modal">
-      <div class="modal">
-        <div class="modal-header">
-          <h3 class="modal-title" id="goal-modal-title">New Goal</h3><button class="modal-close"
-            onclick="Goals.hideModal()"></button>
-        </div>
-        <input type="hidden" id="goal-id-field">
-        <div class="auth-form">
-          <div class="input-group"><label class="input-label">Title</label><input class="input" id="goal-title-field"
-              placeholder="e.g. Pray all 5 salah daily"></div>
-          <div class="input-group"><label class="input-label">Description</label><input class="input"
-              id="goal-desc-field" placeholder="Optional details"></div>
-          <div class="grid-2">
-            <div class="input-group"><label class="input-label">Target</label><input class="input" type="number"
-                id="goal-target-field" value="1" min="1"></div>
-            <div class="input-group"><label class="input-label">Unit</label><input class="input" id="goal-unit-field"
-                placeholder="days, pages, etc."></div>
-          </div>
-          <div class="grid-2">
-            <div class="input-group"><label class="input-label">Category</label><select class="input"
-                id="goal-category-field">
-                <option value="salah"> Salah</option>
-                <option value="dhikr"> Dhikr</option>
-                <option value="quran"> Quran</option>
-                <option value="charity"> Charity</option>
-                <option value="learning"> Learning</option>
-                <option value="other"> Other</option>
-              </select></div>
-            <div class="input-group"><label class="input-label">Priority</label><select class="input"
-                id="goal-priority-field">
-                <option value="high"> High</option>
-                <option value="medium" selected>🟡 Medium</option>
-                <option value="low">🟢 Low</option>
-              </select></div>
-          </div>
-          <div class="grid-2">
-            <div class="input-group"><label class="input-label">Deadline</label><input class="input" type="date"
-                id="goal-deadline-field"></div>
-            <div class="input-group"><label class="input-label">Recurring</label><select class="input"
-                id="goal-recurring-field">
-                <option value="">None</option>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-              </select></div>
-          </div>
-          <div class="input-group"><label class="input-label">Milestones (one per line)</label><textarea class="input"
-              id="goal-milestone-field" rows="3" placeholder="Milestone 1&#10;Milestone 2"></textarea></div>
-        </div>
-        <div class="modal-footer"><button class="btn btn-secondary" onclick="Goals.hideModal()">Cancel</button><button
-            class="btn btn-gold" onclick="Goals.saveGoal()">Save Goal</button></div>
-      </div>
-    </div>
-
     <!-- DHIKR ADD MODAL -->
     <div class="modal-overlay hidden" id="dhikr-add-modal">
       <div class="modal">
@@ -2485,7 +2430,7 @@
 
 
     <!-- Core Engine -->
-    <script defer src="js/lang.js?v=129"></script>
+    <script defer src="js/lang.js?v=218"></script>
     <script defer src="js/utils.js?v=226"></script>
     <script defer src="js/db.js?v=218"></script>
     <script defer src="js/auth.js?v=166"></script>

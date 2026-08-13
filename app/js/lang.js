@@ -2,12 +2,18 @@ const Translations = {
   // Navigation & Sections
   'Home': 'হোম',
   'Salah Tracker': 'সালাত ট্র্যাকার',
+  'Salah': 'সালাত',
   'Dhikr Counter': 'যিকির কাউন্টার',
+  'Dhikr': 'যিকির',
   'Nafl Salah': 'নফল সালাত',
+  'Nafl': 'নফল',
   'Habits': 'হ্যাবিটস',
   'Islamic Finance': 'ইসলামিক ফাইন্যান্স',
+  'Finance': 'ফাইন্যান্স',
   'Analysis': 'বিশ্লেষণ',
   'Profile': 'প্রোফাইল',
+  'Data & Backup': 'ডেটা ও ব্যাকআপ',
+  'About': 'সম্পর্কে',
   // Gym & Career redesign
   'Gym & Diet': 'জিম ও ডায়েট',
   'Career Builder': 'ক্যারিয়ার বিল্ডার',
