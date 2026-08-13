@@ -79,6 +79,11 @@ const Goals = {
     const total = (this.sunnahList ? this.sunnahList.length : 0) + 2;
     const pct = total > 0 ? (done / total) * 100 : 0;
     
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const formattedDone = window.n ? window.n(done) : done;
+    const formattedTotal = window.n ? window.n(total) : total;
+    const statText = isBn ? `${formattedDone} / ${formattedTotal} ইবাদত সম্পন্ন` : `${formattedDone} / ${formattedTotal} Deeds Complete`;
+
     hero.innerHTML = `
       <div class="nafl-celestial-glass ${skipAnim ? '' : 'anim-scale-up'}">
         <div class="celestial-moon-wrap">
@@ -88,12 +93,12 @@ const Goals = {
           </svg>
         </div>
         <div class="nafl-hero-content">
-          <h1 class="nafl-hero-title">Celestial Deeds</h1>
-          <p class="nafl-hero-subtitle">Light up your path with Sunnah & Nafl</p>
+          <h1 class="nafl-hero-title">${isBn ? 'নফল ও সুন্নাত ইবাদত' : 'Celestial Deeds'}</h1>
+          <p class="nafl-hero-subtitle">${isBn ? 'সুন্নাত ও নফলের মাধ্যমে আমল বৃদ্ধি করুন' : 'Light up your path with Sunnah & Nafl'}</p>
           <div class="nafl-progress-track">
             <div class="nafl-progress-bar" style="width: ${pct}%"></div>
           </div>
-          <div class="nafl-progress-stat">${done} / ${total} Deeds Complete</div>
+          <div class="nafl-progress-stat">${statText}</div>
         </div>
       </div>
     `;
@@ -144,7 +149,7 @@ const Goals = {
   resetToday() {
     UI.showSettingsModal({
       title: 'Reset Nafl Data?',
-      desc: `Clear all Sunnah & Nafl records for ${Utils.formatDate(new Date(this.currentDate), {day:'numeric', month:'short'})}?`,
+      desc: `Clear all Sunnah & Nafl records for ${Utils.formatDate(Utils.parseDate(this.currentDate), {day:'numeric', month:'short'})}?`,
       confirmText: 'Yes, Clear',
       type: 'danger',
       onConfirm: () => {
@@ -629,7 +634,7 @@ const Goals = {
 
       return `
         <div class="history-item-modern ${allSunnahMissed ? 'all-missed' : ''}">
-          <div class="h-item-date">${day.date === Utils.todayStr() ? 'Today' : Utils.formatDate(new Date(day.date), { day: 'numeric', month: 'short' })}</div>
+          <div class="h-item-date">${day.date === Utils.todayStr() ? 'Today' : Utils.formatDate(Utils.parseDate(day.date), { day: 'numeric', month: 'short' })}</div>
           <div class="h-item-content">
             <div class="h-item-main">
                ${sunnahDone.map(name => `<div class="h-pill"><span class="dot" style="background:#34d399"></span>${name}</div>`).join('')}
@@ -648,75 +653,6 @@ const Goals = {
 
   hideHistory() {
     document.getElementById('nafl-history-modal')?.classList.add('hidden');
-  },
-
-  _resetGoalForm() {
-    ['goal-id-field', 'goal-title', 'goal-description', 'goal-target', 'goal-unit',
-     'goal-category', 'goal-priority', 'goal-deadline-field', 'goal-recurring-field', 'goal-milestone-field']
-      .forEach((id) => { const el = document.getElementById(id); if (el) el.value = ''; });
-    document.getElementById('goal-title')?.classList.remove('input-error');
-  },
-
-
-  hideModal() {
-    document.getElementById('goal-modal')?.classList.add('hidden');
-    this._resetGoalForm();
-  },
-
-  saveGoal() {
-    if (this._savingGoal) return;
-    const get = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
-    const title = get('goal-title-field').trim();
-    const titleEl = document.getElementById('goal-title-field');
-    if (!title) {
-      Utils.toast('Goal title is required', 'error');
-      titleEl?.classList.add('input-error');
-      titleEl?.focus();
-      return;
-    }
-    const targetRaw = get('goal-target-field').trim();
-    let target = parseFloat(targetRaw);
-    if (targetRaw && (isNaN(target) || target <= 0)) {
-      Utils.toast('Target must be a positive number', 'error');
-      return;
-    }
-    if (isNaN(target)) target = 0;
-
-    this._savingGoal = true;
-    try {
-      const milestones = get('goal-milestone-field').split('\n').map((s) => s.trim()).filter(Boolean);
-      const goal = {
-        title,
-        description: get('goal-desc-field').trim(),
-        target,
-        unit: get('goal-unit-field').trim(),
-        category: get('goal-category-field').trim(),
-        priority: get('goal-priority-field').trim(),
-        deadline: get('goal-deadline-field'),
-        recurring: get('goal-recurring-field'),
-        milestones,
-        updatedAt: new Date().toISOString()
-      };
-      const idField = get('goal-id-field');
-      const id = parseInt(idField, 10);
-      if (idField && !isNaN(id)) {
-        goal.id = id;
-        DB.updateGoal(id, goal);
-        Utils.toast('Goal updated', 'success');
-      } else {
-        goal.id = 'g_' + Date.now();
-        DB.addGoal(goal);
-        Utils.toast('Goal added', 'success');
-      }
-      if (typeof this.updateHomeSummary === 'function') this.updateHomeSummary();
-      window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-      this.hideModal();
-    } catch (e) {
-      console.error('[Goals] saveGoal error', e);
-      Utils.toast('Could not save goal', 'error');
-    } finally {
-      this._savingGoal = false;
-    }
   }
 };
 window.Goals = Goals;
