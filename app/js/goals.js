@@ -246,13 +246,13 @@ const Goals = {
             <div class="salah-status-selector">
               <div class="salah-options-label">Did you pray this Sunnah?</div>
               <div class="salah-options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <button class="salah-option-btn" style="border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.05);" onclick="Goals.selectSunnah('${item.id}', 'prayed')">
+                <button type="button" class="salah-option-btn" style="border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.05);" onclick="Goals.selectSunnah('${item.id}', 'prayed')">
                   <span class="salah-opt-icon" style="filter: drop-shadow(0 0 8px rgba(52,211,153,0.5)); display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px; color:#34d399"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg></span>
                   <span class="salah-opt-label" style="color: #34d399; margin-top:4px;">Prayed</span>
                   <span class="salah-opt-desc">Sunnah Mu'akkadah</span>
                   <span class="salah-opt-pts">+${pts} pts</span>
                 </button>
-                <button class="salah-option-btn" style="border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.05);" onclick="Goals.selectSunnah('${item.id}', 'missed')">
+                <button type="button" class="salah-option-btn" style="border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.05);" onclick="Goals.selectSunnah('${item.id}', 'missed')">
                   <span class="salah-opt-icon" style="filter: drop-shadow(0 0 8px rgba(248,81,73,0.5)); display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px; color:#f85149"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
                   <span class="salah-opt-label" style="color: #f85149; margin-top:4px;">Missed</span>
                   <span class="salah-opt-desc">Not prayed</span>
@@ -324,13 +324,13 @@ const Goals = {
             : `<div class="salah-status-selector">
                  <div class="salah-options-label">Did you pray this Sunnah?</div>
                  <div class="salah-options-grid" style="grid-template-columns: repeat(2, 1fr);">
-                   <button class="salah-option-btn" style="border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.05);" onclick="Goals.selectSunnah('${item.id}', 'prayed')">
+                   <button type="button" class="salah-option-btn" style="border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.05);" onclick="Goals.selectSunnah('${item.id}', 'prayed')">
                      <span class="salah-opt-icon" style="filter: drop-shadow(0 0 8px rgba(52,211,153,0.5)); display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px; color:#34d399"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg></span>
                      <span class="salah-opt-label" style="color: #34d399; margin-top:4px;">Prayed</span>
                      <span class="salah-opt-desc">Sunnah Mu'akkadah</span>
                      <span class="salah-opt-pts">+${pts} pts</span>
                    </button>
-                   <button class="salah-option-btn" style="border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.05);" onclick="Goals.selectSunnah('${item.id}', 'missed')">
+                   <button type="button" class="salah-option-btn" style="border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.05);" onclick="Goals.selectSunnah('${item.id}', 'missed')">
                      <span class="salah-opt-icon" style="filter: drop-shadow(0 0 8px rgba(248,81,73,0.5)); display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px; color:#f85149"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
                      <span class="salah-opt-label" style="color: #f85149; margin-top:4px;">Missed</span>
                      <span class="salah-opt-desc">Not prayed</span>

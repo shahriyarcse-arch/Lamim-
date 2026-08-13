@@ -530,7 +530,7 @@ const Salah = {
                 ${this.statuses.map((s) => {
                   const sm = this.statusMeta[s];
                   return `
-                    <button class="salah-option-btn ${s}"
+                    <button type="button" class="salah-option-btn ${s}"
                             onclick="Salah.selectStatus('${p}','${s}','${date}')">
                       <span class="salah-opt-icon" style="filter:drop-shadow(${sm.glow})">${sm.icon}</span>
                       <span class="salah-opt-label">${window.t ? window.t(sm.label) : sm.label}</span>
@@ -631,7 +631,7 @@ const Salah = {
                         ${this.statuses.map((s, btnIdx) => {
                           const sm = this.statusMeta[s];
                           return `
-                            <button class="salah-option-btn ${s}"
+                            <button type="button" class="salah-option-btn ${s}"
                                     onclick="Salah.selectStatus('${p}','${s}','${date}')">
                               <span class="salah-opt-icon" style="filter:drop-shadow(${sm.glow})">${sm.icon}</span>
                               <span class="salah-opt-label">${window.t ? window.t(sm.label) : sm.label}</span>
