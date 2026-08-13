@@ -203,8 +203,6 @@ updateSectionTitle() {
     // Splash → route (offline boot sequence)
     this._bootComplete = false;
     setTimeout(() => {
-      this._hideSplash();
-      
       const user = DB.getUser();
       
       if (user) {
@@ -214,22 +212,32 @@ updateSectionTitle() {
       } else {
         this.showPage('setup');
       }
-      this._bootComplete = true;
-    }, 800);
 
-    // Safety fallback - guarantees splash screen disappears within 2 seconds under any circumstance
+      // Ensure target section is fully painted behind opaque splash before starting fade-out
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this._hideSplash();
+          this._bootComplete = true;
+        });
+      });
+    }, 600);
+
+    // Safety fallback - guarantees splash screen disappears within 2.5 seconds under any circumstance
     setTimeout(() => {
       if (this._bootComplete) return; 
       console.warn('[Boot] Quick safety fallback triggered');
-      this._hideSplash();
       if (DB.getUser()) {
+        if (DB.refreshSpiritScore) DB.refreshSpiritScore();
         this.showDashboard();
         this.checkBackupReminder();
       } else {
         this.showPage('setup');
       }
-      this._bootComplete = true;
-    }, 2000);
+      requestAnimationFrame(() => {
+        this._hideSplash();
+        this._bootComplete = true;
+      });
+    }, 2500);
 
     // Nav bindings
     this.bindNav();
