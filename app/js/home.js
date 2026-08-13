@@ -16,8 +16,11 @@ const Home = {
   },
 
   onDataUpdated() {
+    this.render();
     this.updateNextPrayer();
+    this.updateSpiritScore();
     this.updateSalahTimeline();
+    this.renderDailyInsights();
   },
 
   bindAuroraScrollPause() {
@@ -100,15 +103,17 @@ const Home = {
 
     if (next && cardEl) {
       cardEl.style.display = 'flex';
-      if (nameEl) nameEl.textContent = next.name.charAt(0).toUpperCase() + next.name.slice(1);
-      if (timeEl) timeEl.textContent = next.label;
+      const capName = next.name.charAt(0).toUpperCase() + next.name.slice(1);
+      if (nameEl) nameEl.textContent = window.t ? window.t(capName) : capName;
+      if (timeEl) timeEl.textContent = window.n ? window.n(next.label) : next.label;
 
       if (this.countdownInterval) clearInterval(this.countdownInterval);
       if (this._nextPrayerTimeout) clearTimeout(this._nextPrayerTimeout);
       
       const updateCountdown = () => {
         if (countdownEl) {
-          countdownEl.textContent = Utils.countdownTo(next.time);
+          const cd = Utils.countdownTo(next.time);
+          countdownEl.textContent = window.n ? window.n(cd) : cd;
           if (next.time - new Date() <= 0) {
             clearInterval(this.countdownInterval);
             this._nextPrayerTimeout = setTimeout(() => this.updateNextPrayer(), 1000);
@@ -124,7 +129,8 @@ const Home = {
     const user = DB.getUser();
     const scoreEl = document.getElementById('home-spirit-score');
     if (scoreEl && user) {
-      scoreEl.textContent = Math.round(user.spirit_score || 0);
+      const val = Math.round(user.spirit_score || 0);
+      scoreEl.textContent = window.n ? window.n(val) : val;
     }
   },
 
@@ -135,7 +141,11 @@ const Home = {
     const container = document.getElementById('home-salah-timeline');
     const countBadge = document.getElementById('home-salah-count-badge');
 
-    if (countBadge) countBadge.textContent = `${score.done}/5`;
+    if (countBadge) {
+      const d = window.n ? window.n(score.done) : score.done;
+      const t = window.n ? window.n(5) : 5;
+      countBadge.textContent = `${d}/${t}`;
+    }
 
     if (container) {
       const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -155,10 +165,11 @@ const Home = {
         const status = salah[key];
         let statusClass = status ? `status-${status}` : '';
         const initial = p.charAt(0);
+        const label = window.t ? window.t(p) : p;
         html += `
           <div class="timeline-node ${statusClass}" onclick="App.navigateTo('salah')" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p}">
             <div class="timeline-dot">${initial}</div>
-            <span class="timeline-label">${p}</span>
+            <span class="timeline-label">${label}</span>
           </div>
         `;
       });
@@ -175,12 +186,13 @@ const Home = {
       if (typeof v === 'number') totalDhikr += v;
     });
     const dhikrEl = document.getElementById('home-insight-dhikr');
-    if (dhikrEl) dhikrEl.textContent = totalDhikr;
+    if (dhikrEl) dhikrEl.textContent = window.n ? window.n(totalDhikr) : totalDhikr;
 
     // 2. Streak — use Salah streak (perfect days)
     const salahStreak = DB.getSalahStreak();
     const streakEl = document.getElementById('home-insight-streak');
-    if (streakEl) streakEl.textContent = salahStreak.perfect || 0;
+    const streakVal = salahStreak.perfect || 0;
+    if (streakEl) streakEl.textContent = window.n ? window.n(streakVal) : streakVal;
 
     // 3. Dynamic Daily Quote
     const quote = Utils.getQuote();
