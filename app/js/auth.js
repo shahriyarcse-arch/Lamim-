@@ -45,7 +45,7 @@ const Auth = {
     
     if (currentStep === 2) {
       if (!this.selectedGender) {
-        Utils.toast('Please select a gender to continue', 'warning');
+        if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Please select a gender to continue', 'warning');
         return; // Prevent skipping
       }
     }
@@ -157,12 +157,12 @@ const Auth = {
         if (latInput) latInput.value = res.lat.toFixed(6);
         if (lngInput) lngInput.value = res.lng.toFixed(6);
         if (statusText) statusText.textContent = `Detected: ${res.name}`;
-        Utils.toast(`Location detected: ${res.name}`, 'success');
+        if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast(`Location detected: ${res.name}`, 'success');
         if (icon) icon.classList.remove('rotating');
         this._isSyncingLocation = false;
       },
       (err) => {
-        Utils.toast('Could not detect location. Please input coordinates manually.', 'warning');
+        if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Could not detect location. Please input coordinates manually.', 'warning');
         if (statusText) statusText.textContent = 'Auto-detection failed. Enter manually.';
         if (icon) icon.classList.remove('rotating');
         this._isSyncingLocation = false;
@@ -202,7 +202,7 @@ const Auth = {
     const latVal = latInput && latInput.value ? parseFloat(latInput.value) : NaN;
     const lngVal = lngInput && lngInput.value ? parseFloat(lngInput.value) : NaN;
     if (isNaN(latVal) || latVal < -90 || latVal > 90 || isNaN(lngVal) || lngVal < -180 || lngVal > 180) {
-      Utils.toast('Please detect your location or enter coordinates manually', 'warning');
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Please detect your location or enter coordinates manually', 'warning');
       const err = document.getElementById('setup-loc-err');
       if (err) { err.textContent = 'Location is required'; err.classList.add('show'); }
       return; // Prevent form submission without location
@@ -271,7 +271,7 @@ const Auth = {
       DB.setSettings(settings);
       DB.saveProfileVault(user);
 
-      Utils.toast('Welcome, ' + name + '!', 'success');
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Welcome, ' + name + '!', 'success');
 
       setTimeout(() => {
         App.showDashboard();
@@ -280,7 +280,7 @@ const Auth = {
       }, 400);
     } catch (err) {
       console.error('[Auth] submitSetup error:', err);
-      Utils.toast('Something went wrong. Please try again.', 'error');
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Something went wrong. Please try again.', 'error');
       this._submitting = false;
       if (finishBtn) { finishBtn.disabled = false; finishBtn.classList.remove('btn-loading'); }
     }
@@ -322,6 +322,7 @@ const Auth = {
       return;
     }
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     container.style.display = 'block';
     list.innerHTML = profiles.map(p => `
       <div style="display:flex; align-items:center; justify-content:space-between; padding: 10px 14px; border-radius:14px; background:var(--color-surface-card); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;" onclick="Auth.switchSavedProfile('${p.id}')">
@@ -331,10 +332,10 @@ const Auth = {
           </div>
           <div>
             <div style="font-size:14px; font-weight:700; color:var(--color-text-primary);">${Utils.escapeHTML(p.name)}</div>
-            <div style="font-size:11px; color:var(--color-text-muted);">Saved profile on device</div>
+            <div style="font-size:11px; color:var(--color-text-muted);">${isBn ? 'এই ডিভাইসে সেভ করা প্রোফাইল' : 'Saved profile on device'}</div>
           </div>
         </div>
-        <span style="font-size:13px; font-weight:700; color:var(--color-accent-primary);">Switch →</span>
+        <span style="font-size:13px; font-weight:700; color:var(--color-accent-primary);">${isBn ? 'স্যুইচ করুন →' : 'Switch →'}</span>
       </div>
     `).join('');
   },
@@ -342,7 +343,7 @@ const Auth = {
   async switchSavedProfile(profileId) {
     const ok = await DB.switchProfile(profileId);
     if (ok) {
-      Utils.toast('Switched profile successfully!', 'success');
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Switched profile successfully!', 'success');
       if (typeof App !== 'undefined') {
         App.showDashboard();
       }
