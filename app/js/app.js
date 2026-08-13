@@ -6,7 +6,7 @@
 window.LamimVerses = window.LamimVerses || [];
 
 // Single source of truth mapping a section id to its module (used by router + bus).
-const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, mujahid: Mujahid, habits: Mujahid, finance: Finance, gym: Gym, career: Career };
+const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, habits: typeof Habits !== 'undefined' ? Habits : Mujahid, mujahid: typeof Habits !== 'undefined' ? Habits : Mujahid, finance: Finance, gym: Gym, career: Career };
 
 const App = {
   currentSection: '',
@@ -48,8 +48,9 @@ const App = {
     if (current === 'analysis' && typeof Analysis !== 'undefined') {
       Utils.safeRun(() => Analysis.init(), 'Analysis Render');
     }
-    if (current === 'mujahid' && typeof Mujahid !== 'undefined') {
-      Utils.safeRun(() => Mujahid.render(), 'Mujahid Render');
+    if ((current === 'habits' || current === 'mujahid') && (typeof Habits !== 'undefined' || typeof Mujahid !== 'undefined')) {
+      const mod = typeof Habits !== 'undefined' ? Habits : Mujahid;
+      Utils.safeRun(() => mod.render(), 'Habits Render');
     }
 
 

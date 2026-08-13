@@ -59,7 +59,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       try {
-        var valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'mujahid', 'finance', 'gym', 'career'];
+        var valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'mujahid', 'finance', 'gym', 'career'];
         var sec = new URLSearchParams(location.search).get('section');
         if ((!sec || valid.indexOf(sec) === -1) && history.state && history.state.section) {
           sec = history.state.section;
@@ -185,8 +185,8 @@
   <link rel="stylesheet" href="css/activity-log.css">
   <link rel="stylesheet" href="css/profile-premium.css?v=144" media="print" onload="this.media='all'">
 
-  <!-- Mujahid MUST load last to override all competing rules -->
-  <link rel="stylesheet" href="css/mujahid.css?v=143">
+  <!-- Habits CSS MUST load last to override all competing rules -->
+  <link rel="stylesheet" href="css/habits.css?v=143">
   <link rel="stylesheet" href="css/home.css?v=148">
   <link rel="stylesheet" href="css/ui-system.css?v=8">
   <link rel="stylesheet" href="css/responsive.css?v=1">
@@ -599,7 +599,7 @@
                   <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
                   <path d="M19 3v4M17 5h4" />
                 </svg></span><span class="nav-label">Nafl Salah</span></div>
-            <div class="nav-item" data-section="mujahid"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
+            <div class="nav-item" data-section="habits"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
                   width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -1678,8 +1678,8 @@
 
           </section>
 
-          <!-- ===== MUJAHID ===== -->
-          <section class="section-panel" id="section-mujahid">
+          <!-- ===== HABITS ===== -->
+          <section class="section-panel" id="section-habits">
             <div class="section-header">
               <h2 class="section-title"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="28"
                     height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -1688,7 +1688,7 @@
                     <path d="m9 11 2 2 4-4" />
                   </svg></span><span data-i18n="Habits">Habits</span></h2>
               <div style="display:flex; gap:12px; align-items:center;">
-                <button class="section-tools-btn" onclick="Mujahid.showBreathingExercise()" title="Calm Breathing">
+                <button class="section-tools-btn" onclick="Habits.showBreathingExercise()" title="Calm Breathing">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path
@@ -1697,7 +1697,7 @@
                     <path d="M18.9 7.1a11.1 11.1 0 0 1 1.1 4.1" />
                   </svg>
                 </button>
-                <button class="section-tools-btn" onclick="Mujahid.showToolsModal()" title="Habits Settings">
+                <button class="section-tools-btn" onclick="Habits.showToolsModal()" title="Habits Settings">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path
@@ -1707,7 +1707,7 @@
                 </button>
               </div>
             </div>
-            <div id="mujahid-content"></div>
+            <div id="habits-content"></div>
           </section>
 
           <!-- ===== FINANCE ===== -->
@@ -1890,7 +1890,7 @@
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
                 <path d="M19 3v4M17 5h4" />
               </svg></span><span data-i18n="Nafl">Nafl</span></div>
-          <div class="bottom-nav-item" data-section="mujahid"><span class="bnav-icon"><svg
+          <div class="bottom-nav-item" data-section="habits"><span class="bnav-icon"><svg
                 xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -2042,27 +2042,27 @@
       </div>
     </div>
 
-    <!-- MUJAHID ADD MODAL -->
-    <div class="modal-overlay hidden" id="mujahid-add-modal" onclick="if(event.target===this) Mujahid.hideAddModal()">
+    <!-- HABITS ADD MODAL -->
+    <div class="modal-overlay hidden" id="habits-add-modal" onclick="if(event.target===this) Habits.hideAddModal()">
       <div class="modal anim-scale-up" style="max-width:400px;">
         <div class="modal-header">
           <h3 class="modal-title">Add Habit to Quit</h3>
-          <button class="modal-close" onclick="Mujahid.hideAddModal()"></button>
+          <button class="modal-close" onclick="Habits.hideAddModal()"></button>
         </div>
         <div class="modal-body" style="padding:20px; max-height:80vh; overflow-y:auto;">
           <!-- STEP 1: SELECT OR TYPE HABIT -->
           <div style="margin-bottom:16px;">
-            <input type="text" id="mujahid-custom-habit-input" class="mujahid-forge-field"
+            <input type="text" id="habits-custom-habit-input" class="habits-forge-field"
               placeholder=" Search or type a habit..." style="margin-bottom:14px; border-width:2px;" />
 
-            <div id="mujahid-default-habits" class="mujahid-habits-grid"
+            <div id="habits-default-habits" class="habits-habits-grid"
               style="margin-bottom:0; max-height:220px; overflow-y:auto; padding-right:4px;">
               <!-- Presets injected here -->
             </div>
           </div>
 
           <!-- STEP 2: CUSTOMIZE (COMPACT) -->
-          <div class="mujahid-forge-input-wrap"
+          <div class="habits-forge-input-wrap"
             style="margin-top:0; padding:12px; background:var(--color-bg-secondary, rgba(255,255,255,0.02));">
             <!-- Step 2.1: Visual Theme (Collapsible) -->
             <details style="margin-bottom:16px;">
@@ -2076,7 +2076,7 @@
               </summary>
               <div
                 style="margin-top:12px; padding:12px; background:var(--color-bg-tertiary, rgba(0,0,0,0.2)); border-radius:12px; border:1px solid var(--color-divider-subtle, rgba(255,255,255,0.05));">
-                <div id="mujahid-custom-colors" class="mujahid-color-selector"
+                <div id="habits-custom-colors" class="habits-color-selector"
                   style="margin-bottom:0; gap:8px; flex-wrap:wrap;">
                   <div class="color-dot active" data-color="#6366f1"
                     style="background:#6366f1; width:24px; height:24px;"></div>
@@ -2094,26 +2094,26 @@
             <div class="custom-dt-picker-card"
               style="background:var(--color-bg-secondary, rgba(255,255,255,0.02)); border:1px solid var(--color-divider-subtle, rgba(255,255,255,0.05)); border-radius:16px; padding:16px; margin-bottom:16px; text-align:center;">
               <!-- Display Selected Date/Time dynamically -->
-              <div id="mujahid-dt-display"
+              <div id="habits-dt-display"
                 style="font-size:14px; font-weight:800; color:var(--color-accent-green, #10b981); margin-bottom:12px; letter-spacing:0.5px; text-transform:uppercase;">
                 Starting: Right Now
               </div>
 
               <!-- Quick Date Buttons + Custom Trigger -->
               <div class="forge-quick-dates" style="justify-content:center; gap:6px;">
-                <button class="quick-date-btn active" onclick="Mujahid.setForgeQuickDate(0, this)">Right Now</button>
-                <button class="quick-date-btn" onclick="Mujahid.setForgeQuickDate(1, this)">Yesterday</button>
-                <button class="quick-date-btn" onclick="Mujahid.setForgeQuickDate(3, this)">3 Days Ago</button>
-                <button class="quick-date-btn" onclick="Mujahid.setForgeQuickDate(7, this)">1 Week Ago</button>
-                <button class="quick-date-btn" id="mujahid-custom-trigger"
-                  onclick="Mujahid.toggleCustomDTPicker(this)">Custom...</button>
+                <button class="quick-date-btn active" onclick="Habits.setForgeQuickDate(0, this)">Right Now</button>
+                <button class="quick-date-btn" onclick="Habits.setForgeQuickDate(1, this)">Yesterday</button>
+                <button class="quick-date-btn" onclick="Habits.setForgeQuickDate(3, this)">3 Days Ago</button>
+                <button class="quick-date-btn" onclick="Habits.setForgeQuickDate(7, this)">1 Week Ago</button>
+                <button class="quick-date-btn" id="habits-custom-trigger"
+                  onclick="Habits.toggleCustomDTPicker(this)">Custom...</button>
               </div>
 
               <!-- Hidden default input for backward compatibility -->
-              <input type="datetime-local" id="mujahid-new-habit-start" class="hidden" style="display:none;" />
+              <input type="datetime-local" id="habits-new-habit-start" class="hidden" style="display:none;" />
 
               <!-- Collapsible Custom Selector Wheel/Inputs -->
-              <div id="mujahid-custom-dt-controls"
+              <div id="habits-custom-dt-controls"
                 style="display:none; margin-top:16px; border-top:1px solid var(--color-divider-subtle, rgba(255,255,255,0.05)); padding-top:16px; text-align:left;">
                 <!-- Days Ago Stepper -->
                 <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
@@ -2126,9 +2126,9 @@
                       Days (Today)</div>
                   </div>
                   <div style="display:flex; gap:6px;">
-                    <button type="button" class="quick-date-btn" onclick="Mujahid.adjustCustomDT('days', -1)"
+                    <button type="button" class="quick-date-btn" onclick="Habits.adjustCustomDT('days', -1)"
                       style="width:36px; height:36px; border-radius:10px; padding:0; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; cursor:pointer;">-</button>
-                    <button type="button" class="quick-date-btn" onclick="Mujahid.adjustCustomDT('days', 1)"
+                    <button type="button" class="quick-date-btn" onclick="Habits.adjustCustomDT('days', 1)"
                       style="width:36px; height:36px; border-radius:10px; padding:0; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; cursor:pointer;">+</button>
                   </div>
                 </div>
@@ -2147,9 +2147,9 @@
                         12</div>
                     </div>
                     <div style="display:flex; gap:4px;">
-                      <button type="button" class="quick-date-btn" onclick="Mujahid.adjustCustomDT('hour', -1)"
+                      <button type="button" class="quick-date-btn" onclick="Habits.adjustCustomDT('hour', -1)"
                         style="width:28px; height:28px; border-radius:6px; padding:0; display:flex; align-items:center; justify-content:center; font-weight:800; cursor:pointer;">-</button>
-                      <button type="button" class="quick-date-btn" onclick="Mujahid.adjustCustomDT('hour', 1)"
+                      <button type="button" class="quick-date-btn" onclick="Habits.adjustCustomDT('hour', 1)"
                         style="width:28px; height:28px; border-radius:6px; padding:0; display:flex; align-items:center; justify-content:center; font-weight:800; cursor:pointer;">+</button>
                     </div>
                   </div>
@@ -2166,9 +2166,9 @@
                         00</div>
                     </div>
                     <div style="display:flex; gap:4px;">
-                      <button type="button" class="quick-date-btn" onclick="Mujahid.adjustCustomDT('minute', -5)"
+                      <button type="button" class="quick-date-btn" onclick="Habits.adjustCustomDT('minute', -5)"
                         style="width:28px; height:28px; border-radius:6px; padding:0; display:flex; align-items:center; justify-content:center; font-weight:800; cursor:pointer;">-</button>
-                      <button type="button" class="quick-date-btn" onclick="Mujahid.adjustCustomDT('minute', 5)"
+                      <button type="button" class="quick-date-btn" onclick="Habits.adjustCustomDT('minute', 5)"
                         style="width:28px; height:28px; border-radius:6px; padding:0; display:flex; align-items:center; justify-content:center; font-weight:800; cursor:pointer;">+</button>
                     </div>
                   </div>
@@ -2181,16 +2181,16 @@
                     / PM Segment</span>
                   <div
                     style="display:flex; background:var(--color-bg-tertiary, rgba(0,0,0,0.3)); padding:4px; border-radius:10px; border:1px solid var(--color-divider-subtle, rgba(255,255,255,0.05));">
-                    <button type="button" id="ampm-am-btn" class="quick-date-btn" onclick="Mujahid.setCustomAMPM('AM')"
+                    <button type="button" id="ampm-am-btn" class="quick-date-btn" onclick="Habits.setCustomAMPM('AM')"
                       style="padding:6px 14px; border-radius:8px; border:none; font-size:12px; font-weight:800; cursor:pointer;">AM</button>
-                    <button type="button" id="ampm-pm-btn" class="quick-date-btn" onclick="Mujahid.setCustomAMPM('PM')"
+                    <button type="button" id="ampm-pm-btn" class="quick-date-btn" onclick="Habits.setCustomAMPM('PM')"
                       style="padding:6px 14px; border-radius:8px; border:none; font-size:12px; font-weight:800; cursor:pointer;">PM</button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <button class="forge-action-btn" onclick="Mujahid.addCustomHabit()" style="padding:14px;">FORGE
+            <button class="forge-action-btn" onclick="Habits.addCustomHabit()" style="padding:14px;">FORGE
               TRACKER</button>
           </div>
         </div>
@@ -2200,29 +2200,29 @@
 
 
     <!-- START DATE MODAL -->
-    <div class="modal-overlay hidden" id="mujahid-startdate-modal"
-      onclick="if(event.target===this) Mujahid.hideStartDateModal()">
+    <div class="modal-overlay hidden" id="habits-startdate-modal"
+      onclick="if(event.target===this) Habits.hideStartDateModal()">
       <div class="modal anim-scale-up" style="max-width:320px;">
         <div class="modal-header">
           <h3 class="modal-title">Set Start Time</h3>
-          <button class="modal-close" onclick="Mujahid.hideStartDateModal()"></button>
+          <button class="modal-close" onclick="Habits.hideStartDateModal()"></button>
         </div>
         <div class="modal-body">
           <p>When did you start fighting this habit?</p>
-          <input type="hidden" id="mujahid-startdate-habit-id" value="">
-          <input type="datetime-local" id="mujahid-startdate-input" class="input">
-          <button class="modal-btn-primary" onclick="Mujahid.saveStartDate()">Save Progress</button>
+          <input type="hidden" id="habits-startdate-habit-id" value="">
+          <input type="datetime-local" id="habits-startdate-input" class="input">
+          <button class="modal-btn-primary" onclick="Habits.saveStartDate()">Save Progress</button>
         </div>
       </div>
     </div>
 
     <!-- RELAPSE MODAL -->
-    <div class="modal-overlay hidden" id="mujahid-relapse-modal"
-      onclick="if(event.target===this) Mujahid.hideRelapseModal()">
-      <div class="modal mujahid-relapse-modal anim-scale-up" style="max-width:340px;">
+    <div class="modal-overlay hidden" id="habits-relapse-modal"
+      onclick="if(event.target===this) Habits.hideRelapseModal()">
+      <div class="modal habits-relapse-modal anim-scale-up" style="max-width:340px;">
         <div class="modal-header">
-          <h3 class="modal-title mujahid-relapse-title">
-            <span class="mujahid-relapse-title-icon">
+          <h3 class="modal-title habits-relapse-title">
+            <span class="habits-relapse-title-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 9v4" />
@@ -2232,26 +2232,26 @@
             </span>
             Mark Relapse
           </h3>
-          <button class="modal-close" onclick="Mujahid.hideRelapseModal()"></button>
+          <button class="modal-close" onclick="Habits.hideRelapseModal()"></button>
         </div>
         <div class="modal-body">
-          <p class="mujahid-relapse-sub">A relapse is a lesson, not a failure. Why did it happen?</p>
-          <input type="hidden" id="mujahid-relapse-habit-id" value="">
-          <textarea id="mujahid-relapse-reason" class="input mujahid-relapse-textarea" rows="3"
+          <p class="habits-relapse-sub">A relapse is a lesson, not a failure. Why did it happen?</p>
+          <input type="hidden" id="habits-relapse-habit-id" value="">
+          <textarea id="habits-relapse-reason" class="input habits-relapse-textarea" rows="3"
             placeholder="Identify the trigger (e.g. stress, boredom)..." style="resize:vertical;"></textarea>
-          <button class="modal-btn-primary danger" onclick="Mujahid.confirmRelapse()">Confirm Relapse &amp;
+          <button class="modal-btn-primary danger" onclick="Habits.confirmRelapse()">Confirm Relapse &amp;
             Reset</button>
         </div>
       </div>
     </div>
 
     <!-- HISTORY MODAL -->
-    <div class="modal-overlay hidden" id="mujahid-history-modal"
-      onclick="if(event.target===this) Mujahid.hideHistoryModal()">
-      <div class="modal mujahid-history-modal anim-scale-up" style="max-width:400px;max-height:80vh;overflow-y:auto;">
+    <div class="modal-overlay hidden" id="habits-history-modal"
+      onclick="if(event.target===this) Habits.hideHistoryModal()">
+      <div class="modal habits-history-modal anim-scale-up" style="max-width:400px;max-height:80vh;overflow-y:auto;">
         <div class="modal-header">
-          <h3 class="modal-title mujahid-history-title">
-            <span class="mujahid-history-title-icon">
+          <h3 class="modal-title habits-history-title">
+            <span class="habits-history-title-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 3v5h5" />
@@ -2262,7 +2262,7 @@
             Relapse History
           </h3>
           <div style="display:flex; align-items:center; gap:12px;">
-            <button id="mujahid-history-clear-btn" class="btn btn-icon-sm mujahid-history-clear" title="Clear History">
+            <button id="habits-history-clear-btn" class="btn btn-icon-sm habits-history-clear" title="Clear History">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 6h18" />
@@ -2270,11 +2270,11 @@
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
               </svg>
             </button>
-            <button class="modal-close" onclick="Mujahid.hideHistoryModal()" style="margin:0;"></button>
+            <button class="modal-close" onclick="Habits.hideHistoryModal()" style="margin:0;"></button>
           </div>
         </div>
         <div class="modal-body">
-          <div id="mujahid-history-list">
+          <div id="habits-history-list">
             <!-- Injected via JS -->
           </div>
         </div>
@@ -2282,39 +2282,39 @@
     </div>
 
     <!-- MUJAHID CONFIRM MODAL -->
-    <div class="modal-overlay hidden" id="mujahid-confirm-modal" style="z-index: 30000;">
+    <div class="modal-overlay hidden" id="habits-confirm-modal" style="z-index: 30000;">
       <div class="modal anim-scale-up" style="max-width:320px; text-align:center;">
         <div
           style="width:60px; height:60px; background:rgba(239, 68, 68, 0.1); color:var(--color-accent-red, #ef4444); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:30px;">
           ️</div>
-        <h3 class="modal-title" id="mujahid-confirm-title"
+        <h3 class="modal-title" id="habits-confirm-title"
           style="color:var(--color-text-primary) !important; margin-bottom:12px;">Are you sure?</h3>
-        <p id="mujahid-confirm-msg"
+        <p id="habits-confirm-msg"
           style="color:var(--color-text-muted); font-size:14px; line-height:1.6; margin-bottom:24px;">This action cannot
           be undone.</p>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-          <button class="mujahid-btn-cancel" onclick="Mujahid.hideConfirm()">CANCEL</button>
-          <button class="mujahid-btn-danger" id="mujahid-confirm-btn">CONFIRM</button>
+          <button class="habits-btn-cancel" onclick="Habits.hideConfirm()">CANCEL</button>
+          <button class="habits-btn-danger" id="habits-confirm-btn">CONFIRM</button>
         </div>
       </div>
     </div>
 
     <!-- TOOLS MODAL -->
-    <div class="modal-overlay hidden" id="mujahid-tools-modal"
-      onclick="if(event.target===this) Mujahid.hideToolsModal()">
-      <div class="modal anim-scale-up" id="mujahid-tools-modal-card"
+    <div class="modal-overlay hidden" id="habits-tools-modal"
+      onclick="if(event.target===this) Habits.hideToolsModal()">
+      <div class="modal anim-scale-up" id="habits-tools-modal-card"
         style="max-width:420px;max-height:85vh;overflow-y:auto;padding:0;border-radius:28px;">
-        <div class="modal-header mujahid-tools-header"
+        <div class="modal-header habits-tools-header"
           style="display:flex;align-items:center;gap:14px;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,0.08);background:linear-gradient(135deg, rgba(239,68,68,0.12), rgba(168,85,247,0.1));border-radius:28px 28px 0 0;">
-          <div class="mujahid-tools-header-icon"
+          <div class="habits-tools-header-icon"
             style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg, rgba(239,68,68,0.2), rgba(168,85,247,0.2));display:flex;align-items:center;justify-content:center;color:var(--color-accent-red, #ef4444);border:1px solid rgba(239,68,68,0.3);flex-shrink:0;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
           <div style="flex:1;">
-            <h3 class="modal-title mujahid-tools-title" style="margin:0;font-family:var(--font-display, 'Fraunces', Georgia, serif);font-size:20px;font-weight:900;font-style:italic;letter-spacing:-0.02em;">Mujahid Settings</h3>
+            <h3 class="modal-title habits-tools-title" style="margin:0;font-family:var(--font-display, 'Fraunces', Georgia, serif);font-size:20px;font-weight:900;font-style:italic;letter-spacing:-0.02em;">Habits Settings</h3>
             <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px;font-weight:500;">Discipline tools & milestone guide</div>
           </div>
-          <button class="modal-close mujahid-tools-close-btn" onclick="Mujahid.hideToolsModal()" title="Close"
+          <button class="modal-close habits-tools-close-btn" onclick="Habits.hideToolsModal()" title="Close"
             style="position:static;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
@@ -2323,32 +2323,32 @@
 
           <!-- Badge Guide -->
           <div style="margin-bottom:8px;">
-            <div class="mujahid-section-label"
+            <div class="habits-section-label"
               style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:10px;">
               Badge Milestones</div>
             <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:16px;line-height:1.6;">
               Every clean day builds toward the next rank. Earned badges glow on your tracker — keep pushing to unlock them all.
             </p>
-            <div id="mujahid-badge-guide" style="display:flex;flex-direction:column;gap:10px;">
+            <div id="habits-badge-guide" style="display:flex;flex-direction:column;gap:10px;">
               <!-- Injected by JS -->
             </div>
           </div>
 
-          <div class="mujahid-divider"
+          <div class="habits-divider"
             style="height:1px;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);margin:24px 0;">
           </div>
 
           <!-- Tools -->
-          <div class="mujahid-section-label"
+          <div class="habits-section-label"
             style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:12px;">
             Tools</div>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <button class="mujahid-tool-btn mujahid-btn-reset" onclick="Mujahid.resetAllStartDates()"
+            <button class="habits-tool-btn habits-btn-reset" onclick="Habits.resetAllStartDates()"
               style="display:flex;align-items:center;gap:12px;text-align:left;padding:14px 18px;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span>Reset All Timers</span>
             </button>
-            <button class="mujahid-tool-btn danger mujahid-btn-clear" onclick="Mujahid.clearAllData()"
+            <button class="habits-tool-btn danger habits-btn-clear" onclick="Habits.clearAllData()"
               style="display:flex;align-items:center;gap:12px;text-align:left;padding:14px 18px;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
               <span>Clear All Data</span>
@@ -2358,7 +2358,7 @@
       </div>
     </div>
 
-    <div class="modal-overlay hidden" id="mujahid-breathe-pro"
+    <div class="modal-overlay hidden" id="habits-breathe-pro"
       style="background:radial-gradient(circle at 50% 0%, #131a2e 0%, #0a0f1c 55%, #070a14 100%); z-index:9999; overflow:hidden;">
       <!-- Animated Aurora Background -->
       <div style="position:absolute; inset:0; z-index:0; overflow:hidden; opacity:0.7;">
@@ -2387,7 +2387,7 @@
 
       <div
         style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; position:relative; z-index:10;">
-        <button class="modal-close breathing-modal-close-btn" onclick="Mujahid.hideBreathingExercise()" title="Close"
+        <button class="modal-close breathing-modal-close-btn" onclick="Habits.hideBreathingExercise()" title="Close"
           style="position:absolute; top:24px; right:24px; z-index:30; background:rgba(255,255,255,0.12); border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.22); cursor:pointer; color:#ffffff; transition: all 0.25s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.3);">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
@@ -2428,7 +2428,7 @@
             Session Complete</div>
           <div style="font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:18px;">Take a moment. You are present.
           </div>
-          <button class="mujahid-btn" onclick="Mujahid.startBreathingExercise()"
+          <button class="habits-btn" onclick="Habits.startBreathingExercise()"
             style="padding:16px 44px; font-size:16px; background:linear-gradient(135deg, #38bdf8, #14b8a6); border:none; border-radius:100px; color:#062c2a; cursor:pointer; font-weight:800; box-shadow:0 15px 34px rgba(20,184,166,0.4); transition: transform 0.3s;">Repeat
             Round</button>
         </div>
@@ -2491,7 +2491,7 @@
     <script defer src="js/dhikr.js?v=216"></script>
     <script defer src="js/goals.js?v=139"></script>
     <script defer src="js/finance.js?v=277"></script>
-    <script defer src="js/mujahid.js?v=217"></script>
+    <script defer src="js/habits.js?v=217"></script>
     <script defer src="js/profile.js?v=153"></script>
     <script defer src="js/analysis.js?v=218"></script>
 

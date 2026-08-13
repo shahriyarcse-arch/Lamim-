@@ -1,8 +1,8 @@
 /* =============================================
-   LAMIM — MUJAHID MODULE
+   LAMIM — HABITS MODULE
    Quit Bad Habits Tracker
    ============================================= */
-const Mujahid = {
+const Habits = {
   habits: [],
   selectedIcon: null,
   selectedColor: '#6366f1',
@@ -362,7 +362,7 @@ const Mujahid = {
   onDataUpdated() {
     if (!this._debouncedDataUpdate) {
       this._debouncedDataUpdate = Utils.debounce(() => {
-        if (document.getElementById('section-mujahid')?.classList.contains('active')) {
+        if (document.getElementById('section-habits')?.classList.contains('active')) {
           this.loadHabits();
           this.render();
         }
@@ -396,20 +396,20 @@ const Mujahid = {
     if (this._liveCounterInterval) clearInterval(this._liveCounterInterval);
     let lastSec = -1;
     this._liveCounterInterval = setInterval(() => {
-        if (!document.getElementById('section-mujahid')?.classList.contains('active')) return;
+        if (!document.getElementById('section-habits')?.classList.contains('active')) return;
         const now = new Date();
         const currentSec = now.getSeconds();
         if (currentSec === lastSec) return;
         lastSec = currentSec;
         
-        const timeDisplays = document.querySelectorAll('.mujahid-live-time');
+        const timeDisplays = document.querySelectorAll('.habits-live-time');
         if (timeDisplays.length === 0) return;
         
         timeDisplays.forEach(el => {
           const habitId = el.dataset.habitId;
           const timeStats = habitId && habitId !== '' ? this.getHabitTimeStats(habitId) : this.getTimeStats();
           
-          const nums = el.querySelectorAll('.mujahid-time-num');
+          const nums = el.querySelectorAll('.habits-time-num');
           if (nums.length >= 4) {
             const currentInterval = Math.floor(Date.now() / (1000 * 30));
             const lastInterval = parseInt(el.dataset.lastInterval || '0', 10);
@@ -456,7 +456,7 @@ const Mujahid = {
   },
 
   updateSpiritBarsLive() {
-    if (!document.getElementById('section-mujahid')?.classList.contains('active')) return;
+    if (!document.getElementById('section-habits')?.classList.contains('active')) return;
     const items = document.querySelectorAll('[data-spirit-item]');
     if (items.length === 0) return;
 
@@ -474,7 +474,7 @@ const Mujahid = {
   },
 
   loadHabits() {
-    const raw = DB.getMujahid();
+    const raw = DB.getHabits();
     let changed = false;
     this.habits = raw.map(h => {
       if (!h.startDate) {
@@ -497,7 +497,7 @@ const Mujahid = {
   },
 
   saveHabits() {
-    DB.setMujahid(this.habits);
+    DB.setHabits(this.habits);
     // Notify other modules (e.g. Analysis SHS) that habit data changed
     window.dispatchEvent(new CustomEvent('lamim:data-updated'));
   },
@@ -507,7 +507,7 @@ const Mujahid = {
   },
 
   render(skipAnim = false) {
-    const container = document.getElementById('mujahid-content');
+    const container = document.getElementById('habits-content');
     if (!container) return;
 
     if (this.habits.length === 0) {
@@ -538,7 +538,7 @@ const Mujahid = {
     });
 
     return `
-      <div class="mujahid-spirit-score-wrap ${skipAnim ? '' : 'anim-scale-up'}">
+      <div class="habits-spirit-score-wrap ${skipAnim ? '' : 'anim-scale-up'}">
         <div class="spirit-score-glow"></div>
         <div class="spirit-score-content">
           <div class="spirit-score-label">WARRIOR SPIRIT POWER</div>
@@ -574,14 +574,14 @@ const Mujahid = {
 
   renderHabitsList(skipAnim = false) {
     return `
-      <div class="mujahid-habits-container">
+      <div class="habits-habits-container">
         ${this.habits.map(h => this.renderHabitCard(h, skipAnim)).join('')}
-        <div class="mujahid-add-pillar-wrap ${skipAnim ? '' : 'anim-fade-in'}" role="button" tabindex="0" onclick="Mujahid.showAddModal()">
-          <div class="mujahid-add-pillar">
-            <div class="mujahid-add-pillar-icon">
+        <div class="habits-add-pillar-wrap ${skipAnim ? '' : 'anim-fade-in'}" role="button" tabindex="0" onclick="Habits.showAddModal()">
+          <div class="habits-add-pillar">
+            <div class="habits-add-pillar-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
             </div>
-            <span class="mujahid-add-pillar-text">Add Another Habit to Conquer</span>
+            <span class="habits-add-pillar-text">Add Another Habit to Conquer</span>
           </div>
         </div>
       </div>
@@ -640,7 +640,7 @@ const Mujahid = {
     const habit = this.getHabit(habitId);
     if (!habit) return;
     
-    const modal = document.getElementById('mujahid-startdate-modal');
+    const modal = document.getElementById('habits-startdate-modal');
     if (!modal) return;
     
     let dateStr = habit.startDate || Utils.todayStr();
@@ -650,21 +650,21 @@ const Mujahid = {
       dateStr = dateStr.substring(0, 16);
     }
     
-    const startInput = document.getElementById('mujahid-startdate-input');
-    const habitIdInput = document.getElementById('mujahid-startdate-habit-id');
+    const startInput = document.getElementById('habits-startdate-input');
+    const habitIdInput = document.getElementById('habits-startdate-habit-id');
     if (startInput) startInput.value = dateStr;
     if (habitIdInput) habitIdInput.value = habitId;
     modal.classList.remove('hidden');
   },
 
   hideStartDateModal() {
-    const modal = document.getElementById('mujahid-startdate-modal');
+    const modal = document.getElementById('habits-startdate-modal');
     if (modal) modal.classList.add('hidden');
   },
 
   saveStartDate() {
-    const habitIdEl = document.getElementById('mujahid-startdate-habit-id');
-    const dateStrEl = document.getElementById('mujahid-startdate-input');
+    const habitIdEl = document.getElementById('habits-startdate-habit-id');
+    const dateStrEl = document.getElementById('habits-startdate-input');
     const habitId = habitIdEl ? habitIdEl.value : '';
     const dateStr = dateStrEl ? dateStrEl.value : '';
     
@@ -708,15 +708,15 @@ const Mujahid = {
   renderEmptyState(skipAnim = false) {
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn');
     return `
-      <div class="mujahid-hero-modern ${skipAnim ? '' : 'anim-scale-up'}" style="padding: 40px 20px; text-align:center;">
-        <div class="mujahid-hero-glass">
-          <div class="mujahid-hero-icon-orbit">
-            <div class="mujahid-hero-icon-glow"></div>
+      <div class="habits-hero-modern ${skipAnim ? '' : 'anim-scale-up'}" style="padding: 40px 20px; text-align:center;">
+        <div class="habits-hero-glass">
+          <div class="habits-hero-icon-orbit">
+            <div class="habits-hero-icon-glow"></div>
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h2 class="mujahid-forge-title" style="font-size:32px; font-weight:900; margin-bottom:12px; background:linear-gradient(to bottom, #fff, rgba(255,255,255,0.7)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-1px;">${isBn ? 'সংকল্পের দুর্গ' : 'The Forge of Resolve'}</h2>
+          <h2 class="habits-forge-title" style="font-size:32px; font-weight:900; margin-bottom:12px; background:linear-gradient(to bottom, #fff, rgba(255,255,255,0.7)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-1px;">${isBn ? 'সংকল্পের দুর্গ' : 'The Forge of Resolve'}</h2>
           <p style="color:var(--color-text-muted); line-height:1.6; max-width:320px; margin:0 auto 32px; font-size:16px;">${isBn ? 'প্রতিটি সাফল্য একটি সংকল্প দিয়ে শুরু হয়। আপনার প্রথম অভ্যাস ট্র্যাকার যুক্ত করুন।' : 'Every warrior starts with a single decision. Forge your first tracker to begin your journey toward mastery.'}</p>
-          <button class="forge-action-btn pulse-indigo" onclick="Mujahid.showAddModal()" style="max-width:260px; margin:0 auto;">${isBn ? 'প্রথম অভ্যাস যুক্ত করুন' : 'Initiate First Habit'}</button>
+          <button class="forge-action-btn pulse-indigo" onclick="Habits.showAddModal()" style="max-width:260px; margin:0 auto;">${isBn ? 'প্রথম অভ্যাস যুক্ত করুন' : 'Initiate First Habit'}</button>
         </div>
         
         <div style="margin-top:60px; display:flex; justify-content:center; gap:32px; opacity:0.3;">
@@ -769,16 +769,16 @@ const Mujahid = {
         <div class="iw-header">
           <div class="iw-quote ${quoteData.effectClass}">${quoteHTML}</div>
           <div class="iw-top-actions">
-            <button type="button" class="iw-icon-btn" onclick="event.stopPropagation(); Mujahid.showHistoryModal('${habit.id}')" title="History">
+            <button type="button" class="iw-icon-btn" onclick="event.stopPropagation(); Habits.showHistoryModal('${habit.id}')" title="History">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
             </button>
-            <button type="button" class="iw-icon-btn" onclick="event.stopPropagation(); Mujahid.deleteHabit('${habit.id}')" title="Delete Habit" style="margin-left:4px;">
+            <button type="button" class="iw-icon-btn" onclick="event.stopPropagation(); Habits.deleteHabit('${habit.id}')" title="Delete Habit" style="margin-left:4px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
             </button>
           </div>
         </div>
 
-        <div class="iw-habit-pill" role="button" tabindex="0" onclick="Mujahid.showProgressPulse('${Utils.escapeHTML(habit.id)}')">
+        <div class="iw-habit-pill" role="button" tabindex="0" onclick="Habits.showProgressPulse('${Utils.escapeHTML(habit.id)}')">
           ${isMaster ? '<span class="iw-rank-tag" style="color:#000;background:#ffd700;">MASTER</span>' : isDivine ? '<span class="iw-rank-tag" style="color:#00f2ff;text-shadow:0 0 10px #00f2ff;">SOVEREIGN</span>' : isLegendary ? '<span class="iw-rank-tag" style="color:#ffd700;">LEGEND</span>' : ''}${Utils.escapeHTML(habit.label)}
           ${isLegendary ? `<span class="iw-year-tag">${years} Years</span>` : ''}
         </div>
@@ -791,29 +791,29 @@ const Mujahid = {
         </div>
 
         <div class="iw-timer-circle-wrap">
-          <div class="iw-timer-circle mujahid-live-time" data-habit-id="${habit.id}">
+          <div class="iw-timer-circle habits-live-time" data-habit-id="${habit.id}">
             <div class="iw-timer-label">It has been</div>
-            <div class="iw-timer-days-row" role="button" tabindex="0" onclick="event.stopPropagation(); Mujahid.showStartDateModal('${habit.id}')" style="cursor:pointer;" title="Adjust Timer (Secret)">
-              <div class="iw-timer-days"><span class="mujahid-time-num">${window.n ? window.n(timeStats.days) : timeStats.days}</span></div>
+            <div class="iw-timer-days-row" role="button" tabindex="0" onclick="event.stopPropagation(); Habits.showStartDateModal('${habit.id}')" style="cursor:pointer;" title="Adjust Timer (Secret)">
+              <div class="iw-timer-days"><span class="habits-time-num">${window.n ? window.n(timeStats.days) : timeStats.days}</span></div>
               <div class="iw-days-text">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'দিন' : 'days'}</div>
             </div>
             
             <div class="iw-timer-sub">
               <div class="iw-timer-unit">
-                <span class="mujahid-time-num">${window.n ? window.n(timeStats.hours) : timeStats.hours}</span>
+                <span class="habits-time-num">${window.n ? window.n(timeStats.hours) : timeStats.hours}</span>
                 <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'ঘণ্টা' : 'hours'}</span>
               </div>
               <div class="iw-timer-unit">
-                <span class="mujahid-time-num">${window.n ? window.n(timeStats.minutes) : timeStats.minutes}</span>
+                <span class="habits-time-num">${window.n ? window.n(timeStats.minutes) : timeStats.minutes}</span>
                 <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'মিনিট' : 'minutes'}</span>
               </div>
               <div class="iw-timer-unit">
-                <span class="mujahid-time-num">${window.n ? window.n(timeStats.seconds) : timeStats.seconds}</span>
+                <span class="habits-time-num">${window.n ? window.n(timeStats.seconds) : timeStats.seconds}</span>
                 <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'সেকেন্ড' : 'seconds'}</span>
               </div>
             </div>
           </div>
-          <button class="iw-relapse-btn" onclick="Mujahid.showRelapseModal('${habit.id}')" title="Reset Timer / Relapse">
+          <button class="iw-relapse-btn" onclick="Habits.showRelapseModal('${habit.id}')" title="Reset Timer / Relapse">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
           </button>
         </div>
@@ -925,23 +925,23 @@ const Mujahid = {
   },
 
   showAddModal() {
-    const modal = document.getElementById('mujahid-add-modal');
+    const modal = document.getElementById('habits-add-modal');
     if (!modal) return;
 
     // Reset choices
     this.selectedIcon = this.availableIcons[0];
     this.selectedColor = '#6366f1';
 
-    const list = document.getElementById('mujahid-default-habits');
+    const list = document.getElementById('habits-default-habits');
     list.innerHTML = this.defaultHabits.map(h => `
-      <div class="mujahid-habit-option" role="button" tabindex="0" onclick="Mujahid.selectDefaultHabit('${h.id}')" style="--habit-color: ${h.color || '#6366f1'};">
-        <span class="mujahid-habit-option-icon">${h.icon}</span>
-        <span class="mujahid-habit-option-label">${Utils.escapeHTML(h.label)}</span>
+      <div class="habits-habit-option" role="button" tabindex="0" onclick="Habits.selectDefaultHabit('${h.id}')" style="--habit-color: ${h.color || '#6366f1'};">
+        <span class="habits-habit-option-icon">${h.icon}</span>
+        <span class="habits-habit-option-label">${Utils.escapeHTML(h.label)}</span>
       </div>
     `).join('');
 
     // Dynamically render a premium, comprehensive visual theme color selector
-    const colorContainer = document.getElementById('mujahid-custom-colors');
+    const colorContainer = document.getElementById('habits-custom-colors');
     if (colorContainer) {
       const colors = ['#6366f1', '#ef4444', '#10b981', '#f59e0b', '#af52de', '#007aff', '#ff2d55', '#8e8e93'];
       colorContainer.innerHTML = colors.map(color => `
@@ -959,22 +959,22 @@ const Mujahid = {
       });
     }
 
-    const startInput = document.getElementById('mujahid-new-habit-start');
-    const customInput = document.getElementById('mujahid-custom-habit-input');
+    const startInput = document.getElementById('habits-new-habit-start');
+    const customInput = document.getElementById('habits-custom-habit-input');
     if (startInput) startInput.value = '';
     if (customInput) customInput.value = '';
 
     // Reset Custom Date & Time UI
-    const dtDisplay = document.getElementById('mujahid-dt-display');
+    const dtDisplay = document.getElementById('habits-dt-display');
     if (dtDisplay) {
       dtDisplay.innerText = ' Starting: Right Now';
       dtDisplay.style.color = 'var(--color-accent-green)';
     }
-    const customControls = document.getElementById('mujahid-custom-dt-controls');
+    const customControls = document.getElementById('habits-custom-dt-controls');
     if (customControls) customControls.style.display = 'none';
     
-    const customDateVal = document.getElementById('mujahid-custom-date-val');
-    const customTimeVal = document.getElementById('mujahid-custom-time-val');
+    const customDateVal = document.getElementById('habits-custom-date-val');
+    const customTimeVal = document.getElementById('habits-custom-time-val');
     if (customDateVal) customDateVal.value = '';
     if (customTimeVal) customTimeVal.value = '';
 
@@ -987,7 +987,7 @@ const Mujahid = {
 
 
   hideAddModal() {
-    const modal = document.getElementById('mujahid-add-modal');
+    const modal = document.getElementById('habits-add-modal');
     if (modal) modal.classList.add('hidden');
   },
 
@@ -995,7 +995,7 @@ const Mujahid = {
     const defaultHabit = this.defaultHabits.find(h => h.id === habitId);
     if (defaultHabit) {
       // Pre-fill the custom form
-      const input = document.getElementById('mujahid-custom-habit-input');
+      const input = document.getElementById('habits-custom-habit-input');
       if (input) {
         input.value = defaultHabit.label;
         // Also set color and icon
@@ -1003,8 +1003,8 @@ const Mujahid = {
         this.selectedColor = defaultHabit.color || '#6366f1';
 
         // Highlight the selected habit card
-        document.querySelectorAll('.mujahid-habit-option').forEach(el => el.classList.remove('active'));
-        const allOptions = document.querySelectorAll('.mujahid-habit-option');
+        document.querySelectorAll('.habits-habit-option').forEach(el => el.classList.remove('active'));
+        const allOptions = document.querySelectorAll('.habits-habit-option');
         allOptions.forEach(el => {
           if (el.getAttribute('onclick')?.includes(`'${habitId}'`)) {
             el.classList.add('active');
@@ -1012,7 +1012,7 @@ const Mujahid = {
         });
         
         // Dynamically update Visual Theme selector to highlight selected habit color
-        const colorContainer = document.getElementById('mujahid-custom-colors');
+        const colorContainer = document.getElementById('habits-custom-colors');
         if (colorContainer) {
           const colors = ['#6366f1', '#ef4444', '#10b981', '#f59e0b', '#af52de', '#007aff', '#ff2d55', '#8e8e93'];
           // If the default habit has a custom color not in our standard palette, inject it dynamically!
@@ -1037,7 +1037,7 @@ const Mujahid = {
       }
       
       // Scroll to the bottom to focus on Date and Add button
-      const modalBody = document.querySelector('#mujahid-add-modal .modal-body');
+      const modalBody = document.querySelector('#habits-add-modal .modal-body');
       if (modalBody) {
         modalBody.scrollTo({ top: modalBody.scrollHeight, behavior: 'smooth' });
       }
@@ -1050,7 +1050,7 @@ const Mujahid = {
     if (this._forging) return;
     this._forging = true;
     setTimeout(() => { this._forging = false; }, 400);
-    const input = document.getElementById('mujahid-custom-habit-input');
+    const input = document.getElementById('habits-custom-habit-input');
     const label = input ? input.value.trim() : '';
     
     if (!label) {
@@ -1059,7 +1059,7 @@ const Mujahid = {
     }
 
     try {
-      const startInput = document.getElementById('mujahid-new-habit-start');
+      const startInput = document.getElementById('habits-new-habit-start');
       let startDate;
       
       if (startInput && startInput.value) {
@@ -1101,13 +1101,13 @@ const Mujahid = {
       Utils.toast('Habit forged! Your journey begins ️', 'success');
 
     } catch (error) {
-      console.error('Mujahid: Failed to forge habit:', error);
+      console.error('Habits: Failed to forge habit:', error);
       Utils.toast('Failed to forge habit. Please check console.', 'error');
     }
   },
 
   setForgeQuickDate(daysAgo, el) {
-    const startInput = document.getElementById('mujahid-new-habit-start');
+    const startInput = document.getElementById('habits-new-habit-start');
     if (!startInput) return;
 
     // Reset all buttons
@@ -1116,12 +1116,12 @@ const Mujahid = {
     if (el) el.classList.add('active');
 
     // Close Custom controls and deactivate trigger
-    const customControls = document.getElementById('mujahid-custom-dt-controls');
+    const customControls = document.getElementById('habits-custom-dt-controls');
     if (customControls) customControls.style.display = 'none';
-    const customTrigger = document.getElementById('mujahid-custom-trigger');
+    const customTrigger = document.getElementById('habits-custom-trigger');
     if (customTrigger) customTrigger.classList.remove('active');
 
-    const dtDisplay = document.getElementById('mujahid-dt-display');
+    const dtDisplay = document.getElementById('habits-dt-display');
 
     if (daysAgo === 0) {
       // Right Now
@@ -1153,7 +1153,7 @@ const Mujahid = {
   },
 
   toggleCustomDTPicker(el) {
-    const customControls = document.getElementById('mujahid-custom-dt-controls');
+    const customControls = document.getElementById('habits-custom-dt-controls');
     if (!customControls) return;
 
     const isHidden = customControls.style.display === 'none';
@@ -1244,7 +1244,7 @@ const Mujahid = {
     date.setMilliseconds(0);
 
     // Sync to hidden input
-    const startInput = document.getElementById('mujahid-new-habit-start');
+    const startInput = document.getElementById('habits-new-habit-start');
     if (startInput) {
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1255,7 +1255,7 @@ const Mujahid = {
     }
 
     // Update main header display
-    const dtDisplay = document.getElementById('mujahid-dt-display');
+    const dtDisplay = document.getElementById('habits-dt-display');
     if (dtDisplay) {
       const options = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
       dtDisplay.innerText = ` Starting: ${date.toLocaleString('en-US', options)}`;
@@ -1267,14 +1267,14 @@ const Mujahid = {
   showRelapseModal(habitId) {
     const habit = this.getHabit(habitId);
     if (!habit) return;
-    document.getElementById('mujahid-relapse-habit-id').value = habitId;
-    document.getElementById('mujahid-relapse-reason').value = '';
-    const modal = document.getElementById('mujahid-relapse-modal');
+    document.getElementById('habits-relapse-habit-id').value = habitId;
+    document.getElementById('habits-relapse-reason').value = '';
+    const modal = document.getElementById('habits-relapse-modal');
     if (modal) modal.classList.remove('hidden');
   },
 
   hideRelapseModal() {
-    const modal = document.getElementById('mujahid-relapse-modal');
+    const modal = document.getElementById('habits-relapse-modal');
     if (modal) modal.classList.add('hidden');
   },
 
@@ -1334,8 +1334,8 @@ const Mujahid = {
 
 
   confirmRelapse() {
-    const habitId = document.getElementById('mujahid-relapse-habit-id').value;
-    const reason = document.getElementById('mujahid-relapse-reason').value.trim();
+    const habitId = document.getElementById('habits-relapse-habit-id').value;
+    const reason = document.getElementById('habits-relapse-reason').value.trim();
     this.relapseHabit(habitId, reason);
   },
 
@@ -1344,13 +1344,13 @@ const Mujahid = {
     const habit = this.getHabit(habitId);
     if (!habit) return;
     
-    const modal = document.getElementById('mujahid-history-modal');
-    const list = document.getElementById('mujahid-history-list');
+    const modal = document.getElementById('habits-history-modal');
+    const list = document.getElementById('habits-history-list');
     
     if (!modal || !list) return;
     
     // Update Header Trash Button Action
-    const clearBtn = document.getElementById('mujahid-history-clear-btn');
+    const clearBtn = document.getElementById('habits-history-clear-btn');
     if (clearBtn) {
       if (habitId) {
         clearBtn.onclick = () => this.clearHabitHistory(habitId);
@@ -1396,13 +1396,13 @@ const Mujahid = {
   },
 
   hideHistoryModal() {
-    const modal = document.getElementById('mujahid-history-modal');
+    const modal = document.getElementById('habits-history-modal');
     if (modal) modal.classList.add('hidden');
   },
 
   showToolsModal() {
-    const modal = document.getElementById('mujahid-tools-modal');
-    const guide = document.getElementById('mujahid-badge-guide');
+    const modal = document.getElementById('habits-tools-modal');
+    const guide = document.getElementById('habits-badge-guide');
     if (modal) {
       if (guide) guide.innerHTML = this.renderBadgeGuide();
       modal.classList.remove('hidden');
@@ -1419,7 +1419,7 @@ const Mujahid = {
       }
 
       return `
-        <div class="mujahid-badge-guide-item" style="position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;overflow:hidden;transition:all 0.2s ease;">
+        <div class="habits-badge-guide-item" style="position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;overflow:hidden;transition:all 0.2s ease;">
           <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg, ${displayColor}, ${displayColor}66);border-radius:4px 0 0 4px;"></div>
           <div class="badge-icon-orb" style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg, ${displayColor}26, ${displayColor}0d);border:1px solid ${displayColor}40;display:flex;align-items:center;justify-content:center;color:${displayColor};box-shadow:0 0 16px ${displayColor}22;flex-shrink:0;">
             ${b.emoji.replace('width="24" height="24"', 'width="22" height="22"')}
@@ -1434,15 +1434,15 @@ const Mujahid = {
   },
 
   hideToolsModal() {
-    const modal = document.getElementById('mujahid-tools-modal');
+    const modal = document.getElementById('habits-tools-modal');
     if (modal) modal.classList.add('hidden');
   },
 
   showConfirm(title, msg, onConfirm) {
-    const modal = document.getElementById('mujahid-confirm-modal');
-    const titleEl = document.getElementById('mujahid-confirm-title');
-    const msgEl = document.getElementById('mujahid-confirm-msg');
-    const btn = document.getElementById('mujahid-confirm-btn');
+    const modal = document.getElementById('habits-confirm-modal');
+    const titleEl = document.getElementById('habits-confirm-title');
+    const msgEl = document.getElementById('habits-confirm-msg');
+    const btn = document.getElementById('habits-confirm-btn');
     
     if (!modal || !btn) return;
     
@@ -1457,7 +1457,7 @@ const Mujahid = {
   },
 
   hideConfirm() {
-    const modal = document.getElementById('mujahid-confirm-modal');
+    const modal = document.getElementById('habits-confirm-modal');
     if (modal) modal.classList.add('hidden');
   },
 
@@ -1467,7 +1467,7 @@ const Mujahid = {
       isBn ? 'ফ্যাক্টরি রিসেট' : 'Factory Reset', 
       isBn ? 'এটি আপনার সমস্ত অভ্যাস, হিস্ট্রি এবং স্ট্রিক স্থায়ীভাবে মুছে ফেলবে। এই কাজ পরিবর্তনযোগ্য নয়।' : 'This will permanently delete ALL habits, history, and streaks. This action is irreversible.', 
       () => {
-        DB.setMujahid([]);
+        DB.setHabits([]);
         this.habits = [];
         this.render(true);
         this.hideToolsModal();
@@ -1540,14 +1540,14 @@ const Mujahid = {
   },
 
   showBreathingExercise() {
-    const modal = document.getElementById('mujahid-breathe-pro');
+    const modal = document.getElementById('habits-breathe-pro');
     if (!modal) return;
     modal.classList.remove('hidden');
     this.startBreathingExercise();
   },
 
   hideBreathingExercise() {
-    const modal = document.getElementById('mujahid-breathe-pro');
+    const modal = document.getElementById('habits-breathe-pro');
     if (modal) modal.classList.add('hidden');
     if (this.breatheInterval) clearTimeout(this.breatheInterval);
     if (this.breatheTimerInterval) clearInterval(this.breatheTimerInterval);
@@ -1603,7 +1603,7 @@ const Mujahid = {
     void orb.offsetWidth;
 
     const runPhase = (currentPhase) => {
-      const modal = document.getElementById('mujahid-breathe-pro');
+      const modal = document.getElementById('habits-breathe-pro');
       if (!modal || modal.classList.contains('hidden')) return;
 
       switch(currentPhase) {
@@ -1665,6 +1665,7 @@ const Mujahid = {
     this.initialized = false;
   }
 };
-window.Mujahid = Mujahid;
+window.Habits = Habits;
+window.Mujahid = Habits;
 
 
