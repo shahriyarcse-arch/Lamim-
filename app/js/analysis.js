@@ -179,9 +179,10 @@ const Analysis = {
     const today = Utils.getOffsetDate();
     if (!this.monthOffset) this.monthOffset = 0;
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     let targetDate = new Date(today.getFullYear(), today.getMonth() + this.monthOffset, 1);
     let monthVal = `${targetDate.getFullYear()}-${String(targetDate.getMonth() + 1).padStart(2, '0')}`;
-    let monthLabel = (this.monthOffset === 0) ? 'This Month' : targetDate.toLocaleDateString(undefined, {month: 'short', year: 'numeric'});
+    let monthLabel = (this.monthOffset === 0) ? (isBn ? 'এই মাস' : 'This Month') : targetDate.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {month: 'short', year: 'numeric'});
 
     // Always use the daily trend for the current viewed month
     let trend = this.getMonthDailyTrend(targetDate.getFullYear(), targetDate.getMonth());
@@ -194,12 +195,8 @@ const Analysis = {
     let shs = this.calculateSHS(activeDateStr || Utils.dateStr(today));
 
     const rating = shs.rating;
-    let activeDateObj = today;
-    if (activeDateStr) {
-      const [y, m, d] = activeDateStr.split('-');
-      activeDateObj = new Date(y, m - 1, d);
-    }
-    const scoreSubLabel = activeDateObj.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+    let activeDateObj = activeDateStr ? Utils.parseDate(activeDateStr) : today;
+    const scoreSubLabel = activeDateObj.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 
 
     container.innerHTML = `
@@ -235,7 +232,7 @@ const Analysis = {
         <!-- Main Score Aura -->
         <div class="shs-aura-container">
           <div class="shs-aura" style="--aura-color: ${rating.color}">
-            <div class="shs-val">${Math.round(shs.total)}</div>
+            <div class="shs-val">${window.n ? window.n(Math.round(shs.total)) : Math.round(shs.total)}</div>
             <div class="shs-label">Total LSS</div>
           </div>
           <div class="shs-rating-badge" id="shs-rating-badge" style="background: ${rating.color}20; color: ${rating.color}; border: 1px solid ${rating.color}40">
@@ -307,7 +304,7 @@ const Analysis = {
                       return `
                       <div class="x-label" data-date="${t.fullDateStr}" style="font-size: 9px; line-height: 1.3; display: flex; flex-direction: column; align-items: center; ${isSelected ? `color: ${t.color}; font-weight: 900;` : ''}">
                         <span style="opacity: ${isSelected ? '0.8' : '0.5'}; font-size: 8px;">${t.weekday}</span>
-                        <span>${t.dateNum}</span>
+                        <span>${window.n ? window.n(t.dateNum) : t.dateNum}</span>
                       </div>
                     `}).join('')}
                   </div>
@@ -345,12 +342,14 @@ const Analysis = {
   },
 
   renderCard(label, val, max, color, svg, sub, noAnim = false) {
+    const formattedVal = window.n ? window.n(val) : val;
+    const formattedMax = window.n ? window.n(max) : max;
     return `
       <div class="shs-card ${noAnim ? '' : 'anim-fade-in'}">
         <div class="shs-card-header">
           <div class="shs-card-icon" style="background: ${color}15; color: ${color}">${svg}</div>
           <div class="shs-card-info">
-            <div class="shs-card-val">${val}<span class="max-val">/${max}</span></div>
+            <div class="shs-card-val">${formattedVal}<span class="max-val">/${formattedMax}</span></div>
             <div class="shs-card-label">${label} ${sub ? `<span class="sub-label">(${sub})</span>` : ''}</div>
           </div>
         </div>
