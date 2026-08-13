@@ -37,7 +37,6 @@
   .analysis-quick-stats,
   .habits-timer-display,
   .fin-delete-info,
-  .history-premium-summary,
   .vault-grid {
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)) !important;
   }
@@ -48,8 +47,7 @@
   .finance-summary,
   .analysis-quick-stats,
   .habits-timer-display,
-  .fin-delete-info,
-  .history-premium-summary { grid-template-columns: 1fr !important; }
+  .fin-delete-info { grid-template-columns: 1fr !important; }
 }
 
 /* ---------- COARSE POINTER (touch): enlarge hit targets ---------- */

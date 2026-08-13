@@ -832,16 +832,24 @@ const Goals = {
 
       return `
         <div class="history-item-modern ${allSunnahMissed ? 'all-missed' : ''}">
-          <div class="h-item-date">${day.date === Utils.todayStr() ? 'Today' : Utils.formatDate(Utils.parseDate(day.date), { day: 'numeric', month: 'short' })}</div>
-          <div class="h-item-content">
-            <div class="h-item-main">
-               ${sunnahDone.map(name => `<div class="h-pill"><span class="dot" style="background:#34d399"></span>${name}</div>`).join('')}
-               ${sunnahMissed.map(name => `<div class="h-pill missed"><span class="dot" style="background:rgba(255,255,255,0.15)"></span>${name}</div>`).join('')}
-               ${tRakat > 0 ? `<div class="h-pill"><span class="dot" style="background:#818cf8"></span>Tahajjud (${tRakat})</div>` : ''}
-               ${wRakat > 0 ? `<div class="h-pill"><span class="dot" style="background:#fbbf24"></span>Witr (${wRakat})</div>` : ''}
+          <div class="h-item-top-row">
+            <div class="h-item-date">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>${day.date === Utils.todayStr() ? (window.t ? window.t('Today') : 'Today') : Utils.formatDate(Utils.parseDate(day.date), { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+            </div>
+            <div class="h-item-total">
+              <span>${total}</span>
+              <small>RK</small>
             </div>
           </div>
-          <div class="h-item-total">${total}<small>RK</small></div>
+          <div class="h-item-content">
+            <div class="h-item-main">
+               ${sunnahDone.map(name => `<div class="h-pill prayed"><span class="dot"></span>${name}</div>`).join('')}
+               ${tRakat > 0 ? `<div class="h-pill tahajjud"><span class="dot"></span>Tahajjud (${tRakat})</div>` : ''}
+               ${wRakat > 0 ? `<div class="h-pill witr"><span class="dot"></span>Witr (${wRakat})</div>` : ''}
+               ${sunnahMissed.map(name => `<div class="h-pill missed"><span class="dot"></span>${name}</div>`).join('')}
+            </div>
+          </div>
         </div>
       `;
     }).join('') || '<div class="empty-state">No history recorded yet.</div>';

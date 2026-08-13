@@ -241,27 +241,31 @@ div#nafl-night-grid .salah-options-grid {
 
 /* Premium Summary Cards */
 #nafl-history-modal .history-premium-summary {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 28px;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 #nafl-history-modal .h-summary-card {
   --dc: #14b8a6;
   position: relative;
-  background: linear-gradient(180deg, rgba(20, 184, 166, 0.1) 0%, rgba(20, 184, 166, 0.03) 100%);
+  background: linear-gradient(180deg, rgba(20, 184, 166, 0.12) 0%, rgba(20, 184, 166, 0.03) 100%);
   border: 1px solid color-mix(in srgb, var(--dc) 28%, rgba(255, 255, 255, 0.08));
-  border-radius: 22px;
-  padding: 16px 10px;
+  border-radius: 18px;
+  padding: 12px 6px;
   text-align: center;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   overflow: hidden;
+  min-width: 0;
   transition: all 0.25s ease;
 }
 #nafl-history-modal .h-summary-card::after {
@@ -278,46 +282,48 @@ div#nafl-night-grid .salah-options-grid {
 #nafl-history-modal .h-summary-card:nth-child(3) { --dc: #34d399; }
 
 #nafl-history-modal .h-sum-val {
-  font-size: 22px;
+  font-size: clamp(16px, 4.5vw, 20px);
   font-weight: 900;
   color: #fff;
   line-height: 1.15;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 #nafl-history-modal .h-sum-label {
-  font-size: 10px;
+  font-size: clamp(8.5px, 2.2vw, 10px);
   font-weight: 700;
   color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 /* History List Header */
 #nafl-history-modal .history-list-header {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   color: #2dd4bf;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 16px;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 #nafl-history-modal .history-list-header::before {
   content: '';
-  width: 8px; height: 8px;
+  width: 7px; height: 7px;
   border-radius: 50%;
   background: #14b8a6;
-  box-shadow: 0 0 10px rgba(20, 184, 166, 0.8);
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.8);
 }
 
 /* History List Scroll Area */
 #nafl-history-modal .history-list-modern {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   max-height: 380px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -347,14 +353,15 @@ div#nafl-night-grid .salah-options-grid {
   --dc: #14b8a6;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.07);
-  border-left: 3.5px solid var(--dc);
-  border-radius: 20px;
-  padding: 14px 16px;
+  border-left: 4px solid var(--dc);
+  border-radius: 18px;
+  padding: 12px 14px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  flex-direction: column;
+  gap: 10px;
   transition: all 0.25s ease;
+  box-sizing: border-box;
+  width: 100%;
 }
 #nafl-history-modal .history-item-modern:nth-child(3n+1) { --dc: #14b8a6; }
 #nafl-history-modal .history-item-modern:nth-child(3n+2) { --dc: #2dd4bf; }
@@ -363,7 +370,7 @@ div#nafl-night-grid .salah-options-grid {
 #nafl-history-modal .history-item-modern:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(20, 184, 166, 0.35);
-  transform: translateX(4px);
+  transform: translateY(-1px);
 }
 
 #nafl-history-modal .history-item-modern.all-missed {
@@ -373,41 +380,52 @@ div#nafl-night-grid .salah-options-grid {
   border-left-color: #f85149;
 }
 
+#nafl-history-modal .h-item-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
 #nafl-history-modal .h-item-date {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
   color: #cbd5e1;
-  min-width: 68px;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   white-space: nowrap;
 }
 
 #nafl-history-modal .h-item-content {
-  flex: 1;
+  width: 100%;
 }
 
 #nafl-history-modal .h-item-main {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  width: 100%;
 }
 
 /* Pills */
 #nafl-history-modal .h-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: rgba(20, 184, 166, 0.12);
   border: 1px solid rgba(20, 184, 166, 0.25);
-  padding: 4px 10px;
-  border-radius: 12px;
+  padding: 4px 9px;
+  border-radius: 10px;
   font-size: 11px;
   font-weight: 700;
   color: #ccfbf1 !important;
+  line-height: 1.3;
 }
 
 #nafl-history-modal .h-pill .dot {
@@ -416,25 +434,54 @@ div#nafl-night-grid .salah-options-grid {
   border-radius: 50%;
   display: inline-block;
   flex-shrink: 0;
+  background: #34d399;
+}
+
+#nafl-history-modal .h-pill.tahajjud {
+  background: rgba(129, 140, 248, 0.12);
+  border-color: rgba(129, 140, 248, 0.28);
+  color: #c7d2fe !important;
+}
+#nafl-history-modal .h-pill.tahajjud .dot {
+  background: #818cf8;
+  box-shadow: 0 0 6px rgba(129, 140, 248, 0.6);
+}
+
+#nafl-history-modal .h-pill.witr {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #fde68a !important;
+}
+#nafl-history-modal .h-pill.witr .dot {
+  background: #fbbf24;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
 }
 
 #nafl-history-modal .h-pill.missed {
-  background: rgba(248, 81, 73, 0.12);
-  border-color: rgba(248, 81, 73, 0.25);
-  color: #fca5a5 !important;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8 !important;
+  opacity: 0.8;
+}
+#nafl-history-modal .h-pill.missed .dot {
+  background: #64748b;
 }
 
 #nafl-history-modal .h-item-total {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 900;
-  color: #5eead4;
-  display: flex;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-flex;
   align-items: baseline;
-  gap: 3px;
+  gap: 2px;
   flex-shrink: 0;
 }
 #nafl-history-modal .h-item-total small {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   color: #94a3b8;
   text-transform: uppercase;
@@ -495,14 +542,14 @@ div#nafl-night-grid .salah-options-grid {
 [data-theme="light"] #nafl-history-modal .history-item-modern {
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
-  border-left: 3.5px solid var(--dc) !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+  border-left: 4px solid var(--dc) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
 }
 
 [data-theme="light"] #nafl-history-modal .history-item-modern:hover {
   background: #f8fafc !important;
   border-color: #cbd5e1 !important;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06) !important;
 }
 
 [data-theme="light"] #nafl-history-modal .history-item-modern.all-missed {
@@ -518,24 +565,38 @@ div#nafl-night-grid .salah-options-grid {
   font-weight: 700 !important;
 }
 
-[data-theme="light"] #nafl-history-modal .h-pill {
+[data-theme="light"] #nafl-history-modal .h-pill.prayed {
   background: rgba(16, 185, 129, 0.12) !important;
   border: 1px solid rgba(16, 185, 129, 0.28) !important;
   color: #047857 !important;
 }
 
+[data-theme="light"] #nafl-history-modal .h-pill.tahajjud {
+  background: rgba(99, 102, 241, 0.1) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  color: #4f46e5 !important;
+}
+
+[data-theme="light"] #nafl-history-modal .h-pill.witr {
+  background: rgba(245, 158, 11, 0.12) !important;
+  border: 1px solid rgba(245, 158, 11, 0.28) !important;
+  color: #b45309 !important;
+}
+
 [data-theme="light"] #nafl-history-modal .h-pill.missed {
-  background: #f1f5f9 !important;
-  border: 1px solid #cbd5e1 !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
   color: #64748b !important;
 }
 
 [data-theme="light"] #nafl-history-modal .h-item-total {
   color: #047857 !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
 }
 
 [data-theme="light"] #nafl-history-modal .h-item-total small {
-  color: #64748b !important;
+  color: #059669 !important;
 }
 
 [data-theme="light"] #nafl-history-modal .empty-state {
