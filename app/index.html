@@ -15,11 +15,16 @@
     (function () {
       try {
         var s = JSON.parse(localStorage.getItem('lamim_settings') || '{}');
-        if (s && s.theme === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          var m = document.querySelector('meta[name="theme-color"]');
-          if (m) m.setAttribute('content', '#020408');
-        }
+        var theme = (s && s.theme === 'dark') ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        // Define the base background up-front so the splash (whose background is
+        // var(--color-bg-primary), defined only inside the async styles.min.css)
+        // is never transparent on first paint. Prevents the white flash seen
+        // before the main section on cold start / refresh.
+        var bg = theme === 'dark' ? '#020408' : '#F1F5F9';
+        document.documentElement.style.setProperty('--color-bg-primary', bg);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', bg);
       } catch (e) {}
 
       // Absolute Splash Removal Fail-safe (Guarantees splash is hidden & app page activated)

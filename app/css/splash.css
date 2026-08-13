@@ -9,7 +9,7 @@
 
 /* === THEME-AWARE BRAND TOKENS (dark = default, mirrors :root) === */
 .splash {
-  --splash-bg:            var(--color-bg-primary);
+  --splash-bg:            var(--color-bg-primary, #020408);
   --splash-halo-color:    rgba(139, 92, 246, 0.16);
   --splash-box-bg:        rgba(255, 255, 255, 0.05);
   --splash-box-border:    rgba(255, 255, 255, 0.12);
