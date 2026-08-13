@@ -106,7 +106,7 @@ const Career = {
     if (isToday) {
       label.textContent = window.t ? window.t('Today') : 'Today';
     } else {
-      const dObj = new Date(this.selectedDate + 'T00:00:00');
+      const dObj = Utils.parseDate(this.selectedDate);
       const formatted = dObj.toLocaleDateString(
         (typeof App !== 'undefined' && App.lang === 'bn') ? 'bn-BD' : 'en-US',
         { month: 'short', day: 'numeric' }
@@ -181,7 +181,7 @@ const Career = {
     if (spark && window.Charts) {
       const data = [];
       for (let i = 6; i >= 0; i--) {
-        const d = new Date(this.selectedDate + 'T00:00:00');
+        const d = Utils.parseDate(this.selectedDate);
         d.setDate(d.getDate() - i);
         const c = DB.getCareer(Utils.dateStr(d));
         data.push((c.studyDuration || 0));
@@ -211,18 +211,21 @@ const Career = {
     const num = document.getElementById('career-hero-ring-num');
     if (num) num.textContent = window.n ? window.n(score) : score;
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const titleEl = document.getElementById('cb-hero-title');
     if (titleEl) {
-      if (score >= 80) titleEl.textContent = 'Locked In';
-      else if (score >= 50) titleEl.textContent = 'Building Momentum';
-      else if (score >= 25) titleEl.textContent = 'Warming Up';
-      else titleEl.textContent = 'Ready to Begin';
+      if (score >= 80) titleEl.textContent = isBn ? 'সম্পূর্ণ মনোযোগী' : 'Locked In';
+      else if (score >= 50) titleEl.textContent = isBn ? 'গতি বৃদ্ধি পাচ্ছে' : 'Building Momentum';
+      else if (score >= 25) titleEl.textContent = isBn ? 'প্রস্তুতি চলছে' : 'Warming Up';
+      else titleEl.textContent = isBn ? 'শুরু করতে প্রস্তুত' : 'Ready to Begin';
     }
     const subEl = document.getElementById('cb-hero-sub');
     if (subEl) {
       const mins = data.studyDuration || 0;
       const done = (data.checklist || []).filter(x => x.done).length;
-      subEl.textContent = `${window.n ? window.n(mins) : mins} min studied · ${window.n ? window.n(done) : done} goals done`;
+      subEl.textContent = isBn
+        ? `${window.n ? window.n(mins) : mins} মিনিট পড়ালেখা · ${window.n ? window.n(done) : done}টি লক্ষ্য সম্পূর্ণ`
+        : `${window.n ? window.n(mins) : mins} min studied · ${window.n ? window.n(done) : done} goals done`;
     }
     const streakNum = document.getElementById('cb-hero-streak-num');
     if (streakNum) {
@@ -250,15 +253,16 @@ const Career = {
     }
     const monthHours = (monthMins / 60).toFixed(1);
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
     set('cb-stat-streak', _t(streak));
-    set('cb-stat-streak-sub', streak === 1 ? 'day' : 'days');
+    set('cb-stat-streak-sub', isBn ? (streak === 1 ? 'দিন' : 'দিন') : (streak === 1 ? 'day' : 'days'));
     set('cb-stat-study', _t(studyToday));
-    set('cb-stat-study-sub', 'minutes');
+    set('cb-stat-study-sub', isBn ? 'মিনিট' : 'minutes');
     set('cb-stat-goals', _t(goalsDone));
-    set('cb-stat-goals-sub', 'done today');
+    set('cb-stat-goals-sub', isBn ? 'আজ অর্জিত' : 'done today');
     set('cb-stat-month', _t(monthHours));
-    set('cb-stat-month-sub', 'hours this mo.');
+    set('cb-stat-month-sub', isBn ? 'এই মাসে ঘণ্টা' : 'hours this mo.');
   },
 
   /* ---------- study log ---------- */
@@ -437,7 +441,8 @@ const Career = {
     container.innerHTML = '';
 
     if (list.length === 0) {
-      container.innerHTML = '<div class="cb-empty-state"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>No goals yet — add one above</p></div>';
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+      container.innerHTML = `<div class="cb-empty-state"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>${isBn ? 'এখনো কোনো লক্ষ্য যোগ করা হয়নি' : 'No goals yet — add one above'}</p></div>`;
       return;
     }
 
@@ -570,7 +575,7 @@ const Career = {
     const weeks = 16;
     const days = weeks * 7;
     const today = Utils.todayStr();
-    const startD = new Date(this.selectedDate + 'T00:00:00');
+    const startD = Utils.parseDate(this.selectedDate);
     startD.setDate(startD.getDate() - (days - 1));
     let activeCount = 0, totalPast = 0, totalMins = 0;
     let streak = 0;
@@ -595,7 +600,7 @@ const Career = {
       cells.push({ ds, cls, isFuture });
     }
 
-    const cur = new Date(today + 'T00:00:00');
+    const cur = Utils.parseDate(today);
     for (let i = 0; i < 365; i++) {
       const ds = Utils.dateStr(cur);
       if (ds > today) { cur.setDate(cur.getDate() - 1); continue; }
