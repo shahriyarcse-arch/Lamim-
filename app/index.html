@@ -246,24 +246,15 @@
   <script>
     // AUTO CACHE BUSTER — runs once per version to ensure fresh assets
     (function () {
-      var APP_BUILD = 'v159';
+      var APP_BUILD = 'v163';
       var lastBuild = localStorage.getItem('lamim_app_build');
       if (lastBuild !== APP_BUILD) {
         localStorage.setItem('lamim_app_build', APP_BUILD);
         if (lastBuild) {
-          // Previous version existed — nuke caches and reload
           if ('caches' in window) {
             caches.keys().then(function (names) {
               names.forEach(function (name) { caches.delete(name); });
             });
-          }
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function (regs) {
-              regs.forEach(function (r) { r.unregister(); });
-              window.location.reload();
-            });
-          } else {
-            window.location.reload();
           }
         }
       }

@@ -169,7 +169,7 @@ updateSectionTitle() {
               DB.rawSet('lamim_current_sw_version', event.data.version);
 
               // Skip reload on first install — assets were just fetched fresh
-              if (currentVersion === null) return;
+              if (!currentVersion) return;
 
               // Clear caches before reloading to ensure absolute fresh assets
               if ('caches' in window) {
