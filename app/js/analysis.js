@@ -94,12 +94,9 @@ const Analysis = {
       habits.forEach(h => {
         // Only count this habit if it was started on or before the current date
         const habitStartDateStr = typeof h.startDate === 'string' ? h.startDate.split('T')[0] : (h.startDate instanceof Date ? Utils.dateStr(h.startDate) : null);
-        if (habitStartDateStr && date >= habitStartDateStr) {
-          const history = h.history || [];
-          // A habit with no logged history at all has never been acted on — it
-          // must NOT count as a success (that would inflate the score).
-          if (history.length === 0) return;
+        if (!habitStartDateStr || date >= habitStartDateStr) {
           activeHabitsForDay++;
+          const history = h.history || [];
           const relapsedToday = history.find(entry => entry.date === date && entry.clean === false);
           if (!relapsedToday) successfulHabits++;
         }
