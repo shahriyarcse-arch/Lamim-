@@ -1319,6 +1319,7 @@ select.input option:disabled {
   flex-wrap: nowrap !important;
   gap: 10px !important;
   flex-shrink: 0 !important;
+  margin-left: auto !important;
 }
 
 /* --- Theme Toggle (iOS-style) --- */
