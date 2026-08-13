@@ -79,7 +79,7 @@ const Analysis = {
 
     // 4. Mujahid Score (Max 10) - Real Survival Logic
     let pointsMujahid = 0;
-    if (!this._cachedHabits) this._cachedHabits = DB.get('lamim_mujahid_habits') || [];
+    if (!this._cachedHabits) this._cachedHabits = DB.getHabits();
     const habits = this._cachedHabits;
     
     if (habits.length > 0) {

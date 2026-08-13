@@ -190,26 +190,26 @@
   border-color: #bee3f8;
 }
 
-/* MUJAHID SECTION RESTORATION */
-.mujahid-btn-clean-sm {
+/* HABITS / MUJAHID SECTION RESTORATION */
+.mujahid-btn-clean-sm, .habits-btn-clean-sm {
   background: rgba(34, 197, 94, 0.2);
   color: #22c55e;
 }
 
-.mujahid-btn-clean-sm:hover {
+.mujahid-btn-clean-sm:hover, .habits-btn-clean-sm:hover {
   background: rgba(34, 197, 94, 0.35);
 }
 
-.mujahid-btn-relapse-sm {
+.mujahid-btn-relapse-sm, .habits-btn-relapse-sm {
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
 }
 
-.mujahid-btn-relapse-sm:hover {
+.mujahid-btn-relapse-sm:hover, .habits-btn-relapse-sm:hover {
   background: rgba(239, 68, 68, 0.35);
 }
 
-.mujahid-card {
+.mujahid-card, .habits-card {
   background: var(--color-glass);
   border: 1px solid var(--color-divider-subtle);
   border-radius: 20px;
@@ -217,21 +217,21 @@
   margin-bottom: 16px;
 }
 
-.mujahid-card-header {
+.mujahid-card-header, .habits-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 16px;
 }
 
-.mujahid-habit-info {
+.mujahid-habit-info, .habits-habit-info {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
 /* Mujahid Empty Hero Section */
-.mujahid-empty-hero {
+.mujahid-empty-hero, .habits-empty-hero {
   position: relative;
   display: flex;
   flex-direction: column;

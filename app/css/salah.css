@@ -1225,7 +1225,9 @@
 [data-theme="light"] .icon, 
 [data-theme="light"] .nafl-section-title-text::before,
 [data-theme="light"] .mujahid-habit-option-icon,
-[data-theme="light"] .mujahid-icon-option svg {
+[data-theme="light"] .habits-habit-option-icon,
+[data-theme="light"] .mujahid-icon-option svg,
+[data-theme="light"] .habits-icon-option svg {
   filter: saturate(1.5) contrast(1.1);
 }
 
@@ -1456,7 +1458,8 @@
   color: #1E293B !important;
 }
 
-[data-theme="light"] .mujahid-add-pillar {
+[data-theme="light"] .mujahid-add-pillar,
+[data-theme="light"] .habits-add-pillar {
   background: #FFFFFF !important;
   border-color: #6366F1 !important;
   color: #6366F1 !important;

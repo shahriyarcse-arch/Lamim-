@@ -36,6 +36,7 @@
   .finance-summary,
   .analysis-quick-stats,
   .mujahid-timer-display,
+  .habits-timer-display,
   .fin-delete-info,
   .history-premium-summary,
   .vault-grid {
@@ -48,6 +49,7 @@
   .finance-summary,
   .analysis-quick-stats,
   .mujahid-timer-display,
+  .habits-timer-display,
   .fin-delete-info,
   .history-premium-summary { grid-template-columns: 1fr !important; }
 }
