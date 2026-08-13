@@ -345,10 +345,14 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: var(--space-4);
-  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .salah-prayer-card::before {
@@ -362,15 +366,16 @@
       var(--color-accent-primary),
       var(--color-accent-teal));
   opacity: 0;
-  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-.salah-prayer-card:hover {
-  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.salah-prayer-card:hover::before {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .salah-prayer-card:hover {
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .salah-prayer-card:hover::before {
+    opacity: 1;
+  }
 }
 
 .salah-prayer-card.has-status {

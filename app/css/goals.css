@@ -149,6 +149,9 @@ div#nafl-night-grid .salah-prayer-card {
   margin: 0;
   width: 100%;
   max-width: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 /* Ensure 2-column grid for Prayed / Missed buttons */

@@ -180,13 +180,14 @@ const Goals = {
     });
   },
 
-  renderSunnah(sunnahData, skipAnim = false) {
+  renderSunnah(sunnahData, skipAnim = false, targetId = null) {
     const container = document.getElementById('nafl-sunnah-grid');
     if (!container) return;
     const isFuture = this.currentDate > Utils.todayStr();
 
     if (skipAnim && container.children.length === this.sunnahList.length && !isFuture) {
-      this.sunnahList.forEach(item => {
+      const itemsToCheck = targetId ? this.sunnahList.filter(s => s.id === targetId) : this.sunnahList;
+      itemsToCheck.forEach(item => {
         const card = document.getElementById(`sunnah-card-${item.id}`);
         if (!card) return;
         const status = sunnahData[item.id];
@@ -195,7 +196,16 @@ const Goals = {
         const isMissed = status === 'missed';
         const pts = 2;
 
-        card.className = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+        const statusKey = isLocked ? (isPrayed ? 'prayed' : 'missed') : 'pending';
+
+        // Diff check: If status hasn't changed, skip DOM mutations completely
+        if (card.dataset.status === statusKey) {
+          return;
+        }
+        card.dataset.status = statusKey;
+
+        const targetClassName = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+        if (card.className !== targetClassName) card.className = targetClassName;
 
         const badge = card.querySelector('.salah-prayer-status-badge');
         if (badge) {
@@ -340,11 +350,12 @@ const Goals = {
     }
     const data = DB.getSalah(this.currentDate);
     if (!data.sunnah) data.sunnah = {};
-    const item = this.sunnahList.find(s => s.id === id);
 
     data.sunnah[id] = status;
     DB.setSalah(this.currentDate, data);
-    this.render(true);
+    this.renderSunnah(data.sunnah, true, id);
+    this.renderCelestialProgress(data, true);
+    this.updateHomeSummary();
   },
 
 
@@ -361,7 +372,15 @@ const Goals = {
 
     const card = document.getElementById('tahajjud-salah-card');
     if (skipAnim && card && !isFuture) {
-      card.className = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+      const statusKey = isLocked ? (isPrayed ? `prayed_${rakat}` : 'missed') : 'pending';
+      if (card.dataset.status === statusKey) {
+        return;
+      }
+      card.dataset.status = statusKey;
+
+      const targetClassName = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+      if (card.className !== targetClassName) card.className = targetClassName;
+
       const badge = card.querySelector('.salah-prayer-status-badge');
       if (badge) {
         badge.innerHTML = isLocked 
@@ -480,7 +499,9 @@ const Goals = {
     data.tahajjud = true;
     data.tahajjud_rakat = rakat;
     DB.setSalah(this.currentDate, data);
-    this.render(true);
+    this.renderTahajjud(data.tahajjud, data.tahajjud_rakat, true);
+    this.renderCelestialProgress(data, true);
+    this.updateHomeSummary();
   },
 
   setTahajjudMissed() {
@@ -495,7 +516,9 @@ const Goals = {
     data.tahajjud = false;
     data.tahajjud_rakat = -1;
     DB.setSalah(this.currentDate, data);
-    this.render(true);
+    this.renderTahajjud(data.tahajjud, data.tahajjud_rakat, true);
+    this.renderCelestialProgress(data, true);
+    this.updateHomeSummary();
   },
 
   promptCustomTahajjud() {
@@ -539,7 +562,15 @@ const Goals = {
 
     const card = document.getElementById('witr-salah-card');
     if (skipAnim && card && !isFuture) {
-      card.className = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+      const statusKey = isLocked ? (isPrayed ? 'prayed' : 'missed') : 'pending';
+      if (card.dataset.status === statusKey) {
+        return;
+      }
+      card.dataset.status = statusKey;
+
+      const targetClassName = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+      if (card.className !== targetClassName) card.className = targetClassName;
+
       const badge = card.querySelector('.salah-prayer-status-badge');
       if (badge) {
         badge.innerHTML = isLocked 
@@ -656,7 +687,9 @@ const Goals = {
     }
     data.witr = 3;
     DB.setSalah(this.currentDate, data);
-    this.render(true);
+    this.renderWitr(data.witr, true);
+    this.renderCelestialProgress(data, true);
+    this.updateHomeSummary();
   },
 
   toggleWitrMissed() {
@@ -670,7 +703,9 @@ const Goals = {
     }
     data.witr = -1;
     DB.setSalah(this.currentDate, data);
-    this.render(true);
+    this.renderWitr(data.witr, true);
+    this.renderCelestialProgress(data, true);
+    this.updateHomeSummary();
   },
 
   // Keep backward compatibility

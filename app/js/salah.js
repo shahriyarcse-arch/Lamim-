@@ -479,7 +479,8 @@ const Salah = {
     // In-place update if card grid already exists to guarantee 0 flicker/shake on click
     const existingCards = container.querySelectorAll('.salah-prayer-card');
     if (skipAnim && existingCards.length === this.prayers.length && !isFuture) {
-      this.prayers.forEach((p) => {
+      const prayersToCheck = targetPrayer ? [targetPrayer] : this.prayers;
+      prayersToCheck.forEach((p) => {
         const card = document.getElementById(`salah-card-${p}`);
         if (!card) return;
         const meta = { ...this.prayerMeta[p] };
@@ -491,7 +492,21 @@ const Salah = {
         const statusInfo = currentStatus ? this.statusMeta[currentStatus] : null;
         const isNext = isToday && nextPrayer && nextPrayer.name === p;
 
-        card.className = `salah-prayer-card ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}`;
+        const statusKey = currentStatus || 'pending';
+        const editKey = forceEdit ? '1' : '0';
+        const nextKey = (isNext && !isLocked) ? '1' : '0';
+
+        // Fine-grained diff check: Skip untouched cards completely to eliminate all DOM thrashing
+        if (card.dataset.status === statusKey && card.dataset.edit === editKey && card.dataset.isnext === nextKey) {
+          return;
+        }
+
+        card.dataset.status = statusKey;
+        card.dataset.edit = editKey;
+        card.dataset.isnext = nextKey;
+
+        const targetClassName = `salah-prayer-card ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}`;
+        if (card.className !== targetClassName) card.className = targetClassName;
 
         const badgeEl = card.querySelector('.salah-prayer-status-badge');
         if (badgeEl) {
@@ -670,8 +685,8 @@ const Salah = {
     DB.setSalah(date, salah);
     this._isSelfUpdate = false;
 
-    // Partial update instead of full renderAll to prevent blinking
-    this.renderPrayerCards(date, true); // true = skipAnim
+    // Partial update targeted to this specific prayer to guarantee zero DOM thrashing & 0 blinking
+    this.renderPrayerCards(date, true, prayer);
     this.renderCalendar();
 
     const sm = this.statusMeta[status];
@@ -690,7 +705,7 @@ const Salah = {
   // Re-open the status selector for a locked prayer so the user can correct it.
   editStatus(prayer, date) {
     this._correcting = { date, prayer };
-    this.renderPrayerCards(date, true);
+    this.renderPrayerCards(date, true, prayer);
   },
 
   getPrayerTime(p) {
