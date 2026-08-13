@@ -1130,6 +1130,17 @@
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
   border-top: 1px dashed var(--gh-border); padding-top: 20px;
 }
+/* compact 2-card variant (Duration + Recovery only) */
+.gh-sleep-stats-grid--compact {
+  grid-template-columns: 1fr 1fr;
+}
+.gh-sleep-stats-grid--compact .gh-sleep-stat-card {
+  flex-direction: column; align-items: center; text-align: center;
+  padding: 18px 14px; gap: 8px;
+}
+.gh-sleep-stats-grid--compact .gh-sleep-stat-value {
+  font-size: 22px;
+}
 .gh-sleep-stat-card {
   display: flex; align-items: flex-start; gap: 10px;
   padding: 14px; border-radius: 12px;
@@ -1144,11 +1155,6 @@
 }
 .gh-sleep-stat-value {
   font-size: 18px; font-weight: 800; color: var(--gh-text); display: block; margin-top: 2px;
-}
-.gh-sleep-gauge-row {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-top: 12px; padding: 14px 16px; border-radius: 12px;
-  background: var(--gh-surface-2); border: 1px solid var(--gh-border);
 }
 
 /* ---------- animations ---------- */
