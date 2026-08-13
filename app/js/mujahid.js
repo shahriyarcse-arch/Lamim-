@@ -417,10 +417,10 @@ const Mujahid = {
             const lastKnownDays = el.dataset.lastKnownDays ? parseInt(el.dataset.lastKnownDays, 10) : timeStats.days;
             el.dataset.lastKnownDays = timeStats.days;
             
-            nums[0].textContent = timeStats.days;
-            nums[1].textContent = timeStats.hours;
-            nums[2].textContent = timeStats.minutes;
-            nums[3].textContent = timeStats.seconds;
+            nums[0].textContent = window.n ? window.n(timeStats.days) : timeStats.days;
+            nums[1].textContent = window.n ? window.n(timeStats.hours) : timeStats.hours;
+            nums[2].textContent = window.n ? window.n(timeStats.minutes) : timeStats.minutes;
+            nums[3].textContent = window.n ? window.n(timeStats.seconds) : timeStats.seconds;
             
             this.updateSpiritBarsLive();
 
@@ -706,6 +706,7 @@ const Mujahid = {
 
 
   renderEmptyState(skipAnim = false) {
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn');
     return `
       <div class="mujahid-hero-modern ${skipAnim ? '' : 'anim-scale-up'}" style="padding: 40px 20px; text-align:center;">
         <div class="mujahid-hero-glass">
@@ -713,14 +714,14 @@ const Mujahid = {
             <div class="mujahid-hero-icon-glow"></div>
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h2 class="mujahid-forge-title" style="font-size:32px; font-weight:900; margin-bottom:12px; background:linear-gradient(to bottom, #fff, rgba(255,255,255,0.7)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-1px;">The Forge of Resolve</h2>
-          <p style="color:var(--color-text-muted); line-height:1.6; max-width:320px; margin:0 auto 32px; font-size:16px;">Every warrior starts with a single decision. Forge your first tracker to begin your journey toward mastery.</p>
-          <button class="forge-action-btn pulse-indigo" onclick="Mujahid.showAddModal()" style="max-width:260px; margin:0 auto;">Initiate First Habit</button>
+          <h2 class="mujahid-forge-title" style="font-size:32px; font-weight:900; margin-bottom:12px; background:linear-gradient(to bottom, #fff, rgba(255,255,255,0.7)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-1px;">${isBn ? 'সংকল্পের দুর্গ' : 'The Forge of Resolve'}</h2>
+          <p style="color:var(--color-text-muted); line-height:1.6; max-width:320px; margin:0 auto 32px; font-size:16px;">${isBn ? 'প্রতিটি সাফল্য একটি সংকল্প দিয়ে শুরু হয়। আপনার প্রথম অভ্যাস ট্র্যাকার যুক্ত করুন।' : 'Every warrior starts with a single decision. Forge your first tracker to begin your journey toward mastery.'}</p>
+          <button class="forge-action-btn pulse-indigo" onclick="Mujahid.showAddModal()" style="max-width:260px; margin:0 auto;">${isBn ? 'প্রথম অভ্যাস যুক্ত করুন' : 'Initiate First Habit'}</button>
         </div>
         
         <div style="margin-top:60px; display:flex; justify-content:center; gap:32px; opacity:0.3;">
-          <div style="text-align:center;"><div style="font-size:24px; font-weight:900;">0</div><div style="font-size:11px; text-transform:uppercase; letter-spacing:2px; font-weight:700;">Active Wars</div></div>
-          <div style="text-align:center;"><div style="font-size:24px; font-weight:900;">0</div><div style="font-size:11px; text-transform:uppercase; letter-spacing:2px; font-weight:700;">Badges Earned</div></div>
+          <div style="text-align:center;"><div style="font-size:24px; font-weight:900;">${window.n ? window.n(0) : 0}</div><div style="font-size:11px; text-transform:uppercase; letter-spacing:2px; font-weight:700;">${isBn ? 'সক্রিয় অভ্যাস' : 'Active Habits'}</div></div>
+          <div style="text-align:center;"><div style="font-size:24px; font-weight:900;">${window.n ? window.n(0) : 0}</div><div style="font-size:11px; text-transform:uppercase; letter-spacing:2px; font-weight:700;">${isBn ? 'ব্যাজ অর্জিত' : 'Badges Earned'}</div></div>
         </div>
       </div>
     `;
@@ -793,22 +794,22 @@ const Mujahid = {
           <div class="iw-timer-circle mujahid-live-time" data-habit-id="${habit.id}">
             <div class="iw-timer-label">It has been</div>
             <div class="iw-timer-days-row" role="button" tabindex="0" onclick="event.stopPropagation(); Mujahid.showStartDateModal('${habit.id}')" style="cursor:pointer;" title="Adjust Timer (Secret)">
-              <div class="iw-timer-days"><span class="mujahid-time-num">${timeStats.days}</span></div>
-              <div class="iw-days-text">days</div>
+              <div class="iw-timer-days"><span class="mujahid-time-num">${window.n ? window.n(timeStats.days) : timeStats.days}</span></div>
+              <div class="iw-days-text">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'দিন' : 'days'}</div>
             </div>
             
             <div class="iw-timer-sub">
               <div class="iw-timer-unit">
-                <span class="mujahid-time-num">${timeStats.hours}</span>
-                <span class="iw-unit-label">hours</span>
+                <span class="mujahid-time-num">${window.n ? window.n(timeStats.hours) : timeStats.hours}</span>
+                <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'ঘণ্টা' : 'hours'}</span>
               </div>
               <div class="iw-timer-unit">
-                <span class="mujahid-time-num">${timeStats.minutes}</span>
-                <span class="iw-unit-label">minutes</span>
+                <span class="mujahid-time-num">${window.n ? window.n(timeStats.minutes) : timeStats.minutes}</span>
+                <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'মিনিট' : 'minutes'}</span>
               </div>
               <div class="iw-timer-unit">
-                <span class="mujahid-time-num">${timeStats.seconds}</span>
-                <span class="iw-unit-label">seconds</span>
+                <span class="mujahid-time-num">${window.n ? window.n(timeStats.seconds) : timeStats.seconds}</span>
+                <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'সেকেন্ড' : 'seconds'}</span>
               </div>
             </div>
           </div>
