@@ -136,7 +136,7 @@ const Profile = {
     if (ps) ps.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.toggleJumuahMode()">
         <div class="settings-item-left"><div class="settings-item-icon ic-violet">${icons.mosque}</div><div><div class="settings-item-label">Jumu'ah Mode</div><div class="settings-item-value">Show Jumu'ah on Fridays</div></div></div>
-        <div class="settings-item-right"><div class="toggle ${settings.jumuahMode?'active':''}"></div></div>
+        <div class="settings-item-right"><div class="toggle ${settings.jumuahMode !== false?'active':''}"></div></div>
       </div>
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.toggleNotifications()">
         <div class="settings-item-left"><div class="settings-item-icon ic-amber">${icons.bell}</div><div><div class="settings-item-label">Prayer Notifications</div><div class="settings-item-value">Alerts for next waqt</div></div></div>
@@ -463,9 +463,24 @@ const Profile = {
 
   toggleJumuahMode() {
     const s = DB.getSettings();
-    s.jumuahMode = s.jumuahMode === undefined ? true : !s.jumuahMode;
+    s.jumuahMode = s.jumuahMode === false ? true : false;
     DB.setSettings(s);
     this.renderSettings();
+    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
+    // Instantly update Salah prayer cards (Dhuhr ↔ Jumu'ah) without page refresh
+    if (typeof Salah !== 'undefined' && typeof Salah.renderAll === 'function') {
+      Salah.renderAll(true);
+    }
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    Utils.toast(isBn ? (s.jumuahMode ? 'জুমআ মোড চালু হয়েছে' : 'জুমআ মোড বন্ধ হয়েছে') : (s.jumuahMode ? "Jumu'ah Mode enabled" : "Jumu'ah Mode disabled"), 'success');
+  },
+
+  saveSetting(key, val) {
+    const s = DB.getSettings();
+    s[key] = val;
+    DB.setSettings(s);
+    this.renderSettings();
+    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
   },
 
 
