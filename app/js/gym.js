@@ -494,7 +494,7 @@ const Gym = {
       if (ringWrap && window.Charts) Charts.ring(ringWrap, { size: 88, thickness: 7, value: 0, color: 'currentColor' });
       if (gauge) gauge.textContent = '--';
       if (durEl) durEl.textContent = '--';
-      if (recEl) recEl.textContent = '--';
+      if (recEl) { recEl.textContent = '--'; recEl.style.color = ''; }
       if (gapEl) { gapEl.textContent = '--'; gapEl.className = 'gh-gap-val'; }
       if (badge) { badge.textContent = 'PENDING'; badge.className = 'gh-badge pending'; }
       if (inDisp) inDisp.textContent = '--:--';
@@ -517,7 +517,13 @@ const Gym = {
     if (ringWrap && window.Charts) Charts.animateRing(ringWrap, score, { size: 88, thickness: 7 });
     if (gauge) gauge.textContent = n(score);
     if (durEl) durEl.textContent = n(hours.toFixed(1)) + 'h';
-    if (recEl) recEl.textContent = n(score);
+    if (recEl) {
+      recEl.textContent = n(score);
+      // color based on score
+      if (score >= 80) recEl.style.color = '#34d399'; // green — excellent
+      else if (score >= 60) recEl.style.color = '#22d3ee'; // cyan — good
+      else recEl.style.color = '#f87171'; // red — poor
+    }
     if (gapEl) {
       gapEl.textContent = (gap >= 0 ? '+' : '') + n(gap.toFixed(1)) + 'h';
       gapEl.className = 'gh-gap-val ' + (gap >= -0.2 ? 'positive' : 'negative');
