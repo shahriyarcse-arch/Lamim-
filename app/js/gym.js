@@ -52,7 +52,6 @@ const Gym = {
     this.renderSleep();
     this.renderDiet();
     this.renderWater();
-    this.renderBodyMetrics();
   },
 
   _renderSig() {
@@ -107,12 +106,6 @@ const Gym = {
     if (exInput) this._bind(exInput, 'keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); this.addExercise(); }
     });
-
-    // body metric inputs
-    const wInput = document.getElementById('gym-body-weight');
-    const bfInput = document.getElementById('gym-body-fat');
-    if (wInput) this._bind(wInput, 'change', () => this.saveBodyMetrics());
-    if (bfInput) this._bind(bfInput, 'change', () => this.saveBodyMetrics());
   },
 
   // Track element listeners so destroy() can remove them (prevents duplicate
@@ -151,12 +144,9 @@ const Gym = {
   renderStatStrip() {
     const gym = DB.getGym(this.selectedDate);
     const n = window.n ? window.n : (x => x);
-
     const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
     const exCount = (gym.exercises || []).length;
     setText('gym-stat-exercises', n(exCount));
-    const waterPct = (gym.water && gym.water.goal) ? Math.min(100, (gym.water.amount / gym.water.goal) * 100) : 0;
-    setText('gym-stat-hydration-val', n(Math.round(waterPct)) + '%');
   },
 
   /* ---------- workout logger ---------- */
@@ -402,24 +392,12 @@ const Gym = {
 
   updateSleepStats(sleep) {
     const n = window.n ? window.n : (x => x);
-    const ringWrap = document.getElementById('gym-sleep-ring-svg');
     const durEl = document.getElementById('gym-sleep-duration-val');
     const recEl = document.getElementById('gym-recovery-score-val');
-    const gapEl = document.getElementById('gym-sleep-gap-val');
-    const badge = document.getElementById('gym-recovery-badge');
-    const inDisp = document.getElementById('gym-sleep-time-display');
-    const outDisp = document.getElementById('gym-wake-time-display');
-    const gauge = document.getElementById('gym-sleep-gauge-val');
 
     if (!sleep || !sleep.sleepTime || !sleep.wakeTime) {
-      if (ringWrap && window.Charts) Charts.ring(ringWrap, { size: 88, thickness: 7, value: 0, color: 'currentColor' });
-      if (gauge) gauge.textContent = '--';
       if (durEl) durEl.textContent = '--';
       if (recEl) { recEl.textContent = '--'; recEl.style.color = ''; }
-      if (gapEl) { gapEl.textContent = '--'; gapEl.className = 'gh-gap-val'; }
-      if (badge) { badge.textContent = 'PENDING'; badge.className = 'gh-badge pending'; }
-      if (inDisp) inDisp.textContent = '--:--';
-      if (outDisp) outDisp.textContent = '--:--';
       return;
     }
 
@@ -428,36 +406,17 @@ const Gym = {
     let start = sh * 60 + sm;
     let end = wh * 60 + wm;
     if (end <= start) end += 24 * 60;
-    const totalMin = end - start;
-    const hours = totalMin / 60;
+    const hours = (end - start) / 60;
 
     const score = this._calcRecoveryScore(sleep);
-    const goal = 8.0;
-    const gap = hours - goal;
 
-    if (ringWrap && window.Charts) Charts.animateRing(ringWrap, score, { size: 88, thickness: 7 });
-    if (gauge) gauge.textContent = n(score);
     if (durEl) durEl.textContent = n(hours.toFixed(1)) + 'h';
     if (recEl) {
       recEl.textContent = n(score);
-      // color based on score
-      if (score >= 80) recEl.style.color = '#34d399'; // green — excellent
-      else if (score >= 60) recEl.style.color = '#22d3ee'; // cyan — good
-      else recEl.style.color = '#f87171'; // red — poor
+      if (score >= 80) recEl.style.color = '#34d399';
+      else if (score >= 60) recEl.style.color = '#22d3ee';
+      else recEl.style.color = '#f87171';
     }
-    if (gapEl) {
-      gapEl.textContent = (gap >= 0 ? '+' : '') + n(gap.toFixed(1)) + 'h';
-      gapEl.className = 'gh-gap-val ' + (gap >= -0.2 ? 'positive' : 'negative');
-    }
-    if (badge) {
-      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-      let cls = 'poor', txt = isBn ? 'দুর্বল' : 'POOR';
-      if (score >= 80) { cls = 'excellent'; txt = isBn ? 'চমৎকার' : 'EXCELLENT'; }
-      else if (score >= 60) { cls = 'good'; txt = isBn ? 'ভালো' : 'GOOD'; }
-      badge.textContent = txt; badge.className = 'gh-badge ' + cls;
-    }
-    if (inDisp) inDisp.textContent = this.formatTime12h(sleep.sleepTime);
-    if (outDisp) outDisp.textContent = this.formatTime12h(sleep.wakeTime);
 
     // persist duration back
     const data = DB.getGym(this.selectedDate);
@@ -608,9 +567,6 @@ const Gym = {
       glassFill.style.height = `${water.amount > 0 ? Math.max(6, pct) : 0}%`;
     }
 
-    // Update global stat strip tile
-    const statValEl = document.getElementById('gym-stat-hydration-val');
-    if (statValEl) statValEl.textContent = n(displayPct) + '%';
   },
 
   addWater(amount) {
@@ -621,66 +577,6 @@ const Gym = {
     this.renderWater();
     this.renderStatStrip();
     this.notifyDataChanged();
-  },
-
-  /* ---------- body metrics ---------- */
-  renderBodyMetrics() {
-    const metrics = DB.getBodyMetrics();
-    const wInput = document.getElementById('gym-body-weight');
-    const bfInput = document.getElementById('gym-body-fat');
-    const trendEl = document.getElementById('gym-body-trend');
-
-    // find today's entry (or latest for display)
-    const todayEntry = metrics.entries.find(e => e.date === this.selectedDate);
-    if (wInput && todayEntry) wInput.value = todayEntry.weight || '';
-    if (bfInput && todayEntry) bfInput.value = todayEntry.bodyFat || '';
-
-    if (trendEl && window.Charts) {
-      const entries = metrics.entries.slice(-14);
-      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-      if (entries.length < 2) {
-        trendEl.innerHTML = `<div style="font-size:12px;color:var(--gh-text-muted);text-align:center;padding:18px 0">${isBn ? 'ওজন এর ট্রেন্ড দেখতে ২+ দিনের রেকর্ড প্রয়োজন' : 'Need 2+ days of logs to show weight trend'}</div>`;
-      } else {
-        Charts.lineChart(trendEl, entries.map(e => ({ label: '', value: e.weight || 0 })), { color: 'var(--gh-secondary)', height: 70 });
-      }
-    }
-  },
-
-  saveBodyMetrics() {
-    const wInput = document.getElementById('gym-body-weight');
-    const bfInput = document.getElementById('gym-body-fat');
-    if (!wInput && !bfInput) return;
-    const wRaw = wInput && wInput.value.trim();
-    const bfRaw = bfInput && bfInput.value.trim();
-    // Distinguish "empty" from a literal 0 so a legitimate 0 entry isn't dropped.
-    const weight = wRaw !== '' ? parseFloat(wRaw) : null;
-    const bodyFat = bfRaw !== '' ? parseFloat(bfRaw) : null;
-    if (weight === null && bodyFat === null) return;
-
-    if (weight !== null && (isNaN(weight) || weight < 0 || weight > 300)) {
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter valid body weight (0-300kg)', 'error');
-      return;
-    }
-    if (bodyFat !== null && (isNaN(bodyFat) || bodyFat < 0 || bodyFat > 80)) {
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter valid body fat % (0-80%)', 'error');
-      return;
-    }
-
-    const metrics = DB.getBodyMetrics();
-    const idx = metrics.entries.findIndex(e => e.date === this.selectedDate);
-    const entry = {
-      date: this.selectedDate,
-      weight: weight === null ? 0 : weight,
-      bodyFat: bodyFat === null ? 0 : bodyFat
-    };
-    if (idx >= 0) metrics.entries[idx] = entry;
-    else metrics.entries.push(entry);
-    // keep sorted & cap to 90 entries
-    metrics.entries.sort((a, b) => a.date.localeCompare(b.date));
-    if (metrics.entries.length > 90) metrics.entries = metrics.entries.slice(-90);
-    DB.setBodyMetrics(metrics);
-    this.renderBodyMetrics();
-    if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Body metrics saved', 'success');
   },
 
   onDataUpdated() {
