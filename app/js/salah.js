@@ -1142,18 +1142,21 @@ const Salah = {
   },
 
   resetToday() {
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     UI.showSettingsModal({
-      title: 'Reset Salah Data?',
-      desc: `Clear all records for ${Utils.formatDate(Utils.parseDate(this.selectedDate), {day:'numeric', month:'short'})}?`,
-      confirmText: 'Yes, Reset',
+      title: isBn ? 'নামাজের ডেটা রিসেট করবেন?' : 'Reset Salah Data?',
+      desc: isBn 
+        ? `${Utils.formatDate(Utils.parseDate(this.selectedDate), {day:'numeric', month:'short'})}-এর সকল সালাত রেকর্ড মুছে ফেলতে চান?`
+        : `Clear all records for ${Utils.formatDate(Utils.parseDate(this.selectedDate), {day:'numeric', month:'short'})}?`,
+      confirmText: isBn ? 'হ্যাঁ, রিসেট করুন' : 'Yes, Reset',
       type: 'danger',
       onConfirm: () => {
         const data = DB.getSalah(this.selectedDate);
         ['fajr','dhuhr','asr','maghrib','isha'].forEach(p => delete data[p]);
         DB.setSalah(this.selectedDate, data);
         this.renderAll(true);
-        if (typeof Home !== 'undefined') Home.render(); // Also update home stats
-        Utils.toast('Salah data cleared', 'info');
+        if (typeof Home !== 'undefined' && typeof Home.render === 'function') Home.render(); // Also update home stats
+        Utils.toast(isBn ? 'সালাতের তথ্য মুছে ফেলা হয়েছে' : 'Salah data cleared', 'info');
       }
     });
   }

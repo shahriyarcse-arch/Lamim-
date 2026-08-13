@@ -158,10 +158,13 @@ const Goals = {
   },
 
   resetToday() {
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     UI.showSettingsModal({
-      title: 'Reset Nafl Data?',
-      desc: `Clear all Sunnah & Nafl records for ${Utils.formatDate(Utils.parseDate(this.currentDate), {day:'numeric', month:'short'})}?`,
-      confirmText: 'Yes, Clear',
+      title: isBn ? 'নফলের ডেটা রিসেট করবেন?' : 'Reset Nafl Data?',
+      desc: isBn 
+        ? `${Utils.formatDate(Utils.parseDate(this.currentDate), {day:'numeric', month:'short'})}-এর সকল সুন্নাত ও নফল রেকর্ড মুছে ফেলতে চান?`
+        : `Clear all Sunnah & Nafl records for ${Utils.formatDate(Utils.parseDate(this.currentDate), {day:'numeric', month:'short'})}?`,
+      confirmText: isBn ? 'হ্যাঁ, মুছুন' : 'Yes, Clear',
       type: 'danger',
       onConfirm: () => {
         const data = DB.getSalah(this.currentDate);
@@ -175,7 +178,7 @@ const Goals = {
         DB.setSalah(this.currentDate, data);
         
         this.render(true); // skip animation on reset
-        Utils.toast('Nafl data cleared', 'info');
+        Utils.toast(isBn ? 'নফলের তথ্য মুছে ফেলা হয়েছে' : 'Nafl data cleared', 'info');
       }
     });
   },
@@ -346,7 +349,8 @@ const Goals = {
 
   selectSunnah(id, status) {
     if (this.currentDate > Utils.todayStr()) {
-      Utils.toast("Cannot edit future dates", "error");
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'ভবিষ্যতের তারিখে সম্পাদনা করা যাবে না' : 'Cannot edit future dates', 'error');
       return;
     }
     const data = DB.getSalah(this.currentDate);
@@ -491,7 +495,8 @@ const Goals = {
 
   setTahajjudRakat(rakat) {
     if (this.currentDate > Utils.todayStr()) {
-      Utils.toast("Cannot edit future dates", "error");
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'ভবিষ্যতের তারিখে সম্পাদনা করা যাবে না' : 'Cannot edit future dates', 'error');
       return;
     }
     const data = DB.getSalah(this.currentDate);
@@ -508,7 +513,8 @@ const Goals = {
 
   setTahajjudMissed() {
     if (this.currentDate > Utils.todayStr()) {
-      Utils.toast("Cannot edit future dates", "error");
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'ভবিষ্যতের তারিখে সম্পাদনা করা যাবে না' : 'Cannot edit future dates', 'error');
       return;
     }
     const data = DB.getSalah(this.currentDate);
@@ -525,7 +531,8 @@ const Goals = {
 
   promptCustomTahajjud() {
     if (this.currentDate > Utils.todayStr()) {
-      Utils.toast("Cannot edit future dates", "error");
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'ভবিষ্যতের তারিখে সম্পাদনা করা যাবে না' : 'Cannot edit future dates', 'error');
       return;
     }
     const data = DB.getSalah(this.currentDate);
@@ -681,7 +688,8 @@ const Goals = {
 
   toggleWitr() {
     if (this.currentDate > Utils.todayStr()) {
-      Utils.toast("Cannot edit future dates", "error");
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'ভবিষ্যতের তারিখে সম্পাদনা করা যাবে না' : 'Cannot edit future dates', 'error');
       return;
     }
     const data = DB.getSalah(this.currentDate);
@@ -697,7 +705,8 @@ const Goals = {
 
   toggleWitrMissed() {
     if (this.currentDate > Utils.todayStr()) {
-      Utils.toast("Cannot edit future dates", "error");
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+      Utils.toast(isBn ? 'ভবিষ্যতের তারিখে সম্পাদনা করা যাবে না' : 'Cannot edit future dates', 'error');
       return;
     }
     const data = DB.getSalah(this.currentDate);
@@ -790,10 +799,11 @@ const Goals = {
     const TOTAL_MAX = trackingDays * MAX_PTS_PER_DAY;
     const completion = TOTAL_MAX > 0 ? ((totalPoints / TOTAL_MAX) * 100).toFixed(1) : '0.0';
 
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     const el = (id) => document.getElementById(id);
-    if (el('h-sum-total')) el('h-sum-total').textContent = totalRakat + ' RK';
-    if (el('h-sum-streak')) el('h-sum-streak').textContent = streak + 'd';
-    if (el('h-sum-avg')) el('h-sum-avg').textContent = completion + '%';
+    if (el('h-sum-total')) el('h-sum-total').textContent = (window.n ? window.n(totalRakat) : totalRakat) + ' RK';
+    if (el('h-sum-streak')) el('h-sum-streak').textContent = (window.n ? window.n(streak) : streak) + 'd';
+    if (el('h-sum-avg')) el('h-sum-avg').textContent = (window.n ? window.n(completion) : completion) + '%';
 
     list.innerHTML = history.map(day => {
       const isPastDay = day.date !== Utils.todayStr();
@@ -835,24 +845,24 @@ const Goals = {
           <div class="h-item-top-row">
             <div class="h-item-date">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              <span>${day.date === Utils.todayStr() ? (window.t ? window.t('Today') : 'Today') : Utils.formatDate(Utils.parseDate(day.date), { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+              <span>${day.date === Utils.todayStr() ? (isBn ? 'আজ' : 'Today') : Utils.formatDate(Utils.parseDate(day.date), { weekday: 'short', month: 'short', day: 'numeric' })}</span>
             </div>
             <div class="h-item-total">
-              <span>${total}</span>
+              <span>${window.n ? window.n(total) : total}</span>
               <small>RK</small>
             </div>
           </div>
           <div class="h-item-content">
             <div class="h-item-main">
                ${sunnahDone.map(name => `<div class="h-pill prayed"><span class="dot"></span>${name}</div>`).join('')}
-               ${tRakat > 0 ? `<div class="h-pill tahajjud"><span class="dot"></span>Tahajjud (${tRakat})</div>` : ''}
-               ${wRakat > 0 ? `<div class="h-pill witr"><span class="dot"></span>Witr (${wRakat})</div>` : ''}
+               ${tRakat > 0 ? `<div class="h-pill tahajjud"><span class="dot"></span>Tahajjud (${window.n ? window.n(tRakat) : tRakat})</div>` : ''}
+               ${wRakat > 0 ? `<div class="h-pill witr"><span class="dot"></span>Witr (${window.n ? window.n(wRakat) : wRakat})</div>` : ''}
                ${sunnahMissed.map(name => `<div class="h-pill missed"><span class="dot"></span>${name}</div>`).join('')}
             </div>
           </div>
         </div>
       `;
-    }).join('') || '<div class="empty-state">No history recorded yet.</div>';
+    }).join('') || `<div class="empty-state">${isBn ? 'এখনো কোনো হিস্ট্রি রেকর্ড পাওয়া যায়নি।' : 'No history recorded yet.'}</div>`;
 
     modal.classList.remove('hidden');
   },

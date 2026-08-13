@@ -96,7 +96,7 @@ const Dhikr = {
       `;
     }).join('') + `
       <div class="dhikr-preset-card dhikr-add-card" role="button" tabindex="0" onclick="Dhikr.showAddModal()" style="--dc:#14b8a6">
-        <div class="dhikr-preset-name">Add</div>
+        <div class="dhikr-preset-name">${this.getLang() === 'bn' ? 'যোগ' : 'Add'}</div>
       </div>
     `;
   },
@@ -427,16 +427,17 @@ const Dhikr = {
   },
 
   resetToday() {
+    const isBn = this.getLang() === 'bn';
     UI.showSettingsModal({
-      title: 'Reset Today\'s Dhikr?',
-      desc: 'This will clear all your dhikr sessions and counts for today.',
-      confirmText: 'Yes, Clear All',
+      title: isBn ? 'আজকের যিকির রিসেট করবেন?' : 'Reset Today\'s Dhikr?',
+      desc: isBn ? 'এটি আজকের সমস্ত যিকির সেশন এবং কাউন্ট মুছে ফেলবে।' : 'This will clear all your dhikr sessions and counts for today.',
+      confirmText: isBn ? 'হ্যাঁ, সব মুছুন' : 'Yes, Clear All',
       type: 'danger',
       onConfirm: () => {
         const today = Utils.todayStr();
         DB.setDhikr(today, {});
         this.init();
-        Utils.toast('Dhikr data cleared', 'info');
+        Utils.toast(isBn ? 'যিকিরের তথ্য মুছে ফেলা হয়েছে' : 'Dhikr data cleared', 'info');
       }
     });
   },
