@@ -1,36 +1,5 @@
 const Career = {
   selectedDate: '',
-  _timerRAF: null,
-
-  _icons: {
-    clock: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-    flame: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
-    code: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
-    book: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a1 1 0 0 1 0-5H20"/></svg>',
-    globe: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
-    trending: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
-    brain: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>'
-  },
-
-  _catOptions: [
-    { key: 'coding', label: 'Coding', icon: 'code' },
-    { key: 'reading', label: 'Reading', icon: 'book' },
-    { key: 'language', label: 'Language', icon: 'globe' },
-    { key: 'business', label: 'Business', icon: 'trending' },
-    { key: 'general', label: 'General', icon: 'brain' }
-  ],
-
-  _suggestedGoals: [
-    '30 min LeetCode', 'Read 10 pages', '1 hr deep work', 'Review notes', 'Watch 1 tutorial'
-  ],
-
-  _achievements: [
-    { key: 'firstSession', label: 'First Session', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>' },
-    { key: 'streak7', label: '7-Day Streak', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>' },
-    { key: 'hours10', label: '10h Club', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>' },
-    { key: 'hours50', label: '50h Expert', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>' },
-    { key: 'goals25', label: '25 Goals Done', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' }
-  ],
 
   _GOAL_MAX_LEN: 120,
 
@@ -41,7 +10,6 @@ const Career = {
     this._inited = true;
     this.renderAll(skip);
     this.bindEvents();
-    this.initTimer();
   },
 
   _migrateChecklist() {
@@ -77,15 +45,7 @@ const Career = {
     this._renderedSig = sig;
 
     this.renderHeader();
-    this.renderHero();
-    this.renderStatStrip();
-    this.renderStudyLog();
     this.renderChecklist();
-    this.renderGoalsProgress();
-    this.renderHeatMap();
-    this.renderSkillProgress();
-    this.renderAchievements();
-    this.updateHeroMetrics(skipAnim);
     this.switchProgressTab(this._activeProgressTab || 'weekly');
   },
 
@@ -145,9 +105,6 @@ const Career = {
         if (!isNaN(id)) this.toggleChecklistItem(id, e);
       }
     });
-
-    const topicInput = document.getElementById('career-study-topic');
-    if (topicInput) this._bind(topicInput, 'keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); this.saveStudyLog(); } });
   },
 
   // Track element listeners so destroy() can remove them (prevents duplicate
@@ -186,265 +143,7 @@ const Career = {
     this.renderAll(true);
   },
 
-  /* ---------- HERO scorecard ---------- */
-  renderHero() {
-    const wrap = document.getElementById('career-hero-ring');
-    if (wrap && window.Charts) {
-      Charts.ring(wrap, { size: 132, thickness: 10, value: 0, color: 'currentColor', colorEnd: 'var(--cb-secondary)' });
-    }
-    const spark = document.getElementById('career-hero-spark');
-    if (spark && window.Charts) {
-      const data = [];
-      for (let i = 6; i >= 0; i--) {
-        const d = Utils.parseDate(this.selectedDate);
-        d.setDate(d.getDate() - i);
-        const c = DB.getCareer(Utils.dateStr(d));
-        data.push((c.studyDuration || 0));
-      }
-      Charts.sparkline(spark, data, { color: 'var(--cb-primary)', fillColor: 'var(--cb-primary)', height: 44 });
-    }
-  },
-
-  _focusScore(data) {
-    const study = (data.studyDuration || 0);
-    const studyPct = Math.min(100, (study / 120) * 100); // 2h = full
-    const checklist = data.checklist || [];
-    const doneCount = checklist.filter(x => x.done).length;
-    const goalPct = checklist.length ? (doneCount / checklist.length) * 100 : 0;
-    return Math.round(studyPct * 0.6 + goalPct * 0.4);
-  },
-
-  updateHeroMetrics(skipAnim = false) {
-    const data = DB.getCareer(this.selectedDate);
-    const score = this._focusScore(data);
-    const ringWrap = document.getElementById('career-hero-ring');
-    if (ringWrap && window.Charts) {
-      if (skipAnim) Charts.ring(ringWrap, { size: 132, thickness: 10, value: score, color: 'currentColor', colorEnd: 'var(--cb-secondary)' });
-      else Charts.animateRing(ringWrap, score, { size: 132, thickness: 10 });
-    }
-
-    const num = document.getElementById('career-hero-ring-num');
-    if (num) num.textContent = window.n ? window.n(score) : score;
-
-    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    const titleEl = document.getElementById('cb-hero-title');
-    if (titleEl) {
-      if (score >= 80) titleEl.textContent = isBn ? 'সম্পূর্ণ মনোযোগী' : 'Locked In';
-      else if (score >= 50) titleEl.textContent = isBn ? 'গতি বৃদ্ধি পাচ্ছে' : 'Building Momentum';
-      else if (score >= 25) titleEl.textContent = isBn ? 'প্রস্তুতি চলছে' : 'Warming Up';
-      else titleEl.textContent = isBn ? 'শুরু করতে প্রস্তুত' : 'Ready to Begin';
-    }
-    const subEl = document.getElementById('cb-hero-sub');
-    if (subEl) {
-      const mins = data.studyDuration || 0;
-      const done = (data.checklist || []).filter(x => x.done).length;
-      subEl.textContent = isBn
-        ? `${window.n ? window.n(mins) : mins} মিনিট পড়ালেখা · ${window.n ? window.n(done) : done}টি লক্ষ্য সম্পূর্ণ`
-        : `${window.n ? window.n(mins) : mins} min studied · ${window.n ? window.n(done) : done} goals done`;
-    }
-    const streakNum = document.getElementById('cb-hero-streak-num');
-    if (streakNum) {
-      const s = DB.getCareerStreak();
-      streakNum.textContent = window.n ? window.n(s) : s;
-    }
-  },
-
-  /* ---------- stat strip ---------- */
-  renderStatStrip() {
-    const _t = window.n ? window.n : (x => x);
-    const streak = DB.getCareerStreak();
-    const data = DB.getCareer(this.selectedDate);
-    const studyToday = data.studyDuration || 0;
-    const goalsDone = (data.checklist || []).filter(x => x.done).length;
-
-    const [yy, mm] = this.selectedDate.split('-');
-    const daysInMonth = new Date(parseInt(yy, 10), parseInt(mm, 10), 0).getDate();
-    let monthMins = 0;
-    for (let i = 1; i <= daysInMonth; i++) {
-      const ds = `${yy}-${mm}-${String(i).padStart(2, '0')}`;
-      if (ds > Utils.todayStr()) break;
-      const c = DB.getCareer(ds);
-      monthMins += (c.studyDuration || 0);
-    }
-    const monthHours = (monthMins / 60).toFixed(1);
-
-    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-    set('cb-stat-streak', _t(streak));
-    set('cb-stat-streak-sub', isBn ? (streak === 1 ? 'দিন' : 'দিন') : (streak === 1 ? 'day' : 'days'));
-    set('cb-stat-study', _t(studyToday));
-    set('cb-stat-study-sub', isBn ? 'মিনিট' : 'minutes');
-    set('cb-stat-goals', _t(goalsDone));
-    set('cb-stat-goals-sub', isBn ? 'আজ অর্জিত' : 'done today');
-    set('cb-stat-month', _t(monthHours));
-    set('cb-stat-month-sub', isBn ? 'এই মাসে ঘণ্টা' : 'hours this mo.');
-  },
-
-  /* ---------- study log ---------- */
-  renderStudyLog() {
-    const data = DB.getCareer(this.selectedDate);
-    const topic = document.getElementById('career-study-topic');
-    const dur = document.getElementById('career-study-duration');
-    const durVal = document.getElementById('career-study-duration-val');
-    const notes = document.getElementById('career-study-notes');
-    if (topic) topic.value = data.focusTopic || '';
-    if (dur) dur.value = data.studyDuration || 0;
-    if (notes) notes.value = data.notes || '';
-    if (durVal) durVal.textContent = this._fmtDuration(data.studyDuration || 0);
-
-    const chipsEl = document.getElementById('career-category-chips-container');
-    const sel = document.getElementById('career-study-category');
-    if (chipsEl) {
-      chipsEl.innerHTML = '';
-      this._catOptions.forEach(opt => {
-        const chip = document.createElement('button');
-        chip.className = 'cb-chip cat-' + opt.key + (data.category === opt.key ? ' active' : '');
-        chip.innerHTML = this._icons[opt.icon] + '<span>' + opt.label + '</span>';
-        chip.onclick = () => this.selectCategory(opt.key);
-        chipsEl.appendChild(chip);
-      });
-    }
-    if (sel) sel.value = data.category || 'coding';
-  },
-
-  _fmtDuration(mins) {
-    const _t = window.n ? window.n : (x => x);
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    if (h > 0) return _t(h) + 'h ' + _t(m) + 'm';
-    return _t(m) + ' mins';
-  },
-
-
-  saveStudyLog() {
-    const topic = (document.getElementById('career-study-topic') || {}).value || '';
-    let dur = parseInt((document.getElementById('career-study-duration') || {}).value, 10);
-    if (isNaN(dur)) dur = 0;
-    dur = Math.max(0, Math.min(1440, dur)); // clamp: 0..24h, no negatives/garbage
-    const notes = (document.getElementById('career-study-notes') || {}).value || '';
-    const sel = document.getElementById('career-study-category');
-    const category = (sel && sel.value) || 'coding';
-
-    if (!topic.trim()) { if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter a focus topic', 'error'); return; }
-
-    const data = DB.getCareer(this.selectedDate);
-    data.focusTopic = topic.trim();
-    data.studyDuration = dur;
-    data.notes = notes;
-    data.category = category;
-    DB.setCareer(this.selectedDate, data);
-
-    this.checkAchievements();
-    this.renderStatStrip();
-    this.renderSkillProgress();
-    this.renderHeatMap();
-    this.renderWeekChart();
-    this.updateHeroMetrics();
-    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-    if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Study session saved', 'success');
-  },
-
-  selectCategory(cat) {
-    const data = DB.getCareer(this.selectedDate);
-    data.category = cat;
-    DB.setCareer(this.selectedDate, data);
-    this.renderStudyLog();
-    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-  },
-
-  /* ---------- study timer ---------- */
-  initTimer() {
-    const state = DB.getCareerTimer();
-    const display = document.getElementById('cb-timer-display');
-    if (!display) return;
-    this._renderTimerButtons(state.running);
-    if (state.running) { this._startTimerLoop(); }
-    else { this._renderTimerDisplay(state.accumMs); }
-  },
-
-  _elapsedMs() {
-    const state = DB.getCareerTimer();
-    if (!state.running) return state.accumMs || 0;
-    const delta = Math.min(Date.now() - (state.startedAt || Date.now()), 86400000);
-    return (state.accumMs || 0) + delta;
-  },
-
-  _renderTimerDisplay(ms) {
-    const display = document.getElementById('cb-timer-display');
-    if (!display) return;
-    const totalSec = Math.floor(ms / 1000);
-    const h = Math.floor(totalSec / 3600);
-    const m = Math.floor((totalSec % 3600) / 60);
-    const s = totalSec % 60;
-    const _t = window.n ? window.n : (x => x);
-    const pad = v => String(v).padStart(2, '0');
-    display.textContent = h > 0 ? `${_t(pad(h))}:${_t(pad(m))}:${_t(pad(s))}` : `${_t(pad(m))}:${_t(pad(s))}`;
-  },
-
-  _renderTimerButtons(running) {
-    const startBtn = document.getElementById('cb-timer-start');
-    const stopBtn = document.getElementById('cb-timer-stop');
-    const logBtn = document.getElementById('cb-timer-log');
-    if (startBtn) startBtn.style.display = running ? 'none' : '';
-    if (stopBtn) stopBtn.style.display = running ? '' : 'none';
-    if (logBtn) logBtn.disabled = running || this._elapsedMs() < 1000;
-  },
-
-  _startTimerLoop() {
-    if (this._timerRAF) return;
-    let lastTick = 0;
-    const tick = () => {
-      const now = performance.now();
-      if (now - lastTick >= 250) {
-        lastTick = now;
-        this._renderTimerDisplay(this._elapsedMs());
-      }
-      this._timerRAF = requestAnimationFrame(tick);
-    };
-    this._timerRAF = requestAnimationFrame(tick);
-  },
-
-  _stopTimerLoop() {
-    if (this._timerRAF) { cancelAnimationFrame(this._timerRAF); this._timerRAF = null; }
-  },
-
-
-
-
   /* ---------- checklist / goals ---------- */
-  renderGoalsProgress() {
-    const data = DB.getCareer(this.selectedDate);
-    const list = data.checklist || [];
-    const done = list.filter(x => x.done).length;
-    const total = list.length;
-    const pct = total ? Math.round((done / total) * 100) : 0;
-    const _t = window.n ? window.n : (x => x);
-
-    const numEl = document.getElementById('cb-goals-num');
-    const denEl = document.getElementById('cb-goals-den');
-    const pctEl = document.getElementById('cb-goals-pct');
-    const fillEl = document.getElementById('cb-goals-fill');
-    if (numEl) numEl.textContent = _t(done);
-    if (denEl) denEl.textContent = _t(total);
-    if (pctEl) pctEl.textContent = _t(pct) + '%';
-    if (fillEl) fillEl.style.width = pct + '%';
-
-    const badgeEl = document.getElementById('cb-goals-badge');
-    if (badgeEl) {
-      badgeEl.textContent = _t(done) + ' / ' + _t(total);
-      badgeEl.className = 'gh-badge ' + (pct >= 100 ? 'excellent' : pct >= 50 ? 'good' : 'pending');
-    }
-
-    const suggEl = document.getElementById('career-suggested-goals');
-    if (suggEl) {
-      suggEl.innerHTML = '';
-      this._suggestedGoals.forEach(g => {
-        const chip = document.createElement('button');
-        chip.className = 'cb-suggested-chip';
-        chip.textContent = '+ ' + g;
-        chip.onclick = () => this.addSuggestedGoal(g);
-        suggEl.appendChild(chip);
-      });
     }
   },
 
@@ -486,10 +185,6 @@ const Career = {
     }
 
     this.renderChecklist();
-    this.renderGoalsProgress();
-    this.renderStatStrip();
-    this.updateHeroMetrics();
-    this.checkAchievements();
     this.switchProgressTab(this._activeProgressTab || 'weekly');
     window.dispatchEvent(new CustomEvent('lamim:data-updated'));
   },
@@ -519,34 +214,7 @@ const Career = {
     DB.setCareer(this.selectedDate, data);
     input.value = '';
     this.renderChecklist();
-    this.renderGoalsProgress();
-    this.renderStatStrip();
-    this.updateHeroMetrics();
     this.switchProgressTab(this._activeProgressTab || 'weekly');
-    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-  },
-
-  addSuggestedGoal(text) {
-    text = String(text || '').trim();
-    if (!text) return;
-
-    if (text.length > this._GOAL_MAX_LEN) {
-      text = text.substring(0, this._GOAL_MAX_LEN);
-    }
-
-    const data = DB.getCareer(this.selectedDate);
-    if (!data.checklist) data.checklist = [];
-
-    const lowerText = text.toLowerCase();
-    if (data.checklist.some(x => typeof x.text === 'string' && x.text.toLowerCase() === lowerText)) {
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Already in your list', 'error');
-      return;
-    }
-
-    const maxId = data.checklist.reduce((m, x) => Math.max(m, (typeof x.id === 'number' ? x.id : 0)), 0);
-    data.checklist.push({ id: maxId + 1, text: text, done: false });
-    DB.setCareer(this.selectedDate, data);
-    this.renderAll();
     window.dispatchEvent(new CustomEvent('lamim:data-updated'));
   },
 
@@ -556,9 +224,6 @@ const Career = {
     data.checklist = data.checklist.filter(x => x.id !== id);
     DB.setCareer(this.selectedDate, data);
     this.renderChecklist();
-    this.renderGoalsProgress();
-    this.renderStatStrip();
-    this.updateHeroMetrics();
     this.switchProgressTab(this._activeProgressTab || 'weekly');
     window.dispatchEvent(new CustomEvent('lamim:data-updated'));
   },
@@ -583,171 +248,6 @@ const Career = {
     }
   },
 
-  /* ---------- heatmap ---------- */
-  renderHeatMap() {
-    const container = document.getElementById('career-heatmap-monthly-container');
-    if (!container) return;
-    const weeks = 16;
-    const days = weeks * 7;
-    const today = Utils.todayStr();
-    const startD = Utils.parseDate(this.selectedDate);
-    startD.setDate(startD.getDate() - (days - 1));
-    let activeCount = 0, totalPast = 0, totalMins = 0;
-    let streak = 0;
-    const cells = [];
-    for (let i = 0; i < days; i++) {
-      const d = new Date(startD);
-      d.setDate(d.getDate() + i);
-      const ds = Utils.dateStr(d);
-      const isFuture = ds > today;
-      const c = isFuture ? null : DB.getCareer(ds);
-      const mins = c ? (c.studyDuration || 0) : 0;
-      const anyDone = c && c.checklist && c.checklist.some(x => x.done);
-      let cls = 'cb-heatmap-cell';
-      if (!isFuture) {
-        totalPast++;
-        totalMins += mins;
-        if (mins >= 120) { cls += ' high'; activeCount++; }
-        else if (mins > 0) { cls += ' medium'; activeCount++; }
-        else if (anyDone) { cls += ' low'; activeCount++; }
-      }
-      if (ds === this.selectedDate) cls += ' current';
-      cells.push({ ds, cls, isFuture });
-    }
-
-    const cur = Utils.parseDate(today);
-    for (let i = 0; i < 365; i++) {
-      const ds = Utils.dateStr(cur);
-      if (ds > today) { cur.setDate(cur.getDate() - 1); continue; }
-      const c = DB.getCareer(ds);
-      const ok = (c.studyDuration >= 30) || (c.checklist && c.checklist.some(x => x.done));
-      if (ok) streak++;
-      else { if (ds !== today) break; }
-      cur.setDate(cur.getDate() - 1);
-    }
-
-    container.innerHTML = '';
-    const grid = document.createElement('div');
-    grid.className = 'cb-heatmap';
-    cells.forEach(cell => {
-      const el = document.createElement('div');
-      el.className = cell.cls;
-      el.title = cell.ds;
-      el.onclick = () => this.jumpToDate(cell.ds);
-      grid.appendChild(el);
-    });
-    container.appendChild(grid);
-
-    const _t = window.n ? window.n : (x => x);
-    const consistency = totalPast ? Math.round((activeCount / totalPast) * 100) : 0;
-    const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    setText('career-heatmap-consistency-pct', _t(consistency) + '%');
-    setText('career-heatmap-streak', _t(streak) + ' days');
-    setText('career-heatmap-total-hours', _t((totalMins / 60).toFixed(1)) + 'h');
-  },
-
-  jumpToDate(dateStr) {
-    if (dateStr > Utils.todayStr()) return;
-    this.selectedDate = dateStr;
-    this.renderAll();
-  },
-
-  /* ---------- week chart (compat wrapper) ---------- */
-  renderWeekChart() {
-    this.renderProgressWeekly();
-  },
-
-  /* ---------- skill bars ---------- */
-  _calcCategoryStats() {
-    const stats = {};
-    this._catOptions.forEach(o => stats[o.key] = 0);
-    const [yy, mm] = this.selectedDate.slice(0, 7).split('-');
-    const daysInMonth = new Date(parseInt(yy, 10), parseInt(mm, 10), 0).getDate();
-    for (let i = 1; i <= daysInMonth; i++) {
-      const ds = `${yy}-${mm}-${String(i).padStart(2, '0')}`;
-      if (ds > Utils.todayStr()) break;
-      const c = DB.getCareer(ds);
-      const cat = c.category || 'coding';
-      if (stats[cat] !== undefined) stats[cat] += (c.studyDuration || 0);
-    }
-    return stats;
-  },
-
-  renderSkillProgress() {
-    const container = document.getElementById('career-skill-bars');
-    if (!container) return;
-    const stats = this._calcCategoryStats();
-    container.innerHTML = '';
-    this._catOptions.forEach(opt => {
-      const mins = stats[opt.key] || 0;
-      const hours = mins / 60;
-      let rank = 'novice', rankCls = 'novice';
-      if (hours >= 50) { rank = 'Expert'; rankCls = 'expert'; }
-      else if (hours >= 15) { rank = 'Specialist'; rankCls = 'specialist'; }
-      else if (hours >= 5) { rank = 'Practitioner'; rankCls = 'practitioner'; }
-      const pct = Math.min(100, (hours / 50) * 100);
-      const _t = window.n ? window.n : (x => x);
-
-      const skill = document.createElement('div');
-      skill.className = 'cb-skill';
-      skill.innerHTML =
-        `<div class="cb-skill-head">` +
-          `<span class="cb-skill-name">${this._icons[opt.icon]} ${opt.label}</span>` +
-          `<span class="cb-skill-rank ${rankCls}">${rank} · ${_t(hours.toFixed(1))}h</span>` +
-        `</div>` +
-        `<div class="cb-skill-track"><div class="cb-skill-fill cat-${opt.key}" style="width:${pct}%"></div></div>`;
-      container.appendChild(skill);
-    });
-  },
-
-  /* ---------- charts (donut + trend) — now handled by progress tabs ---------- */
-
-  /* ---------- achievements ---------- */
-  checkAchievements() {
-    const ach = DB.getCareerAchievements();
-    const streak = DB.getCareerStreak();
-
-    // Skip the expensive 365-day scan once the top achievement is already unlocked
-    let totalMins = ach.totalStudyMins || 0;
-    if (!ach.hours50) {
-      if (!totalMins) {
-        for (let i = 0; i < 365; i++) {
-          const d = Utils.parseDate(Utils.todayStr());
-          d.setDate(d.getDate() - i);
-          const c = DB.getCareer(Utils.dateStr(d));
-          totalMins += (c.studyDuration || 0);
-          if (totalMins >= 3000) break; // highest threshold reached, no need to continue
-        }
-      }
-      ach.totalStudyMins = totalMins;
-    }
-
-    const newly = [];
-    if (!ach.firstSession && totalMins > 0) { ach.firstSession = Utils.todayStr(); newly.push('First Session'); }
-    if (!ach.streak7 && streak >= 7) { ach.streak7 = Utils.todayStr(); newly.push('7-Day Streak'); }
-    if (!ach.hours10 && totalMins >= 600) { ach.hours10 = Utils.todayStr(); newly.push('10h Club'); }
-    if (!ach.hours50 && totalMins >= 3000) { ach.hours50 = Utils.todayStr(); newly.push('50h Expert'); }
-
-    DB.setCareerAchievements(ach);
-    this.renderAchievements();
-    if (newly.length && typeof Utils !== 'undefined' && Utils.toast) {
-      Utils.toast('Achievement: ' + newly[0], 'success');
-    }
-  },
-
-  renderAchievements() {
-    const container = document.getElementById('cb-achievements');
-    if (!container) return;
-    const ach = DB.getCareerAchievements();
-    container.innerHTML = '';
-    this._achievements.forEach(a => {
-      const unlocked = !!ach[a.key];
-      const badge = document.createElement('div');
-      badge.className = 'cb-badge-ach' + (unlocked ? ' unlocked' : '');
-      badge.innerHTML = `<span class="cb-badge-ico">${a.icon}</span> ${a.label}`;
-      container.appendChild(badge);
-    });
-  },
 
   /* ---------- reset ---------- */
   resetToday() {
