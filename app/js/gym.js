@@ -132,7 +132,8 @@ const Gym = {
     d.setDate(d.getDate() + offset);
     const newDate = Utils.dateStr(d);
     if (newDate > Utils.todayStr()) {
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast("Can't go to the future!", 'error');
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast(isBn ? 'ভবিষ্যতের তারিখে যাওয়া যাবে না!' : "Can't go to the future!", 'error');
       return;
     }
     this.selectedDate = newDate;
@@ -201,7 +202,8 @@ const Gym = {
     const name = nameEl.value.trim();
     if (!name) {
       nameEl.focus();
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter an exercise name', 'error');
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast(isBn ? 'অনুশীলনের নাম লিখুন' : 'Enter an exercise name', 'error');
       return;
     }
     const ex = {
@@ -468,31 +470,32 @@ const Gym = {
 
   openMealModal() {
     if (document.getElementById('gh-meal-modal')) return;
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const overlay = document.createElement('div');
     overlay.className = 'gh-modal-overlay';
     overlay.id = 'gh-meal-modal';
     overlay.innerHTML =
       `<div class="gh-modal" onclick="event.stopPropagation()">` +
         `<div class="gh-modal-header">` +
-          `<h3>Log Food Intake</h3>` +
-          `<p style="font-size:12px; color:var(--gh-text-muted); margin:-12px 0 16px;">Keep a simple journal of what you eat today</p>` +
+          `<h3>${isBn ? 'খাবারের হিসাব রাখুন' : 'Log Food Intake'}</h3>` +
+          `<p style="font-size:12px; color:var(--gh-text-muted); margin:-12px 0 16px;">${isBn ? 'আজকের খাবারের সহজ তালিকা সংরক্ষণ করুন' : 'Keep a simple journal of what you eat today'}</p>` +
         `</div>` +
         `<div class="gh-modal-body">` +
           `<div class="gh-modal-field">` +
-            `<label class="gh-meta-label" for="gh-meal-desc">What did you eat?</label>` +
-            `<input type="text" class="gh-input" id="gh-meal-desc" placeholder="e.g. Rice, Lentils, Fish & Salad">` +
+            `<label class="gh-meta-label" for="gh-meal-desc">${isBn ? 'কী খেয়েছেন?' : 'What did you eat?'}</label>` +
+            `<input type="text" class="gh-input" id="gh-meal-desc" placeholder="${isBn ? 'যেমন: ভাত, ডাল, মাছ ও সালাদ' : 'e.g. Rice, Lentils, Fish & Salad'}">` +
           `</div>` +
           `<div class="gh-modal-field">` +
-            `<label class="gh-meta-label">Meal Type</label>` +
+            `<label class="gh-meta-label">${isBn ? 'খাবারের ধরন' : 'Meal Type'}</label>` +
             `<div class="gh-seg" id="gh-meal-seg">` +
-              `<button class="gh-seg-btn" data-type="breakfast">Breakfast</button>` +
-              `<button class="gh-seg-btn active" data-type="lunch">Lunch</button>` +
-              `<button class="gh-seg-btn" data-type="dinner">Dinner</button>` +
-              `<button class="gh-seg-btn" data-type="snack">Snack</button>` +
+              `<button class="gh-seg-btn" data-type="breakfast">${isBn ? 'সকালের নাস্তা' : 'Breakfast'}</button>` +
+              `<button class="gh-seg-btn active" data-type="lunch">${isBn ? 'দুপুরের খাবার' : 'Lunch'}</button>` +
+              `<button class="gh-seg-btn" data-type="dinner">${isBn ? 'রাতের খাবার' : 'Dinner'}</button>` +
+              `<button class="gh-seg-btn" data-type="snack">${isBn ? 'হালকা নাস্তা' : 'Snack'}</button>` +
             `</div>` +
           `</div>` +
           `<div class="gh-modal-field">` +
-            `<label class="gh-meta-label">Nutrition (optional)</label>` +
+            `<label class="gh-meta-label">${isBn ? 'পুষ্টিমান (ঐচ্ছিক)' : 'Nutrition (optional)'}</label>` +
             `<div style="display:flex; gap:10px;">` +
               `<input type="number" min="0" inputmode="numeric" class="gh-input" id="gh-meal-calories" placeholder="kcal" aria-label="Calories">` +
               `<input type="number" min="0" inputmode="numeric" class="gh-input" id="gh-meal-protein" placeholder="protein g" aria-label="Protein grams">` +
@@ -500,8 +503,8 @@ const Gym = {
           `</div>` +
         `</div>` +
         `<div class="gh-modal-actions">` +
-          `<button class="gh-btn gh-btn-ghost" onclick="Gym.closeMealModal()">Cancel</button>` +
-          `<button class="gh-btn gh-btn-primary" onclick="Gym.submitMeal()">Log Food</button>` +
+          `<button class="gh-btn gh-btn-ghost" onclick="Gym.closeMealModal()">${isBn ? 'বাতিল' : 'Cancel'}</button>` +
+          `<button class="gh-btn gh-btn-primary" onclick="Gym.submitMeal()">${isBn ? 'যোগ করুন' : 'Log Food'}</button>` +
         `</div>` +
       `</div>`;
     overlay.addEventListener('click', () => this.closeMealModal());
@@ -523,7 +526,11 @@ const Gym = {
 
   submitMeal() {
     const desc = (document.getElementById('gh-meal-desc') || {}).value.trim();
-    if (!desc) { if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Enter what you ate', 'error'); return; }
+    if (!desc) {
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast(isBn ? 'কী খেয়েছেন তা লিখুন' : 'Enter what you ate', 'error');
+      return;
+    }
     const active = document.querySelector('#gh-meal-modal .gh-seg-btn.active');
     const type = active ? active.dataset.type : 'snack';
     const calEl = document.getElementById('gh-meal-calories');

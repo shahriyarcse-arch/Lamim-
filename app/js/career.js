@@ -136,7 +136,8 @@ const Career = {
     d.setDate(d.getDate() + offset);
     const newDate = Utils.dateStr(d);
     if (newDate > Utils.todayStr()) {
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast("Can't go to the future!", 'error');
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast(isBn ? 'ভবিষ্যতের তারিখে যাওয়া যাবে না!' : "Can't go to the future!", 'error');
       return;
     }
     this.selectedDate = newDate;
@@ -201,7 +202,8 @@ const Career = {
 
     const lowerText = text.toLowerCase();
     if (data.checklist.some(x => typeof x.text === 'string' && x.text.toLowerCase() === lowerText)) {
-      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Already in your list', 'error');
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+      if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast(isBn ? 'ইতিমধ্যে আপনার তালিকায় আছে' : 'Already in your list', 'error');
       input.value = '';
       return;
     }
@@ -507,10 +509,12 @@ const Career = {
     }
     const weekPct = weekGoalsTotal > 0 ? Math.round(((weekGoalsDone / weekGoalsTotal) * 100) * 10) / 10 : 0;
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const t = (v) => window.n ? window.n(v) : v;
     const dayPct = dayTotal > 0 ? Math.round((dayDone / dayTotal) * 100) : 0;
     const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(2)) + '/' + t(7) + '' : '—';
-    const heroLabel = isSelectedToday ? 'Today\'s Goals' : 'Day\'s Goals';
+    const heroLabel = isBn ? (isSelectedToday ? 'আজকের লক্ষ্য' : 'দিনের লক্ষ্য') : (isSelectedToday ? 'Today\'s Goals' : 'Day\'s Goals');
+    const compText = isBn ? `${t(dayPct)}% সম্পন্ন` : `${dayPct}% completed`;
 
     statsEl.innerHTML = `
       <div class="cb-progress-hero-tile">
@@ -518,12 +522,12 @@ const Career = {
         <div class="cb-progress-hero-info">
           <div class="cb-progress-hero-label">${heroLabel}</div>
           <div class="cb-progress-hero-val">${t(dayDone)} / ${t(dayTotal)}</div>
-          <div class="cb-progress-hero-sub">${dayPct}% completed</div>
+          <div class="cb-progress-hero-sub">${compText}</div>
         </div>
       </div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Goal Streak</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Week Rate</div><div class="cb-month-stat-val">${t(weekPct)}%</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Perfect Days</div><div class="cb-month-stat-val">${t(perfectDays)}/7</div></div>`;
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Goal Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'সাপ্তাহিক হার' : 'Week Rate'}</div><div class="cb-month-stat-val">${t(weekPct)}%</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect Days'}</div><div class="cb-month-stat-val">${t(perfectDays)}/7</div></div>`;
 
     const ringEl = document.getElementById('cb-progress-today-ring');
     if (ringEl && window.Charts) {
@@ -630,21 +634,23 @@ const Career = {
     }
     streak = Math.round(streak * 100) / 100;
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const t = (v) => window.n ? window.n(v) : v;
     const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(2)) + '/' + t(daysInMonth) + '' : '—';
+    const compText = isBn ? `${t(monthPct)}% সম্পন্ন` : `${monthPct}% completed`;
 
     statsEl.innerHTML = `
       <div class="cb-progress-hero-tile">
         <div class="cb-progress-ring-wrap" id="cb-progress-monthly-ring"></div>
         <div class="cb-progress-hero-info">
-          <div class="cb-progress-hero-label">Month's Goals</div>
+          <div class="cb-progress-hero-label">${isBn ? 'মাসের লক্ষ্য' : "Month's Goals"}</div>
           <div class="cb-progress-hero-val">${t(monthGoalsDone)} / ${t(monthGoalsTotal)}</div>
-          <div class="cb-progress-hero-sub">${monthPct}% completed</div>
+          <div class="cb-progress-hero-sub">${compText}</div>
         </div>
       </div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Goal Streak</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Month Rate</div><div class="cb-month-stat-val">${t(monthPct)}%</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Perfect Days</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(daysInMonth)}</div></div>`;
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Goal Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'মাসিক হার' : 'Month Rate'}</div><div class="cb-month-stat-val">${t(monthPct)}%</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect Days'}</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(daysInMonth)}</div></div>`;
 
     const ringEl = document.getElementById('cb-progress-monthly-ring');
     if (ringEl && window.Charts) {
@@ -770,21 +776,23 @@ const Career = {
     }
     streak = Math.round(streak * 100) / 100;
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const t = (v) => window.n ? window.n(v) : v;
     const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(2)) + '/' + t(totalDays) + '' : '—';
+    const compText = isBn ? `${t(yearPct)}% সম্পন্ন` : `${yearPct}% completed`;
 
     statsEl.innerHTML = `
       <div class="cb-progress-hero-tile">
         <div class="cb-progress-ring-wrap" id="cb-progress-yearly-ring"></div>
         <div class="cb-progress-hero-info">
-          <div class="cb-progress-hero-label">Year's Goals</div>
+          <div class="cb-progress-hero-label">${isBn ? 'বছরের লক্ষ্য' : "Year's Goals"}</div>
           <div class="cb-progress-hero-val">${t(yearGoalsDone)} / ${t(yearGoalsTotal)}</div>
-          <div class="cb-progress-hero-sub">${yearPct}% completed</div>
+          <div class="cb-progress-hero-sub">${compText}</div>
         </div>
       </div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Goal Streak</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Year Rate</div><div class="cb-month-stat-val">${t(yearPct)}%</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">Perfect Days</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(totalDays)}</div></div>`;
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Goal Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'বার্ষিক হার' : 'Year Rate'}</div><div class="cb-month-stat-val">${t(yearPct)}%</div></div>
+      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect Days'}</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(totalDays)}</div></div>`;
 
     const ringEl = document.getElementById('cb-progress-yearly-ring');
     if (ringEl && window.Charts) {
