@@ -723,7 +723,7 @@ const Profile = {
       // prevents a malicious backup from injecting an unknown `lamim_*` key whose
       // render path might not escape user input (defense-in-depth over render-layer
       // escaping). Legit backups only ever contain these keys.
-      const KNOWN_LAMIM = /^lamim_(salah_|dhikr_|gym_|career_|habits|mujahid_habits|goals|finance|settings|lang|user|profiles_vault)$/;
+      const KNOWN_LAMIM = /^lamim_(salah_|dhikr_|gym_|career_|habits|goals|finance|settings|lang|user|profiles_vault)$/;
 
       const allowedKeys = [];
       for (const k of Object.keys(data)) {

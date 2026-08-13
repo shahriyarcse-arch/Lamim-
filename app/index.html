@@ -59,7 +59,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       try {
-        var valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'mujahid', 'finance', 'gym', 'career'];
+        var valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'HABITS', 'finance', 'gym', 'career'];
         var sec = new URLSearchParams(location.search).get('section');
         if ((!sec || valid.indexOf(sec) === -1) && history.state && history.state.section) {
           sec = history.state.section;
@@ -2281,7 +2281,7 @@
       </div>
     </div>
 
-    <!-- MUJAHID CONFIRM MODAL -->
+    <!-- HABITS CONFIRM MODAL -->
     <div class="modal-overlay hidden" id="habits-confirm-modal" style="z-index: 30000;">
       <div class="modal anim-scale-up" style="max-width:320px; text-align:center;">
         <div
@@ -2396,7 +2396,7 @@
         <div style="position:absolute; top:34px; left:0; right:0; text-align:center; z-index:10; pointer-events:none;">
           <div
             style="font-size:13px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.45);">
-            Mujahid · Breathing</div>
+            HABITS · Breathing</div>
         </div>
 
         <div style="position:relative; margin-bottom:56px; display:flex; align-items:center; justify-content:center;">

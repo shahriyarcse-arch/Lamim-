@@ -72,7 +72,7 @@ flowchart TD
 
 ### 2.9 Analytics & Telemetry Engine (`app/js/analysis.js`)
 * **Spiritual Health Score (SHS)**: Evaluates daily consistency using a weighted formula:
-  $$\text{SHS} = (0.40 \times \text{Salah}) + (0.20 \times \text{Nafl}) + (0.15 \times \text{Dhikr}) + (0.15 \times \text{Mujahid}) + (0.10 \times \text{Goals})$$
+  $$\text{SHS} = (0.40 \times \text{Salah}) + (0.20 \times \text{Nafl}) + (0.15 \times \text{Dhikr}) + (0.15 \times \text{Habits}) + (0.10 \times \text{Goals})$$
 * **On-Demand PDF Report Export**: Dynamically lazy-loads `html2pdf.js` to generate printable PDF performance statements.
 
 ### 2.10 User Profile & Theme Engine (`app/js/profile.js`)

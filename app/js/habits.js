@@ -1666,6 +1666,5 @@ const Habits = {
   }
 };
 window.Habits = Habits;
-window.Mujahid = Habits;
 
 

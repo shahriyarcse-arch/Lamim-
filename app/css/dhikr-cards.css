@@ -1,13 +1,13 @@
 /* =============================================
-    MUJAHID - Quit Bad Habits Tracker
+    habits - Quit Bad Habits Tracker
     ============================================= */
-.mujahid-habits-container {
+.habits-habits-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.mujahid-quick-stats {
+.habits-quick-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -16,23 +16,23 @@
   padding: 16px;
 }
 
-.mujahid-quick-stat {
+.habits-quick-stat {
   text-align: center;
 }
 
-.mujahid-quick-num {
+.habits-quick-num {
   display: block;
   font-size: 24px;
   font-weight: 700;
   color: var(--color-text-primary);
 }
 
-.mujahid-quick-label {
+.habits-quick-label {
   font-size: 11px;
   color: var(--color-text-muted);
 }
 
-.mujahid-emergency-btn {
+.habits-emergency-btn {
   width: 100%;
   padding: 14px;
   background: linear-gradient(135deg, #dc2626, #b91c1c);
@@ -49,25 +49,25 @@
   box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
 }
 
-.mujahid-badges-section {
+.habits-badges-section {
   background: var(--color-glass);
   border-radius: 16px;
   padding: 16px;
 }
 
-.mujahid-badges-title {
+.habits-badges-title {
   font-size: 14px;
   color: var(--color-text-muted);
   margin-bottom: 12px;
 }
 
-.mujahid-badges-grid {
+.habits-badges-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.mujahid-badge-item {
+.habits-badge-item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,37 +77,37 @@
   min-width: 50px;
 }
 
-.mujahid-badge-item.earned {
+.habits-badge-item.earned {
   box-shadow: 0 0 12px var(--color-divider-strong);
 }
 
-.mujahid-badge-item .mujahid-badge-emoji {
+.habits-badge-item .habits-badge-emoji {
   font-size: 20px;
 }
 
-.mujahid-badge-item .mujahid-badge-days {
+.habits-badge-item .habits-badge-days {
   font-size: 10px;
   color: var(--color-text-muted);
 }
 
-.mujahid-calendar-card {
+.habits-calendar-card {
   background: var(--color-glass);
   border-radius: 16px;
   padding: 16px;
 }
 
-.mujahid-calendar-title {
+.habits-calendar-title {
   font-size: 14px;
   color: var(--color-text-muted);
   margin-bottom: 12px;
 }
 
-.mujahid-calendar-mini {
+.habits-calendar-mini {
   display: flex;
   gap: 6px;
 }
 
-.mujahid-mini-day {
+.habits-mini-day {
   flex: 1;
   padding: 12px 8px;
   text-align: center;
@@ -117,21 +117,21 @@
   color: var(--color-text-muted);
 }
 
-.mujahid-mini-day.today {
+.habits-mini-day.today {
   border: 2px solid var(--color-accent-cyan);
 }
 
-.mujahid-mini-day.clean {
+.habits-mini-day.clean {
   background: rgba(34, 197, 94, 0.25);
   color: #22c55e;
 }
 
-.mujahid-mini-day.slip {
+.habits-mini-day.slip {
   background: rgba(239, 68, 68, 0.25);
   color: #ef4444;
 }
 
-.mujahid-add-card-btn {
+.habits-add-card-btn {
   width: 100%;
   padding: 16px;
   background: rgba(99, 102, 241, 0.15);
@@ -144,26 +144,26 @@
   transition: background 0.2s;
 }
 
-.mujahid-add-card-btn:hover {
+.habits-add-card-btn:hover {
   background: rgba(99, 102, 241, 0.25);
 }
 
 /* Habit Card */
-.mujahid-habit-card {
+.habits-habit-card {
   background: var(--color-glass);
   border: 1px solid var(--color-divider-subtle);
   border-radius: 20px;
   padding: 16px;
 }
 
-.mujahid-habit-top {
+.habits-habit-top {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.mujahid-habit-icon {
+.habits-habit-icon {
   width: 44px;
   height: 44px;
   border-radius: 12px;
@@ -174,23 +174,23 @@
   border: 1px solid;
 }
 
-.mujahid-habit-title {
+.habits-habit-title {
   flex: 1;
 }
 
-.mujahid-habit-name {
+.habits-habit-name {
   font-size: 16px;
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
-.mujahid-habit-date {
+.habits-habit-date {
   font-size: 12px;
   color: var(--color-text-muted);
   cursor: pointer;
 }
 
-.mujahid-delete-btn {
+.habits-delete-btn {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -201,7 +201,7 @@
   font-size: 14px;
 }
 
-.mujahid-timer-display {
+.habits-timer-display {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
@@ -211,30 +211,30 @@
   margin-bottom: 14px;
 }
 
-.mujahid-timer-unit {
+.habits-timer-unit {
   text-align: center;
 }
 
-.mujahid-timer-val {
+.habits-timer-val {
   display: block;
   font-size: 24px;
   font-weight: 700;
   color: var(--color-accent-blue);
 }
 
-.mujahid-timer-label {
+.habits-timer-label {
   font-size: 10px;
   color: var(--color-text-muted);
   text-transform: uppercase;
 }
 
-.mujahid-habit-footer {
+.habits-habit-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.mujahid-habit-stats {
+.habits-habit-stats {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -242,17 +242,17 @@
   color: var(--color-text-muted);
 }
 
-.mujahid-habit-badge {
+.habits-habit-badge {
   font-size: 16px;
 }
 
-.mujahid-habit-actions {
+.habits-habit-actions {
   display: flex;
   gap: 8px;
 }
 
-.mujahid-btn-clean-sm,
-.mujahid-btn-relapse-sm {
+.habits-btn-clean-sm,
+.habits-btn-relapse-sm {
   width: 36px;
   height: 36px;
   border-radius: 10px;
@@ -260,7 +260,7 @@
   gap: 12px;
 }
 
-.mujahid-habit-icon {
+.habits-habit-icon {
   width: 48px;
   height: 48px;
   border-radius: 14px;
@@ -271,18 +271,18 @@
   border: 1px solid;
 }
 
-.mujahid-habit-name {
+.habits-habit-name {
   font-size: 16px;
   font-weight: 700;
   color: var(--color-text-primary);
 }
 
-.mujahid-habit-stats {
+.habits-habit-stats {
   font-size: 12px;
   color: var(--color-text-muted);
 }
 
-.mujahid-time-card {
+.habits-time-card {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 4px;
@@ -293,20 +293,20 @@
   text-align: center;
 }
 
-.mujahid-time-card .mujahid-time-num {
+.habits-time-card .habits-time-num {
   display: block;
   font-size: 18px;
   font-weight: 700;
   color: var(--color-accent-blue);
 }
 
-.mujahid-time-card .mujahid-time-label {
+.habits-time-card .habits-time-label {
   display: block;
   font-size: 9px;
   color: var(--color-text-muted);
 }
 
-.mujahid-menu-btn {
+.habits-menu-btn {
   background: transparent;
   border: none;
   font-size: 18px;
@@ -315,42 +315,42 @@
   transition: opacity 0.2s;
 }
 
-.mujahid-menu-btn:hover {
+.habits-menu-btn:hover {
   opacity: 1;
 }
 
-.mujahid-stats-row {
+.habits-stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   margin-bottom: 16px;
 }
 
-.mujahid-stat {
+.habits-stat {
   text-align: center;
   padding: 12px 8px;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
 }
 
-.mujahid-stat-value {
+.habits-stat-value {
   font-size: 22px;
   font-weight: 800;
   color: var(--color-text-primary);
 }
 
-.mujahid-stat-label {
+.habits-stat-label {
   font-size: 10px;
   color: var(--color-text-muted);
   text-transform: uppercase;
   margin-top: 4px;
 }
 
-.mujahid-progress-section {
+.habits-progress-section {
   margin-bottom: 16px;
 }
 
-.mujahid-progress-header {
+.habits-progress-header {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
@@ -358,33 +358,33 @@
   margin-bottom: 8px;
 }
 
-.mujahid-progress-bar {
+.habits-progress-bar {
   height: 8px;
   background: var(--color-divider-strong);
   border-radius: 4px;
   overflow: hidden;
 }
 
-.mujahid-progress-fill {
+.habits-progress-fill {
   height: 100%;
   border-radius: 4px;
   transition: width 0.5s ease;
 }
 
-.mujahid-badges-row {
+.habits-badges-row {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 16px;
 }
 
-.mujahid-badges-earned,
-.mujahid-badges-locked {
+.habits-badges-earned,
+.habits-badges-locked {
   display: flex;
   gap: 6px;
 }
 
-.mujahid-badge {
+.habits-badge {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -395,18 +395,18 @@
   border: 1px solid;
 }
 
-.mujahid-badge.locked {
+.habits-badge.locked {
   opacity: 0.3;
   filter: grayscale(1);
 }
 
-.mujahid-actions {
+.habits-actions {
   display: flex;
   gap: 10px;
   margin-top: 16px;
 }
 
-.mujahid-btn-clean {
+.habits-btn-clean {
   flex: 1;
   padding: 12px 16px;
   background: rgba(34, 197, 94, 0.15);
@@ -419,11 +419,11 @@
   transition: background 0.2s;
 }
 
-.mujahid-btn-clean:hover {
+.habits-btn-clean:hover {
   background: rgba(34, 197, 94, 0.25);
 }
 
-.mujahid-btn-relapse {
+.habits-btn-relapse {
   flex: 1;
   padding: 12px 16px;
   background: rgba(239, 68, 68, 0.15);
@@ -436,11 +436,11 @@
   transition: background 0.2s;
 }
 
-.mujahid-btn-relapse:hover {
+.habits-btn-relapse:hover {
   background: rgba(239, 68, 68, 0.25);
 }
 
-.mujahid-btn-relapse {
+.habits-btn-relapse {
   flex: 1;
   padding: 12px;
   background: rgba(239, 68, 68, 0.1);
@@ -452,12 +452,12 @@
   transition: all 0.2s;
 }
 
-.mujahid-btn-relapse:hover {
+.habits-btn-relapse:hover {
   background: rgba(239, 68, 68, 0.2);
 }
 
 /* Add Modal */
-.mujahid-habits-grid {
+.habits-habits-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
@@ -468,16 +468,16 @@
 
 
 
-.mujahid-habit-option-icon {
+.habits-habit-option-icon {
   font-size: 20px;
 }
 
-.mujahid-custom-input {
+.habits-custom-input {
   display: flex;
   gap: 8px;
 }
 
-.mujahid-custom-input input {
+.habits-custom-input input {
   flex: 1;
   padding: 12px;
   background: var(--color-surface-nested);
@@ -487,7 +487,7 @@
   font-size: 14px;
 }
 
-.mujahid-custom-input button {
+.habits-custom-input button {
   padding: 12px 20px;
   background: var(--color-accent-primary);
   border: none;
@@ -509,7 +509,7 @@
 
 /* Old dashboard styles - removed - using new design */
 
-.mujahid-tool-btn {
+.habits-tool-btn {
   width: 100%;
   padding: 14px 16px;
   margin-bottom: 10px;
@@ -522,24 +522,24 @@
   cursor: pointer;
 }
 
-.mujahid-tool-btn:hover {
+.habits-tool-btn:hover {
   background: var(--color-divider-strong);
 }
 
-.mujahid-tool-btn.danger {
+.habits-tool-btn.danger {
   border-color: rgba(239, 68, 68, 0.3);
   color: #ef4444;
 }
 
-.mujahid-tool-btn.danger:hover {
+.habits-tool-btn.danger:hover {
   margin-top: 4px;
 }
 
-.mujahid-progress-section {
+.habits-progress-section {
   margin-bottom: 16px;
 }
 
-.mujahid-progress-header {
+.habits-progress-header {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
@@ -547,33 +547,33 @@
   margin-bottom: 8px;
 }
 
-.mujahid-progress-bar {
+.habits-progress-bar {
   height: 8px;
   background: var(--color-divider-strong);
   border-radius: 4px;
   overflow: hidden;
 }
 
-.mujahid-progress-fill {
+.habits-progress-fill {
   height: 100%;
   border-radius: 4px;
   transition: width 0.5s ease;
 }
 
-.mujahid-badges-row {
+.habits-badges-row {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 16px;
 }
 
-.mujahid-badges-earned,
-.mujahid-badges-locked {
+.habits-badges-earned,
+.habits-badges-locked {
   display: flex;
   gap: 6px;
 }
 
-.mujahid-badge {
+.habits-badge {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -584,18 +584,18 @@
   border: 1px solid;
 }
 
-.mujahid-badge.locked {
+.habits-badge.locked {
   opacity: 0.3;
   filter: grayscale(1);
 }
 
-.mujahid-actions {
+.habits-actions {
   display: flex;
   gap: 10px;
   margin-top: 16px;
 }
 
-.mujahid-btn-clean {
+.habits-btn-clean {
   flex: 1;
   padding: 12px 16px;
   background: rgba(34, 197, 94, 0.15);
@@ -610,7 +610,7 @@
   margin-top: 20px;
 }
 
-.mujahid-hero-glow {
+.habits-hero-glow {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -623,20 +623,20 @@
   pointer-events: none;
 }
 
-.mujahid-hero-content {
+.habits-hero-content {
   position: relative;
   z-index: 1;
   max-width: 440px;
 }
 
-.mujahid-hero-icon-wrap {
+.habits-hero-icon-wrap {
   position: relative;
   width: 100px;
   height: 100px;
   margin: 0 auto 32px;
 }
 
-.mujahid-hero-shield {
+.habits-hero-shield {
   position: absolute;
   inset: 0;
   color: var(--color-primary);
@@ -645,7 +645,7 @@
   animation: float 4s ease-in-out infinite;
 }
 
-.mujahid-hero-sword {
+.habits-hero-sword {
   position: absolute;
   inset: 15px;
   color: var(--color-primary);
@@ -654,7 +654,7 @@
   animation: float 4s ease-in-out infinite reverse;
 }
 
-.mujahid-hero-title {
+.habits-hero-title {
   font-size: 32px;
   font-weight: 900;
   letter-spacing: -1px;
@@ -662,7 +662,7 @@
   color: var(--color-text-primary);
 }
 
-.mujahid-hero-desc {
+.habits-hero-desc {
   font-size: 16px;
   line-height: 1.6;
   color: var(--color-text-muted);
@@ -675,7 +675,7 @@
 
 
 
-.mujahid-card {
+.habits-card {
   background: var(--color-glass);
   border: 1px solid var(--color-divider-subtle);
   border-radius: 20px;
@@ -683,11 +683,11 @@
   margin-bottom: 16px;
 }
 
-.mujahid-btn-clean:hover {
+.habits-btn-clean:hover {
   background: rgba(34, 197, 94, 0.25);
 }
 
-.mujahid-btn-relapse {
+.habits-btn-relapse {
   flex: 1;
   padding: 12px 16px;
   background: rgba(239, 68, 68, 0.15);
@@ -700,11 +700,11 @@
   transition: background 0.2s;
 }
 
-.mujahid-btn-relapse:hover {
+.habits-btn-relapse:hover {
   background: rgba(239, 68, 68, 0.25);
 }
 
-.mujahid-btn-relapse {
+.habits-btn-relapse {
   flex: 1;
   padding: 12px;
   background: rgba(239, 68, 68, 0.1);
@@ -716,12 +716,12 @@
   transition: all 0.2s;
 }
 
-.mujahid-btn-relapse:hover {
+.habits-btn-relapse:hover {
   background: rgba(239, 68, 68, 0.2);
 }
 
 /* Add Modal */
-.mujahid-habits-grid {
+.habits-habits-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
@@ -732,16 +732,16 @@
 
 
 
-.mujahid-habit-option-icon {
+.habits-habit-option-icon {
   font-size: 20px;
 }
 
-.mujahid-custom-input {
+.habits-custom-input {
   display: flex;
   gap: 8px;
 }
 
-.mujahid-custom-input input {
+.habits-custom-input input {
   flex: 1;
   padding: 12px;
   background: var(--color-surface-nested);
@@ -751,7 +751,7 @@
   font-size: 14px;
 }
 
-.mujahid-custom-input button {
+.habits-custom-input button {
   padding: 12px 20px;
   background: var(--color-accent-primary);
   border: none;
@@ -773,7 +773,7 @@
 
 /* Old dashboard styles - removed - using new design */
 
-.mujahid-tool-btn {
+.habits-tool-btn {
   width: 100%;
   padding: 14px 16px;
   margin-bottom: 10px;
@@ -786,7 +786,7 @@
   cursor: pointer;
 }
 
-.mujahid-tool-btn:hover {
+.habits-tool-btn:hover {
   background: var(--color-divider-strong);
 }
 

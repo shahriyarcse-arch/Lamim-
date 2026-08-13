@@ -190,26 +190,26 @@
   border-color: #bee3f8;
 }
 
-/* HABITS / MUJAHID SECTION RESTORATION */
-.mujahid-btn-clean-sm, .habits-btn-clean-sm {
+/* HABITS / HABITS SECTION RESTORATION */
+.habits-btn-clean-sm, .habits-btn-clean-sm {
   background: rgba(34, 197, 94, 0.2);
   color: #22c55e;
 }
 
-.mujahid-btn-clean-sm:hover, .habits-btn-clean-sm:hover {
+.habits-btn-clean-sm:hover, .habits-btn-clean-sm:hover {
   background: rgba(34, 197, 94, 0.35);
 }
 
-.mujahid-btn-relapse-sm, .habits-btn-relapse-sm {
+.habits-btn-relapse-sm, .habits-btn-relapse-sm {
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
 }
 
-.mujahid-btn-relapse-sm:hover, .habits-btn-relapse-sm:hover {
+.habits-btn-relapse-sm:hover, .habits-btn-relapse-sm:hover {
   background: rgba(239, 68, 68, 0.35);
 }
 
-.mujahid-card, .habits-card {
+.habits-card, .habits-card {
   background: var(--color-glass);
   border: 1px solid var(--color-divider-subtle);
   border-radius: 20px;
@@ -217,21 +217,21 @@
   margin-bottom: 16px;
 }
 
-.mujahid-card-header, .habits-card-header {
+.habits-card-header, .habits-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 16px;
 }
 
-.mujahid-habit-info, .habits-habit-info {
+.habits-habit-info, .habits-habit-info {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* Mujahid Empty Hero Section */
-.mujahid-empty-hero, .habits-empty-hero {
+/* HABITS Empty Hero Section */
+.habits-empty-hero, .habits-empty-hero {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -244,7 +244,7 @@
   margin-top: 20px;
 }
 
-.mujahid-hero-glow {
+.habits-hero-glow {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -257,20 +257,20 @@
   pointer-events: none;
 }
 
-.mujahid-hero-content {
+.habits-hero-content {
   position: relative;
   z-index: 1;
   max-width: 440px;
 }
 
-.mujahid-hero-icon-wrap {
+.habits-hero-icon-wrap {
   position: relative;
   width: 100px;
   height: 100px;
   margin: 0 auto 32px;
 }
 
-.mujahid-hero-shield {
+.habits-hero-shield {
   position: absolute;
   inset: 0;
   color: var(--color-accent-primary);
@@ -279,7 +279,7 @@
   animation: float 4s ease-in-out infinite;
 }
 
-.mujahid-hero-sword {
+.habits-hero-sword {
   position: absolute;
   inset: 15px;
   color: var(--color-accent-primary);
@@ -288,7 +288,7 @@
   animation: float 4s ease-in-out infinite reverse;
 }
 
-.mujahid-hero-title {
+.habits-hero-title {
   font-size: 32px;
   font-weight: 900;
   letter-spacing: -1px;
@@ -296,7 +296,7 @@
   color: var(--color-text-primary);
 }
 
-.mujahid-hero-desc {
+.habits-hero-desc {
   font-size: 16px;
   line-height: 1.6;
   color: var(--color-text-muted);
@@ -309,8 +309,8 @@
 
 
 
-/* MUJAHID ADD MODAL THEME FIXES */
-.mujahid-habits-grid {
+/* HABITS ADD MODAL THEME FIXES */
+.habits-habits-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 10px;
@@ -321,14 +321,14 @@
 
 
 
-.mujahid-habit-option-icon {
+.habits-habit-option-icon {
   font-size: 22px;
   width: 32px;
   display: flex;
   justify-content: center;
 }
 
-.mujahid-icon-option {
+.habits-icon-option {
   width: 44px;
   height: 44px;
   border-radius: 12px;
@@ -342,24 +342,24 @@
   color: var(--color-text-secondary);
 }
 
-.mujahid-icon-option:hover {
+.habits-icon-option:hover {
   border-color: var(--color-accent-primary);
   background: var(--color-surface-card);
 }
 
-.mujahid-icon-option.active {
+.habits-icon-option.active {
   background: var(--color-accent-primary);
   color: white;
   border-color: var(--color-accent-primary);
   box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
 }
 
-.mujahid-icon-option svg {
+.habits-icon-option svg {
   width: 22px;
   height: 22px;
 }
 
-.mujahid-custom-input input {
+.habits-custom-input input {
   width: 100%;
   padding: 16px;
   background: var(--color-surface-nested);
@@ -370,7 +370,7 @@
   transition: all 0.3s ease;
 }
 
-.mujahid-custom-input input:focus {
+.habits-custom-input input:focus {
   border-color: var(--color-accent-primary);
   background: var(--color-surface-card);
   outline: none;
@@ -378,14 +378,14 @@
 }
 
 /* MODERN ADD ANOTHER PILLAR - HALKA & GLOSSY UPGRADE */
-.mujahid-add-pillar-wrap {
+.habits-add-pillar-wrap {
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
   perspective: 1000px;
 }
 
-.mujahid-add-pillar {
+.habits-add-pillar {
   position: relative;
   display: flex;
   align-items: center;
@@ -399,11 +399,11 @@
   color: var(--color-text-primary);
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  animation: mujahid-pillar-float 4s ease-in-out infinite;
+  animation: HABITS-pillar-float 4s ease-in-out infinite;
 }
 
 /* Glossy Shimmer Effect */
-.mujahid-add-pillar::after {
+.habits-add-pillar::after {
   content: '';
   position: absolute;
   top: -50%;
@@ -417,13 +417,13 @@
       rgba(255, 255, 255, 0.1),
       transparent);
   transform: rotate(35deg);
-  animation: mujahid-glossy-sweep 3s infinite;
+  animation: HABITS-glossy-sweep 3s infinite;
   will-change: transform;
   pointer-events: none;
 }
 
 /* Liquid Animated Border */
-.mujahid-add-pillar::before {
+.habits-add-pillar::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -435,21 +435,21 @@
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: mujahid-border-flow 3s linear infinite;
+  animation: HABITS-border-flow 3s linear infinite;
   opacity: 0.3;
 }
 
-.mujahid-add-pillar:hover {
+.habits-add-pillar:hover {
   transform: translateY(-5px) scale(1.01);
   border-color: transparent;
   box-shadow: 0 15px 30px rgba(99, 102, 241, 0.15);
 }
 
-.mujahid-add-pillar:hover::before {
+.habits-add-pillar:hover::before {
   opacity: 1;
 }
 
-.mujahid-add-pillar-icon {
+.habits-add-pillar-icon {
   width: 36px;
   height: 36px;
   border-radius: 10px;
@@ -462,20 +462,20 @@
   position: relative;
 }
 
-.mujahid-add-pillar:hover .mujahid-add-pillar-icon {
+.habits-add-pillar:hover .habits-add-pillar-icon {
   background: var(--color-accent-primary);
   color: white;
   transform: rotate(180deg) scale(1.1);
   box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
 }
 
-.mujahid-add-pillar-text {
+.habits-add-pillar-text {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.2px;
 }
 
-@keyframes mujahid-glossy-sweep {
+@keyframes HABITS-glossy-sweep {
   0% {
     transform: translateX(0) rotate(35deg);
   }
@@ -485,7 +485,7 @@
   }
 }
 
-@keyframes mujahid-border-flow {
+@keyframes HABITS-border-flow {
   0% {
     background-position: 0% 50%;
   }
@@ -495,7 +495,7 @@
   }
 }
 
-@keyframes mujahid-pillar-float {
+@keyframes HABITS-pillar-float {
 
   0%,
   100% {
@@ -508,11 +508,11 @@
 }
 
 /* UNIVERSAL MODAL TITLE FIX - FORCE VISIBILITY */
-#mujahid-add-modal .modal-title,
-#mujahid-history-modal .modal-title,
-#mujahid-tools-modal .modal-title,
-#mujahid-startdate-modal .modal-title,
-#mujahid-confirm-modal .modal-title {
+#HABITS-add-modal .modal-title,
+#HABITS-history-modal .modal-title,
+#HABITS-tools-modal .modal-title,
+#HABITS-startdate-modal .modal-title,
+#HABITS-confirm-modal .modal-title {
   color: var(--color-accent-primary) !important;
   font-weight: 900 !important;
   letter-spacing: -0.5px !important;
@@ -523,7 +523,7 @@
 }
 
 /* PREMIUM CANCEL BUTTON */
-.mujahid-btn-cancel {
+.habits-btn-cancel {
   width: 100%;
   padding: 14px 0;
   background: rgba(255, 255, 255, 0.05);
@@ -537,18 +537,18 @@
   transition: all 0.2s;
 }
 
-.mujahid-btn-cancel:hover {
+.habits-btn-cancel:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: var(--color-text-muted);
 }
 
-[data-theme="light"] .mujahid-btn-cancel {
+[data-theme="light"] .habits-btn-cancel {
   background: #f1f5f9;
   border-color: #e2e8f0;
   color: #475569;
 }
 
-#mujahid-confirm-modal .mujahid-btn-danger {
+#HABITS-confirm-modal .habits-btn-danger {
   width: 100%;
   padding: 14px 0;
   background: #ef4444;
@@ -563,37 +563,37 @@
   transition: all 0.2s;
 }
 
-#mujahid-confirm-modal .mujahid-btn-danger:hover {
+#HABITS-confirm-modal .habits-btn-danger:hover {
   background: #dc2626;
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
 /* Light Mode specific tweaks for Pillar */
-[data-theme="light"] .mujahid-add-pillar {
+[data-theme="light"] .habits-add-pillar {
   background: #ffffff;
   border-color: #e2e8f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
-[data-theme="light"] .mujahid-add-pillar:hover {
+[data-theme="light"] .habits-add-pillar:hover {
   border-color: #6366F1;
   color: #6366F1;
 }
 
 
 /* Light Mode Contrast Adjustments */
-[data-theme="light"] .mujahid-hero-shield {
+[data-theme="light"] .habits-hero-shield {
   opacity: 0.9;
   color: #6366F1;
 }
 
-[data-theme="light"] .mujahid-hero-sword {
+[data-theme="light"] .habits-hero-sword {
   opacity: 0.6;
   color: #6366F1;
 }
 
-[data-theme="light"] .mujahid-hero-glow {
+[data-theme="light"] .habits-hero-glow {
   background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
 }
 

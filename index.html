@@ -83,7 +83,7 @@
 .essence-card:hover .essence-icon-badge { transform: scale(1.08); background: #e2f4c1; }
     .essence-card h3 { font-size: 1.35rem; font-weight: 800; color: var(--ink); margin-bottom: 8px; letter-spacing: -.02em; }
     .essence-card p { font-size: .96rem; color: var(--muted); margin: 0; line-height: 1.5; }
-    .visual.nafl,.visual.mujahid,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
+    .visual.nafl,.visual.habits,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
 
   </style>
   </noscript>
@@ -287,7 +287,7 @@
 .essence-card:hover .essence-icon-badge { transform: scale(1.08); background: #e2f4c1; }
     .essence-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -.02em; }
     .essence-card p { font-size: .92rem; color: var(--muted); margin: 0; }
-    .visual.nafl,.visual.mujahid,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
+    .visual.nafl,.visual.habits,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
     #landing-breath-circle::before { content: "" !important; }
     @keyframes hijri-pulse {
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
@@ -934,8 +934,8 @@
       </div>
     </section>
 
-    <!-- Section 06: Mujahid -->
-    <section id="feature-mujahid">
+    <!-- Section 06: Habits -->
+    <section id="feature-habits">
       <div class="wrap feature-grid">
         <div class="feature-copy reveal">
           <div class="eyebrow">06 &middot; Habits</div>
@@ -943,7 +943,7 @@
           <p>Build discipline across daily habits, track streaks, log relapses gracefully, and reset with calm breathing exercises.</p>
           <a class="btn" href="app/index.html?section=habits">Enter the forge <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-        <div class="visual mujahid reveal">
+        <div class="visual habits reveal">
           <div class="v-info">
             <div class="eyebrow">4-7-8 Breathing</div>
             <h3>Discipline without shame.</h3>
@@ -1184,9 +1184,9 @@
               <b id="shs-nafl-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#b87e14;width:32px;text-align:right;">60%</b>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
-              <label for="shs-mujahid" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Habits</label>
-              <input id="shs-mujahid" type="range" min="0" max="100" value="80" style="flex:1;accent-color:#593b82;height:4px;cursor:pointer;" aria-label="Habits clean score">
-              <b id="shs-mujahid-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#593b82;width:32px;text-align:right;">80%</b>
+              <label for="shs-habits" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Habits</label>
+              <input id="shs-habits" type="range" min="0" max="100" value="80" style="flex:1;accent-color:#593b82;height:4px;cursor:pointer;" aria-label="Habits clean score">
+              <b id="shs-habits-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#593b82;width:32px;text-align:right;">80%</b>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
               <label for="shs-rhythm" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Rhythm</label>
@@ -2610,13 +2610,13 @@
       const prayerSlider  = document.getElementById('shs-prayer');
       const dhikrSlider   = document.getElementById('shs-dhikr');
       const naflSlider    = document.getElementById('shs-nafl');
-      const mujahidSlider = document.getElementById('shs-mujahid');
+      const habitsSlider = document.getElementById('shs-habits');
       const rhythmSlider  = document.getElementById('shs-rhythm');
 
       const prayerVal  = document.getElementById('shs-prayer-val');
       const dhikrVal   = document.getElementById('shs-dhikr-val');
       const naflVal    = document.getElementById('shs-nafl-val');
-      const mujahidVal = document.getElementById('shs-mujahid-val');
+      const habitsVal = document.getElementById('shs-habits-val');
       const rhythmVal  = document.getElementById('shs-rhythm-val');
 
       const scoreEl = document.getElementById('landing-shs-score');
@@ -2624,21 +2624,21 @@
       const chartBars = document.querySelectorAll('#insights .chart i');
       if (!prayerSlider || !scoreEl) return;
 
-      /* Official PWA SHS Weights: Prayer 50%, Dhikr 15%, Nafl 15%, Mujahid 10%, Rhythm 10% */
+      /* Official PWA SHS Weights: Prayer 50%, Dhikr 15%, Nafl 15%, Habits 10%, Rhythm 10% */
       function computeSHS() {
         const p = parseInt(prayerSlider.value, 10) || 0;
         const d = parseInt(dhikrSlider.value, 10) || 0;
         const n = parseInt(naflSlider.value, 10) || 0;
-        const m = parseInt(mujahidSlider ? mujahidSlider.value : 80, 10) || 0;
+        const m = parseInt(habitsSlider ? habitsSlider.value : 80, 10) || 0;
         const r = parseInt(rhythmSlider ? rhythmSlider.value : 70, 10) || 0;
 
         const ptsSalah = (p / 100) * 50;
         const ptsDhikr = (d / 100) * 15;
         const ptsNafl  = (n / 100) * 15;
-        const ptsMujahid = (m / 100) * 10;
+        const ptsHabits = (m / 100) * 10;
         const ptsRhythm = (r / 100) * 10;
 
-        return Math.min(100, Math.round(ptsSalah + ptsDhikr + ptsNafl + ptsMujahid + ptsRhythm));
+        return Math.min(100, Math.round(ptsSalah + ptsDhikr + ptsNafl + ptsHabits + ptsRhythm));
       }
 
       function rankFromScore(s) {
@@ -2661,19 +2661,19 @@
         const p = parseInt(prayerSlider.value, 10) || 0;
         const d = parseInt(dhikrSlider.value, 10) || 0;
         const n = parseInt(naflSlider.value, 10) || 0;
-        const m = parseInt(mujahidSlider ? mujahidSlider.value : 80, 10) || 0;
+        const m = parseInt(habitsSlider ? habitsSlider.value : 80, 10) || 0;
         const r = parseInt(rhythmSlider ? rhythmSlider.value : 70, 10) || 0;
 
         if (prayerVal)  prayerVal.textContent  = p + '%';
         if (dhikrVal)   dhikrVal.textContent   = d + '%';
         if (naflVal)    naflVal.textContent    = n + '%';
-        if (mujahidVal) mujahidVal.textContent = m + '%';
+        if (habitsVal) habitsVal.textContent = m + '%';
         if (rhythmVal)  rhythmVal.textContent  = r + '%';
 
         updateTrackFill(prayerSlider, p, '#3d7a5a');
         updateTrackFill(dhikrSlider, d, '#167cc0');
         updateTrackFill(naflSlider, n, '#b87e14');
-        updateTrackFill(mujahidSlider, m, '#593b82');
+        updateTrackFill(habitsSlider, m, '#593b82');
         updateTrackFill(rhythmSlider, r, '#c2441d');
 
         const shs = computeSHS();
@@ -2692,7 +2692,7 @@
           chartBars[2].title = 'Nafl: ' + n + '%';
 
           chartBars[3].style.height = Math.max(8, m) + '%';
-          chartBars[3].title = 'Mujahid: ' + m + '%';
+          chartBars[3].title = 'Habits: ' + m + '%';
 
           chartBars[4].style.height = Math.max(8, r) + '%';
           chartBars[4].title = 'Rhythm: ' + r + '%';
@@ -2702,7 +2702,7 @@
         }
       }
 
-      [prayerSlider, dhikrSlider, naflSlider, mujahidSlider, rhythmSlider].forEach(slider => {
+      [prayerSlider, dhikrSlider, naflSlider, habitsSlider, rhythmSlider].forEach(slider => {
         if (slider) slider.addEventListener('input', update);
       });
       update();
@@ -2889,7 +2889,7 @@
         smart: {
           badge: 'Local Intelligence',
           title: 'Insights That Actually Know You',
-          desc: 'Lamim\'s analytics engine computes your Spiritual Health Score (SHS) entirely on-device across 9 integrated modules — Salah, Dhikr, Nafl, Mujahid, Gym, Career, Finance, Analysis, and Profile.',
+          desc: 'Lamim\'s analytics engine computes your Spiritual Health Score (SHS) entirely on-device across 9 integrated modules — Salah, Dhikr, Nafl, Habits, Gym, Career, Finance, Analysis, and Profile.',
           stats: [
             { num: 'SHS', label: 'Spirit Score' },
             { num: '21-Day', label: 'Heatmap Grid' },

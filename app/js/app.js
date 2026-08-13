@@ -6,7 +6,7 @@
 window.LamimVerses = window.LamimVerses || [];
 
 // Single source of truth mapping a section id to its module (used by router + bus).
-const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, habits: typeof Habits !== 'undefined' ? Habits : Mujahid, mujahid: typeof Habits !== 'undefined' ? Habits : Mujahid, finance: Finance, gym: Gym, career: Career };
+const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, habits: Habits, finance: Finance, gym: Gym, career: Career };
 
 const App = {
   currentSection: '',
@@ -48,9 +48,8 @@ const App = {
     if (current === 'analysis' && typeof Analysis !== 'undefined') {
       Utils.safeRun(() => Analysis.init(), 'Analysis Render');
     }
-    if ((current === 'habits' || current === 'mujahid') && (typeof Habits !== 'undefined' || typeof Mujahid !== 'undefined')) {
-      const mod = typeof Habits !== 'undefined' ? Habits : Mujahid;
-      Utils.safeRun(() => mod.render(), 'Habits Render');
+    if (current === 'habits' && typeof Habits !== 'undefined') {
+      Utils.safeRun(() => Habits.render(), 'Habits Render');
     }
 
 
@@ -106,8 +105,8 @@ updateSectionTitle() {
 
   // Section labels for the topbar
   sectionLabels: {
-    en: { home: 'Home', salah: 'Salah Tracker', dhikr: 'Dhikr Counter', nafl: 'Nafl Salah', mujahid: 'Habits', habits: 'Habits', finance: 'Islamic Finance', analysis: 'Analysis', gym: 'Gym Tracker', career: 'Career Builder', profile: 'Profile' },
-    bn: { home: 'হোম', salah: 'সালাত ট্র্যাকার', dhikr: 'যিকির কাউন্টার', nafl: 'নফল সালাত', mujahid: 'হ্যাবিটস', habits: 'হ্যাবিটস', finance: 'ইসলামিক অর্থনীতি', analysis: 'বিশ্লেষণ', gym: 'জিম ট্র্যাকার', career: 'ক্যারিয়ার বিল্ডার', profile: 'প্রোফাইল' }
+    en: { home: 'Home', salah: 'Salah Tracker', dhikr: 'Dhikr Counter', nafl: 'Nafl Salah', habits: 'Habits', finance: 'Islamic Finance', analysis: 'Analysis', gym: 'Gym Tracker', career: 'Career Builder', profile: 'Profile' },
+    bn: { home: 'হোম', salah: 'সালাত ট্র্যাকার', dhikr: 'যিকির কাউন্টার', nafl: 'নফল সালাত', habits: 'হ্যাবিটস', finance: 'ইসলামিক অর্থনীতি', analysis: 'বিশ্লেষণ', gym: 'জিম ট্র্যাকার', career: 'ক্যারিয়ার বিল্ডার', profile: 'প্রোফাইল' }
   },
 
   async init() {
@@ -345,7 +344,7 @@ updateSectionTitle() {
     if (dash) dash.classList.add('active');
 
     if (!initialSection) {
-      const valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'mujahid', 'finance', 'gym', 'career'];
+      const valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'finance', 'gym', 'career'];
       initialSection = new URLSearchParams(location.search).get('section');
       // On mobile a refresh often carries the active section in history.state
       // rather than the URL query — fall back to it before defaulting to home.

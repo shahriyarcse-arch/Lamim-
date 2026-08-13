@@ -287,8 +287,8 @@ p { color: var(--color-text-secondary); }
   .fin-filter-pill:hover, .fin-tab-btn:hover, .fin-sort-chip:hover, .fin-pill:hover,
   .gh-seg-btn:hover, .career-tab:hover, .analysis-tab:hover,
   .pref-card:hover, .curr-card:hover, .gender-card:hover, .bio-preset-chip:hover,
-  .insight-p-card:hover, .mujahid-btn-relapse-sm:hover,
-  .finance-nav-btn:hover, .section-tools-btn:hover, .mujahid-icon-option:hover,
+  .insight-p-card:hover, .habits-btn-relapse-sm:hover,
+  .finance-nav-btn:hover, .section-tools-btn:hover, .habits-icon-option:hover,
   .iw-relapse-btn:hover, .hover-lift:hover, .hover-scale:hover,
   .vault-show-more-card:hover, .step-svg-icon-wrap:hover,
   .loc-detect-btn:hover {

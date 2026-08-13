@@ -683,9 +683,9 @@ const Utils = {
       '#gym-exercise-name': 'Exercise name', '#gym-exercise-sets': 'Sets',
       '#gym-exercise-reps': 'Reps', '#gym-exercise-weight': 'Weight',
       '#gym-sleep-slider': 'Sleep time', '#gym-wake-slider': 'Wake time',
-      '#mujahid-custom-habit-input': 'New habit name', '#habits-custom-habit-input': 'New habit name',
-      '#mujahid-startdate-input': 'Start date', '#habits-startdate-input': 'Start date',
-      '#mujahid-relapse-reason': 'Relapse reason', '#habits-relapse-reason': 'Relapse reason',
+      '#habits-custom-habit-input': 'New habit name',
+      '#habits-startdate-input': 'Start date',
+      '#habits-relapse-reason': 'Relapse reason',
       '#finance-expense-amount': 'Expense amount', '#finance-income-amount': 'Income amount',
       '#finance-income-desc': 'Income source', '#finance-savings-target': 'Savings target'
     };

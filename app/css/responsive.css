@@ -35,7 +35,6 @@
   /* Hard-coded multi-column grids -> 2 columns */
   .finance-summary,
   .analysis-quick-stats,
-  .mujahid-timer-display,
   .habits-timer-display,
   .fin-delete-info,
   .history-premium-summary,
@@ -48,7 +47,6 @@
 @media (max-width: 380px) {
   .finance-summary,
   .analysis-quick-stats,
-  .mujahid-timer-display,
   .habits-timer-display,
   .fin-delete-info,
   .history-premium-summary { grid-template-columns: 1fr !important; }

@@ -853,7 +853,7 @@ select.input option:disabled {
   box-shadow: inset 0 1px 0 rgba(34, 211, 238, 0.3), 0 4px 16px rgba(34, 211, 238, 0.2);
 }
 
-.bottom-nav-item[data-section="mujahid"].active {
+.bottom-nav-item[data-section="habits"].active {
   background: rgba(236, 72, 153, 0.15);
   box-shadow: inset 0 1px 0 rgba(236, 72, 153, 0.3), 0 4px 16px rgba(236, 72, 153, 0.2);
 }
@@ -958,14 +958,14 @@ select.input option:disabled {
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
 }
 
-.nav-item[data-section="mujahid"].active,
-.bottom-nav-item[data-section="mujahid"].active {
+.nav-item[data-section="habits"].active,
+.bottom-nav-item[data-section="habits"].active {
   color: #ec4899 !important;
 }
 
-.nav-item[data-section="mujahid"].active .bnav-icon,
-.nav-item[data-section="mujahid"].active .nav-icon,
-.bottom-nav-item[data-section="mujahid"].active .bnav-icon {
+.nav-item[data-section="habits"].active .bnav-icon,
+.nav-item[data-section="habits"].active .nav-icon,
+.bottom-nav-item[data-section="habits"].active .bnav-icon {
   filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4));
 }
 
@@ -1936,11 +1936,11 @@ select.input option:disabled {
 
 /* --- DE-DUPLICATED COMPONENTS --- */
 
-/* mujahid-habit-option styles in mujahid.css */
+/* habits-habit-option styles in habits.css */
 
-/* Habit option styles moved to mujahid.css */
+/* Habit option styles moved to habits.css */
 
-/* All .mujahid-habit-option styles consolidated in mujahid.css */
+/* All .habits-habit-option styles consolidated in habits.css */
 
 /* Profile edit character counter */
 .edit-char-count {

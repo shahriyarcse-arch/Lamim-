@@ -201,7 +201,7 @@
   opacity: 0.3;
 }
 
-.is-divine:not(.is-master) .mujahid-time-num {
+.is-divine:not(.is-master) .habits-time-num {
   color: #00f2ff !important;
   text-shadow: 0 0 15px #00f2ff80 !important;
 }
@@ -233,7 +233,7 @@
   opacity: 0.4;
 }
 
-.is-master .mujahid-time-num {
+.is-master .habits-time-num {
   color: #ffd700 !important;
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
@@ -365,7 +365,7 @@
   min-width: 50px;
 }
 
-.iw-timer-unit .mujahid-time-num {
+.iw-timer-unit .habits-time-num {
   font-size: 20px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -399,14 +399,14 @@
   z-index: 2;
 }
 
-.mujahid-icon-selector {
+.habits-icon-selector {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 12px;
 }
 
-.mujahid-icon-option {
+.habits-icon-option {
   width: 40px;
   height: 40px;
   border-radius: 8px;
@@ -508,19 +508,19 @@
   color: var(--color-text-primary);
 }
 
-.mujahid-icon-option.active {
+.habits-icon-option.active {
   background: var(--color-divider-strong);
   border-color: #fff;
   color: #fff;
   box-shadow: 0 0 15px var(--color-divider-strong);
 }
 
-.mujahid-icon-option:hover {
+.habits-icon-option:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
-.mujahid-color-selector {
+.habits-color-selector {
   display: flex;
   gap: 12px;
   margin-bottom: 15px;

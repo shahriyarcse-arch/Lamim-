@@ -9,7 +9,7 @@ const Analysis = {
     salah: 50,
     nafl: 15,
     dhikr: 15,
-    mujahid: 10,
+    habits: 10,
     consistency: 10
   },
   
@@ -77,8 +77,8 @@ const Analysis = {
     const pointsDhikr = Math.min(15, (totalDhikrCount / 2100) * this.weights.dhikr);
     const dhikrLevel = Math.min(7, Math.floor(totalDhikrCount / 300));
 
-    // 4. Mujahid Score (Max 10) - Real Survival Logic
-    let pointsMujahid = 0;
+    // 4. Habits Score (Max 10) - Real Survival Logic
+    let pointsHabits = 0;
     if (!this._cachedHabits) this._cachedHabits = DB.getHabits();
     const habits = this._cachedHabits;
     
@@ -101,12 +101,12 @@ const Analysis = {
       });
       
       if (activeHabitsForDay > 0) {
-        pointsMujahid = (successfulHabits / activeHabitsForDay) * this.weights.mujahid;
+        pointsHabits = (successfulHabits / activeHabitsForDay) * this.weights.habits;
       }
     }
 
     // 5. Consistency Score (Max 10) - Step Logic
-    const rawTotal = pointsSalah + pointsNafl + pointsDhikr + pointsMujahid;
+    const rawTotal = pointsSalah + pointsNafl + pointsDhikr + pointsHabits;
     let pointsConsistency = 0;
     
     // Using rounded value for a better UX experience
@@ -126,7 +126,7 @@ const Analysis = {
         salah: parseFloat(pointsSalah.toFixed(1)),
         nafl: parseFloat(pointsNafl.toFixed(1)),
         dhikr: parseFloat(pointsDhikr.toFixed(1)),
-        mujahid: parseFloat(pointsMujahid.toFixed(1)),
+        habits: parseFloat(pointsHabits.toFixed(1)),
         consistency: parseFloat(pointsConsistency.toFixed(1))
       },
       level: { dhikr: dhikrLevel, dhikrCount: totalDhikrCount },
@@ -328,7 +328,7 @@ const Analysis = {
           ${this.renderCard('Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>
           `, `Lvl ${shs.level.dhikr}`, noAnim)}
-          ${this.renderCard('Mujahid', shs.breakdown.mujahid, 10, '#fbbf24', `
+          ${this.renderCard('Habits', shs.breakdown.habits, 10, '#fbbf24', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           `, null, noAnim)}
           ${this.renderCard('Spirit', shs.breakdown.consistency, 10, '#10b981', `
@@ -410,7 +410,7 @@ const Analysis = {
         ${this.renderCard('Salah', shs.breakdown.salah, 50, '#f87171', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H4c-1 0-2-1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4c0 1-1 2-2 2z"/><path d="M12 10V3"/><path d="M8 6h8"/></svg>`, null, true)}
         ${this.renderCard('Nafl', shs.breakdown.nafl, 15, '#a855f7', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`, null, true)}
         ${this.renderCard('Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>`, `Lvl ${shs.level.dhikr}`, true)}
-        ${this.renderCard('Mujahid', shs.breakdown.mujahid, 10, '#fbbf24', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, null, true)}
+        ${this.renderCard('Habits', shs.breakdown.habits, 10, '#fbbf24', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, null, true)}
         ${this.renderCard('Spirit', shs.breakdown.consistency, 10, '#10b981', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`, null, true)}
       `;
     }
@@ -462,11 +462,11 @@ const Analysis = {
       (breakdown.salah / 50) * 100,       // Top (Salah)
       (breakdown.nafl / 15) * 100,        // Top-Right (Nafl)
       (breakdown.dhikr / 15) * 100,       // Bottom-Right (Dhikr)
-      (breakdown.mujahid / 10) * 100,     // Bottom-Left (Mujahid)
+      (breakdown.habits / 10) * 100,      // Bottom-Left (Habits)
       (breakdown.consistency / 10) * 100  // Top-Left (Consistency)
     ];
 
-    const labels = ['Salah', 'Nafl', 'Dhikr', 'Mujahid', 'Spirit'];
+    const labels = ['Salah', 'Nafl', 'Dhikr', 'Habits', 'Spirit'];
     const colors = ['#f87171', '#a855f7', '#38bdf8', '#fbbf24', '#10b981'];
     
     const center = 100;

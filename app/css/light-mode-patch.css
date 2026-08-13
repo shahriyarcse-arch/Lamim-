@@ -28,8 +28,8 @@
   color: var(--color-bg-primary) !important;
 }
 
-[data-theme="light"] .mujahid-btn,
-[data-theme="light"] .mujahid-btn-danger {
+[data-theme="light"] .habits-btn,
+[data-theme="light"] .habits-btn-danger {
   color: var(--color-bg-primary) !important;
 }
 

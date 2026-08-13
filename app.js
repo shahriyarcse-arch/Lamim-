@@ -117,7 +117,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         } else if (el.classList.contains('phone')) {
           sT = 'translateY(' + d + ') scale(0.96) rotate(2deg)';
           eT = 'translateY(0) rotate(2deg)';
-        } else if (el.classList.contains('mujahid') && el.classList.contains('visual')) {
+        } else if (el.classList.contains('habits') && el.classList.contains('visual')) {
           sT = 'translateY(' + d + ') scale(0.96) rotate(-2deg)';
           eT = 'translateY(0) rotate(-2deg)';
         } else if (el.classList.contains('career') && el.classList.contains('visual')) {

@@ -4,7 +4,6 @@ const Translations = {
   'Salah Tracker': 'সালাত ট্র্যাকার',
   'Dhikr Counter': 'যিকির কাউন্টার',
   'Nafl Salah': 'নফল সালাত',
-  'Mujahid': 'হ্যাবিটস',
   'Habits': 'হ্যাবিটস',
   'Islamic Finance': 'ইসলামিক ফাইন্যান্স',
   'Analysis': 'বিশ্লেষণ',
@@ -120,7 +119,7 @@ const Translations = {
   'Consistent': 'ধারাবাহিক',
   'Talib': 'অদম্য',
   'Resilient': 'অদম্য',
-  'Mujahid': 'ফোকাসড',
+  'HABITS': 'ফোকাসড',
   'Mindful': 'ফোকাসড',
   'Mukhlis': 'তাকওয়াবান',
   'God-Conscious': 'তাকওয়াবান',
@@ -133,7 +132,7 @@ const Translations = {
   'NEXT: CONSISTENT': 'পরবর্তী: ধারাবাহিক',
   'NEXT: TALIB': 'পরবর্তী: অদম্য',
   'NEXT: RESILIENT': 'পরবর্তী: অদম্য',
-  'NEXT: MUJAHID': 'পরবর্তী: ফোকাসড',
+  'NEXT: HABITS': 'পরবর্তী: ফোকাসড',
   'NEXT: MINDFUL': 'পরবর্তী: ফোকাসড',
   'NEXT: GOD-CONSCIOUS': 'পরবর্তী: তাকওয়াবান',
   'MAX RANK': 'সর্বোচ্চ র‍্যাঙ্ক (ইহসান)',
@@ -188,7 +187,7 @@ const Translations = {
   // Nafl
   'Nafl Logs': 'নফল লগ',
   
-  // Mujahid
+  // HABITS
   'Active': 'সক্রিয়',
   'Completed': 'সম্পন্ন',
   'Archived': 'আর্কাইভড',
@@ -270,7 +269,7 @@ const Translations = {
   'Muttaqi': 'তাকওয়াবান',
   'Mukhlis': 'ফোকাসড',
   
-  // Mujahid Section
+  // HABITS Section
   'The Forge of Resolve': 'সংকল্পের কামারশালা',
   'Initiate First Habit': 'প্রথম অভ্যাস শুরু করুন',
   'Active Wars': 'সক্রিয় যুদ্ধ',

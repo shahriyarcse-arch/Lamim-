@@ -10,7 +10,7 @@
   will-change: transform, opacity;
   animation-play-state: paused;
 }
-#mujahid-breathe-pro:not(.hidden) .aurora-blob {
+#habits-breathe-pro:not(.hidden) .aurora-blob {
   animation-play-state: running;
 }
 @keyframes float-up {

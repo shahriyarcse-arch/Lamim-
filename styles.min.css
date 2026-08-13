@@ -1760,12 +1760,12 @@ section.dark .feature-copy p {
   text-transform: lowercase;
 }
 
-/* Habits / Mujahid Section Visual & Typography Polish */
-#feature-mujahid {
+/* Habits / Habits Section Visual & Typography Polish */
+#feature-habits {
   background: var(--lilac);
 }
 
-#feature-mujahid .feature-copy .eyebrow {
+#feature-habits .feature-copy .eyebrow {
   color: #3d246c !important;
   background: rgba(61, 36, 108, 0.08);
   border: 1px solid rgba(61, 36, 108, 0.2);
@@ -1778,7 +1778,7 @@ section.dark .feature-copy p {
   letter-spacing: 0.14em;
 }
 
-#feature-mujahid .feature-copy h2 {
+#feature-habits .feature-copy h2 {
   color: #1b0f33 !important;
   font-size: clamp(2rem, 3.8vw, 3.2rem);
   font-weight: 800;
@@ -1787,14 +1787,14 @@ section.dark .feature-copy p {
   margin: 14px 0 16px;
 }
 
-#feature-mujahid .feature-copy p {
+#feature-habits .feature-copy p {
   color: #332352 !important;
   font-size: clamp(0.95rem, 1.2vw, 1.08rem);
   line-height: 1.58;
   font-weight: 500;
 }
 
-#feature-mujahid .btn {
+#feature-habits .btn {
   background: #13211b;
   color: #f1f0e9;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -1802,13 +1802,13 @@ section.dark .feature-copy p {
   font-weight: 700;
 }
 
-#feature-mujahid .btn:hover {
+#feature-habits .btn:hover {
   background: #1c3027;
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 16px 36px rgba(19, 33, 27, 0.32);
 }
 
-.visual.mujahid {
+.visual.habits {
   background: linear-gradient(145deg, #ffffff 0%, #f4ebff 100%) !important;
   border: 2px solid rgba(255, 255, 255, 0.95) !important;
   border-radius: 56px 18px 56px 18px !important;
@@ -1819,7 +1819,7 @@ section.dark .feature-copy p {
   padding: clamp(28px, 4.5vw, 40px) !important;
 }
 
-.visual.mujahid .v-art {
+.visual.habits .v-art {
   width: clamp(165px, 23vw, 205px) !important;
   height: clamp(165px, 23vw, 205px) !important;
   background: rgba(255, 255, 255, 0.7);
@@ -1834,11 +1834,11 @@ section.dark .feature-copy p {
   place-items: center;
 }
 
-.visual.mujahid::after {
+.visual.habits::after {
   display: none;
 }
 
-.visual.mujahid .v-info .eyebrow {
+.visual.habits .v-info .eyebrow {
   color: #3d246c !important;
   background: rgba(61, 36, 108, 0.08) !important;
   border: 1px solid rgba(61, 36, 108, 0.18) !important;
@@ -1849,7 +1849,7 @@ section.dark .feature-copy p {
   letter-spacing: 0.12em;
 }
 
-.visual.mujahid .v-info h3 {
+.visual.habits .v-info h3 {
   color: #1b0f33 !important;
   font-size: clamp(1.4rem, 2.5vw, 1.9rem);
   font-weight: 800;
@@ -1858,7 +1858,7 @@ section.dark .feature-copy p {
   text-shadow: none !important;
 }
 
-.visual.mujahid .v-info p {
+.visual.habits .v-info p {
   color: #4a3a66 !important;
   line-height: 1.52;
   font-size: 0.88rem;
@@ -3159,7 +3159,7 @@ details p {
   backface-visibility: hidden;
 }
 
-.visual.mujahid {
+.visual.habits {
   transform: rotate(1.8deg);
 }
 
@@ -3168,7 +3168,7 @@ details p {
 }
 
 .visual.nafl,
-.visual.mujahid,
+.visual.habits,
 .visual.career,
 .visual.ledger {
   background: rgba(255, 255, 255, 0.88);
@@ -3475,7 +3475,7 @@ input:focus-visible {
     gap: 16px;
   }
 
-  .visual.mujahid,
+  .visual.habits,
   .visual.career {
     transform: none;
     -webkit-transform: none;
@@ -3520,7 +3520,7 @@ input:focus-visible {
 
   /* Colored Section Cards — ensure separation */
   .visual.nafl,
-  .visual.mujahid,
+  .visual.habits,
   .visual.career,
   .visual.ledger {
     background: rgba(255, 255, 255, 0.92);

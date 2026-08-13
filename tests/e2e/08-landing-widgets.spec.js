@@ -34,9 +34,9 @@ test.describe('Landing Page Interactive Widgets Suite', () => {
     await expect(labelEl).toBeVisible();
   });
 
-  test('03 - Mujahid 4-7-8 breathing circle starts cycle on click', async ({ page }) => {
-    const mujahidSection = page.locator('#feature-mujahid');
-    await mujahidSection.scrollIntoViewIfNeeded();
+  test('03 - Habits 4-7-8 breathing circle starts cycle on click', async ({ page }) => {
+    const HabitsSection = page.locator('#feature-Habits');
+    await HabitsSection.scrollIntoViewIfNeeded();
     const circle = page.locator('#landing-breath-circle');
     await expect(circle).toBeVisible();
 

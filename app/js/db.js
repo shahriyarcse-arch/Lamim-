@@ -463,16 +463,13 @@ const DB = {
   getGoals() { return this.get('lamim_goals') || []; },
   setGoals(g) { return this.set('lamim_goals', g); },
 
-  // Habits (formerly Mujahid)
-  getHabits() { return this.get('lamim_habits') || this.get('lamim_mujahid_habits') || []; },
+  // Habits
+  getHabits() { return this.get('lamim_habits') || []; },
   setHabits(h) {
     const res = this.set('lamim_habits', h);
-    this.set('lamim_mujahid_habits', h); // Dual-write for backward compatibility
     this.refreshSpiritScore();
     return res;
   },
-  getMujahid() { return this.getHabits(); },
-  setMujahid(h) { return this.setHabits(h); },
   addGoal(goal) { const g = this.getGoals(); g.push(goal); return this.setGoals(g); },
   updateGoal(id, patch) {
     const goals = this.getGoals();
