@@ -1961,26 +1961,4 @@ select.input option:disabled {
 }
 
 
-
-/* --- Precise Round Green Dot for i in wordmark --- */
-.i-green-dot {
-  position: relative;
-  display: inline-block;
-  letter-spacing: 0 !important;
-}
-
-.i-green-dot::after {
-  content: "";
-  position: absolute;
-  top: -0.02em;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0.36em;
-  height: 0.36em;
-  background-color: #97D84C;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(151, 216, 76, 0.85);
-  pointer-events: none;
-  -webkit-text-fill-color: initial;
-  z-index: 2;
-}
+

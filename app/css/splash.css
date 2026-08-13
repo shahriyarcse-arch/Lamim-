@@ -154,38 +154,6 @@
   100% { transform: translateY(0); opacity: 1; }
 }
 
-/* The signature green dot — brand identity, kept consistent with the app */
-.splash-wordmark .i-green-dot,
-.splash-wordmark .i-dot {
-  position: relative;
-  display: inline-block;
-  font-family: inherit;
-  letter-spacing: 0 !important;
-}
-
-.splash-wordmark .i-green-dot::after,
-.splash-wordmark .i-dot::after {
-  content: "";
-  position: absolute;
-  top: -0.02em;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0.36em;
-  height: 0.36em;
-  background-color: #97D84C;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(151, 216, 76, 0.8);
-  animation: dotPulse 0.3s ease-out 0.45s both;
-  pointer-events: none;
-  -webkit-text-fill-color: initial;
-  z-index: 2;
-}
-
-@keyframes dotPulse {
-  0% { opacity: 0; }
-  50% { opacity: 1; }
-  100% { opacity: 0.85; }
-}
 
 /* === MINIMALIST LOADER === */
 .splash-loader-track {
