@@ -1305,21 +1305,25 @@ select.input option:disabled {
   line-height: 1;
 }
 
-
-50% {
-  background-position: 100% 50%;
+/* --- Topbar Slots --- */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
 }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
 }
 
-/* --- Actions --- */
 .topbar-actions {
   display: flex !important;
-  flex-direction: row !important;
   align-items: center !important;
-  flex-wrap: nowrap !important;
   gap: 10px !important;
-  flex: 1 0 auto !important;
-  justify-content: space-between !important;
 }
 
 /* --- Theme Toggle (iOS-style) --- */

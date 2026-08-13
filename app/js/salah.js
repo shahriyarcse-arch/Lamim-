@@ -476,6 +476,81 @@ const Salah = {
     const titleLocked = window.t ? window.t('Future Date Locked') : 'Future Date Locked';
     const descLocked = window.t ? window.t('You can only record prayers for today or past dates.') : 'You can only record prayers for today or past dates.';
 
+    // In-place update if card grid already exists to guarantee 0 flicker/shake on click
+    const existingCards = container.querySelectorAll('.salah-prayer-card');
+    if (skipAnim && existingCards.length === this.prayers.length && !isFuture) {
+      this.prayers.forEach((p) => {
+        const card = document.getElementById(`salah-card-${p}`);
+        if (!card) return;
+        const meta = { ...this.prayerMeta[p] };
+        if (p === 'dhuhr' && showJumuah) meta.label = "Jumu'ah";
+        const currentStatus = salah[p];
+        const isLocked = !!currentStatus;
+        const forceEdit = !!(this._correcting && this._correcting.date === date && this._correcting.prayer === p);
+        const showSelector = !isLocked || forceEdit;
+        const statusInfo = currentStatus ? this.statusMeta[currentStatus] : null;
+        const isNext = isToday && nextPrayer && nextPrayer.name === p;
+
+        card.className = `salah-prayer-card ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}`;
+
+        const badgeEl = card.querySelector('.salah-prayer-status-badge');
+        if (badgeEl) {
+          badgeEl.innerHTML = currentStatus
+            ? `<div class="salah-status-chip" style="background:${statusInfo.bgAlpha};border-color:${statusInfo.borderAlpha};color:${statusInfo.color};box-shadow:${statusInfo.glow}">
+                 <span>${statusInfo.icon}</span> ${window.t ? window.t(statusInfo.label) : statusInfo.label}
+               </div>`
+            : `<div class="salah-status-chip salah-status-pending">
+                 <span>⏳</span> ${window.t ? window.t('Pending') : 'Pending'}
+               </div>`;
+        }
+
+        const selectorEl = card.querySelector('.salah-status-selector');
+        const lockedEl = card.querySelector('.salah-locked-result');
+
+        if (showSelector && lockedEl) {
+          lockedEl.outerHTML = `
+            <div class="salah-status-selector">
+              <div class="salah-options-label">${window.t ? window.t('How did you pray?') : 'How did you pray?'}</div>
+              <div class="salah-options-grid">
+                ${this.statuses.map((s) => {
+                  const sm = this.statusMeta[s];
+                  return `
+                    <button class="salah-option-btn ${s}"
+                            onclick="Salah.selectStatus('${p}','${s}','${date}')">
+                      <span class="salah-opt-icon" style="filter:drop-shadow(${sm.glow})">${sm.icon}</span>
+                      <span class="salah-opt-label">${window.t ? window.t(sm.label) : sm.label}</span>
+                      <span class="salah-opt-desc">${window.t ? window.t(sm.desc) : sm.desc}</span>
+                      <span class="salah-opt-pts">+${window.n ? window.n(sm.points) : sm.points} ${window.t ? window.t('pts') : 'pts'}</span>
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        } else if (!showSelector && selectorEl && statusInfo) {
+          selectorEl.outerHTML = `
+            <div class="salah-locked-result">
+              <div class="salah-locked-icon" style="color:${statusInfo.color};filter:drop-shadow(${statusInfo.glow})">${statusInfo.icon}</div>
+              <div class="salah-locked-info">
+                <div class="salah-locked-status" style="color:${statusInfo.color}">${window.t ? window.t(statusInfo.label) : statusInfo.label}</div>
+                <div class="salah-locked-desc" style="display:flex;align-items:center;gap:3px">
+                  ${statusInfo.result === 'successful' ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-green);filter:drop-shadow(0 0 4px rgba(16,185,129,0.6))"><polyline points="20 6 9 17 4 12"></polyline></svg> ${window.t ? window.t('Successful') : 'Successful'}` : statusInfo.result === 'qaza' ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-amber);filter:drop-shadow(0 0 4px rgba(251,191,36,0.6))"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${window.t ? window.t('Qaza') : 'Qaza'}` : `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-red);filter:drop-shadow(0 0 4px rgba(248,81,73,0.6))"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Unsuccessful') : 'Unsuccessful'}`}
+                  <span style="opacity:0.5;margin:0 2px">•</span> +${window.n ? window.n(statusInfo.points) : statusInfo.points} ${window.t ? window.t('pts') : 'pts'}
+                </div>
+              </div>
+              <button class="salah-correct-btn" type="button" onclick="Salah.editStatus('${p}','${date}')">${window.t ? window.t('Correct') : 'Correct'}</button>
+              <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+          `;
+        }
+      });
+
+      this.renderHeader();
+      this.renderStats();
+      if (this._reduceMotion) this._stripSmil(document.getElementById('section-salah'));
+      return;
+    }
+
     container.innerHTML = `
       <div class="salah-cards-container">
         ${isFuture ? `
@@ -559,7 +634,7 @@ const Salah = {
                         </div>
                       </div>
                       <button class="salah-correct-btn" type="button" onclick="Salah.editStatus('${p}','${date}')">${window.t ? window.t('Correct') : 'Correct'}</button>
-                      <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: lockPulse 2s ease-in-out infinite"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                      <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>`
               }
             </div>

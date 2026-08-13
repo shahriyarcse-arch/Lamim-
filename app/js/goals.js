@@ -82,7 +82,16 @@ const Goals = {
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const formattedDone = window.n ? window.n(done) : done;
     const formattedTotal = window.n ? window.n(total) : total;
-    const statText = isBn ? `${formattedDone} / ${formattedTotal} ইবাদত সম্পন্ন` : `${formattedDone} / ${formattedTotal} Deeds Complete`;
+    // Update existing progress in-place to prevent flicker
+    const existingBar = hero.querySelector('.nafl-progress-bar');
+    const existingStat = hero.querySelector('.nafl-progress-stat');
+    const existingGlow = hero.querySelector('.celestial-moon-glow');
+    if (skipAnim && existingBar && existingStat) {
+      existingBar.style.width = `${pct}%`;
+      existingStat.textContent = statText;
+      if (existingGlow) existingGlow.style.opacity = `${0.2 + (pct/200)}`;
+      return;
+    }
 
     hero.innerHTML = `
       <div class="nafl-celestial-glass ${skipAnim ? '' : 'anim-scale-up'}">
@@ -174,6 +183,77 @@ const Goals = {
     if (!container) return;
     const isFuture = this.currentDate > Utils.todayStr();
 
+    if (skipAnim && container.children.length === this.sunnahList.length && !isFuture) {
+      this.sunnahList.forEach(item => {
+        const card = document.getElementById(`sunnah-card-${item.id}`);
+        if (!card) return;
+        const status = sunnahData[item.id];
+        const isLocked = status !== undefined;
+        const isPrayed = status === true || status === 'prayed';
+        const isMissed = status === 'missed';
+        const pts = 2;
+
+        card.className = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+
+        const badge = card.querySelector('.salah-prayer-status-badge');
+        if (badge) {
+          badge.innerHTML = isLocked 
+            ? (isPrayed 
+                ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
+                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed
+                   </div>`
+                : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
+                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                   </div>`)
+            : `<div class="salah-status-chip salah-status-pending">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+               </div>`;
+        }
+
+        const selector = card.querySelector('.salah-status-selector');
+        const locked = card.querySelector('.salah-locked-result');
+
+        if (isLocked && selector) {
+          selector.outerHTML = `
+            <div class="salah-locked-result">
+              <div class="salah-locked-icon" style="color: ${isPrayed ? '#34d399' : '#f85149'}; filter: drop-shadow(0 0 8px ${isPrayed ? 'rgba(52,211,153,0.5)' : 'rgba(248,81,73,0.5)'})">
+                ${isPrayed ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
+              </div>
+              <div class="salah-locked-info">
+                <div class="salah-locked-status" style="color: ${isPrayed ? '#34d399' : '#f85149'}">${isPrayed ? 'Sunnah Prayed' : 'Sunnah Missed'}</div>
+                <div class="salah-locked-desc" style="display:flex;align-items:center;gap:3px">
+                  ${isPrayed ? '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-green);filter:drop-shadow(0 0 4px rgba(16,185,129,0.6))"><polyline points="20 6 9 17 4 12"></polyline></svg> Successful' : '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-red);filter:drop-shadow(0 0 4px rgba(248,81,73,0.6))"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Unsuccessful'}
+                  <span style="opacity:0.5;margin:0 2px">•</span> +${isPrayed ? pts : 0} pts
+                </div>
+              </div>
+              <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+          `;
+        } else if (!isLocked && locked) {
+          locked.outerHTML = `
+            <div class="salah-status-selector">
+              <div class="salah-options-label">Did you pray this Sunnah?</div>
+              <div class="salah-options-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <button class="salah-option-btn" style="border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.05);" onclick="Goals.selectSunnah('${item.id}', 'prayed')">
+                  <span class="salah-opt-icon" style="filter: drop-shadow(0 0 8px rgba(52,211,153,0.5)); display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px; color:#34d399"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg></span>
+                  <span class="salah-opt-label" style="color: #34d399; margin-top:4px;">Prayed</span>
+                  <span class="salah-opt-desc">Sunnah Mu'akkadah</span>
+                  <span class="salah-opt-pts">+${pts} pts</span>
+                </button>
+                <button class="salah-option-btn" style="border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.05);" onclick="Goals.selectSunnah('${item.id}', 'missed')">
+                  <span class="salah-opt-icon" style="filter: drop-shadow(0 0 8px rgba(248,81,73,0.5)); display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px; color:#f85149"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                  <span class="salah-opt-label" style="color: #f85149; margin-top:4px;">Missed</span>
+                  <span class="salah-opt-desc">Not prayed</span>
+                  <span class="salah-opt-pts">+0 pts</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }
+      });
+      return;
+    }
+
     container.innerHTML = this.sunnahList.map((item, idx) => {
       const status = sunnahData[item.id];
       const isLocked = status !== undefined;
@@ -186,7 +266,7 @@ const Goals = {
       return `
         <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
              id="sunnah-card-${item.id}"
-             style="${skipAnim ? '' : `animation-delay: ${idx * 0.04}s;`} ${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
+             style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
           
           <!-- Prayer Header -->
           <div class="salah-prayer-header">
@@ -226,7 +306,7 @@ const Goals = {
                      <span style="opacity:0.5;margin:0 2px">•</span> +${isPrayed ? pts : 0} pts
                    </div>
                  </div>
-                 <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: lockPulse 2s ease-in-out infinite"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                 <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                </div>`
             : `<div class="salah-status-selector">
                  <div class="salah-options-label">Did you pray this Sunnah?</div>
@@ -277,6 +357,45 @@ const Goals = {
 
     let bgGradient = 'linear-gradient(135deg, #818cf8, #6366f1)';
 
+    const card = document.getElementById('tahajjud-salah-card');
+    if (skipAnim && card && !isFuture) {
+      card.className = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+      const badge = card.querySelector('.salah-prayer-status-badge');
+      if (badge) {
+        badge.innerHTML = isLocked 
+          ? (isPrayed 
+              ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed (${rakat} RK)
+                 </div>`
+              : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                 </div>`)
+          : `<div class="salah-status-chip salah-status-pending">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+             </div>`;
+      }
+      const selector = card.querySelector('.salah-status-selector');
+      const locked = card.querySelector('.salah-locked-result');
+      if (isLocked && selector) {
+        selector.outerHTML = `
+          <div class="salah-locked-result">
+            <div class="salah-locked-icon" style="color: ${isPrayed ? '#34d399' : '#f85149'}; filter: drop-shadow(0 0 8px ${isPrayed ? 'rgba(52,211,153,0.5)' : 'rgba(248,81,73,0.5)'})">
+              ${isPrayed ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
+            </div>
+            <div class="salah-locked-info">
+              <div class="salah-locked-status" style="color: ${isPrayed ? '#34d399' : '#f85149'}">${isPrayed ? `Tahajjud Prayed (${rakat} RK)` : 'Tahajjud Missed'}</div>
+              <div class="salah-locked-desc" style="display:flex;align-items:center;gap:3px">
+                ${isPrayed ? '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-green);filter:drop-shadow(0 0 4px rgba(16,185,129,0.6))"><polyline points="20 6 9 17 4 12"></polyline></svg> Successful' : '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-red);filter:drop-shadow(0 0 4px rgba(248,81,73,0.6))"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Unsuccessful'}
+                <span style="opacity:0.5;margin:0 2px">•</span> +${isPrayed ? 3 : 0} pts
+              </div>
+            </div>
+            <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+        `;
+      }
+      return;
+    }
+
     let html = `
       <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
            id="tahajjud-salah-card"
@@ -320,7 +439,7 @@ const Goals = {
                    <span style="opacity:0.5;margin:0 2px">•</span> +${isPrayed ? 3 : 0} pts
                  </div>
                </div>
-               <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: lockPulse 2s ease-in-out infinite"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+               <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
              </div>`
           : `<div class="salah-status-selector">
                <div class="salah-options-label" style="display:flex; justify-content:space-between; align-items:center;">
@@ -416,6 +535,45 @@ const Goals = {
 
     let bgGradient = 'linear-gradient(135deg, #fbbf24, #f59e0b)';
 
+    const card = document.getElementById('witr-salah-card');
+    if (skipAnim && card && !isFuture) {
+      card.className = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
+      const badge = card.querySelector('.salah-prayer-status-badge');
+      if (badge) {
+        badge.innerHTML = isLocked 
+          ? (isPrayed 
+              ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed
+                 </div>`
+              : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                 </div>`)
+          : `<div class="salah-status-chip salah-status-pending">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+             </div>`;
+      }
+      const selector = card.querySelector('.salah-status-selector');
+      const locked = card.querySelector('.salah-locked-result');
+      if (isLocked && selector) {
+        selector.outerHTML = `
+          <div class="salah-locked-result">
+            <div class="salah-locked-icon" style="color: ${isPrayed ? '#34d399' : '#f85149'}; filter: drop-shadow(0 0 8px ${isPrayed ? 'rgba(52,211,153,0.5)' : 'rgba(248,81,73,0.5)'})">
+              ${isPrayed ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
+            </div>
+            <div class="salah-locked-info">
+              <div class="salah-locked-status" style="color: ${isPrayed ? '#34d399' : '#f85149'}">${isPrayed ? 'Witr Prayed' : 'Witr Missed'}</div>
+              <div class="salah-locked-desc" style="display:flex;align-items:center;gap:3px">
+                ${isPrayed ? '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-green);filter:drop-shadow(0 0 4px rgba(16,185,129,0.6))"><polyline points="20 6 9 17 4 12"></polyline></svg> Successful' : '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-red);filter:drop-shadow(0 0 4px rgba(248,81,73,0.6))"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Unsuccessful'}
+                <span style="opacity:0.5;margin:0 2px">•</span> +${isPrayed ? 2 : 0} pts
+              </div>
+            </div>
+            <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+        `;
+      }
+      return;
+    }
+
     let html = `
       <div class="salah-prayer-card nafl-sunnah-card-modern ${skipAnim ? '' : 'anim-fade-in'} ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}" 
            id="witr-salah-card"
@@ -459,7 +617,7 @@ const Goals = {
                    <span style="opacity:0.5;margin:0 2px">•</span> +${isPrayed ? 2 : 0} pts
                  </div>
                </div>
-               <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: lockPulse 2s ease-in-out infinite"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+               <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
              </div>`
           : `<div class="salah-status-selector">
                <div class="salah-options-label">Did you pray Witr?</div>

@@ -784,10 +784,10 @@ const Habits = {
         </div>
 
         <div class="iw-badge-container">
-          <div class="iw-big-badge">
-            <div class="iw-badge-inner">${Utils.escapeHTML(currentBadge ? currentBadge.emoji : habit.icon)}</div>
+          <div class="iw-big-badge" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};">
+            <div class="iw-badge-inner">${currentBadge ? currentBadge.emoji : habit.icon}</div>
           </div>
-          <div class="iw-rank-pill">${currentBadge ? currentBadge.name : 'The Novice'}</div>
+          <div class="iw-rank-pill" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};">${currentBadge ? currentBadge.name : 'The Novice'}</div>
         </div>
 
         <div class="iw-timer-circle-wrap">

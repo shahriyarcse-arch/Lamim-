@@ -123,8 +123,7 @@ p { color: var(--color-text-secondary); }
   .fin-filter-pill:active, .fin-tab-btn:active, .fin-sort-chip:active,
   .gh-seg-btn:active, .career-tab:active, .analysis-tab:active,
   .pref-card:active, .curr-card:active, .gender-card:active, .bio-preset-chip:active,
-  .insight-p-card:active, .vault-show-more-card:active,
-  .salah-option-btn:active {
+  .insight-p-card:active, .vault-show-more-card:active {
     transform: scale(0.97);
     opacity: 0.85;
     transition: transform 0.1s ease, opacity 0.1s ease;
