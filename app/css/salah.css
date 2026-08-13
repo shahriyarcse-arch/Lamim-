@@ -2325,3 +2325,28 @@
     transition: none !important;
   }
 }
+
+/* Light Mode Contrast Enhancements (WCAG 2.2 AA) */
+[data-theme="light"] .status-jamaat .salah-status-chip {
+  color: #15803d !important;
+  background: rgba(21, 128, 61, 0.12) !important;
+  border-color: rgba(21, 128, 61, 0.35) !important;
+}
+
+[data-theme="light"] .status-alone .salah-status-chip {
+  color: #0284c7 !important;
+  background: rgba(2, 132, 199, 0.12) !important;
+  border-color: rgba(2, 132, 199, 0.35) !important;
+}
+
+[data-theme="light"] .status-qaza .salah-status-chip {
+  color: #b45309 !important;
+  background: rgba(180, 83, 9, 0.12) !important;
+  border-color: rgba(180, 83, 9, 0.35) !important;
+}
+
+[data-theme="light"] .status-missed .salah-status-chip {
+  color: #b91c1c !important;
+  background: rgba(185, 28, 28, 0.12) !important;
+  border-color: rgba(185, 28, 28, 0.35) !important;
+}

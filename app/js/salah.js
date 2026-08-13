@@ -75,7 +75,7 @@ const Salah = {
     const startDayOfWeek = firstDayDate.getDay();
 
     const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') === 'bn');
     const bnDays = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহঃ', 'শুক্র', 'শনি'];
     const translatedDays = isBn ? bnDays : daysOfWeek;
 
@@ -224,7 +224,7 @@ const Salah = {
     const nextBtn = document.getElementById('salah-next-day');
 
     const sub = document.getElementById('salah-date-sub');
-    const dObj = new Date(date + 'T00:00:00');
+    const dObj = Utils.parseDate(date);
     const locale = (typeof App !== 'undefined' && App.lang === 'bn') ? 'bn-BD' : 'en-US';
 
     if (dateLabel) {
@@ -955,6 +955,7 @@ const Salah = {
       let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
       
       if (top < 10) top = rect.bottom + 10;
+      if (top + ttRect.height > window.innerHeight - 10) top = Math.max(10, window.innerHeight - ttRect.height - 10);
       if (left < 10) left = 10;
       if (left + ttRect.width > window.innerWidth - 10) left = window.innerWidth - ttRect.width - 10;
       
