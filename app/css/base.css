@@ -186,27 +186,18 @@ p { color: var(--color-text-secondary); }
   display: flex;
 }
 
-/* Ultra-Crisp Theme Toggle — 150ms color transition without GPU font raster blur */
-.theme-anim,
-.theme-anim body,
-.theme-anim .dashboard-layout,
-.theme-anim .sidebar,
-.theme-anim .topbar,
-.theme-anim .bottom-nav,
-.theme-anim .card,
-.theme-anim .card-glass,
-.theme-anim .section-panel,
-.theme-anim .modal-content,
-.theme-anim .bento-card,
-.theme-anim .nav-item,
-.theme-anim button,
-.theme-anim input,
-.theme-anim select {
-  transition: background-color 0.15s ease-out,
-              border-color 0.15s ease-out,
-              color 0.15s ease-out !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
+/* Ultra-Crisp Theme Toggle — 150ms color crossfade for EVERY theme-driven surface.
+   Color-only transitions (no transform/filter/shadow) avoid GPU font raster blur.
+   prefers-reduced-motion users get an instant switch (no animation). */
+@media (prefers-reduced-motion: no-preference) {
+  .theme-anim,
+  .theme-anim * {
+    transition: background-color 0.15s ease-out,
+                border-color 0.15s ease-out,
+                color 0.15s ease-out !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
 }
 
 /* Dashboard layout */
