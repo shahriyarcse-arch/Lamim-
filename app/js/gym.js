@@ -312,9 +312,9 @@ const Gym = {
 
     DB.setGym(this.selectedDate, data);
     nameEl.value = '';
-    setsEl.value = 3;
-    repsEl.value = 10;
-    weightEl.value = 0;
+    setsEl.value = '';
+    repsEl.value = '';
+    weightEl.value = '';
     this.renderExercises();
     this.updateHeroMetrics();
     this.renderStatStrip();
