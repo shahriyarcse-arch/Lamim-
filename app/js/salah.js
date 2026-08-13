@@ -446,7 +446,7 @@ const Salah = {
   },
 
   /* ---- Prayer cards (Farz only, no edit after selection) ---- */
-  renderPrayerCards(date, skipAnim = false) {
+  renderPrayerCards(date, skipAnim = false, targetPrayer = null) {
     date = date || this.selectedDate;
     this.selectedDate = date;
     const salah = DB.getSalah(date);
