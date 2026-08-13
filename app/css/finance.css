@@ -139,12 +139,24 @@
   box-shadow: 0 6px 16px -10px rgba(15,23,42,0.3);
   transition: all 0.22s ease !important;
 }
-.fin-btn-primary { background: linear-gradient(135deg, #059669, #10b981) !important; color: #ffffff !important; border: 1px solid #047857 !important; }
-.fin-btn-secondary { background: linear-gradient(135deg, #dc2626, #ef4444) !important; color: #ffffff !important; border: 1px solid #b91c1c !important; }
-.fin-btn:hover { transform: translateY(-2px) !important; box-shadow: 0 12px 22px -12px rgba(15,23,42,0.35) !important; }
+.fin-btn-primary {
+  background: linear-gradient(135deg, #10b981, #34d399) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.28) !important;
+}
+.fin-btn-secondary {
+  background: linear-gradient(135deg, #f43f5e, #fb7185) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(244, 63, 94, 0.35) !important;
+  box-shadow: 0 8px 20px -4px rgba(244, 63, 94, 0.25) !important;
+}
+.fin-btn:hover { transform: translateY(-2px) !important; box-shadow: 0 12px 24px -6px rgba(15,23,42,0.2) !important; }
 .fin-btn:active { transform: scale(0.97) !important; }
 .fin-btn-icon {
-  width: 36px; height: 36px; border-radius: 11px;
+  width: 34px; height: 34px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
   display: flex; align-items: center; justify-content: center;
 }
 

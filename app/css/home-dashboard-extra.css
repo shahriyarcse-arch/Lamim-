@@ -301,29 +301,30 @@
 }
 
 .fin-btn-primary {
-  background: linear-gradient(135deg, #059669, #10b981) !important;
+  background: linear-gradient(135deg, #10b981, #34d399) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(16, 185, 129, 0.4) !important;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.28) !important;
 }
 
 .fin-btn-secondary {
-  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
-  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+  background: linear-gradient(135deg, #f43f5e, #fb7185) !important;
+  border: 1px solid rgba(244, 63, 94, 0.35) !important;
   color: #ffffff !important;
-  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25) !important;
+  box-shadow: 0 8px 20px -4px rgba(244, 63, 94, 0.25) !important;
 }
 
 .fin-btn:hover {
-  transform: scale(1.03) translateY(-2px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+  transform: scale(1.02) translateY(-2px);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.2);
 }
 
 .fin-btn-icon {
   width: 32px;
   height: 32px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -335,26 +336,26 @@
 }
 
 [data-theme="light"] .fin-btn-primary {
-  background: linear-gradient(135deg, #059669, #10b981) !important;
+  background: linear-gradient(135deg, #10b981, #34d399) !important;
   color: #ffffff !important;
-  border: 1px solid #047857 !important;
-  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.28) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.28) !important;
 }
 
 [data-theme="light"] .fin-btn-secondary {
-  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  background: linear-gradient(135deg, #f43f5e, #fb7185) !important;
   color: #ffffff !important;
-  border: 1px solid #b91c1c !important;
-  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.22) !important;
+  border: 1px solid rgba(244, 63, 94, 0.35) !important;
+  box-shadow: 0 8px 20px -4px rgba(244, 63, 94, 0.25) !important;
 }
 
 [data-theme="light"] .fin-btn-secondary .fin-btn-icon {
-  background: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.22) !important;
   color: #ffffff !important;
 }
 
 [data-theme="light"] .fin-btn-secondary:hover {
-  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3) !important;
+  box-shadow: 0 12px 24px -4px rgba(244, 63, 94, 0.3) !important;
 }
 
 /* --- Spending Analytics Chart --- */

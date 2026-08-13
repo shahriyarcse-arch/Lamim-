@@ -938,12 +938,10 @@
   border: 1px solid rgba(99, 102, 241, 0.15);
 }
 
-[data-theme="light"] .fin-btn-primary .fin-btn-icon {
-  background: rgba(4, 120, 87, 0.1) !important;
-}
-
+[data-theme="light"] .fin-btn-primary .fin-btn-icon,
 [data-theme="light"] .fin-btn-secondary .fin-btn-icon {
-  background: rgba(29, 78, 216, 0.1) !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
 }
 
 [data-theme="light"] .fin-delete-btn[onclick*="showSavingsModal"] {
