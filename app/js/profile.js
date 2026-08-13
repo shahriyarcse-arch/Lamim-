@@ -19,6 +19,8 @@ const Profile = {
       moon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="url(#moonGrad)" fill-opacity="0.3" stroke="url(#moonGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="moonGrad" x1="3" y1="3" x2="21" y2="12" gradientUnits="userSpaceOnUse"><stop stop-color="#818CF8"/><stop offset="1" stop-color="#6366F1"/></linearGradient></defs></svg>`
     };
     const streak = DB.getSalahStreak();
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const n = window.n ? window.n : (x => x);
 
     el.innerHTML = `
       <div class="profile-avatar-wrap">
@@ -39,21 +41,21 @@ const Profile = {
       <div class="profile-bio" id="prof-display-bio"></div>
       <div class="profile-meta">
         ${(user.gender === 'male' || user.gender === 'female') ? `<span class="profile-chip gender-${Utils.escapeHTML(user.gender)}">${user.gender === 'male'
-          ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><line x1="19" y1="5" x2="13.5" y2="10.5"></line><line x1="15" y1="2" x2="22" y2="9"></line><line x1="14" y1="9" x2="21" y2="16"></line></svg> Male'
-          : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><line x1="12" y1="14" x2="12" y2="22"></line><line x1="9" y1="19" x2="15" y2="19"></line></svg> Female'}</span>` : ''}
-        ${user.createdAt ? `<span class="profile-chip">Joined ${new Date(user.createdAt).toLocaleDateString('en-US', {month:'short', year:'numeric'})}</span>` : ''}
+          ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><line x1="19" y1="5" x2="13.5" y2="10.5"></line><line x1="15" y1="2" x2="22" y2="9"></line><line x1="14" y1="9" x2="21" y2="16"></line></svg> ${isBn ? 'পুরুষ' : 'Male'}`
+          : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><line x1="12" y1="14" x2="12" y2="22"></line><line x1="9" y1="19" x2="15" y2="19"></line></svg> ${isBn ? 'নারী' : 'Female'}`}</span>` : ''}
+        ${user.createdAt ? `<span class="profile-chip">${isBn ? 'যোগ দিয়েছেন ' : 'Joined '}${new Date(user.createdAt).toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {month:'short', year:'numeric'})}</span>` : ''}
       </div>
 
       <div class="profile-stats">
         <div class="streak-badge active streak-perfect" style="background:rgba(255,214,10,0.1); border-color:rgba(255,214,10,0.3); color:var(--color-accent-gold);" title="Your Lamim Spiritual Score (LSS)">
-          <span class="badge-icon"></span>${Utils.escapeHTML(user.spirit_level || 'Awakening')} · ${Math.round(user.spirit_score || 0)} Power
+          <span class="badge-icon"></span>${Utils.escapeHTML(user.spirit_level || 'Awakening')} · ${n(Math.round(user.spirit_score || 0))} ${isBn ? 'পাওয়ার' : 'Power'}
         </div>
         <div class="streak-badge ${streak.consistency > 0 ? 'active' : ''} streak-consistency" title="Consecutive days with 4+ prayers logged">
-          <span class="badge-icon">${pIcons.consistency}</span>${streak.consistency}d Consistent
+          <span class="badge-icon">${pIcons.consistency}</span>${n(streak.consistency)}${isBn ? ' দিন ধারাবাহিক' : 'd Consistent'}
         </div>
         ${streak.perfect > 0 ? `
         <div class="streak-badge active streak-perfect" title="Consecutive days with all 5 prayers logged">
-          <span class="badge-icon">${pIcons.perfect}</span>${streak.perfect}d Perfect
+          <span class="badge-icon">${pIcons.perfect}</span>${n(streak.perfect)}${isBn ? ' দিন পারফেক্ট' : 'd Perfect'}
         </div>
         ` : ''}
       </div>
@@ -120,10 +122,11 @@ const Profile = {
           let age = new Date().getFullYear() - d.getFullYear();
           const m = new Date().getMonth() - d.getMonth();
           if (m < 0 || (m === 0 && new Date().getDate() < d.getDate())) age--;
-          return age + ' years old';
+          const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+          return (window.n ? window.n(age) : age) + (isBn ? ' বছর বয়স' : ' years old');
         })()}</div></div></div>
         <div class="settings-item-right">
-          <div class="dob-pill">${(() => { if (!user?.dob) return '<span class="dob-seg dob-placeholder">DD</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">MM</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">YYYY</span>'; const d = Profile._parseDob(user.dob); if (!d) return '<span class="dob-seg dob-placeholder">DD</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">MM</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">YYYY</span>'; return `<span class="dob-seg">${String(d.getDate()).padStart(2,'0')}</span><span class="dob-sep">/</span><span class="dob-seg">${String(d.getMonth()+1).padStart(2,'0')}</span><span class="dob-sep">/</span><span class="dob-seg">${d.getFullYear()}</span>`; })()}</div>
+          <div class="dob-pill">${(() => { if (!user?.dob) return '<span class="dob-seg dob-placeholder">DD</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">MM</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">YYYY</span>'; const d = Profile._parseDob(user.dob); if (!d) return '<span class="dob-seg dob-placeholder">DD</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">MM</span><span class="dob-sep">/</span><span class="dob-seg dob-placeholder">YYYY</span>'; const n = window.n ? window.n : (x => x); return `<span class="dob-seg">${n(String(d.getDate()).padStart(2,'0'))}</span><span class="dob-sep">/</span><span class="dob-seg">${n(String(d.getMonth()+1).padStart(2,'0'))}</span><span class="dob-sep">/</span><span class="dob-seg">${n(d.getFullYear())}</span>`; })()}</div>
         </div>
       </div>
     `;
