@@ -132,9 +132,11 @@ updateSectionTitle() {
     // Apply saved theme
     const settings = DB.getSettings();
     const theme = settings.theme || 'light';
+    const bg = theme === 'dark' ? '#020408' : '#F1F5F9';
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.setProperty('--color-bg-primary', bg);
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#F1F5F9' : '#020408');
+    if (meta) meta.setAttribute('content', bg);
     document.querySelectorAll('.topbar-theme-toggle').forEach(b => b.setAttribute('aria-pressed', String(theme === 'dark')));
 
     // Check if running on localhost/development environment

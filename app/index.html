@@ -228,8 +228,10 @@
         console.warn("Settings parse error, falling back to light theme");
       }
       document.documentElement.setAttribute('data-theme', theme);
+      var bg = theme === 'dark' ? '#020408' : '#F1F5F9';
+      document.documentElement.style.setProperty('--color-bg-primary', bg);
       var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', theme === 'light' ? '#F1F5F9' : '#020408');
+      if (meta) meta.setAttribute('content', bg);
     })();
   </script>
   <script>
