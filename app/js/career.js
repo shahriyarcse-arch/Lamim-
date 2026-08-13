@@ -697,7 +697,7 @@ const Career = {
     if (!ach.hours50) {
       if (!totalMins) {
         for (let i = 0; i < 365; i++) {
-          const d = new Date(Utils.todayStr() + 'T00:00:00');
+          const d = Utils.parseDate(Utils.todayStr());
           d.setDate(d.getDate() - i);
           const c = DB.getCareer(Utils.dateStr(d));
           totalMins += (c.studyDuration || 0);
@@ -786,7 +786,7 @@ const Career = {
     const monthNames = (typeof App !== 'undefined' && App.lang === 'bn')
       ? ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগ', 'সেপ্ট', 'অক্ট', 'নভে', 'ডিসে']
       : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const nowD = new Date(this.selectedDate + 'T00:00:00');
+    const nowD = Utils.parseDate(this.selectedDate);
     const todayDate = new Date();
     const trend = [];
     for (let i = 5; i >= 0; i--) {
@@ -952,7 +952,7 @@ const Career = {
 
     let streak = 0;
     for (let i = 0; i < 7; i++) {
-      const d = new Date(this.selectedDate + 'T00:00:00');
+      const d = Utils.parseDate(this.selectedDate);
       d.setDate(d.getDate() - i);
       const c = DB.getCareer(Utils.dateStr(d));
       const cl = c.checklist || [];
@@ -968,7 +968,7 @@ const Career = {
       : ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
     for (let i = 6; i >= 0; i--) {
-      const d = new Date(selectedStr + 'T00:00:00');
+      const d = Utils.parseDate(selectedStr);
       d.setDate(d.getDate() - i);
       const ds = Utils.dateStr(d);
       const c = DB.getCareer(ds);
@@ -1063,7 +1063,7 @@ const Career = {
     const extraEl = document.getElementById('cb-progress-extra');
     if (!statsEl) return;
 
-    const now = new Date(this.selectedDate + 'T00:00:00');
+    const now = Utils.parseDate(this.selectedDate);
     const year = now.getFullYear();
     const month = now.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -1095,7 +1095,7 @@ const Career = {
 
     let streak = 0;
     for (let i = 0; i < daysInMonth; i++) {
-      const d = new Date(this.selectedDate + 'T00:00:00');
+      const d = Utils.parseDate(this.selectedDate);
       d.setDate(d.getDate() - i);
       if (d.getMonth() !== month) break;
       const c = DB.getCareer(Utils.dateStr(d));
@@ -1197,7 +1197,7 @@ const Career = {
     const extraEl = document.getElementById('cb-progress-extra');
     if (!statsEl) return;
 
-    const now = new Date(this.selectedDate + 'T00:00:00');
+    const now = Utils.parseDate(this.selectedDate);
     const year = now.getFullYear();
     const today = new Date();
     const todayStr = Utils.todayStr();
@@ -1235,7 +1235,7 @@ const Career = {
 
     let streak = 0;
     for (let i = 0; i < 366; i++) {
-      const d = new Date(this.selectedDate + 'T00:00:00');
+      const d = Utils.parseDate(this.selectedDate);
       d.setDate(d.getDate() - i);
       if (d.getFullYear() !== year) break;
       const c = DB.getCareer(Utils.dateStr(d));

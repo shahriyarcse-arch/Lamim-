@@ -162,7 +162,7 @@ const Gym = {
     if (!el || !window.Charts) return;
     const data = [];
     for (let i = 6; i >= 0; i--) {
-      const d = new Date(this.selectedDate + 'T00:00:00');
+      const d = Utils.parseDate(this.selectedDate);
       d.setDate(d.getDate() - i);
       const ds = Utils.dateStr(d);
       const g = DB.getGym(ds);
