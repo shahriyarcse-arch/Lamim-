@@ -683,7 +683,7 @@ const Gym = {
 
     const avgSleep = sleepDays ? (totalSleepHrs / sleepDays).toFixed(1) : '0';
     const avgHydration = hydrationDays ? Math.round(totalHydrationPct / hydrationDays) : 0;
-    const consistencyPct = Math.round((loggedDaysCount / daysInMonth) * 100);
+    const consistencyPct = Math.round((loggedDaysCount / (daysInMonth || 30)) * 100);
     let consistencyTier = 'NEEDS WORK', consistencyColor = '#fbbf24';
     if (consistencyPct >= 80) { consistencyTier = 'EXCELLENT'; consistencyColor = '#34d399'; }
     else if (consistencyPct >= 50) { consistencyTier = 'GOOD'; consistencyColor = '#22d3ee'; }

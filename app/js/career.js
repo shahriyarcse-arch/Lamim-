@@ -659,12 +659,12 @@ const Career = {
     }
 
     if (chartEl) {
-      const count = dayPctList.length;
+      const count = dayPctList.length || 1;
       const svgH = 190;
       const padTop = 24;
       const padBot = 28;
       const barArea = svgH - padTop - padBot;
-      const svgW = count * 30;
+      const svgW = Math.max(30, count * 30);
       const cellW = svgW / count;
       const isFirstRender = !chartEl.querySelector('svg');
 
