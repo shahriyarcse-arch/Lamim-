@@ -711,26 +711,19 @@ const Profile = {
       }
 
       const currentUser = DB.getUser();
-      const currentId = currentUser && currentUser.id;
+      const currentId = (currentUser && currentUser.id) || (data.lamim_user && data.lamim_user.id) || (Array.isArray(data.lamim_profiles_vault) && data.lamim_profiles_vault[0] && data.lamim_profiles_vault[0].id);
       const prefix = currentId ? `usr_${currentId}_` : null;
       const GLOBAL_ALLOW = new Set(['lamim_settings', 'lamim_lang', 'lamim_user', 'lamim_profiles_vault', 'lamim_dhikr_presets']);
 
-      // Only restore keys that belong to the active profile or the safe global
-      // whitelist. This blocks cross-profile injection (usr_<otherid>_* keys)
-      // and arbitrary key writes. Unscoped lamim_* app data is allowed and later
-      // re-scoped to the active profile (legacy single-profile backups).
-      // Known, safe app-data key shapes. Restricting import to these patterns
-      // prevents a malicious backup from injecting an unknown `lamim_*` key whose
-      // render path might not escape user input (defense-in-depth over render-layer
-      // escaping). Legit backups only ever contain these keys.
-      const KNOWN_LAMIM = /^lamim_(salah_|dhikr_|gym_|career_|habits|goals|finance|settings|lang|user|profiles_vault)$/;
+      // Known, safe app-data key shapes.
+      const KNOWN_LAMIM = /^lamim_(salah_|dhikr_|gym_|career_|habits|goals|finance|settings|lang|user|profiles_vault|body_metrics|prs)/;
 
       const allowedKeys = [];
       for (const k of Object.keys(data)) {
         if (GLOBAL_ALLOW.has(k)) { allowedKeys.push(k); continue; }
         if (k.startsWith('usr_')) {
-          if (prefix && k.startsWith(prefix)) allowedKeys.push(k); // own profile only
-          continue; // reject other profiles
+          if (!prefix || k.startsWith(prefix)) allowedKeys.push(k); // own profile or onboarding restore
+          continue;
         }
         if (KNOWN_LAMIM.test(k)) allowedKeys.push(k); // known app data (re-scoped below)
       }

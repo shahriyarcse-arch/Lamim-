@@ -283,6 +283,30 @@
   transform: translateY(-1px);
 }
 
+.btn-setup-restore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 18px;
+  background: color-mix(in srgb, var(--color-surface-nested, rgba(255,255,255,0.04)) 80%, transparent);
+  color: var(--color-text-secondary, #94a3b8);
+  border: 1px dashed var(--color-border-subtle, rgba(255,255,255,0.15));
+  border-radius: var(--radius-xl, 14px);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-setup-restore:hover {
+  background: color-mix(in srgb, var(--color-primary, #6366f1) 12%, transparent);
+  color: var(--color-text-primary, #fff);
+  border-color: var(--color-primary, #6366f1);
+  transform: translateY(-1px);
+}
+
 .select-input {
   -webkit-appearance: none;
   appearance: none;

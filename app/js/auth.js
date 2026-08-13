@@ -7,6 +7,12 @@ const Auth = {
     this.bindSetup();
   },
 
+  triggerImport() {
+    if (typeof Profile !== 'undefined' && typeof Profile.triggerImport === 'function') {
+      Profile.triggerImport();
+    }
+  },
+
   setGender(gender) {
     this.selectedGender = gender;
     const maleCard = document.getElementById('setup-gender-male');
