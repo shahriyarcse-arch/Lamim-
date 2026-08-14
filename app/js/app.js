@@ -163,26 +163,12 @@ updateSectionTitle() {
           })
           .catch(() => { });
 
-        // Listen for SW update notifications — auto-refresh silently only if version changed
+        // Listen for SW update notifications — update version tracker cleanly
         navigator.serviceWorker.addEventListener('message', (event) => {
           if (event.data && event.data.type === 'SW_UPDATED') {
             const currentVersion = DB.rawGet('lamim_current_sw_version');
             if (currentVersion !== event.data.version) {
               DB.rawSet('lamim_current_sw_version', event.data.version);
-
-              // Skip reload on first install — assets were just fetched fresh
-              if (!currentVersion) return;
-
-              // Clear caches before reloading to ensure absolute fresh assets
-              if ('caches' in window) {
-                caches.keys().then((names) => {
-                  Promise.all(names.map(name => caches.delete(name))).then(() => {
-                    window.location.reload();
-                  }).catch(() => { window.location.reload(); });
-                }).catch(() => { window.location.reload(); });
-              } else {
-                window.location.reload();
-              }
             }
           }
         });
@@ -202,7 +188,7 @@ updateSectionTitle() {
       }
     }, 60000);
 
-    // Splash → route (offline boot sequence)
+    // Splash → route (ultra-fast offline boot sequence)
     this._bootComplete = false;
     setTimeout(() => {
       const user = DB.getUser();
@@ -222,9 +208,9 @@ updateSectionTitle() {
           this._bootComplete = true;
         });
       });
-    }, 600);
+    }, 180);
 
-    // Safety fallback - guarantees splash screen disappears within 2.5 seconds under any circumstance
+    // Safety fallback - guarantees splash screen disappears within 1.2s under any circumstance
     setTimeout(() => {
       if (this._bootComplete) return; 
       console.warn('[Boot] Quick safety fallback triggered');
@@ -239,7 +225,7 @@ updateSectionTitle() {
         this._hideSplash();
         this._bootComplete = true;
       });
-    }, 2500);
+    }, 1200);
 
     // Nav bindings
     this.bindNav();

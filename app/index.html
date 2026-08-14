@@ -39,7 +39,7 @@
         if (sp && !sp.dataset.hidden) {
           sp.dataset.hidden = '1';
           sp.classList.add('hidden');
-          setTimeout(function() { sp.style.display = 'none'; }, 500);
+          setTimeout(function() { sp.style.display = 'none'; }, 300);
         }
         // Ensure at least one page is active so screen is never blank
         if (!document.querySelector('.page.active')) {
@@ -49,7 +49,7 @@
           if (page) page.classList.add('active');
         }
         window.scrollTo(0, 0);
-      }, 3000);
+      }, 1200);
     })();
   </script>
 
