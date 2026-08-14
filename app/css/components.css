@@ -1214,6 +1214,16 @@ select.input option:disabled {
   left: 50%;
   transform: translateX(-50%);
   user-select: none;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.topbar-brand:active {
+  transform: translateX(-50%) scale(0.96);
+  opacity: 0.85;
 }
 
 .topbar-brand-name {

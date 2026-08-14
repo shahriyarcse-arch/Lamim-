@@ -339,16 +339,31 @@ updateSectionTitle() {
     
     this.navigateTo(initialSection, false, true);
 
-    // Guarantee scroll-to-top on page refresh/initial boot.
-    // We fire TWO rounds: rAF (before first paint) + 150ms (after browser's own
-    // scroll restoration fires), so we always win the race regardless of timing.
-    const forceTop = () => {
-      try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
-    requestAnimationFrame(forceTop);
-    setTimeout(forceTop, 150);
+    // Guarantee scroll position restoration:
+    // If returning from the landing page, restore the exact Y scroll position.
+    // Otherwise, ensure clean scroll-to-top on fresh navigation/refresh.
+    const savedHomeScroll = sessionStorage.getItem('lamim_home_scroll');
+    if (savedHomeScroll && initialSection === 'home') {
+      sessionStorage.removeItem('lamim_home_scroll');
+      const targetY = parseInt(savedHomeScroll, 10);
+      if (!isNaN(targetY) && targetY > 0) {
+        const restoreScroll = () => {
+          try { window.scrollTo({ top: targetY, behavior: 'instant' }); } catch (e) { window.scrollTo(0, targetY); }
+          document.documentElement.scrollTop = targetY;
+          document.body.scrollTop = targetY;
+        };
+        requestAnimationFrame(restoreScroll);
+        setTimeout(restoreScroll, 120);
+      }
+    } else {
+      const forceTop = () => {
+        try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      };
+      requestAnimationFrame(forceTop);
+      setTimeout(forceTop, 150);
+    }
 
     // Update topbar avatars
     this.updateAvatars();

@@ -673,11 +673,11 @@
               </button>
             </div>
 
-            <!-- Center Brand with Signature 3D Ribbon Logo -->
-            <div class="topbar-brand">
+            <!-- Center Brand with Signature 3D Ribbon Logo (tap navigates to website with scroll state saved) -->
+            <a class="topbar-brand" href="../index.html" onclick="try { sessionStorage.setItem('lamim_home_scroll', (window.scrollY || document.documentElement.scrollTop || 0).toString()); } catch(e){}" title="Visit Website" aria-label="Visit Website">
               <img src="assets/logo-mark.png" alt="Lamim Logo" style="height:20px; width:auto; object-fit:contain;">
               <span class="topbar-brand-name">lamim</span>
-            </div>
+            </a>
 
             <!-- Right: Profile Avatar -->
             <div class="topbar-right">
