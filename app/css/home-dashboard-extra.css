@@ -547,29 +547,7 @@
   color: #334155;
 }
 
-.vault-add-btn:hover {
-  background: var(--fin-blue);
-  color: white;
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
-}
-
-[data-theme="light"] .vault-add-btn:hover {
-  background: #334155;
-  color: white;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.vault-card:hover .vault-add-btn {
-  transform: scale(1.1);
-  background: var(--fin-green);
-  color: #fff;
-  box-shadow: 0 0 20px rgba(52, 199, 89, 0.4);
-}
-
-.vault-add-btn:active {
-  transform: scale(0.9);
-}
+/* --- Vault Button Hover in Dashboard Extra (Clean) --- */
 
 /* --- Vault Victory State --- */
 .vault-card.completed {

@@ -36,8 +36,7 @@
   .finance-summary,
   .analysis-quick-stats,
   .habits-timer-display,
-  .fin-delete-info,
-  .vault-grid {
+  .fin-delete-info {
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)) !important;
   }
 }

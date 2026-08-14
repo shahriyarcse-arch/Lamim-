@@ -280,12 +280,15 @@
 
 .vault-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
+  width: 100%;
 }
 
 .vault-card {
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
   background: var(--color-surface-card);
   border: 1.5px solid var(--color-divider-strong) !important;
   border-radius: 22px !important;
@@ -310,7 +313,7 @@
 }
 
 .vault-top-row {
-  display: flex; align-items: center; gap: 12px;
+  display: flex; align-items: center; gap: 12px; width: 100%;
 }
 .vault-icon-box {
   width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
@@ -335,12 +338,12 @@
 
 .vault-info { min-width: 0; flex: 1; }
 .vault-name {
-  font-weight: 800; font-size: 15.5px; color: var(--color-text-primary);
+  font-weight: 800; font-size: 16px; color: var(--color-text-primary);
   line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   letter-spacing: -0.2px;
 }
 .vault-status {
-  font-size: 12px; font-weight: 600; color: var(--color-text-muted); margin-top: 3px;
+  font-size: 12.5px; font-weight: 600; color: var(--color-text-muted); margin-top: 3px;
   line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
@@ -364,7 +367,7 @@
 }
 
 .vault-progress-track {
-  height: 8px; border-radius: 999px;
+  height: 8px; border-radius: 999px; width: 100%;
   background: var(--color-surface-nested, rgba(255, 255, 255, 0.06));
   overflow: hidden;
 }
@@ -384,11 +387,12 @@
 .vault-metrics-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
+  width: 100%;
 }
 .vault-metric {
   display: flex; flex-direction: column; gap: 3px;
-  padding: 8px 12px; border-radius: 12px;
+  padding: 9px 13px; border-radius: 13px;
   background: var(--color-surface-nested, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--color-divider-strong);
 }
@@ -401,7 +405,7 @@
   color: var(--color-text-muted); opacity: 0.8;
 }
 .vault-metric-value {
-  font-size: 14px; font-weight: 800; color: var(--color-text-primary);
+  font-size: 14.5px; font-weight: 800; color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
@@ -413,13 +417,13 @@
 }
 
 .vault-action-slot {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 10px; width: 100%;
 }
 .vault-add-btn {
-  flex: 1; height: 40px;
+  flex: 1; height: 42px;
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  border-radius: 12px; border: none; cursor: pointer;
-  font-family: inherit; font-size: 13px; font-weight: 800;
+  border-radius: 13px; border: none; cursor: pointer;
+  font-family: inherit; font-size: 13.5px; font-weight: 800;
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.28) 100%);
   color: var(--fin-green);
   border: 1.5px solid rgba(16, 185, 129, 0.35);
@@ -447,7 +451,7 @@
 }
 
 .vault-del-btn {
-  width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+  width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   border: 1.5px solid var(--color-divider-strong);
   background: var(--color-surface-nested, rgba(255, 255, 255, 0.03));
@@ -1262,15 +1266,16 @@
 .fin-deposit-modal .fin-modal-close { top: 12px; right: 12px; }
 
 /* ---- Vault Responsive Refinements ---- */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .vault-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     gap: 14px;
     margin-top: 4px;
+    width: 100%;
   }
   .vault-grid--scroll {
     display: flex;
-    grid-template-columns: none;
+    grid-template-columns: none !important;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -1278,24 +1283,25 @@
     margin-top: 4px;
     padding-bottom: 8px;
     scrollbar-width: thin;
+    width: 100%;
   }
   .vault-grid--scroll::-webkit-scrollbar { height: 4px; }
   .vault-grid--scroll::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-accent-green) 35%, transparent); border-radius: 10px; }
   .vault-grid--scroll .vault-card {
-    flex: 0 0 88%;
+    flex: 0 0 92% !important;
     scroll-snap-align: start;
-    max-width: 88%;
+    max-width: 92% !important;
   }
-  .vault-card { padding: 16px !important; border-radius: 20px !important; }
-  .vault-top-row { gap: 10px; margin-bottom: 0; }
-  .vault-icon-box { width: 42px; height: 42px; }
-  .vault-name { font-size: 15px; }
-  .vault-pct-badge { font-size: 11.5px; padding: 3px 8px; }
+  .vault-card { padding: 18px !important; border-radius: 20px !important; width: 100% !important; box-sizing: border-box !important; }
+  .vault-top-row { gap: 12px; margin-bottom: 0; }
+  .vault-icon-box { width: 44px; height: 44px; }
+  .vault-name { font-size: 15.5px; }
+  .vault-pct-badge { font-size: 12px; padding: 3px 9px; }
   .vault-metrics-row { gap: 8px; }
-  .vault-metric { padding: 8px 10px; border-radius: 10px; }
-  .vault-metric-value { font-size: 13.5px; }
-  .vault-add-btn { height: 38px; font-size: 12.5px; border-radius: 10px; }
-  .vault-del-btn { width: 38px; height: 38px; border-radius: 10px; }
+  .vault-metric { padding: 8px 12px; border-radius: 12px; }
+  .vault-metric-value { font-size: 14px; }
+  .vault-add-btn { height: 40px; font-size: 13px; border-radius: 12px; }
+  .vault-del-btn { width: 40px; height: 40px; border-radius: 12px; }
   .vault-section-head { flex-wrap: nowrap; align-items: center; gap: 10px; }
   .fin-create-vault-btn { height: 36px; padding: 0 12px; font-size: 12px; gap: 5px; flex-shrink: 0; border-radius: 10px; }
 }
