@@ -217,11 +217,11 @@ const Analysis = {
           
           <div class="analysis-actions-wrapper" style="display: flex; align-items: center; gap: 8px; flex-shrink: 0; white-space: nowrap;">
             <div class="analysis-date-nav-modern" style="display: flex; align-items: center; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2); border-radius: 20px; padding: 2px;">
-              <button class="btn btn-icon-sm" onclick="Analysis.changeMonth(-1)" style="color: #a855f7; width: 28px; height: 28px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer;">
+              <button class="btn btn-icon-sm" onclick="Analysis.changeMonth(-1)" aria-label="Previous month" title="Previous month" style="color: #a855f7; width: 28px; height: 28px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
               </button>
               <span class="analysis-month-label" onclick="Analysis.resetMonth()" style="color: #c084fc; font-size: 12px; font-weight: 700; padding: 0 10px; text-align: center; cursor: pointer; white-space: nowrap;">${monthLabel}</span>
-              <button class="btn btn-icon-sm" onclick="Analysis.changeMonth(1)" style="color: #a855f7; width: 28px; height: 28px; border-radius: 50%; padding: 0; display: ${this.monthOffset < 0 ? 'flex' : 'none'}; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer;">
+              <button class="btn btn-icon-sm" onclick="Analysis.changeMonth(1)" aria-label="Next month" title="Next month" style="color: #a855f7; width: 28px; height: 28px; border-radius: 50%; padding: 0; display: ${this.monthOffset < 0 ? 'flex' : 'none'}; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
               </button>
             </div>
