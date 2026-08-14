@@ -315,11 +315,12 @@ const Finance = {
     let source = 'TradingView';
     let changePct = null;
 
-    // 1. Try Live TradingView endpoint
+    // Fetch Live TradingView spot rate from serverless proxy
     try {
       const ctrl = new AbortController();
       const to = setTimeout(() => ctrl.abort(), 6000);
-      const res = await fetch('/api/forex', { signal: ctrl.signal });
+      let res = await fetch('/api/forex', { signal: ctrl.signal });
+      if (!res.ok) res = await fetch('../api/forex', { signal: ctrl.signal });
       clearTimeout(to);
       if (res.ok) {
         const data = await res.json();
@@ -329,29 +330,12 @@ const Finance = {
           changePct = data.changePct;
         }
       }
-    } catch (e) { /* Fall through to OpenER backup */ }
-
-    // 2. Fallback to OpenER if /api/forex is unavailable
-    if (!newRate) {
-      try {
-        const ctrl = new AbortController();
-        const to = setTimeout(() => ctrl.abort(), 8000);
-        const res = await fetch('https://open.er-api.com/v6/latest/USD', { signal: ctrl.signal });
-        clearTimeout(to);
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.rates && data.rates.BDT) {
-            newRate = data.rates.BDT;
-            source = 'OpenER';
-          }
-        }
-      } catch (e) {
-        console.warn('Exchange rate fetch failed:', e.message || e);
-      }
+    } catch (e) {
+      console.warn('TradingView Forex fetch failed:', e.message || e);
     }
 
     if (newRate) {
-      const safeRate = (typeof newRate === 'number' && isFinite(newRate) && newRate > 0 && newRate <= 100000) ? newRate : 118;
+      const safeRate = (typeof newRate === 'number' && isFinite(newRate) && newRate > 0 && newRate <= 100000) ? newRate : 123.48;
       this.exchangeRate = safeRate;
       this.rateSource = source;
       this.rateChangePct = changePct;

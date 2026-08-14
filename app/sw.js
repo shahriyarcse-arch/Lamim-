@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-v178';
+const CACHE_NAME = 'lamim-v179';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -58,7 +58,6 @@ self.addEventListener('fetch', (e) => {
     'get.geojs.io',
     'freeipapi.com',
     'api.ipapi.is',
-    'open.er-api.com',
     'googleapis.com'
   ];
   if (skipUrls.some(url => e.request.url.includes(url))) return;

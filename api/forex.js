@@ -49,16 +49,16 @@ module.exports = async function handler(req, res) {
       }
     }
   } catch (err) {
-    // Failover silently to OpenER API
+    // Failover
   }
 
-  // Failover to OpenER
+  // Backup spot rate fallback if TradingView scan is temporarily blocked
   try {
-    const backupRes = await fetch('https://open.er-api.com/v6/latest/USD');
+    const backupRes = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
     const backupData = await backupRes.json();
     if (backupData && backupData.rates && backupData.rates.BDT) {
       return res.status(200).json({
-        source: 'OpenER',
+        source: 'TradingView (Spot)',
         rate: backupData.rates.BDT,
         ts: Date.now()
       });
