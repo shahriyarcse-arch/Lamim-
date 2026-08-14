@@ -791,19 +791,22 @@ const Finance = {
     return `
       <div class="vault-section-head">
         <div class="vault-section-titles">
-          <div class="fin-section-title">Vaults</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="fin-section-title">Vaults</div>
+            ${hasVaults ? `<span class="vault-count-badge">${this.data.savings.length}</span>` : ''}
+          </div>
           ${hasVaults ? `
             <div class="vault-total-pill">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              Total Saved: <span>${sym}${this.formatVal(total)}</span>
+              <span>Saved: <strong>${sym}${this.formatVal(total)}</strong></span>
             </div>
           ` : `
             <div class="fin-section-subtitle">Set a goal & start saving</div>
           `}
         </div>
         <button class="fin-create-vault-btn" onclick="Finance.showSavingsModal()">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          Create New Vault
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <span>New Vault</span>
         </button>
       </div>
 
@@ -951,13 +954,13 @@ const Finance = {
     'Other': 'sparkles'
   },
 
-
   renderSavingsItem(g) {
     const p = g.target > 0 ? (g.saved / g.target) * 100 : 0;
     const displayP = Math.floor(p);
     const sym = this.getSymbol();
-    const icon = this.renderIcon(this.getVaultIcon(g.name), 22);
+    const icon = this.renderIcon(this.getVaultIcon(g.name), 20);
     const completed = p >= 100;
+    const remaining = Math.max(0, g.target - g.saved);
 
     return `
       <div class="vault-card ${completed ? 'completed' : ''}">
@@ -965,9 +968,9 @@ const Finance = {
           <div class="vault-icon-box ${completed ? 'is-complete' : ''}">${icon}</div>
           <div class="vault-info">
             <div class="vault-name">${Utils.escapeHTML(g.name)}</div>
-            <div class="vault-status">${displayP}% Complete</div>
+            <div class="vault-status">${completed ? 'Goal Achieved' : (p > 0 ? `${displayP}% Complete` : `Remaining ${sym}${this.formatVal(remaining)}`)}</div>
           </div>
-          <div class="vault-pct-badge ${completed ? 'is-complete' : ''}">${displayP}%</div>
+          <div class="vault-pct-badge ${completed ? 'is-complete' : ''}">${completed ? '100%' : `${displayP}%`}</div>
         </div>
 
         <div class="vault-progress-track">
@@ -977,23 +980,22 @@ const Finance = {
         <div class="vault-metrics-row">
           <div class="vault-metric">
             <span class="vault-metric-label">Saved</span>
-            <span class="vault-metric-value">${sym}${this.formatVal(g.saved)}</span>
+            <span class="vault-metric-value saved-val">${sym}${this.formatVal(g.saved)}</span>
           </div>
           <div class="vault-metric" style="text-align:right;">
             <span class="vault-metric-label">Target</span>
-            <span class="vault-metric-value">${sym}${this.formatVal(g.target)}</span>
+            <span class="vault-metric-value target-val">${sym}${this.formatVal(g.target)}</span>
           </div>
         </div>
 
         <div class="vault-action-slot">
-          <div class="vault-add-btn" role="button" tabindex="0" onclick="event.stopPropagation(); Finance.addToSavings('${g.id}')">
+          <button type="button" class="vault-add-btn" onclick="event.stopPropagation(); Finance.addToSavings('${g.id}')" aria-label="Deposit to vault">
             ${completed
-              ? `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
-              : `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`}
-            <span>${completed ? 'Achieved' : 'Add'}</span>
-          </div>
-          <button class="fin-delete-btn" onclick="event.stopPropagation(); Finance.deleteVault('${g.id}')" title="Delete Vault">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              ? `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Achieved</span>`
+              : `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Deposit</span>`}
+          </button>
+          <button type="button" class="vault-del-btn" onclick="event.stopPropagation(); Finance.deleteVault('${g.id}')" title="Delete Vault" aria-label="Delete Vault">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
           </button>
         </div>
       </div>
