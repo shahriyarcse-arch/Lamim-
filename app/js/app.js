@@ -6,7 +6,7 @@
 window.LamimVerses = window.LamimVerses || [];
 
 // Single source of truth mapping a section id to its module (used by router + bus).
-const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, habits: Habits, finance: Finance, gym: Gym, career: Career, landing: { init() {}, render() {} } };
+const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, habits: Habits, finance: Finance, gym: Gym, career: Career };
 
 const App = {
   currentSection: '',
@@ -325,7 +325,7 @@ updateSectionTitle() {
     if (dash) dash.classList.add('active');
 
     if (!initialSection) {
-      const valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'finance', 'gym', 'career', 'landing'];
+      const valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'finance', 'gym', 'career'];
       initialSection = new URLSearchParams(location.search).get('section');
       // On mobile a refresh often carries the active section in history.state
       // rather than the URL query — fall back to it before defaulting to home.
@@ -348,21 +348,16 @@ updateSectionTitle() {
       const targetY = parseInt(savedHomeScroll, 10);
       if (!isNaN(targetY) && targetY > 0) {
         const restoreScroll = () => {
-          try { window.scrollTo({ top: targetY, behavior: 'instant' }); } catch (e) { window.scrollTo(0, targetY); }
-          document.documentElement.scrollTop = targetY;
-          document.body.scrollTop = targetY;
+          window.scrollTo({ top: targetY, behavior: 'instant' });
+          if (Math.abs((window.scrollY || document.documentElement.scrollTop) - targetY) > 5) {
+            requestAnimationFrame(() => window.scrollTo({ top: targetY, behavior: 'instant' }));
+          }
         };
-        requestAnimationFrame(restoreScroll);
-        setTimeout(restoreScroll, 120);
+        setTimeout(restoreScroll, 50);
+        setTimeout(restoreScroll, 200);
       }
     } else {
-      const forceTop = () => {
-        try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      };
-      requestAnimationFrame(forceTop);
-      setTimeout(forceTop, 150);
+      window.scrollTo(0, 0);
     }
 
     // Update topbar avatars
@@ -373,20 +368,30 @@ updateSectionTitle() {
     }
   },
 
-
+  updateSectionTitle() {
+    const el = document.getElementById('topbar-section-title');
+    if (!el) return;
+    const titles = {
+      salah: 'Salah Tracker',
+      dhikr: 'Dhikr Counter',
+      nafl: 'Nafl Salah',
+      habits: 'Habits',
+      finance: 'Islamic Finance',
+      analysis: 'Analysis',
+      profile: 'Profile',
+      gym: 'Gym & Diet',
+      career: 'Career Builder'
+    };
+    const title = titles[this.currentSection] || '';
+    el.textContent = this.lang === 'bn' ? (this.dict[title] || title) : title;
+  },
 
   updateAvatars() {
-    const user = DB.getUser();
-    if (!user) return;
-    const safeInitials = Utils.escapeHTML(user.name?.split(' ').map(n => n[0]).join('').toUpperCase() || '?');
-    const html = user.avatar
-      ? `<img src="${Utils.escapeHTML(user.avatar)}" 
-              style="width:100%;height:100%;object-fit:cover;border-radius:50%" 
-              alt="Avatar" 
-              data-fallback="${safeInitials}"
-              onerror="this.parentElement.textContent=this.dataset.fallback;this.remove()">`
-      : safeInitials;
-
+    const u = DB.getUser();
+    const html = (u && u.avatar) 
+      ? `<img src="${u.avatar}" alt="Avatar" class="avatar-img" />`
+      : (u ? (u.name || 'U').charAt(0).toUpperCase() : '?');
+    
     ['topbar-avatar', 'topbar-avatar-section'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
@@ -451,22 +456,16 @@ updateSectionTitle() {
     // Toggle Home-active flag (pauses aurora animation when away from Home)
     document.body.classList.toggle('home-active', sectionId === 'home');
 
-    // Update single unified topbar: Landing hides topbar, Home shows signature brand, others show section title
-    const topbar = document.getElementById('topbar');
+    // Update single unified topbar: Home shows signature brand, others show section title
     const topbarBrand = document.getElementById('topbar-brand-home');
     const topbarTitle = document.getElementById('topbar-section-title');
-    if (sectionId === 'landing') {
-      if (topbar) topbar.style.display = 'none';
+    if (sectionId === 'home') {
+      if (topbarBrand) topbarBrand.style.display = 'inline-flex';
+      if (topbarTitle) topbarTitle.style.display = 'none';
     } else {
-      if (topbar) topbar.style.display = 'flex';
-      if (sectionId === 'home') {
-        if (topbarBrand) topbarBrand.style.display = 'inline-flex';
-        if (topbarTitle) topbarTitle.style.display = 'none';
-      } else {
-        if (topbarBrand) topbarBrand.style.display = 'none';
-        if (topbarTitle) topbarTitle.style.display = 'inline-block';
-        this.updateSectionTitle();
-      }
+      if (topbarBrand) topbarBrand.style.display = 'none';
+      if (topbarTitle) topbarTitle.style.display = 'inline-block';
+      this.updateSectionTitle();
     }
 
     // Init section with error boundary + recovery

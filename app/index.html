@@ -193,7 +193,6 @@
   <link rel="stylesheet" href="css/habits.css?v=143">
   <link rel="stylesheet" href="css/home.css?v=148">
   <link rel="stylesheet" href="css/ui-system.css?v=8">
-  <link rel="stylesheet" href="css/inapp-landing.css">
   <link rel="stylesheet" href="css/responsive.css?v=2">
   <noscript>
   <link rel="stylesheet" href="css/salah.css?v=148">
@@ -631,15 +630,14 @@
                     d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg></span><span class="nav-label">Profile</span></div>
-
           </div>
           <div class="sidebar-footer">
-            <div class="nav-item" onclick="App.navigateTo('landing'); App.closeSidebar();" data-section="landing"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
+            <a class="nav-item" href="../index.html" target="_blank" rel="noopener"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
                   width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                   <polyline points="9 22 9 12 15 12 15 22" />
-                </svg></span><span class="nav-label">Landing</span></div>
+                </svg></span><span class="nav-label">Landing</span></a>
             <div class="nav-item" onclick="Auth.logout()"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
                   width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -676,7 +674,7 @@
 
             <!-- Center: Signature Ribbon Logo for Home OR Section Title for others -->
             <div class="topbar-center">
-              <a class="topbar-brand" id="topbar-brand-home" href="#" onclick="App.navigateTo('landing'); return false;" title="Landing Page" aria-label="Landing Page">
+              <a class="topbar-brand" id="topbar-brand-home" href="#" onclick="App.navigateTo('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" title="Home" aria-label="Home">
                 <img src="assets/logo-mark.png" alt="Lamim Logo" style="height:20px; width:auto; object-fit:contain;">
                 <span class="topbar-brand-name">lamim</span>
               </a>
@@ -688,143 +686,6 @@
               <div class="avatar" id="topbar-avatar" style="cursor:pointer" onclick="App.navigateTo('profile')">?</div>
             </div>
           </div>
-
-          <!-- ===== IN-APP LANDING VIEW (PWA NATIVE SPA) ===== -->
-          <section class="section-panel" id="section-landing">
-            <div class="inapp-landing-container">
-              <!-- Top bar with brand & Open App CTA -->
-              <div class="inapp-landing-header">
-                <div class="inapp-landing-brand" onclick="App.navigateTo('home')">
-                  <img src="assets/logo-mark.png" alt="Lamim Logo" style="height:22px; width:auto; object-fit:contain;">
-                  <span>lamim</span>
-                </div>
-                <button type="button" class="inapp-landing-cta-btn" onclick="App.navigateTo('home')">
-                  Open app <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-
-              <!-- Hero -->
-              <div class="inapp-landing-hero">
-                <div class="inapp-landing-badge">A living system for an intentional life</div>
-                <h1 class="inapp-landing-title">Your daily life, aligned with <em>faith.</em></h1>
-                <p class="inapp-landing-desc">Lamim combines Salah, Nafl, Dhikr, Habits, Gym, Career, Finance, Goals, Analysis, and Profile in one private offline-first companion.</p>
-                <div class="inapp-landing-actions">
-                  <button type="button" class="inapp-btn-hero-primary" onclick="App.navigateTo('home')">
-                    Start privately <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                  <button type="button" class="inapp-btn-hero-secondary" onclick="document.getElementById('inapp-pillars-grid').scrollIntoView({behavior:'smooth'})">
-                    Tour the system
-                  </button>
-                </div>
-              </div>
-
-              <!-- 4 Core Pillars (Fast, Secure, Smart, Human) -->
-              <div class="inapp-pillars-grid" id="inapp-pillars-grid">
-                <div class="inapp-pillar-card">
-                  <div class="inapp-pillar-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                  </div>
-                  <div class="inapp-pillar-title">Fast</div>
-                  <p class="inapp-pillar-desc">Instant offline response with zero cloud latency</p>
-                </div>
-
-                <div class="inapp-pillar-card">
-                  <div class="inapp-pillar-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  </div>
-                  <div class="inapp-pillar-title">Secure</div>
-                  <p class="inapp-pillar-desc">100% private data kept safe on your device only</p>
-                </div>
-
-                <div class="inapp-pillar-card">
-                  <div class="inapp-pillar-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="2" y="13" width="4" height="8" rx="1"/></svg>
-                  </div>
-                  <div class="inapp-pillar-title">Smart</div>
-                  <p class="inapp-pillar-desc">Holistic local insights, streaks and spiritual score</p>
-                </div>
-
-                <div class="inapp-pillar-card">
-                  <div class="inapp-pillar-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  </div>
-                  <div class="inapp-pillar-title">Human</div>
-                  <p class="inapp-pillar-desc">Designed with intention, calm typography and beauty</p>
-                </div>
-              </div>
-
-              <!-- Interactive Feature Tiles Matrix -->
-              <div class="inapp-features-head">
-                <h2>Unified System for Body &amp; Soul</h2>
-                <p>Everything you need for personal mastery and spiritual alignment.</p>
-              </div>
-
-              <div class="inapp-features-grid">
-                <div class="inapp-feature-card" onclick="App.navigateTo('salah')">
-                  <div class="inapp-feature-top">
-                    <span class="inapp-feature-tag">Spiritual Core</span>
-                  </div>
-                  <h3>Salah Companion</h3>
-                  <p>Accurate prayer times, jama'at tracking, monthly calendar heatmap &amp; consistency streaks.</p>
-                  <span class="inapp-feature-link">Explore Salah &rarr;</span>
-                </div>
-
-                <div class="inapp-feature-card" onclick="App.navigateTo('dhikr')">
-                  <div class="inapp-feature-top">
-                    <span class="inapp-feature-tag">Remembrance</span>
-                  </div>
-                  <h3>Dhikr &amp; Tasbih</h3>
-                  <p>Tactile digital counter, morning &amp; evening adhkar, milestone streaks and history logs.</p>
-                  <span class="inapp-feature-link">Explore Dhikr &rarr;</span>
-                </div>
-
-                <div class="inapp-feature-card" onclick="App.navigateTo('nafl')">
-                  <div class="inapp-feature-top">
-                    <span class="inapp-feature-tag">Sunnah &amp; Night</span>
-                  </div>
-                  <h3>Nafl &amp; Tahajjud</h3>
-                  <p>12 Sunnah Mu'akkadah, 3 Witr, and Tahajjud vigils with celestial phase progress.</p>
-                  <span class="inapp-feature-link">Explore Nafl &rarr;</span>
-                </div>
-
-                <div class="inapp-feature-card" onclick="App.navigateTo('habits')">
-                  <div class="inapp-feature-top">
-                    <span class="inapp-feature-tag">Discipline</span>
-                  </div>
-                  <h3>Habit Builder</h3>
-                  <p>Quit bad habits with relapse lessons, timer tracking, and build positive daily routines.</p>
-                  <span class="inapp-feature-link">Explore Habits &rarr;</span>
-                </div>
-
-                <div class="inapp-feature-card" onclick="App.navigateTo('finance')">
-                  <div class="inapp-feature-top">
-                    <span class="inapp-feature-tag">Halal Wealth</span>
-                  </div>
-                  <h3>Islamic Finance</h3>
-                  <p>Private savings vaults, automated zakat calculation, and live gold rate tracking.</p>
-                  <span class="inapp-feature-link">Explore Finance &rarr;</span>
-                </div>
-
-                <div class="inapp-feature-card" onclick="App.navigateTo('gym')">
-                  <div class="inapp-feature-top">
-                    <span class="inapp-feature-tag">Physical Vitality</span>
-                  </div>
-                  <h3>Gym &amp; Health</h3>
-                  <p>Workout logging, hydration goals, and diet tracking for a strong mind and body.</p>
-                  <span class="inapp-feature-link">Explore Gym &rarr;</span>
-                </div>
-              </div>
-
-              <!-- Bottom CTA -->
-              <div class="inapp-landing-bottom-card">
-                <h2>Start Your Journey Today</h2>
-                <p>Private, offline-first, and completely ad-free. No account creation required.</p>
-                <button type="button" class="inapp-btn-hero-primary" onclick="App.navigateTo('home')">
-                  Open app dashboard <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-            </div>
-          </section>
 
           <!-- ===== HOME PAGE (Full Screen Large) ===== -->
           <section class="section-panel active" id="section-home">
