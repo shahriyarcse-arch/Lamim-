@@ -356,7 +356,7 @@ updateSectionTitle() {
       }
     }
     
-    this.navigateTo(initialSection);
+    this.navigateTo(initialSection, false, true);
 
     // Guarantee scroll-to-top on page refresh/initial boot.
     // We fire TWO rounds: rAF (before first paint) + 150ms (after browser's own
@@ -400,7 +400,7 @@ updateSectionTitle() {
     });
   },
 
-  navigateTo(sectionId, isBackNav = false) {
+  navigateTo(sectionId, isBackNav = false, replaceHistory = false) {
     if (this.currentSection === sectionId) {
       return;
     }
@@ -421,9 +421,16 @@ updateSectionTitle() {
 
     this.currentSection = sectionId;
 
-    // Push history state for Android back button (skip if this IS a back navigation)
+    // History state management (replaceState on initial boot/same URL to avoid duplicate back-button traps)
     if (!isBackNav) {
-      history.pushState({ section: sectionId }, '', '?section=' + sectionId);
+      const url = '?section=' + sectionId;
+      const state = { section: sectionId };
+      const currentParam = new URLSearchParams(location.search).get('section');
+      if (replaceHistory || currentParam === sectionId || (!currentParam && sectionId === 'home')) {
+        history.replaceState(state, '', url);
+      } else {
+        history.pushState(state, '', url);
+      }
     }
 
     // Active nav items
