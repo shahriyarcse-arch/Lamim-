@@ -711,6 +711,12 @@
   user-select: none !important;
 }
 
+[data-theme="light"] .finance-modal-content .fin-modal-amount-input::placeholder,
+[data-theme="light"] .finance-modal-content .fin-spend-amount::placeholder {
+  color: #94A3B8 !important;
+  opacity: 0.85 !important;
+}
+
 .fin-modal-search-box {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 14px; border-radius: 14px;
@@ -1184,3 +1190,107 @@
   .vault-card { padding: 18px; }
   .vault-top-row { gap: 10px; }
 }
+
+/* --- Modernized Vault Modals (Create & Deposit) --- */
+.fin-vault-hero {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  margin-bottom: 18px;
+}
+.fin-vault-hero .fin-vault-icon-badge {
+  width: 56px; height: 56px; border-radius: 18px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.16) 0%, rgba(5, 150, 105, 0.28) 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.35);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fin-green); margin-bottom: 12px;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.18);
+}
+[data-theme="light"] .fin-vault-hero .fin-vault-icon-badge {
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  border-color: #6EE7B7;
+  color: #059669;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15);
+}
+.fin-vault-hero .fin-vault-title {
+  font-size: 20px; font-weight: 800; color: var(--color-text-primary);
+  letter-spacing: -0.4px; margin-bottom: 4px;
+}
+.fin-vault-hero .fin-vault-sub {
+  font-size: 12.5px; font-weight: 600; color: var(--color-text-muted);
+  line-height: 1.4; max-width: 290px;
+}
+.fin-vault-amount-row {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 20px; border-radius: 20px; margin: 14px 0 4px; width: 100%;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1.5px solid rgba(16, 185, 129, 0.25);
+  transition: all 0.2s ease;
+}
+[data-theme="light"] .fin-vault-amount-row {
+  background: #F0FDF4 !important;
+  border-color: #A7F3D0 !important;
+}
+.fin-vault-amount-row:focus-within {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.09) !important;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15) !important;
+}
+.fin-vault-presets-wrap {
+  margin: 14px 0 16px;
+}
+.fin-vault-presets-label {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--color-text-muted); margin-bottom: 8px; display: block;
+}
+.fin-vault-presets-grid {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.fin-vault-preset-chip {
+  padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;
+  background: var(--color-surface-nested, rgba(255,255,255,0.04));
+  border: 1px solid var(--color-divider-strong);
+  color: var(--color-text-primary); cursor: pointer;
+  transition: all 0.18s ease; display: inline-flex; align-items: center; gap: 4px;
+}
+[data-theme="light"] .fin-vault-preset-chip {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+}
+.fin-vault-preset-chip:hover {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--fin-green); transform: translateY(-1px);
+}
+.fin-vault-rem-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 20px; font-size: 12px;
+  background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);
+  color: var(--fin-green); margin-top: 6px; font-weight: 700;
+}
+[data-theme="light"] .fin-vault-rem-pill {
+  background: #ECFDF5 !important; border-color: #A7F3D0 !important; color: #047857 !important;
+}
+.fin-vault-quick-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  margin: 14px 0 18px;
+}
+.fin-vault-quick-btn {
+  padding: 9px 0; border-radius: 12px; font-size: 12px; font-weight: 800;
+  background: var(--color-surface-nested, rgba(255,255,255,0.05));
+  border: 1px solid var(--color-divider-strong);
+  color: var(--color-text-primary); cursor: pointer;
+  transition: all 0.18s ease; text-align: center;
+}
+[data-theme="light"] .fin-vault-quick-btn {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+}
+.fin-vault-quick-btn:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--fin-green);
+}
+.fin-vault-quick-btn.max-btn {
+  color: var(--fin-green);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+

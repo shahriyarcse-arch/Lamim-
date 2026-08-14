@@ -1427,37 +1427,76 @@ const Finance = {
 
   showSavingsModal() {
     const sym = this.getSymbol();
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const presets = [
+      { name: 'Dream Home', icon: '🏠' },
+      { name: 'New Gadget', icon: '📱' },
+      { name: 'Hajj & Umrah', icon: '🕋' },
+      { name: 'Emergency Fund', icon: '🛡️' },
+      { name: 'Vehicle / Bike', icon: '🚗' },
+      { name: 'Travel / Tour', icon: '✈️' }
+    ];
+
+    const presetsHtml = presets.map(p => `
+      <button type="button" class="fin-vault-preset-chip" onclick="Finance.selectVaultPreset('${p.name}')">
+        <span>${p.icon}</span>
+        <span>${p.name}</span>
+      </button>
+    `).join('');
+
     const html = `
       <div class="finance-modal-content fin-deposit-modal fin-vault-create-modal">
         <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
 
-        <div class="fin-deposit-hero fin-vault-hero">
-          <div class="fin-deposit-icon fin-vault-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V5a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v2"/><path d="M3 7h18v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Z"/><path d="M12 11v5M9.5 13.5h5"/></svg>
+        <div class="fin-vault-hero">
+          <div class="fin-vault-icon-badge">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 7V5a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v2"/>
+              <path d="M3 7h18v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Z"/>
+              <path d="M12 11v5M9.5 13.5h5"/>
+            </svg>
           </div>
-          <div class="fin-deposit-label">Create Vault</div>
-          <div class="fin-deposit-sub">Set your goal & start saving</div>
-          <div class="fin-deposit-amount-row">
+          <div class="fin-vault-title">${isBn ? 'নতুন ভল্ট তৈরি করুন' : 'Create Savings Vault'}</div>
+          <div class="fin-vault-sub">${isBn ? 'লক্ষ্য নির্ধারণ করুন এবং সঞ্চয় লক করুন' : 'Set a target goal & start locking your savings'}</div>
+          <div class="fin-vault-amount-row">
             <span class="fin-modal-currency" style="color:var(--fin-green);">${sym}</span>
             <input type="number" id="finance-savings-target" placeholder="0.00" class="fin-modal-amount-input" autofocus onkeydown="Finance.advanceFromAmount(event, 'finance-savings-name')" onblur="Finance.advanceToField(event, 'finance-savings-name')">
           </div>
         </div>
 
+        <div class="fin-vault-presets-wrap">
+          <span class="fin-vault-presets-label">${isBn ? 'দ্রুত আইডিয়া' : 'Quick Ideas'}</span>
+          <div class="fin-vault-presets-grid">${presetsHtml}</div>
+        </div>
+
         <div class="fin-field-group">
-          <label class="fin-field-label">Vault Name</label>
+          <label class="fin-field-label">
+            <span style="display:inline-flex; align-items:center; gap:6px;">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              ${isBn ? 'ভল্টের নাম' : 'Vault Name'}
+            </span>
+          </label>
           <input type="text" id="finance-savings-name" placeholder="e.g. Dream House, iPhone 16, Hajj Fund" class="fin-field-input">
         </div>
 
-        <div class="fin-modal-actions">
-          <button class="fin-cancel-btn" onclick="Finance.closeModal()">Cancel</button>
-          <button class="fin-save-btn income" style="background:var(--fin-green);" onclick="Finance.saveSavingsGoal()">Create Vault</button>
+        <div class="fin-modal-actions" style="margin-top:20px;">
+          <button class="fin-cancel-btn" onclick="Finance.closeModal()">${isBn ? 'বাতিল' : 'Cancel'}</button>
+          <button class="fin-save-btn income" style="background:var(--fin-green);" onclick="Finance.saveSavingsGoal()">${isBn ? 'ভল্ট তৈরি করুন' : 'Create Vault'}</button>
         </div>
       </div>
     `;
     this.showModal(html);
     setTimeout(() => { const el = document.getElementById('finance-savings-target'); if (el) el.focus(); }, 60);
+  },
+
+  selectVaultPreset(name) {
+    const input = document.getElementById('finance-savings-name');
+    if (input) {
+      input.value = name;
+      input.focus();
+    }
   },
 
   saveSavingsGoal() {
@@ -1486,41 +1525,56 @@ const Finance = {
 
     const mult = DB.getSettings().currency === 'BDT' ? this._getFXRate() : 1;
     const remaining = Math.max(0, (goal.target - goal.saved) * mult);
+    const remFormatted = `${sym}${this.formatVal(goal.target - goal.saved)}`;
 
     const html = `
-      <div class="finance-modal-content" style="max-width:400px;">
-        <div class="fin-modal-header">
-          <div class="fin-modal-title">${isBn ? `${Utils.escapeHTML(goal.name)}-এ জমা দিন` : `Deposit to ${Utils.escapeHTML(goal.name)}`}</div>
-          <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-          </button>
-        </div>
-        
-        <p style="font-size:12px; color:var(--color-text-subtitle); margin-bottom:16px; line-height:1.4;">
-          ${isBn ? 'এই সেভিংস ভল্টে স্থানান্তর করার জন্য পরিমাণ লিখুন।' : 'Enter the amount you would like to transfer to this savings vault.'}
-          ${remaining > 0 ? `<br><span style="color:var(--fin-green); font-weight:800; display:inline-block; margin-top:4px;">${isBn ? 'বাকি লক্ষ্য:' : 'Target Remaining:'} ${sym}${this.formatVal(goal.target - goal.saved)}</span>` : ''}
-        </p>
+      <div class="finance-modal-content fin-deposit-modal fin-vault-deposit-modal">
+        <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
 
-        <div class="fin-modal-amount-wrap" style="margin-bottom:20px;">
-          <div style="display:flex; align-items:center;">
+        <div class="fin-vault-hero">
+          <div class="fin-vault-icon-badge">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 7V5a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v2"/>
+              <path d="M3 7h18v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Z"/>
+              <path d="M12 11v6M9 14l3-3 3 3"/>
+            </svg>
+          </div>
+          <div class="fin-vault-title">${isBn ? `${Utils.escapeHTML(goal.name)}-এ জমা` : `Deposit to ${Utils.escapeHTML(goal.name)}`}</div>
+          <div class="fin-vault-rem-pill">
+            <span>🎯 ${isBn ? 'বাকি লক্ষ্য:' : 'Remaining Target:'}</span>
+            <strong>${remFormatted}</strong>
+          </div>
+          <div class="fin-vault-amount-row" style="margin-top:16px;">
             <span class="fin-modal-currency" style="color:var(--fin-green);">${sym}</span>
-            <input type="number" id="vault-deposit-amount" placeholder="0.00" class="fin-modal-amount-input">
+            <input type="number" id="vault-deposit-amount" placeholder="0.00" class="fin-modal-amount-input" autofocus>
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:20px;">
-          <button class="fin-chart-tab" style="padding:10px 0; font-size:12px; border-radius:12px; height:auto;" onclick="document.getElementById('vault-deposit-amount').value = 50">+50</button>
-          <button class="fin-chart-tab" style="padding:10px 0; font-size:12px; border-radius:12px; height:auto;" onclick="document.getElementById('vault-deposit-amount').value = 100">+100</button>
-          <button class="fin-chart-tab" style="padding:10px 0; font-size:12px; border-radius:12px; height:auto;" onclick="document.getElementById('vault-deposit-amount').value = 500">+500</button>
+        <div class="fin-vault-quick-grid">
+          <button type="button" class="fin-vault-quick-btn" onclick="Finance.setVaultDepositAmt(50)">+50</button>
+          <button type="button" class="fin-vault-quick-btn" onclick="Finance.setVaultDepositAmt(100)">+100</button>
+          <button type="button" class="fin-vault-quick-btn" onclick="Finance.setVaultDepositAmt(500)">+500</button>
+          <button type="button" class="fin-vault-quick-btn max-btn" onclick="Finance.setVaultDepositAmt(${remaining.toFixed(2)})">${isBn ? 'সম্পূর্ণ' : 'Full'}</button>
         </div>
 
         <div class="fin-modal-actions">
-          <button class="fin-save-btn" style="background:var(--fin-green); width:100%; height:48px; border-radius:14px; font-weight:800;" onclick="Finance.confirmVaultDeposit('${id}')">${isBn ? 'জমা নিশ্চিত করুন' : 'Confirm Deposit'}</button>
+          <button class="fin-cancel-btn" onclick="Finance.closeModal()">${isBn ? 'বাতিল' : 'Cancel'}</button>
+          <button class="fin-save-btn income" style="background:var(--fin-green);" onclick="Finance.confirmVaultDeposit('${id}')">${isBn ? 'জমা নিশ্চিত করুন' : 'Confirm Deposit'}</button>
         </div>
       </div>
     `;
     this.showModal(html);
     setTimeout(() => { const el = document.getElementById('vault-deposit-amount'); if (el) el.focus(); }, 60);
+  },
+
+  setVaultDepositAmt(amt) {
+    const input = document.getElementById('vault-deposit-amount');
+    if (input) {
+      input.value = Number(amt).toFixed(2);
+      input.focus();
+    }
   },
 
   confirmVaultDeposit(id) {
