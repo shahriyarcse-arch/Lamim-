@@ -315,8 +315,8 @@ const Finance = {
           if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
           const modal = document.getElementById('finance-modal-overlay');
           if (modal && modal.classList.contains('show')) {
-             const title = modal.querySelector('.fin-modal-title')?.innerText;
-             if (title === 'Finance Settings') this.showToolsModal();
+             const title = modal.querySelector('.fin-modal-title')?.innerText || '';
+             if (title.includes('Finance Settings')) this.showToolsModal();
           }
         }
         try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: newRate })); } catch (e) { /* ignore */ }
