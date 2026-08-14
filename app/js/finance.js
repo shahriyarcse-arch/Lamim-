@@ -705,7 +705,10 @@ const Finance = {
       if (itemsHtml) {
         listHtml += `
           <div class="transaction-group">
-            <div class="transaction-date-label">${label}</div>
+            <div class="transaction-date-divider">
+              <span class="transaction-date-badge">${label}</span>
+              <span class="transaction-date-line"></span>
+            </div>
             <div class="transaction-list">
               ${itemsHtml}
             </div>
@@ -716,26 +719,37 @@ const Finance = {
 
     const scrollActivity = count > 3;
     const showMoreBtn = hasMore || allActivity.length > LIMIT ? `
-      <div style="text-align:center; margin: 20px 0;">
+      <div style="text-align:center; margin: 18px 0 8px;">
         <button class="fin-show-more-btn" onclick="Finance.showFullHistory()">
-          View History
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          <span>View All History</span>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
     ` : "";
 
     return `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <div class="fin-section-title" style="margin-bottom:0;">${v.toLocaleString('default',{month:'long'})} Activity</div>
-        <button class="fin-delete-btn" style="opacity:1; width:auto; padding:0 12px; height:36px; gap:8px; font-size:12px; color:var(--fin-blue); background:rgba(0,122,255,0.05); border-color:rgba(0,122,255,0.1);" onclick="Finance.exportPDF()">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          Export Statement
+      <div class="fin-activity-header">
+        <div class="fin-activity-title-wrap">
+          <div class="fin-section-title" style="margin-bottom:0;">${v.toLocaleString('default',{month:'long'})} Activity</div>
+          <span class="fin-activity-count-pill">${allActivity.length}</span>
+        </div>
+        <button class="fin-export-pill-btn" onclick="Finance.exportPDF()" aria-label="Export Statement">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          <span>Export</span>
         </button>
       </div>
       <div class="fin-activity-scroll${scrollActivity ? ' has-scroll' : ''}">${listHtml}</div>
       ${showMoreBtn}
       <div class="ledger-summary">
-        <div class="ledger-total-label">Monthly Spending</div>
+        <div class="ledger-summary-left">
+          <div class="ledger-summary-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="ledger-summary-text">
+            <div class="ledger-total-label">Monthly Spending</div>
+            <div class="ledger-total-sub">${v.toLocaleString('default',{month:'long'})} Outflow</div>
+          </div>
+        </div>
         <div class="ledger-total-value">-${sym}${this.formatVal(totalExp)}</div>
       </div>
     `;
@@ -757,25 +771,26 @@ const Finance = {
 
   renderActivityItem(e, index) {
     const isInc = e.type === 'income';
-    const c = isInc ? { name: 'Deposit', icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`, color: '#34C759' } : this.getCategory(e.category);
+    const c = isInc ? { name: 'Deposit', icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`, color: '#10B981' } : this.getCategory(e.category);
     const sym = this.getSymbol();
     const resolvedColor = this.getResolvedColor(c.color);
     
     return `
-      <div class="transaction-item-wrapper" style="position: relative;">
-        <div class="transaction-timeline-connector" style="--timeline-dot-color: ${isInc ? '#34C759' : '#FF2D55'};"></div>
-        <div class="transaction-item" style="animation-delay: ${index * 0.05}s;">
-          <div class="transaction-icon" style="background:${resolvedColor}22; color:${resolvedColor}">${c.icon}</div>
-          <div class="transaction-info">
-            <div class="transaction-name">${Utils.escapeHTML(isInc ? e.description : c.name)}</div>
-            <div class="transaction-meta">${isInc ? 'Deposit' : c.section}</div>
+      <div class="transaction-item" style="animation-delay: ${index * 0.04}s;">
+        <div class="transaction-icon" style="background:${resolvedColor}18; color:${resolvedColor}; border: 1px solid ${resolvedColor}33;">
+          ${c.icon}
+        </div>
+        <div class="transaction-info">
+          <div class="transaction-name">${Utils.escapeHTML(isInc ? e.description : c.name)}</div>
+          <div class="transaction-meta-row">
+            <span class="transaction-meta-badge ${isInc ? 'is-income' : ''}">${isInc ? 'Deposit' : (c.section || 'Expense')}</span>
           </div>
-          <div style="display:flex; align-items:center; gap:12px; position:relative; z-index:1;">
-            <div class="transaction-amount ${isInc ? 'positive' : 'negative'}">${isInc ? '+' : '-'}${sym}${this.formatVal(e.amount)}</div>
-            <button class="fin-delete-btn" onclick="Finance.${isInc ? 'deleteIncome' : 'deleteExpense'}('${e.id}')" title="Delete">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
-            </button>
-          </div>
+        </div>
+        <div class="transaction-amount-col">
+          <div class="transaction-amount ${isInc ? 'positive' : 'negative'}">${isInc ? '+' : '-'}${sym}${this.formatVal(e.amount)}</div>
+          <button class="transaction-trash-btn" onclick="event.stopPropagation(); Finance.${isInc ? 'deleteIncome' : 'deleteExpense'}('${e.id}')" title="Delete" aria-label="Delete transaction">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+          </button>
         </div>
       </div>
     `;
