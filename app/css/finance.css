@@ -377,27 +377,46 @@
 /* Deposit hero */
 .fin-deposit-modal { position: relative; overflow: hidden; }
 .fin-deposit-hero {
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  padding: 8px 0 22px; margin-bottom: 18px;
+  position: relative;
+  background: radial-gradient(110% 90% at 50% 0%, color-mix(in srgb, var(--fin-green) 10%, transparent) 0%, transparent 70%);
   border-bottom: 1px solid var(--color-divider-strong);
+  border-radius: 20px 20px 0 0;
+  padding: 4px 0 18px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 .fin-deposit-icon {
-  width: 56px; height: 56px; border-radius: 18px; margin-bottom: 14px;
-  display: flex; align-items: center; justify-content: center;
-  background: color-mix(in srgb, var(--fin-green) 14%, transparent);
-  color: var(--fin-green);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--fin-green) 20%, transparent);
+  width: 54px !important;
+  height: 54px !important;
+  border-radius: 18px !important;
+  margin-bottom: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(5, 150, 105, 0.22) 100%) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: var(--fin-green) !important;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2) !important;
 }
 .fin-deposit-label {
-  font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;
-  color: var(--color-text-muted); margin-bottom: 8px;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px !important;
+  color: var(--color-text-primary) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 2px !important;
 }
-.fin-deposit-amount-row {
-  display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%;
+.finance-modal-content .fin-income-amount-row {
+  border-color: rgba(16, 185, 129, 0.22) !important;
+  background: rgba(16, 185, 129, 0.05) !important;
 }
-.fin-deposit-amount-row .fin-modal-currency { font-size: 34px; margin-right: 0; }
-.fin-deposit-amount-row .fin-modal-amount-input {
-  text-align: center; font-size: 34px; max-width: 220px;
+.finance-modal-content .fin-income-amount-row:focus-within {
+  border-color: var(--fin-green) !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  box-shadow: 0 0 0 3.5px rgba(16, 185, 129, 0.15) !important;
 }
 
 /* ---- Vault create modal ---- */
@@ -608,15 +627,31 @@
   transition: all 0.25s ease !important;
 }
 
-[data-theme="dark"] .finance-modal-content .fin-deposit-amount-row {
+[data-theme="dark"] .finance-modal-content .fin-spend-amount-row {
   background: rgba(239, 68, 68, 0.06) !important;
   border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.finance-modal-content .fin-income-amount-row {
+  border-color: rgba(16, 185, 129, 0.22) !important;
+  background: rgba(16, 185, 129, 0.05) !important;
+}
+
+[data-theme="dark"] .finance-modal-content .fin-income-amount-row {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  background: rgba(16, 185, 129, 0.07) !important;
 }
 
 .finance-modal-content .fin-spend-amount-row:focus-within {
   border-color: #ef4444 !important;
   background: rgba(239, 68, 68, 0.08) !important;
   box-shadow: 0 0 0 3.5px rgba(239, 68, 68, 0.15) !important;
+}
+
+.finance-modal-content .fin-income-amount-row:focus-within {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.09) !important;
+  box-shadow: 0 0 0 3.5px rgba(16, 185, 129, 0.15) !important;
 }
 
 .finance-modal-content .fin-modal-amount-input,
@@ -718,28 +753,31 @@
 
 .fin-modal-actions { display: flex; gap: 12px; margin-top: 22px; }
 .fin-cancel-btn {
-  flex: 1; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 15px;
-  background: var(--color-surface-nested, rgba(255,255,255,0.05));
-  border: 1px solid var(--color-divider-strong); color: var(--color-text-muted);
-  transition: all 0.2s; font-family: inherit;
+  flex: 1 !important; height: 50px !important; border-radius: 16px !important; cursor: pointer !important; font-weight: 800 !important; font-size: 15px !important;
+  background: var(--color-surface-nested, rgba(255,255,255,0.05)) !important;
+  border: 1px solid var(--color-divider-strong) !important; color: var(--color-text-muted) !important;
+  transition: all 0.2s !important; font-family: inherit !important; display: flex !important; align-items: center !important; justify-content: center !important;
 }
-.fin-cancel-btn:hover { background: var(--color-surface-nested, rgba(255,255,255,0.09)); color: var(--color-text-primary); }
+.fin-cancel-btn:hover { background: var(--color-surface-nested, rgba(255,255,255,0.09)) !important; color: var(--color-text-primary) !important; }
+
 .fin-save-btn.income {
-  flex: 1.4; border: none; cursor: pointer; font-weight: 800; font-size: 15px;
-  background: var(--fin-green); color: #fff; box-shadow: 0 8px 20px color-mix(in srgb, var(--fin-green) 30%, transparent);
-  transition: all 0.2s; font-family: inherit;
+  flex: 1.4 !important; height: 50px !important; border-radius: 16px !important; border: none !important; cursor: pointer !important; font-weight: 800 !important; font-size: 15px !important;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.32) !important;
+  transition: all 0.2s ease !important; font-family: inherit !important; letter-spacing: 0.3px !important; display: flex !important; align-items: center !important; justify-content: center !important;
 }
-.fin-save-btn.income:hover { filter: brightness(1.06); transform: translateY(-2px); }
-.fin-save-btn.income:active { transform: scale(0.98); }
+.fin-save-btn.income:hover { filter: brightness(1.08) !important; transform: translateY(-2px) !important; box-shadow: 0 12px 28px rgba(16, 185, 129, 0.42) !important; }
+.fin-save-btn.income:active { transform: scale(0.98) !important; }
 
 [data-theme="light"] .finance-modal-content { background: #FFFFFF !important; border-color: #E2E8F0 !important; }
-[data-theme="light"] .fin-field-input { background: #F8FAFC !important; border-color: #E2E8F0 !important; }
-[data-theme="light"] .fin-cancel-btn { background: #F8FAFC !important; border-color: #E2E8F0 !important; }
+[data-theme="light"] .fin-field-input { background: #F8FAFC !important; border-color: #E2E8F0 !important; color: #0F172A !important; }
+[data-theme="light"] .fin-cancel-btn { background: #F8FAFC !important; border-color: #E2E8F0 !important; color: #64748B !important; }
 [data-theme="light"] .fin-modal-amount-input { background: transparent !important; border: none !important; }
 [data-theme="light"] .fin-spend-amount { color: #ef4444 !important; }
-[data-theme="light"] .fin-field-input { color: #0F172A !important; }
-[data-theme="light"] .fin-deposit-icon { background: color-mix(in srgb, var(--fin-green) 16%, transparent); }
+[data-theme="light"] .fin-income-amount { color: #10b981 !important; }
+[data-theme="light"] .fin-deposit-icon { background: rgba(16, 185, 129, 0.12) !important; border-color: rgba(16, 185, 129, 0.25) !important; color: #10b981 !important; }
 [data-theme="light"] .fin-spend-icon { background: rgba(239, 68, 68, 0.12) !important; border-color: rgba(239, 68, 68, 0.25) !important; color: #ef4444 !important; }
+[data-theme="light"] .fin-save-btn.income { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: #ffffff !important; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.32) !important; }
 [data-theme="light"] .fin-save-btn.expense { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; color: #ffffff !important; }
 .fin-pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent-green); animation: finPulse 1.6s ease-in-out infinite; }
 @keyframes finPulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: 0.4; transform: scale(0.7);} }

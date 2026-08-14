@@ -1109,18 +1109,26 @@ const Finance = {
 
         <div class="fin-deposit-hero">
           <div class="fin-deposit-icon">
-            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
           </div>
           <div class="fin-deposit-label">Add Deposit</div>
-          <div class="fin-deposit-amount-row">
-            <span class="fin-modal-currency">${sym}</span>
-            <input type="number" id="finance-income-amount" placeholder="0.00" class="fin-modal-amount-input" autofocus onkeydown="Finance.advanceFromAmount(event, 'finance-income-desc')" onblur="Finance.advanceToField(event, 'finance-income-desc')">
+          <div class="fin-deposit-sub" style="font-size:12px; font-weight:600; color:var(--color-text-muted); margin:-2px 0 10px;">Add funds to your available balance</div>
+          <div class="fin-deposit-amount-row fin-income-amount-row">
+            <span class="fin-modal-currency" style="color:var(--fin-green);">${sym}</span>
+            <input type="number" id="finance-income-amount" placeholder="0.00" class="fin-modal-amount-input fin-income-amount" autofocus onkeydown="Finance.advanceFromAmount(event, 'finance-income-desc')" onblur="Finance.advanceToField(event, 'finance-income-desc')">
           </div>
         </div>
 
         <div class="fin-field-group">
-          <label class="fin-field-label">Source</label>
-          <input type="text" id="finance-income-desc" placeholder="Salary, Gift etc." class="fin-field-input">
+          <label class="fin-field-label">
+            <span style="display:inline-flex; align-items:center; gap:6px;">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              Source
+            </span>
+          </label>
+          <input type="text" id="finance-income-desc" placeholder="Salary, Freelance, Gift etc." class="fin-field-input">
         </div>
 
         <div class="fin-field-group">
@@ -1139,7 +1147,7 @@ const Finance = {
           <div class="fin-date-pop hidden" id="finance-income-date-pop"></div>
         </div>
 
-        <div class="fin-modal-actions">
+        <div class="fin-modal-actions" style="margin-top:20px;">
           <button class="fin-cancel-btn" onclick="Finance.closeModal()">Cancel</button>
           <button class="fin-save-btn income" onclick="Finance.saveIncome()">Confirm Deposit</button>
         </div>
