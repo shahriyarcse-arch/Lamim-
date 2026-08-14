@@ -1400,32 +1400,49 @@ const Finance = {
     const sym = this.getSymbol();
     const p = g.target > 0 ? Math.floor((g.saved / g.target) * 100) : 0;
     const html = `
-      <div class="finance-modal-content fin-delete-modal">
+      <div class="finance-modal-content fin-delete-modal fin-vault-delete-modal">
+        <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
         <div class="fin-delete-hero">
           <div class="fin-delete-icon">
             <span class="fin-delete-icon-ring"></span>
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
           </div>
-          <div class="fin-delete-title">Remove Vault?</div>
-          <div class="fin-delete-name">${Utils.escapeHTML(g.name)}</div>
+          <div class="fin-delete-title">Delete Vault?</div>
+          <div class="fin-delete-name-pill">${Utils.escapeHTML(g.name)}</div>
         </div>
 
-        <div class="fin-delete-info">
-          <div class="fin-delete-stat"><span>Saved</span><b style="color:${p >= 100 ? '#FFB020' : 'var(--fin-green)'}">${sym}${this.formatVal(g.saved)}</b></div>
-          <div class="fin-delete-stat"><span>Target</span><b>${sym}${this.formatVal(g.target)}</b></div>
-          <div class="fin-delete-stat"><span>Progress</span><b>${p}%</b></div>
+        <div class="fin-delete-metrics-card">
+          <div class="fin-delete-metrics-top">
+            <div class="fin-delete-metric-item">
+              <span class="lbl">SAVED</span>
+              <span class="val ${g.saved > 0 ? 'is-saved' : ''}">${sym}${this.formatVal(g.saved)}</span>
+            </div>
+            <div class="fin-delete-metric-item">
+              <span class="lbl">TARGET</span>
+              <span class="val">${sym}${this.formatVal(g.target)}</span>
+            </div>
+          </div>
+          <div class="fin-delete-progress-wrap">
+            <div class="fin-delete-progress-track">
+              <div class="fin-delete-progress-fill" style="width: ${Math.min(100, Math.max(p, 0))}%;"></div>
+            </div>
+            <span class="fin-delete-pct-tag">${p}%</span>
+          </div>
         </div>
 
-        <p class="fin-delete-warn">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-          This vault &amp; all its savings will be gone for good. No take-backs!
-        </p>
+        <div class="fin-delete-alert-pill">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>This vault and its progress will be permanently deleted.</span>
+        </div>
 
-        <div class="fin-modal-actions">
-          <button class="fin-cancel-btn" onclick="Finance.closeModal()">Keep It</button>
-          <button class="fin-save-btn fin-delete-confirm" onclick="Finance.confirmDeleteVault('${id}')">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-            Delete Vault
+        <div class="fin-delete-modal-actions">
+          <button class="fin-cancel-pill-btn" onclick="Finance.closeModal()">Keep Vault</button>
+          <button class="fin-danger-delete-btn" onclick="Finance.confirmDeleteVault('${id}')">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            <span>Delete Vault</span>
           </button>
         </div>
       </div>
