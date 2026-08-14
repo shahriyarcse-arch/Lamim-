@@ -192,7 +192,37 @@ const Translations = {
   
   // Nafl
   'Nafl Logs': 'নফল লগ',
+  // Sunnah card labels
+  'Prayed': 'আদায় করা হয়েছে',
+  'Missed': 'মিস হয়েছে',
+  'Pending': 'অপেক্ষমান',
+  'Edit': 'সম্পাদনা',
+  'Custom': 'কাস্টম',
+  'Select Rakat': 'রাকাত বাছাই করুন',
+  'RK': 'রাকাত',
+  'Rakat': 'রাকাত',
+  "Sunnah Mu'akkadah": "সুন্নাহ মুআক্কাদাহ",
+  'Sunnah Prayed': 'সুন্নাহ আদায় করা হয়েছে',
+  'Sunnah Missed': 'সুন্নাহ মিস হয়েছে',
+  'Alhamdulillah': 'আলহামদুলিল্লাহ',
+  'Missed today': 'আজ মিস হয়েছে',
+  // Tahajjud card labels
+  'Tahajjud': 'তাহাজ্জুদ',
+  'Night Vigils': 'রাতের ইবাদত',
+  'Tahajjud Prayed': 'তাহাজ্জুদ আদায় করা হয়েছে',
+  'Tahajjud Missed': 'তাহাজ্জুদ মিস হয়েছে',
+  'Missed tonight': 'আজ রাতে মিস হয়েছে',
+  // Witr card labels
+  'Witr': 'বিতর',
+  'Wajib': 'ওয়াজিব',
+  'Witr Prayed': 'বিতর আদায় করা হয়েছে',
+  'Witr Missed': 'বিতর মিস হয়েছে',
+  '3 Rakat Wajib': '৩ রাকাত ওয়াজিব',
+  // Salah status result labels
+  'Qaza': 'কাযা',
+  'Correct': 'সংশোধন করুন',
   
+
   // HABITS
   'Active': 'সক্রিয়',
   'Completed': 'সম্পন্ন',

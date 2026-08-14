@@ -1276,13 +1276,17 @@ const Habits = {
   },
 
   hideRelapseModal() {
+    this._isRelapsing = false;
     const modal = document.getElementById('habits-relapse-modal');
     if (modal) modal.classList.add('hidden');
   },
 
   relapseHabit(id, reason) {
     const habit = this.getHabit(id);
-    if (!habit) return;
+    if (!habit) {
+      this._isRelapsing = false;
+      return;
+    }
 
     // PRESERVE FOR UNDO
     this.lastRelapse = {
@@ -1337,8 +1341,16 @@ const Habits = {
 
 
   confirmRelapse() {
-    const habitId = document.getElementById('habits-relapse-habit-id').value;
-    const reason = document.getElementById('habits-relapse-reason').value.trim();
+    if (this._isRelapsing) return;
+    this._isRelapsing = true;
+    setTimeout(() => { this._isRelapsing = false; }, 500);
+
+    const habitId = document.getElementById('habits-relapse-habit-id')?.value;
+    const reason = document.getElementById('habits-relapse-reason')?.value.trim() || '';
+    if (!habitId) {
+      this._isRelapsing = false;
+      return;
+    }
     this.relapseHabit(habitId, reason);
   },
 

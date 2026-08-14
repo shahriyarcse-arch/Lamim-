@@ -64,6 +64,21 @@
   --color-glass-hover:    rgba(255, 255, 255, 0.05);
   --color-glass-active:   rgba(167, 139, 250, 0.08);
 
+  /* Universal Token Aliases */
+  --color-primary:          var(--color-accent-primary);
+  --color-accent:           var(--color-accent-primary);
+  --color-card-bg:          var(--color-surface-card);
+  --color-surface:          var(--color-surface-card);
+  --color-surface-base:     var(--color-bg-secondary);
+  --color-surface-raised:   var(--color-bg-tertiary);
+  --color-surface-elevated: var(--color-bg-elevated);
+  --color-border-subtle:    var(--color-border);
+  --color-divider:          var(--color-divider-subtle);
+  --color-accent-cyan:      var(--color-accent-blue);
+  --color-bg-surface:       var(--color-bg-secondary);
+  --fin-date-icon-filter:   none;
+  --input-radius:           12px;
+
   /* === SEMANTIC THEME TOKENS === */
   --color-surface-card:     rgba(12, 19, 34, 0.45);
   --color-surface-nested:   rgba(6, 11, 19, 0.35);

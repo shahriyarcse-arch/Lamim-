@@ -237,23 +237,6 @@
       if (meta) meta.setAttribute('content', bg);
     })();
   </script>
-  <script>
-    // AUTO CACHE BUSTER — runs once per version to ensure fresh assets
-    (function () {
-      var APP_BUILD = 'v186';
-      var lastBuild = localStorage.getItem('lamim_app_build');
-      if (lastBuild !== APP_BUILD) {
-        localStorage.setItem('lamim_app_build', APP_BUILD);
-        if (lastBuild) {
-          if ('caches' in window) {
-            caches.keys().then(function (names) {
-              names.forEach(function (name) { caches.delete(name); });
-            });
-          }
-        }
-      }
-    })();
-  </script>
 </head>
 
 <body>

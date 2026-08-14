@@ -110,6 +110,23 @@ const DB = {
         this._bc.onmessage = (ev) => {
           const msg = ev.data || {};
           if (!msg.key) return;
+
+          // Detect profile identity changes from other tabs and re-initialize this tab cleanly
+          if (msg.key === 'lamim_user' && msg.value !== null && msg.value !== undefined) {
+            try {
+              const prevUser = this._cache['lamim_user'];
+              const prevId = prevUser ? JSON.parse(prevUser)?.id : null;
+              const newId = JSON.parse(msg.value)?.id;
+              this._cache[msg.key] = msg.value;
+              this._streakCache = null;
+              if (prevId && newId && prevId !== newId) {
+                // Profile switched in another tab — reload this tab safely
+                window.location.reload();
+                return;
+              }
+            } catch (e) { }
+          }
+
           if (msg.type === 'clear') {
             this._cache = {};
           } else if (msg.value !== null && msg.value !== undefined) {
@@ -220,9 +237,7 @@ const DB = {
           console.error(`[DB] Async write failed for key: ${key}`, err);
           delete this._cache[key];
           if (err && (err.name === 'QuotaExceededError' || err.name === 'NS_ERROR_DOM_QUOTA_REACHED')) {
-            if (typeof Utils !== 'undefined') {
-              Utils.toast('Storage limit reached! Please backup and clear some data.', 'error');
-            }
+            this._showQuotaBanner();
           }
           resolve();
         };
@@ -284,9 +299,38 @@ const DB = {
     return run;
   },
 
+  _showQuotaBanner() {
+    // Prevent duplicate banners
+    if (document.getElementById('lamim-quota-banner')) return;
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const banner = document.createElement('div');
+    banner.id = 'lamim-quota-banner';
+    banner.setAttribute('role', 'alert');
+    banner.style.cssText = [
+      'position:fixed', 'top:0', 'left:0', 'right:0', 'z-index:99999',
+      'background:linear-gradient(90deg,#dc2626,#b91c1c)',
+      'color:#fff', 'font-size:13px', 'font-weight:600',
+      'padding:calc(10px + env(safe-area-inset-top, 0px)) 16px 10px 16px', 'display:flex', 'align-items:center',
+      'justify-content:space-between', 'gap:12px', 'box-shadow:0 2px 12px rgba(0,0,0,0.3)'
+    ].join(';');
+    banner.innerHTML = `
+      <span style="display:flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>${isBn ? 'স্টোরেজ পূর্ণ! ডাটা হারিয়ে যেতে পারে। এখনই ব্যাকআপ নিন।' : 'Storage full! Data may not be saved. Please export a backup now.'}</span>
+      </span>
+      <span style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <button onclick="if(typeof Profile!=='undefined'&&Profile.exportAll)Profile.exportAll();" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;">${isBn ? 'ব্যাকআপ' : 'Backup'}</button>
+        <button onclick="document.getElementById('lamim-quota-banner').remove();" style="background:transparent;border:none;color:#fff;cursor:pointer;padding:4px;opacity:0.8;display:flex;align-items:center;" aria-label="Dismiss">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </span>
+    `;
+    document.body ? document.body.prepend(banner) : document.addEventListener('DOMContentLoaded', () => document.body.prepend(banner));
+  },
+
   _getEffectiveKey(key) {
-    // Global shared keys across profiles
-    if (key === 'lamim_user' || key === 'lamim_profiles_vault' || key === 'lamim_lang' || key === 'lamim_settings' || key === 'lamim_dhikr_presets') {
+    // Truly global keys that must be shared across all profiles
+    if (key === 'lamim_user' || key === 'lamim_profiles_vault' || key === 'lamim_lang' || key === 'lamim_dhikr_presets') {
       return key;
     }
     // Prefix profile-specific data with active user id if present
@@ -324,7 +368,7 @@ const DB = {
 
       if (!this._db) {
         try { localStorage.setItem(realKey, strVal); } catch { }
-      } else if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user' || realKey === 'lamim_profiles_vault') {
+      } else if (realKey === 'lamim_lang' || realKey === 'lamim_user' || realKey === 'lamim_profiles_vault') {
         try { localStorage.setItem(realKey, strVal); } catch { }
       }
 
@@ -381,10 +425,6 @@ const DB = {
     await this._asyncClear();
   },
 
-  async wipeAll() {
-    return this.clear();
-  },
-
   keys() {
     return Object.keys(this._cache);
   },
@@ -439,8 +479,25 @@ const DB = {
     this._streakCache = null;
     return true;
   },
-  getSettings() { return this.get('lamim_settings') || { theme: 'light', notifications: true, jumuahMode: true, language: 'en', currency: 'USD', lat: 23.8103, lng: 90.4125 }; },
-  setSettings(s) { return this.set('lamim_settings', s); },
+  getSettings() {
+    let settings = this.get('lamim_settings');
+    if (!settings) {
+      // Check legacy un-scoped key directly in cache or localStorage
+      try {
+        const raw = this._cache['lamim_settings'] || localStorage.getItem('lamim_settings');
+        if (raw) {
+          settings = JSON.parse(raw);
+          // Self-heal: save into user's scoped key immediately
+          if (settings) this.set('lamim_settings', settings);
+        }
+      } catch (e) { }
+    }
+    return settings || { theme: 'light', notifications: true, jumuahMode: true, language: 'en', currency: 'USD', lat: 23.8103, lng: 90.4125 };
+  },
+  setSettings(s) {
+    try { localStorage.setItem('lamim_settings', JSON.stringify(s)); } catch (e) { }
+    return this.set('lamim_settings', s);
+  },
 
   // Salah — keyed by date YYYY-MM-DD
   getSalah(date) { return this.get(`lamim_salah_${date}`) || { fajr: null, dhuhr: null, asr: null, maghrib: null, isha: null, tahajjud: false, jummah: false, notes: {} }; },
@@ -657,7 +714,7 @@ const DB = {
       const u = JSON.parse(userRaw);
       if (!u || !u.id) return;
       const prefix = `usr_${u.id}_`;
-      const GLOBAL = new Set(['lamim_user', 'lamim_profiles_vault', 'lamim_lang', 'lamim_settings', 'lamim_dhikr_presets']);
+      const GLOBAL = new Set(['lamim_user', 'lamim_profiles_vault', 'lamim_lang', 'lamim_dhikr_presets']);
       let changed = false;
       for (const k of Object.keys(this._cache)) {
         if (GLOBAL.has(k) || k.startsWith('usr_')) continue;

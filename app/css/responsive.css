@@ -59,3 +59,30 @@
 
 /* ---------- GLOBAL MEDIA SAFETY (prevent any overflow bleed) ---------- */
 img, svg, video, canvas { max-width: 100%; }
+
+/* ---------- ULTRA-COMPACT MOBILE (<=360px) SAFEGUARDS ---------- */
+@media (max-width: 360px) {
+  .section-header {
+    flex-wrap: wrap !important;
+    padding: 12px 14px !important;
+    gap: 8px !important;
+  }
+  .section-title {
+    font-size: 1.15rem !important;
+  }
+  .salah-date-nav-modern,
+  .nafl-date-nav-modern {
+    padding: 2px 4px !important;
+    gap: 2px !important;
+  }
+  .salah-nav-arrow-btn,
+  .nafl-nav-arrow-btn {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .prayer-time-pill {
+    min-width: 58px !important;
+    padding: 6px 4px !important;
+  }
+}
+

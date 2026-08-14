@@ -91,6 +91,9 @@ const Salah = {
       html += `<div class="salah-cal-cell empty" style="background: var(--color-glass); box-shadow: none; cursor: default;"></div>`;
     }
 
+    const user = DB.getUser();
+    const joinDateStr = (user && user.createdAt) ? user.createdAt.slice(0, 10) : null;
+
     for (let i = 1; i <= daysInMonth; i++) {
       const dayStr = String(i).padStart(2, '0');
       const monthStr = String(month + 1).padStart(2, '0');
@@ -101,6 +104,7 @@ const Salah = {
       
       const isToday = dateStr === Utils.todayStr();
       const isFuture = dateStr > Utils.todayStr();
+      const isBeforeJoin = joinDateStr && dateStr < joinDateStr;
 
       let color = 'var(--color-glass)';
       let opacity = 1;
@@ -147,8 +151,9 @@ const Salah = {
         }
         else {
           const hasLoggedAny = ['fajr','dhuhr','asr','maghrib','isha'].some(p => data[p]);
-          if (isToday && !hasLoggedAny) {
+          if ((isToday && !hasLoggedAny) || (isBeforeJoin && !hasLoggedAny)) {
             color = 'var(--color-glass)';
+            if (isBeforeJoin) opacity = 0.4;
           } else {
             color = 'var(--color-accent-red)';
             opacity = 0.85;

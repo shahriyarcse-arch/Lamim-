@@ -238,12 +238,55 @@ const Gym = {
 
   deleteExercise(idx) {
     const data = DB.getGym(this.selectedDate);
-    if (!data.exercises) return;
+    if (!data.exercises || !data.exercises[idx]) return;
+    const deleted = data.exercises[idx];
     data.exercises.splice(idx, 1);
     DB.setGym(this.selectedDate, data);
+
+    // If deleted exercise had weight, recalibrate PR for this exercise
+    if (deleted && deleted.weight > 0 && deleted.name) {
+      this.recalculatePR(deleted.name);
+    }
+
     this.renderExercises();
     this.renderStatStrip();
     this.notifyDataChanged();
+  },
+
+  recalculatePR(exerciseName) {
+    if (!exerciseName) return;
+    const prs = DB.getPRs();
+    let maxWeight = 0;
+    let maxDate = '';
+    const allKeys = DB.keys();
+    for (let i = 0; i < allKeys.length; i++) {
+      const k = allKeys[i];
+      if (k.includes('lamim_gym_')) {
+        let gymData = null;
+        try {
+          gymData = DB._cache[k] ? JSON.parse(DB._cache[k]) : null;
+        } catch (e) { }
+        if (gymData && Array.isArray(gymData.exercises)) {
+          gymData.exercises.forEach(ex => {
+            if (ex.name && ex.name.toLowerCase() === exerciseName.toLowerCase()) {
+              const w = Number(ex.weight) || 0;
+              if (w > maxWeight) {
+                maxWeight = w;
+                const match = k.match(/lamim_gym_(\d{4}-\d{2}-\d{2})/);
+                maxDate = match ? match[1] : '';
+              }
+            }
+          });
+        }
+      }
+    }
+
+    if (maxWeight > 0) {
+      prs[exerciseName] = { weight: maxWeight, date: maxDate };
+    } else {
+      delete prs[exerciseName];
+    }
+    DB.setPRs(prs);
   },
 
   /* ---------- sleep ---------- */

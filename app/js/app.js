@@ -118,16 +118,6 @@ updateSectionTitle() {
       DB.remove('lamim_needs_reload');
       window.location.reload();
     }
-    
-    // Force clear old service workers and caches ONCE in background (non-blocking)
-    if (!DB.rawGet('lamim_cache_cleared_v38')) {
-      DB.rawSet('lamim_cache_cleared_v38', 'true');
-      if ('caches' in window) {
-        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).catch(() => {});
-      }
-    }
-
-    // Check for Service Worker Updates is handled automatically by the browser
 
     // Apply saved theme
     const settings = DB.getSettings();
@@ -178,15 +168,26 @@ updateSectionTitle() {
     // Apply translations immediately to prevent FOUC
     this.applyTranslations();
 
-    // Global Midnight Rollover Detector - ensures app state resets if left open overnight
+    // Global Midnight Rollover Detector - gracefully updates date state overnight without wiping active form inputs
     let startupDate = Utils.todayStr();
     setInterval(() => {
       const today = Utils.todayStr();
       if (today !== startupDate) {
+        const oldDate = startupDate;
         startupDate = today;
-        window.location.reload();
+        const hasOpenModal = !!document.querySelector('.modal-overlay:not(.hidden), .finance-modal-overlay.show, .fin-history-overlay.show, .modal-backdrop:not(.hidden)');
+        const isEditingInput = document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA');
+        if (!hasOpenModal && !isEditingInput) {
+          if (typeof Salah !== 'undefined' && Salah.selectedDate === oldDate) Salah.selectedDate = today;
+          if (typeof Career !== 'undefined' && Career.selectedDate === oldDate) Career.selectedDate = today;
+          if (typeof Gym !== 'undefined' && Gym.selectedDate === oldDate) Gym.selectedDate = today;
+          if (typeof Habits !== 'undefined' && typeof Habits.loadHabits === 'function') Habits.loadHabits();
+          if (DB.refreshSpiritScore) DB.refreshSpiritScore();
+          window.dispatchEvent(new CustomEvent('lamim:data-updated'));
+          if (typeof Home !== 'undefined' && typeof Home.render === 'function') Home.render();
+        }
       }
-    }, 60000);
+    }, 30000);
 
     // Splash → route (instant zero-latency boot sequence)
     this._bootComplete = false;

@@ -259,39 +259,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-/* ---- DEMO TABS ---- */
-const tabs = document.querySelectorAll('.tab');
-const modeEl = document.querySelector('#mode');
-const titleEl = document.querySelector('#title');
-const copyEl = document.querySelector('#copy');
-const valueEl = document.querySelector('#value');
-const meterEl = document.querySelector('#meter');
-
-function selectTab(t) {
-  tabs.forEach((x) => x.setAttribute('aria-selected', 'false'));
-  t.setAttribute('aria-selected', 'true');
-  if (modeEl) modeEl.textContent = t.dataset.mode;
-  if (titleEl) titleEl.textContent = t.dataset.title;
-  if (copyEl) copyEl.textContent = t.dataset.copy;
-  if (valueEl) valueEl.textContent = t.dataset.value;
-  if (meterEl) meterEl.style.width = t.dataset.value;
-}
-
-tabs.forEach((t) => {
-  t.addEventListener('click', () => selectTab(t));
-  t.addEventListener('keydown', (e) => {
-    const idx = Array.from(tabs).indexOf(t);
-    if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      selectTab(tabs[(idx + 1) % tabs.length]);
-      tabs[(idx + 1) % tabs.length].focus();
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      selectTab(tabs[(idx - 1 + tabs.length) % tabs.length]);
-      tabs[(idx - 1 + tabs.length) % tabs.length].focus();
-    }
-  });
-});
-
 /* ---- Motion CDN fallback cancel ---- */
-window.__motionReady();
+if (typeof window.__motionReady === 'function') {
+  window.__motionReady();
+}

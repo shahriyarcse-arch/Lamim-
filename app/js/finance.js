@@ -240,7 +240,8 @@ const Finance = {
     };
 
     this._addGlobal(window, 'lamim:theme-changed', onThemeChanged);
-    this._addGlobal(window, 'online', () => this.fetchExchangeRate());
+    const debouncedForex = Utils.debounce(() => this.fetchExchangeRate(), 2000);
+    this._addGlobal(window, 'online', debouncedForex);
     this._addGlobal(document, 'click', onOutsideClick, true);
     this._addGlobal(window, 'scroll', hidePicker, true);
     this._addGlobal(window, 'resize', hidePicker);
@@ -1119,12 +1120,31 @@ const Finance = {
     return html || `<div style="text-align:center; grid-column:1/-1; padding:40px; opacity:0.3; font-size:13px;">No categories found</div>`;
   },
 
-  selectCategory(id) { this.selectedCategory = id; document.querySelectorAll('.fin-cat-pill').forEach(p => p.classList.remove('active')); const a = document.getElementById(`cat-${id}`); if (a) a.classList.add('active'); },
+  selectCategory(id) {
+    this.selectedCategory = id;
+    document.querySelectorAll('.fin-cat-pill').forEach(p => p.classList.remove('active'));
+    const a = document.getElementById(`cat-${id}`);
+    if (a) a.classList.add('active');
+  },
+
   saveExpense() {
+    if (this._submitting) return;
+    this._submitting = true;
+    setTimeout(() => { this._submitting = false; }, 400);
+
     let a = parseFloat(document.getElementById('finance-expense-amount').value);
     const c = this.selectedCategory, d = document.getElementById('finance-expense-date').value, obj = this.categories.find(o => o.id === c);
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-    if (isNaN(a) || a <= 0) return Utils.toast(isBn ? 'সঠিক পরিমাণ লিখুন' : 'Enter valid amount', 'error');
+    if (isNaN(a) || a <= 0) {
+      this._submitting = false;
+      return Utils.toast(isBn ? 'সঠিক পরিমাণ লিখুন' : 'Enter valid amount', 'error');
+    }
+
+    // Refresh data directly from DB to prevent concurrent multi-tab overwrites
+    const fresh = DB.getFinance();
+    this.data.income = fresh.income || [];
+    this.data.expenses = fresh.expenses || [];
+    this.data.savings = fresh.savings || [];
 
     // Calculate absolute total balance in USD (base currency)
     const allIncome = this.data.income.reduce((s, o) => s + o.amount, 0);
@@ -1136,11 +1156,12 @@ const Finance = {
 
     // Check if expense exceeds total balance
     if (amountInBase > totalBalance + 0.0001) {
+      this._submitting = false;
       const sym = this.getSymbol();
       return Utils.toast(isBn ? `অপর্যাপ্ত ব্যালেন্স! বিদ্যমান: ${sym}${this.formatVal(totalBalance)}` : `Insufficient balance! Available: ${sym}${this.formatVal(totalBalance)}`, 'error');
     }
 
-    this.data.expenses.push({ id: Utils.uid(), description: obj.name, amount: amountInBase, category: c, date: d });
+    this.data.expenses.push({ id: Utils.uid(), description: obj ? obj.name : 'Expense', amount: amountInBase, category: c, date: d });
     this.saveData(); this.closeModal(); this.render();
   },
 
@@ -1150,25 +1171,26 @@ const Finance = {
     let defaultDate = this.currentViewDate;
     if (now.getMonth() === this.currentViewDate.getMonth() && now.getFullYear() === this.currentViewDate.getFullYear()) {
       defaultDate = now;
+    } else {
+      defaultDate = new Date(this.currentViewDate.getFullYear(), this.currentViewDate.getMonth(), 1);
     }
     const dateStr = Utils.dateStr(defaultDate);
+
     const html = `
       <div class="finance-modal-content fin-deposit-modal">
         <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
 
-        <div class="fin-deposit-hero">
-          <div class="fin-deposit-icon">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
+        <div class="fin-modal-hero">
+          <div class="fin-modal-icon income">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
-          <div class="fin-deposit-label">Add Deposit</div>
-          <div class="fin-deposit-sub" style="font-size:12px; font-weight:600; color:var(--color-text-muted); margin:-2px 0 10px;">Add funds to your available balance</div>
-          <div class="fin-deposit-amount-row fin-income-amount-row">
-            <span class="fin-modal-currency" style="color:var(--fin-green);">${sym}</span>
-            <input type="number" id="finance-income-amount" placeholder="0.00" class="fin-modal-amount-input fin-income-amount" autofocus onkeydown="Finance.advanceFromAmount(event, 'finance-income-desc')" onblur="Finance.advanceToField(event, 'finance-income-desc')">
+          <div class="fin-modal-title">Deposit Money</div>
+          <div class="fin-modal-sub">Add funds to your available balance</div>
+          <div class="fin-modal-amount-row">
+            <span class="fin-modal-currency income">${sym}</span>
+            <input type="number" id="finance-income-amount" placeholder="0.00" class="fin-modal-amount-input" autofocus onkeydown="Finance.advanceFromAmount(event, 'finance-income-desc')" onblur="Finance.advanceToField(event, 'finance-income-desc')">
           </div>
         </div>
 
@@ -1244,6 +1266,13 @@ const Finance = {
       return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields','error'); 
     }
     if (DB.getSettings().currency==='BDT') a /= this._getFXRate(); 
+
+    // Refresh data directly from DB to prevent concurrent multi-tab overwrites
+    const fresh = DB.getFinance();
+    this.data.income = fresh.income || [];
+    this.data.expenses = fresh.expenses || [];
+    this.data.savings = fresh.savings || [];
+
     this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d }); 
     this.saveData(); this.closeModal(); this.render(); 
   },
@@ -1694,6 +1723,8 @@ const Finance = {
 
   showModal(c) { let o = document.getElementById('finance-modal-overlay'); if (!o) { o = document.createElement('div'); o.id = 'finance-modal-overlay'; o.className = 'finance-modal-overlay'; document.body.appendChild(o); } o.innerHTML = c; o.classList.add('show'); o.onclick = (e) => { if(e.target === o) this.closeModal(); }; },
   closeModal() {
+    this._submitting = false;
+    document.querySelectorAll('.fin-date-pop').forEach(p => p.classList.add('hidden'));
     const o = document.getElementById('finance-modal-overlay');
     if (o) o.classList.remove('show');
   },

@@ -215,13 +215,13 @@ const Goals = {
           badge.innerHTML = isLocked 
             ? (isPrayed 
                 ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
-                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed
+                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${window.t ? window.t('Prayed') : 'Prayed'}
                    </div>`
                 : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
-                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                    </div>`)
             : `<div class="salah-status-chip salah-status-pending">
-                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
                </div>`;
         }
 
@@ -235,16 +235,16 @@ const Goals = {
                 ${isPrayed ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
               </div>
               <div class="salah-locked-info">
-                <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? 'Sunnah Prayed' : 'Sunnah Missed'}</div>
+                <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? (window.t ? window.t('Sunnah Prayed') : 'Sunnah Prayed') : (window.t ? window.t('Sunnah Missed') : 'Sunnah Missed')}</div>
                 <div class="salah-locked-desc">
-                  <span>${isPrayed ? 'Alhamdulillah' : 'Missed today'}</span>
+                  <span>${isPrayed ? (window.t ? window.t('Alhamdulillah') : 'Alhamdulillah') : (window.t ? window.t('Missed today') : 'Missed today')}</span>
                   <span class="dot">•</span>
-                  <span class="pts">+${isPrayed ? pts : 0} pts</span>
+                  <span class="pts">+${window.n ? window.n(isPrayed ? pts : 0) : (isPrayed ? pts : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
                 </div>
               </div>
               <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockSunnah('${item.id}')" title="Change status">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                <span>Edit</span>
+                <span>${window.t ? window.t('Edit') : 'Edit'}</span>
               </button>
             </div>
           `;
@@ -295,20 +295,20 @@ const Goals = {
               <span class="salah-prayer-emoji">${item.icon}</span>
             </div>
             <div class="salah-prayer-info">
-              <div class="salah-prayer-name">${item.label}</div>
-              <div class="salah-prayer-time">${item.rakat} Rakat · Sunnah Mu'akkadah</div>
+              <div class="salah-prayer-name">${window.t ? window.t(item.label) : item.label}</div>
+              <div class="salah-prayer-time">${window.n ? window.n(item.rakat) : item.rakat} ${window.t ? window.t('Rakat') : 'Rakat'} · ${window.t ? window.t("Sunnah Mu'akkadah") : "Sunnah Mu'akkadah"}</div>
             </div>
             <div class="salah-prayer-status-badge">
                ${isLocked 
                  ? (isPrayed 
                      ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${window.t ? window.t('Prayed') : 'Prayed'}
                         </div>`
                      : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                         </div>`)
                  : `<div class="salah-status-chip salah-status-pending">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
                     </div>`
                }
             </div>
@@ -321,16 +321,16 @@ const Goals = {
                    ${isPrayed ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
                  </div>
                  <div class="salah-locked-info">
-                   <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? 'Sunnah Prayed' : 'Sunnah Missed'}</div>
+                   <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? (window.t ? window.t('Sunnah Prayed') : 'Sunnah Prayed') : (window.t ? window.t('Sunnah Missed') : 'Sunnah Missed')}</div>
                    <div class="salah-locked-desc">
-                     <span>${isPrayed ? 'Alhamdulillah' : 'Missed today'}</span>
+                     <span>${isPrayed ? (window.t ? window.t('Alhamdulillah') : 'Alhamdulillah') : (window.t ? window.t('Missed today') : 'Missed today')}</span>
                      <span class="dot">•</span>
-                     <span class="pts">+${isPrayed ? pts : 0} pts</span>
+                     <span class="pts">+${window.n ? window.n(isPrayed ? pts : 0) : (isPrayed ? pts : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
                    </div>
                  </div>
                  <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockSunnah('${item.id}')" title="Change status">
                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                   <span>Edit</span>
+                   <span>${window.t ? window.t('Edit') : 'Edit'}</span>
                  </button>
                </div>`
             : `<div class="salah-status-selector sunnah-status-selector">
@@ -339,15 +339,15 @@ const Goals = {
                      <span class="sunnah-action-icon">
                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                      </span>
-                     <span class="sunnah-action-label">Prayed</span>
-                     <span class="sunnah-action-pts">+${pts} pts</span>
+                     <span class="sunnah-action-label">${window.t ? window.t('Prayed') : 'Prayed'}</span>
+                     <span class="sunnah-action-pts">+${window.n ? window.n(pts) : pts} ${window.t ? window.t('pts') : 'pts'}</span>
                    </button>
                    <button type="button" class="sunnah-action-btn btn-missed" onclick="Goals.selectSunnah('${item.id}', 'missed')">
                      <span class="sunnah-action-icon">
                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                      </span>
-                     <span class="sunnah-action-label">Missed</span>
-                     <span class="sunnah-action-pts">0 pts</span>
+                     <span class="sunnah-action-label">${window.t ? window.t('Missed') : 'Missed'}</span>
+                     <span class="sunnah-action-pts">0 ${window.t ? window.t('pts') : 'pts'}</span>
                    </button>
                  </div>
                </div>`
@@ -413,13 +413,13 @@ const Goals = {
         badge.innerHTML = isLocked 
           ? (isPrayed 
               ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed (${rakat} RK)
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${window.t ? window.t('Prayed') : 'Prayed'} (${window.n ? window.n(rakat) : rakat} ${window.t ? window.t('RK') : 'RK'})
                  </div>`
               : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                  </div>`)
           : `<div class="salah-status-chip salah-status-pending">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
              </div>`;
       }
       const selector = card.querySelector('.salah-status-selector');
@@ -431,16 +431,16 @@ const Goals = {
               ${isPrayed ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
             </div>
             <div class="salah-locked-info">
-              <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? `Tahajjud Prayed (${rakat} RK)` : 'Tahajjud Missed'}</div>
+              <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? `${window.t ? window.t('Tahajjud Prayed') : 'Tahajjud Prayed'} (${window.n ? window.n(rakat) : rakat} ${window.t ? window.t('RK') : 'RK'})` : (window.t ? window.t('Tahajjud Missed') : 'Tahajjud Missed')}</div>
               <div class="salah-locked-desc">
-                <span>${isPrayed ? 'Night Vigils' : 'Missed tonight'}</span>
+                <span>${isPrayed ? (window.t ? window.t('Night Vigils') : 'Night Vigils') : (window.t ? window.t('Missed tonight') : 'Missed tonight')}</span>
                 <span class="dot">•</span>
-                <span class="pts">+${isPrayed ? 3 : 0} pts</span>
+                <span class="pts">+${window.n ? window.n(isPrayed ? 3 : 0) : (isPrayed ? 3 : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
               </div>
             </div>
             <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockTahajjud()" title="Change status">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              <span>Edit</span>
+              <span>${window.t ? window.t('Edit') : 'Edit'}</span>
             </button>
           </div>
         `;
@@ -460,20 +460,20 @@ const Goals = {
             <span class="salah-prayer-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4M17 5h4"/></svg></span>
           </div>
           <div class="salah-prayer-info">
-            <div class="salah-prayer-name">Tahajjud</div>
-            <div class="salah-prayer-time">Night Vigils · Nafl</div>
+            <div class="salah-prayer-name">${window.t ? window.t('Tahajjud') : 'Tahajjud'}</div>
+            <div class="salah-prayer-time">${window.t ? window.t('Night Vigils') : 'Night Vigils'} · ${window.t ? window.t('Nafl') : 'Nafl'}</div>
           </div>
           <div class="salah-prayer-status-badge">
             ${isLocked 
               ? (isPrayed 
                   ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
-                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed (${rakat} RK)
+                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${window.t ? window.t('Prayed') : 'Prayed'} (${window.n ? window.n(rakat) : rakat} ${window.t ? window.t('RK') : 'RK'})
                      </div>`
                   : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
-                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                      </div>`)
               : `<div class="salah-status-chip salah-status-pending">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
                  </div>`
             }
           </div>
@@ -486,36 +486,36 @@ const Goals = {
                  ${isPrayed ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
                </div>
                <div class="salah-locked-info">
-                 <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? `Tahajjud Prayed (${rakat} RK)` : 'Tahajjud Missed'}</div>
+                 <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? `${window.t ? window.t('Tahajjud Prayed') : 'Tahajjud Prayed'} (${window.n ? window.n(rakat) : rakat} ${window.t ? window.t('RK') : 'RK'})` : (window.t ? window.t('Tahajjud Missed') : 'Tahajjud Missed')}</div>
                  <div class="salah-locked-desc">
-                   <span>${isPrayed ? 'Night Vigils' : 'Missed tonight'}</span>
+                   <span>${isPrayed ? (window.t ? window.t('Night Vigils') : 'Night Vigils') : (window.t ? window.t('Missed tonight') : 'Missed tonight')}</span>
                    <span class="dot">•</span>
-                   <span class="pts">+${isPrayed ? 3 : 0} pts</span>
+                   <span class="pts">+${window.n ? window.n(isPrayed ? 3 : 0) : (isPrayed ? 3 : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
                  </div>
                </div>
                <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockTahajjud()" title="Change status">
                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                 <span>Edit</span>
+                 <span>${window.t ? window.t('Edit') : 'Edit'}</span>
                </button>
              </div>`
           : `<div class="salah-status-selector sunnah-tahajjud-selector">
                <div class="sunnah-tahajjud-header">
-                 <span class="sunnah-tahajjud-title">Select Rakat</span>
+                 <span class="sunnah-tahajjud-title">${window.t ? window.t('Select Rakat') : 'Select Rakat'}</span>
                  <button type="button" class="sunnah-tahajjud-missed-btn" onclick="Goals.setTahajjudMissed()">
                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                   <span>Missed</span>
+                   <span>${window.t ? window.t('Missed') : 'Missed'}</span>
                  </button>
                </div>
                <div class="sunnah-rakat-chips-grid">
                  ${[2, 4, 6, 8, 10, 12].map(opt => `
                    <button type="button" class="sunnah-rakat-chip" onclick="Goals.setTahajjudRakat(${opt})">
-                     <span class="rakat-num">${opt} RK</span>
-                     <span class="rakat-pts">+3 pts</span>
+                     <span class="rakat-num">${window.n ? window.n(opt) : opt} ${window.t ? window.t('RK') : 'RK'}</span>
+                     <span class="rakat-pts">+${window.n ? window.n(3) : 3} ${window.t ? window.t('pts') : 'pts'}</span>
                    </button>
                  `).join('')}
                  <button type="button" class="sunnah-rakat-chip chip-custom" onclick="Goals.promptCustomTahajjud()">
                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                   <span>Custom</span>
+                   <span>${window.t ? window.t('Custom') : 'Custom'}</span>
                  </button>
                </div>
              </div>`
@@ -629,13 +629,13 @@ const Goals = {
         badge.innerHTML = isLocked 
           ? (isPrayed 
               ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${window.t ? window.t('Prayed') : 'Prayed'}
                  </div>`
               : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                  </div>`)
           : `<div class="salah-status-chip salah-status-pending">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
              </div>`;
       }
       const selector = card.querySelector('.salah-status-selector');
@@ -647,16 +647,16 @@ const Goals = {
               ${isPrayed ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
             </div>
             <div class="salah-locked-info">
-              <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? 'Witr Prayed' : 'Witr Missed'}</div>
+              <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? (window.t ? window.t('Witr Prayed') : 'Witr Prayed') : (window.t ? window.t('Witr Missed') : 'Witr Missed')}</div>
               <div class="salah-locked-desc">
-                <span>${isPrayed ? '3 Rakat Wajib' : 'Missed today'}</span>
+                <span>${isPrayed ? (window.t ? window.t('3 Rakat Wajib') : '3 Rakat Wajib') : (window.t ? window.t('Missed today') : 'Missed today')}</span>
                 <span class="dot">•</span>
-                <span class="pts">+${isPrayed ? 2 : 0} pts</span>
+                <span class="pts">+${window.n ? window.n(isPrayed ? 2 : 0) : (isPrayed ? 2 : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
               </div>
             </div>
             <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockWitr()" title="Change status">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              <span>Edit</span>
+              <span>${window.t ? window.t('Edit') : 'Edit'}</span>
             </button>
           </div>
         `;
@@ -676,20 +676,20 @@ const Goals = {
             <span class="salah-prayer-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
           </div>
           <div class="salah-prayer-info">
-            <div class="salah-prayer-name">Witr</div>
-            <div class="salah-prayer-time">3 Rakat · Wajib</div>
+            <div class="salah-prayer-name">${window.t ? window.t('Witr') : 'Witr'}</div>
+            <div class="salah-prayer-time">${window.n ? window.n(3) : 3} ${window.t ? window.t('Rakat') : 'Rakat'} · ${window.t ? window.t('Wajib') : 'Wajib'}</div>
           </div>
           <div class="salah-prayer-status-badge">
             ${isLocked 
               ? (isPrayed 
                   ? `<div class="salah-status-chip" style="background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34d399; box-shadow: 0 0 12px rgba(52,211,153,0.4)">
-                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Prayed
+                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${window.t ? window.t('Prayed') : 'Prayed'}
                      </div>`
                   : `<div class="salah-status-chip" style="background: rgba(248,81,73,0.15); border-color: rgba(248,81,73,0.4); color: #f85149; box-shadow: 0 0 12px rgba(248,81,73,0.4)">
-                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Missed
+                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                      </div>`)
               : `<div class="salah-status-chip salah-status-pending">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
                  </div>`
             }
           </div>
@@ -702,16 +702,16 @@ const Goals = {
                  ${isPrayed ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
                </div>
                <div class="salah-locked-info">
-                 <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? 'Witr Prayed' : 'Witr Missed'}</div>
+                 <div class="salah-locked-status ${isPrayed ? 'is-prayed' : 'is-missed'}">${isPrayed ? (window.t ? window.t('Witr Prayed') : 'Witr Prayed') : (window.t ? window.t('Witr Missed') : 'Witr Missed')}</div>
                  <div class="salah-locked-desc">
-                   <span>${isPrayed ? '3 Rakat Wajib' : 'Missed today'}</span>
+                   <span>${isPrayed ? (window.t ? window.t('3 Rakat Wajib') : '3 Rakat Wajib') : (window.t ? window.t('Missed today') : 'Missed today')}</span>
                    <span class="dot">•</span>
-                   <span class="pts">+${isPrayed ? 2 : 0} pts</span>
+                   <span class="pts">+${window.n ? window.n(isPrayed ? 2 : 0) : (isPrayed ? 2 : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
                  </div>
                </div>
                <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockWitr()" title="Change status">
                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                 <span>Edit</span>
+                  <span>${window.t ? window.t('Edit') : 'Edit'}</span>
                </button>
              </div>`
           : `<div class="salah-status-selector sunnah-status-selector">
@@ -720,15 +720,15 @@ const Goals = {
                    <span class="sunnah-action-icon">
                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                    </span>
-                   <span class="sunnah-action-label">Prayed</span>
-                   <span class="sunnah-action-pts">+2 pts</span>
+                    <span class="sunnah-action-label">${window.t ? window.t('Prayed') : 'Prayed'}</span>
+                    <span class="sunnah-action-pts">+${window.n ? window.n(2) : 2} ${window.t ? window.t('pts') : 'pts'}</span>
                  </button>
                  <button type="button" class="sunnah-action-btn btn-missed" onclick="Goals.toggleWitrMissed()">
                    <span class="sunnah-action-icon">
                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                    </span>
-                   <span class="sunnah-action-label">Missed</span>
-                   <span class="sunnah-action-pts">0 pts</span>
+                    <span class="sunnah-action-label">${window.t ? window.t('Missed') : 'Missed'}</span>
+                    <span class="sunnah-action-pts">0 ${window.t ? window.t('pts') : 'pts'}</span>
                  </button>
                </div>
              </div>`

@@ -60,6 +60,8 @@ const Dhikr = {
     if (!this.initialized) {
       this.bindKeyboard();
       this._bindHistoryScroll();
+      window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') this.flushSave(); });
+      window.addEventListener('beforeunload', () => this.flushSave());
       this.initialized = true;
     }
   },
@@ -148,6 +150,7 @@ const Dhikr = {
   },
 
   selectDhikr(id) {
+    if (this._saveTimer) this.flushSave();
     this.currentId = id;
     this.count = DB.getDhikr(Utils.todayStr())[id] || 0;
     this.renderHero();
@@ -208,6 +211,28 @@ const Dhikr = {
   },
 
   saveInstantly() {
+    const today = Utils.todayStr();
+    const dhikr = DB.getDhikr(today);
+    dhikr[this.currentId] = this.count;
+    
+    // Immediate synchronous in-memory cache update & live tab broadcast
+    const realKey = DB._getEffectiveKey(`lamim_dhikr_${today}`);
+    const strVal = JSON.stringify(dhikr);
+    DB._cache[realKey] = strVal;
+    if (typeof DB._broadcast === 'function') DB._broadcast(realKey, strVal);
+
+    // Debounced disk write to eliminate transaction queue lag on rapid tapping
+    if (this._saveTimer) clearTimeout(this._saveTimer);
+    this._saveTimer = setTimeout(() => {
+      this.flushSave();
+    }, 250);
+  },
+
+  flushSave() {
+    if (this._saveTimer) {
+      clearTimeout(this._saveTimer);
+      this._saveTimer = null;
+    }
     const today = Utils.todayStr();
     const dhikr = DB.getDhikr(today);
     dhikr[this.currentId] = this.count;

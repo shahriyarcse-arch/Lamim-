@@ -639,7 +639,7 @@ const Profile = {
       confirmText: isBn ? 'রিসেট করুন' : 'Reset App',
       onConfirm: async () => {
         // Clear all local data, IndexedDB, localStorage, sessionStorage
-        await DB.wipeAll();
+        await DB.clear();
 
         // Unregister service workers
         if ('serviceWorker' in navigator) {
