@@ -172,6 +172,9 @@ const Salah = {
   },
 
   _updateCalendarCells(cal, year, month, targetDate = null) {
+    const user = DB.getUser();
+    const joinDateStr = (user && user.createdAt) ? user.createdAt.slice(0, 10) : null;
+
     const selector = targetDate 
       ? `.salah-cal-cell[data-date="${targetDate}"]`
       : '.salah-cal-cell[data-date]';
@@ -183,6 +186,8 @@ const Salah = {
       const score = Utils.salahScore(data);
       const isToday = dateStr === Utils.todayStr();
       const isFuture = dateStr > Utils.todayStr();
+      const isBeforeJoin = joinDateStr && dateStr < joinDateStr;
+
       let color = 'var(--color-glass)';
       let opacity = 1;
       let glow = 'none';
@@ -203,8 +208,13 @@ const Salah = {
           else { color = 'rgba(251,191,36,0.15)'; glow = 'inset 0 0 0 2px #fbbf24'; }
         } else {
           const hasLoggedAny = ['fajr','dhuhr','asr','maghrib','isha'].some(p => data[p]);
-          if (isToday && !hasLoggedAny) color = 'var(--color-glass)';
-          else { color = 'var(--color-accent-red)'; opacity = 0.85; }
+          if ((isToday && !hasLoggedAny) || (isBeforeJoin && !hasLoggedAny)) {
+            color = 'var(--color-glass)';
+            if (isBeforeJoin) opacity = 0.4;
+          } else {
+            color = 'var(--color-accent-red)';
+            opacity = 0.85;
+          }
         }
       } else { opacity = 0.5; }
       cell.style.background = color;
