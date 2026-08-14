@@ -103,7 +103,13 @@ const Home = {
 
     if (next && cardEl) {
       cardEl.style.display = 'flex';
-      const capName = next.name.charAt(0).toUpperCase() + next.name.slice(1);
+      const isFriday = new Date().getDay() === 5;
+      const settings = DB.getSettings();
+      const showJumuah = settings.jumuahMode !== false && isFriday;
+      let capName = next.name.charAt(0).toUpperCase() + next.name.slice(1);
+      if (next.name === 'dhuhr' && showJumuah) {
+        capName = "Jumu'ah";
+      }
       if (nameEl) nameEl.textContent = window.t ? window.t(capName) : capName;
       if (timeEl) timeEl.textContent = window.n ? window.n(next.label) : next.label;
 
@@ -148,26 +154,41 @@ const Home = {
     }
 
     if (container) {
-      const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+      const isFriday = new Date().getDay() === 5;
+      const settings = DB.getSettings();
+      const showJumuah = settings.jumuahMode !== false && isFriday;
+      const prayers = [
+        { key: 'fajr', label: 'Fajr', initial: 'F', bnInitial: 'ফ' },
+        { key: 'dhuhr', label: showJumuah ? "Jumu'ah" : 'Dhuhr', initial: showJumuah ? 'J' : 'D', bnInitial: showJumuah ? 'জু' : 'যো' },
+        { key: 'asr', label: 'Asr', initial: 'A', bnInitial: 'আ' },
+        { key: 'maghrib', label: 'Maghrib', initial: 'M', bnInitial: 'মা' },
+        { key: 'isha', label: 'Isha', initial: 'I', bnInitial: 'এ' }
+      ];
+
       const nodes = container.querySelectorAll('.timeline-node');
+      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+
       if (nodes.length === prayers.length) {
         prayers.forEach((p, idx) => {
-          const key = p.toLowerCase();
-          const status = salah[key];
+          const status = salah[p.key];
           const node = nodes[idx];
           node.className = `timeline-node${status ? ' status-' + status : ''}`;
+          const dot = node.querySelector('.timeline-dot');
+          const lbl = node.querySelector('.timeline-label');
+          if (dot) dot.textContent = isBn ? p.bnInitial : p.initial;
+          if (lbl) lbl.textContent = window.t ? window.t(p.label) : p.label;
+          node.setAttribute('aria-label', `Go to Salah section for ${p.label}`);
         });
         return;
       }
       let html = '';
       prayers.forEach(p => {
-        const key = p.toLowerCase();
-        const status = salah[key];
+        const status = salah[p.key];
         let statusClass = status ? `status-${status}` : '';
-        const initial = p.charAt(0);
-        const label = window.t ? window.t(p) : p;
+        const initial = isBn ? p.bnInitial : p.initial;
+        const label = window.t ? window.t(p.label) : p.label;
         html += `
-          <div class="timeline-node ${statusClass}" onclick="App.navigateTo('salah')" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p}">
+          <div class="timeline-node ${statusClass}" onclick="App.navigateTo('salah')" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p.label}">
             <div class="timeline-dot">${initial}</div>
             <span class="timeline-label">${label}</span>
           </div>

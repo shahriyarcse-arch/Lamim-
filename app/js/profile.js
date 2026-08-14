@@ -468,11 +468,22 @@ const Profile = {
     s.jumuahMode = s.jumuahMode === false ? true : false;
     DB.setSettings(s);
     this.renderSettings();
-    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-    // Instantly update Salah prayer cards (Dhuhr ↔ Jumu'ah) without page refresh
-    if (typeof Salah !== 'undefined' && typeof Salah.renderAll === 'function') {
-      Salah.renderAll(true);
+    
+    // Invalidate cached render keys and instantly update Salah prayer cards & times (Dhuhr ↔ Jumu'ah)
+    if (typeof Salah !== 'undefined') {
+      Salah._cardsKey = null;
+      if (typeof Salah.renderAll === 'function') {
+        Salah.renderAll(true);
+      }
     }
+
+    // Instantly refresh Home section if mounted
+    if (typeof Home !== 'undefined') {
+      if (typeof Home.updateNextPrayer === 'function') Home.updateNextPrayer();
+      if (typeof Home.updateSalahTimeline === 'function') Home.updateSalahTimeline();
+    }
+
+    window.dispatchEvent(new CustomEvent('lamim:data-updated'));
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     Utils.toast(isBn ? (s.jumuahMode ? 'জুমআ মোড চালু হয়েছে' : 'জুমআ মোড বন্ধ হয়েছে') : (s.jumuahMode ? "Jumu'ah Mode enabled" : "Jumu'ah Mode disabled"), 'success');
   },

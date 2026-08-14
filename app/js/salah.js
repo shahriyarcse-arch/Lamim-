@@ -255,12 +255,26 @@ const Salah = {
     const row   = document.getElementById('salah-times-row');
     if (!row) return;
 
-    // If pills already exist, just update which one is "next" (zero blink)
+    const isFriday = Utils.parseDate(this.selectedDate || Utils.todayStr()).getDay() === 5;
+    const settings = DB.getSettings();
+    const showJumuah = settings.jumuahMode !== false && isFriday;
+
+    // If pills already exist, just update which one is "next" and ensure labels match current mode (zero blink)
     const existingPills = row.querySelectorAll('.prayer-time-pill');
     if (existingPills.length === times.length) {
       existingPills.forEach((pill, idx) => {
-        const isNext = times[idx].name === next.name;
+        const t = times[idx];
+        const isNext = t.name === next.name;
         pill.classList.toggle('next', isNext);
+
+        const meta = { ...this.prayerMeta[t.name] };
+        if (t.name === 'dhuhr' && showJumuah) meta.label = "Jumu'ah";
+        const translatedLabel = window.t ? window.t(meta.label) : meta.label;
+        const pillNameEl = pill.querySelector('.pill-name');
+        if (pillNameEl && pillNameEl.textContent !== translatedLabel) {
+          pillNameEl.textContent = translatedLabel;
+        }
+
         // Update or remove the next badge
         let badge = pill.querySelector('.pill-next-badge');
         if (isNext && !badge) {
@@ -278,7 +292,8 @@ const Salah = {
 
     // First time: build full structure
     row.innerHTML = times.map((t, idx) => {
-      const meta = this.prayerMeta[t.name];
+      const meta = { ...this.prayerMeta[t.name] };
+      if (t.name === 'dhuhr' && showJumuah) meta.label = "Jumu'ah";
       const isNext = t.name === next.name;
       const translatedLabel = window.t ? window.t(meta.label) : meta.label;
       const formattedTime = window.n ? window.n(t.label) : t.label;
@@ -468,7 +483,7 @@ const Salah = {
     // switching back to Salah, while taps/date-nav still re-render correctly.
     const corr = this._correcting ? (this._correcting.prayer + this._correcting.date) : '';
     const key = date + '|' + this.prayers.map(p => salah[p] || '-').join(',') + '|' +
-      (nextPrayer ? nextPrayer.name : '') + '|' + isToday + '|' + isFuture + '|' + corr;
+      (nextPrayer ? nextPrayer.name : '') + '|' + isToday + '|' + isFuture + '|' + corr + '|' + (showJumuah ? '1' : '0');
     if (skipAnim && this._cardsKey === key && container.children.length) {
       this.renderHeader();
       this.renderStats();
@@ -498,18 +513,29 @@ const Salah = {
         const statusKey = currentStatus || 'pending';
         const editKey = forceEdit ? '1' : '0';
         const nextKey = (isNext && !isLocked) ? '1' : '0';
+        const jumuahKey = (p === 'dhuhr' && showJumuah) ? '1' : '0';
 
         // Fine-grained diff check: Skip untouched cards completely to eliminate all DOM thrashing
-        if (card.dataset.status === statusKey && card.dataset.edit === editKey && card.dataset.isnext === nextKey) {
+        if (card.dataset.status === statusKey && card.dataset.edit === editKey && card.dataset.isnext === nextKey && card.dataset.jumuah === jumuahKey) {
           return;
         }
 
         card.dataset.status = statusKey;
         card.dataset.edit = editKey;
         card.dataset.isnext = nextKey;
+        card.dataset.jumuah = jumuahKey;
 
         const targetClassName = `salah-prayer-card ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}`;
         if (card.className !== targetClassName) card.className = targetClassName;
+
+        const nameEl = card.querySelector('.salah-prayer-name');
+        if (nameEl) {
+          const translatedLabel = window.t ? window.t(meta.label) : meta.label;
+          nameEl.innerHTML = `
+            ${translatedLabel}
+            ${isNext && !isLocked ? `<span class="salah-next-badge-inline">${window.t ? window.t('NEXT') : 'NEXT'}</span>` : ''}
+          `;
+        }
 
         const badgeEl = card.querySelector('.salah-prayer-status-badge');
         if (badgeEl) {
@@ -600,6 +626,7 @@ const Salah = {
                  data-status="${currentStatus || 'pending'}"
                  data-edit="${forceEdit ? '1' : '0'}"
                  data-isnext="${(isNext && !isLocked) ? '1' : '0'}"
+                 data-jumuah="${(p === 'dhuhr' && showJumuah) ? '1' : '0'}"
                  style="${isFuture ? 'opacity: 0.7; pointer-events: none;' : ''}">
                
               <!-- Prayer Header -->
