@@ -353,9 +353,16 @@
   color: var(--fin-green); background: color-mix(in srgb, var(--fin-green) 12%, transparent);
   padding: 4px 10px; border-radius: 20px;
 }
+.fin-live-badge.custom {
+  color: #3b82f6; background: rgba(59, 130, 246, 0.12);
+}
 [data-theme="light"] .fin-live-badge {
   background: #DCFCE7 !important;
   color: #15803D !important;
+}
+[data-theme="light"] .fin-live-badge.custom {
+  background: #EFF6FF !important;
+  color: #2563EB !important;
 }
 .fin-pulse-dot {
   width: 6px; height: 6px; border-radius: 50%; background: #10b981;

@@ -349,14 +349,33 @@ const Finance = {
 
   getSymbol() { return DB.getSettings().currency === 'BDT' ? '৳' : '$'; },
 
-  // Return a sane, finite, positive exchange rate (USD→BDT). Guards against
-  // tampered/NaN/Infinity/zero rates that would corrupt every BDT→USD conversion
-  // and could bypass the insufficient-funds guard. Falls back to the default.
+  // Return a sane, finite, positive exchange rate (USD→BDT).
+  // Uses custom user rate if defined, or falls back to live auto rate.
   _getFXRate() {
+    const s = DB.getSettings();
+    if (s.customFxRate && typeof s.customFxRate === 'number' && isFinite(s.customFxRate) && s.customFxRate > 0 && s.customFxRate <= 100000) {
+      return s.customFxRate;
+    }
     const r = this.exchangeRate;
     if (typeof r !== 'number' || !isFinite(r) || r <= 0) return 118;
     if (r > 100000) return 100000;
     return r;
+  },
+
+  setCustomRate(val) {
+    const num = parseFloat(val);
+    const s = DB.getSettings();
+    if (isNaN(num) || num <= 0 || num > 100000) {
+      delete s.customFxRate;
+      DB.setSettings(s);
+      if (typeof Utils !== 'undefined') Utils.toast('Reset to Live Auto Market Rate', 'info');
+    } else {
+      s.customFxRate = Number(num.toFixed(4));
+      DB.setSettings(s);
+      if (typeof Utils !== 'undefined') Utils.toast('Custom rate applied: 1 USD = ' + s.customFxRate + ' BDT', 'success');
+    }
+    if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
+    this.showToolsModal();
   },
 
   setCurrency(code) {
@@ -1783,7 +1802,10 @@ const Finance = {
     container.innerHTML = `<div class="vault-overlay-grid">${filtered.map(v => this.renderSavingsItem(v)).join('')}</div>`;
   },
   showToolsModal() {
-    const exchangeRateText = this.exchangeRate ? `1 USD = ${this._getFXRate().toFixed(2)} BDT` : 'Loading rates...';
+    const s = DB.getSettings();
+    const isCustom = typeof s.customFxRate === 'number' && isFinite(s.customFxRate) && s.customFxRate > 0;
+    const activeRate = this._getFXRate();
+    const exchangeRateText = `1 USD = ${activeRate.toFixed(2)} BDT`;
 
     const html = `
       <div class="finance-modal-content" style="max-width:420px;">
@@ -1803,23 +1825,31 @@ const Finance = {
           <div class="fin-settings-section-label">Live Forex Market</div>
           <div class="fin-exchange-card">
             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:8px;">
-              <div class="fin-live-badge">
-                <span class="fin-pulse-dot"></span>
-                Live Market Rate
+              <div class="fin-live-badge ${isCustom ? 'custom' : ''}">
+                <span class="fin-pulse-dot" style="${isCustom ? 'background:#3b82f6; box-shadow:0 0 8px #3b82f6;' : ''}"></span>
+                ${isCustom ? 'Custom Override' : 'Live Benchmark'}
               </div>
-              <button class="fin-fx-sync-btn" onclick="Finance.syncRateManual(this)" title="Fetch latest live market rate" aria-label="Sync live rate">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-                <span>Sync Now</span>
-              </button>
+              <div style="display:flex; gap:6px; align-items:center;">
+                ${isCustom ? `<button class="fin-fx-sync-btn" onclick="Finance.setCustomRate(null)" title="Reset to Live Auto Rate"><span>Reset Auto</span></button>` : ''}
+                <button class="fin-fx-sync-btn" onclick="Finance.syncRateManual(this)" title="Fetch latest live market rate" aria-label="Sync live rate">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                  <span>Sync Now</span>
+                </button>
+              </div>
             </div>
             <div style="font-size:22px; font-weight:900; color:var(--color-text-primary); letter-spacing:-0.5px;">${exchangeRateText}</div>
             <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:8px; display:flex; align-items:center; justify-content:space-between; width:100%;">
               <span style="display:inline-flex; align-items:center; gap:5px;">
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Auto-synced via OpenER
+                ${isCustom ? 'User defined rate' : 'Auto-synced via OpenER'}
               </span>
-              <span style="font-size:10.5px; opacity:0.8; font-weight:700;">${this._getFXRate().toFixed(4)} ৳</span>
+              <span style="font-size:10.5px; opacity:0.8; font-weight:700;">${activeRate.toFixed(4)} ৳</span>
             </div>
+          </div>
+
+          <div style="margin-top:10px; display:flex; gap:8px; align-items:center;">
+            <input type="number" step="0.01" id="fin-custom-rate-input" placeholder="Set custom rate (e.g. 123.48)" value="${isCustom ? activeRate : ''}" class="fin-modal-input" style="flex:1; padding:9px 12px; font-size:12.5px; font-weight:600; border-radius:12px; margin:0;" />
+            <button class="fin-save-btn" onclick="Finance.setCustomRate(document.getElementById('fin-custom-rate-input').value)" style="width:auto; padding:0 16px; min-height:38px; font-size:12px; border-radius:12px; margin:0; flex-shrink:0; background:linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">Set Rate</button>
           </div>
 
           <div class="fin-settings-section-label" style="color:var(--fin-red); margin-top:22px;">Danger Zone</div>
