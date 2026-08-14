@@ -209,6 +209,7 @@ const Translations = {
   '12 Rak\'ah': '১২ রাকাত',
   'Night Prayers': 'রাতের সালাত',
   'Tahajjud & Witr': 'তাহাজ্জুদ ও বিতর',
+  'Witr & Tahajjud': 'বিতর ও তাহাজ্জুদ',
   // Tahajjud card labels
   'Tahajjud': 'তাহাজ্জুদ',
   'Night Vigils': 'রাতের ইবাদত',

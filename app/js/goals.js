@@ -61,8 +61,8 @@ const Goals = {
     if (data.tahajjud_rakat === undefined) data.tahajjud_rakat = 0;
 
     this.renderSunnah(data.sunnah, skipAnim);
-    this.renderTahajjud(data.tahajjud, data.tahajjud_rakat, skipAnim);
     this.renderWitr(data.witr, skipAnim);
+    this.renderTahajjud(data.tahajjud, data.tahajjud_rakat, skipAnim);
     this.renderCelestialProgress(data, skipAnim);
   },
 
