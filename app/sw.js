@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-v230';
+const CACHE_NAME = 'lamim-v231';
 const CORE_ASSETS = [
   './',
   './index.html',

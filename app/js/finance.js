@@ -2475,7 +2475,7 @@ const Finance = {
     });
   },
 
-  getStats(v) {
+  getStats(v = this.currentViewDate || new Date()) {
     const m = v.getMonth(), y = v.getFullYear();
     const endOfViewMonth = new Date(y, m + 1, 0, 23, 59, 59); // Last second of the viewed month
 
