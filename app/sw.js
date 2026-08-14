@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-v177';
+const CACHE_NAME = 'lamim-v178';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -50,6 +50,8 @@ self.addEventListener('fetch', (e) => {
 
   // Skip external database, dynamic API, and Google API calls to prevent stale data
   const skipUrls = [
+    '/api/',
+    'scanner.tradingview.com',
     'api.bigdatacloud.net',
     'ipwho.is',
     'ipinfo.io',

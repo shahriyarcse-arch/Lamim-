@@ -1,7 +1,7 @@
 // Vercel Serverless Function for Live TradingView FX Rate
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
       body: JSON.stringify({
         symbols: { tickers: ['FX_IDC:USDBDT'] },
@@ -41,8 +41,8 @@ export default async function handler(req, res) {
           return res.status(200).json({
             source: 'TradingView',
             rate: rate,
-            changePct: changePct,
-            changeAbs: changeAbs,
+            changePct: typeof changePct === 'number' ? changePct : null,
+            changeAbs: typeof changeAbs === 'number' ? changeAbs : null,
             ts: Date.now()
           });
         }
@@ -66,4 +66,4 @@ export default async function handler(req, res) {
   } catch (e) {
     return res.status(500).json({ error: 'Failed to fetch forex rates' });
   }
-}
+};
