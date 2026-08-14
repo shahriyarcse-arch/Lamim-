@@ -338,19 +338,28 @@
 .fin-modal-title { font-size: 18px; font-weight: 800; color: var(--color-text-primary); }
 
 .fin-exchange-card {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 16px 18px; border-radius: 16px; margin: 18px 22px 0;
-  background: color-mix(in srgb, var(--color-accent-green) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-accent-green) 22%, transparent);
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  padding: 16px 18px; border-radius: 18px; margin: 0 0 4px;
+  background: color-mix(in srgb, var(--fin-blue) 8%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--fin-blue) 22%, transparent);
+}
+[data-theme="light"] .fin-exchange-card {
+  background: #F0F7FF !important;
+  border-color: #BFDBFE !important;
 }
 .fin-live-badge {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px;
-  color: var(--color-accent-green);
+  color: var(--fin-green); background: color-mix(in srgb, var(--fin-green) 12%, transparent);
+  padding: 4px 10px; border-radius: 20px;
+}
+[data-theme="light"] .fin-live-badge {
+  background: #DCFCE7 !important;
+  color: #15803D !important;
 }
 .fin-settings-section-label {
   font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-  color: var(--color-text-muted); margin-bottom: 10px; opacity: 0.7;
+  color: var(--color-text-muted); margin-bottom: 10px; opacity: 0.8;
 }
 
 /* ---- Form modals (Deposit / Expense / Vault) ---- */
@@ -784,13 +793,15 @@
 
 .fin-tool-btn {
   display: flex; align-items: center; gap: 14px; width: 100%;
-  padding: 14px 16px; border-radius: 14px; cursor: pointer; text-align: left;
+  padding: 14px 16px; border-radius: 16px; cursor: pointer; text-align: left;
   background: var(--color-surface-nested, rgba(255,255,255,0.03));
   border: 1px solid var(--color-divider-strong); color: var(--color-text-primary);
-  transition: all 0.2s; font-family: inherit;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;
 }
-.fin-tool-btn:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--fin-red) 30%, var(--color-divider-strong)); background: color-mix(in srgb, var(--fin-red) 6%, transparent); }
-.fin-tool-icon { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.fin-tool-btn:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--fin-red) 40%, var(--color-divider-strong)); background: color-mix(in srgb, var(--fin-red) 6%, transparent); }
+.fin-tool-icon { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+[data-theme="light"] .fin-tool-btn { background: #F8FAFC !important; border-color: #E2E8F0 !important; }
+[data-theme="light"] .fin-tool-btn:hover { background: #FFF1F2 !important; border-color: #FECDD3 !important; }
 
 [data-theme="light"] .finance-premium-card,
 [data-theme="light"] .fin-stat-card,

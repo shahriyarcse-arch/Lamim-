@@ -240,6 +240,7 @@ const Finance = {
     };
 
     this._addGlobal(window, 'lamim:theme-changed', onThemeChanged);
+    this._addGlobal(window, 'online', () => this.fetchExchangeRate());
     this._addGlobal(document, 'click', onOutsideClick, true);
     this._addGlobal(window, 'scroll', hidePicker, true);
     this._addGlobal(window, 'resize', hidePicker);
@@ -1764,45 +1765,55 @@ const Finance = {
     const exchangeRateText = this.exchangeRate ? `1 USD = ${this._getFXRate().toFixed(2)} BDT` : 'Loading rates...';
 
     const html = `
-      <div class="finance-modal-content">
+      <div class="finance-modal-content" style="max-width:420px;">
         <div class="fin-modal-header">
-          <div class="fin-modal-title">Finance Settings</div>
+          <div class="fin-modal-title">
+            <span style="display:inline-flex; align-items:center; gap:8px;">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              Finance Settings
+            </span>
+          </div>
           <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
 
-        <div style="padding: 8px 22px 22px;">
-          <div class="fin-settings-section-label">Market</div>
+        <div style="padding: 12px 0 6px;">
+          <div class="fin-settings-section-label">Live Forex Market</div>
           <div class="fin-exchange-card">
-            <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:8px;">
               <div class="fin-live-badge">
                 <span class="fin-pulse-dot"></span>
                 Live Market Rate
               </div>
-              <div style="font-size:20px; font-weight:800; color:var(--color-text-primary); margin-top:6px;">${exchangeRateText}</div>
+              <span style="font-size:11px; font-weight:700; color:var(--color-text-muted); opacity:0.8;">OpenER API</span>
+            </div>
+            <div style="font-size:22px; font-weight:900; color:var(--color-text-primary); letter-spacing:-0.5px;">${exchangeRateText}</div>
+            <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:8px; display:flex; align-items:center; gap:5px;">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Auto-synced with offline storage fallback
             </div>
           </div>
 
-          <div class="fin-settings-section-label" style="color:var(--fin-red); margin-top:24px;">Danger Zone</div>
-          <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="fin-settings-section-label" style="color:var(--fin-red); margin-top:22px;">Danger Zone</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
             <button class="fin-tool-btn" onclick="Finance.resetCurrentMonth()">
-              <div class="fin-tool-icon" style="background:rgba(255,149,0,0.12); color:#FF9500;">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              <div class="fin-tool-icon" style="background:rgba(245,158,11,0.12); color:#f59e0b;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
               </div>
               <div style="text-align:left;">
-                <div style="font-weight:700; font-size:14px;">Clear Current Month</div>
-                <div style="font-size:12px; opacity:0.6;">Delete all records for this month only</div>
+                <div style="font-weight:800; font-size:14px;">Clear Current Month</div>
+                <div style="font-size:12px; color:var(--color-text-muted);">Delete all records for this month only</div>
               </div>
             </button>
 
             <button class="fin-tool-btn" onclick="Finance.resetAllData()">
-              <div class="fin-tool-icon" style="background:rgba(255,59,48,0.12); color:var(--fin-red);">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M5 12h14"/></svg>
+              <div class="fin-tool-icon" style="background:rgba(239,68,68,0.12); color:var(--fin-red);">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               </div>
               <div style="text-align:left;">
-                <div style="font-weight:700; font-size:14px; color:var(--fin-red);">Factory Reset (Full Wipe)</div>
-                <div style="font-size:12px; opacity:0.6;">Erase all history and all vaults</div>
+                <div style="font-weight:800; font-size:14px; color:var(--fin-red);">Factory Reset (Full Wipe)</div>
+                <div style="font-size:12px; color:var(--color-text-muted);">Erase all history and all vaults</div>
               </div>
             </button>
           </div>
