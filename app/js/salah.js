@@ -519,10 +519,11 @@ const Salah = {
         const meta = { ...this.prayerMeta[p] };
         if (p === 'dhuhr' && showJumuah) meta.label = "Jumu'ah";
         const currentStatus = salah[p];
-        const isLocked = !!currentStatus;
+        const normStatus = currentStatus === 'jamaah' ? 'jamaat' : (currentStatus === 'prayed' ? 'alone' : currentStatus);
+        const isLocked = !!normStatus;
         const forceEdit = !!(this._correcting && this._correcting.date === date && this._correcting.prayer === p);
         const showSelector = !isLocked || forceEdit;
-        const statusInfo = currentStatus ? this.statusMeta[currentStatus] : null;
+        const statusInfo = normStatus ? (this.statusMeta[normStatus] || this.statusMeta.alone) : null;
         const isNext = isToday && nextPrayer && nextPrayer.name === p;
 
         const statusKey = currentStatus || 'pending';
@@ -624,10 +625,11 @@ const Salah = {
             meta.label = "Jumu'ah";
           }
           const currentStatus = salah[p];
-          const isLocked = !!currentStatus;
+          const normStatus = currentStatus === 'jamaah' ? 'jamaat' : (currentStatus === 'prayed' ? 'alone' : currentStatus);
+          const isLocked = !!normStatus;
           const forceEdit = !!(this._correcting && this._correcting.date === date && this._correcting.prayer === p);
           const showSelector = !isLocked || forceEdit;
-          const statusInfo = currentStatus ? this.statusMeta[currentStatus] : null;
+          const statusInfo = normStatus ? (this.statusMeta[normStatus] || this.statusMeta.alone) : null;
           
           const isNext = isToday && nextPrayer && nextPrayer.name === p;
 
