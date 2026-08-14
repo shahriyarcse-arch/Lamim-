@@ -1258,25 +1258,56 @@
   line-height: 1.5;
 }
 
+/* ─── Dhikr Session History Scroll Container ─────────────────── */
 #dhikr-session-history {
-  max-height: 280px;
+  position: relative;
+  overflow: hidden; /* clip fade gradient to container */
+  transition: max-height 0.3s ease;
+}
+
+/* When scrollable (> 3 items) — constrain height to ~3 rows and enable scroll */
+#dhikr-session-history.has-scroll {
+  max-height: 232px; /* ~3 items × 72px + padding */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  scrollbar-color: rgba(20, 184, 166, 0.35) transparent;
+  /* Bottom fade gradient as a pseudo-element hint */
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
+  mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
 }
 
-/* Custom scrollbar for better look */
-#dhikr-session-history::-webkit-scrollbar {
-  width: 5px;
+/* Slim webkit scrollbar (teal themed) */
+#dhikr-session-history.has-scroll::-webkit-scrollbar {
+  width: 3px;
 }
-#dhikr-session-history::-webkit-scrollbar-track {
+#dhikr-session-history.has-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
-#dhikr-session-history::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+#dhikr-session-history.has-scroll::-webkit-scrollbar-thumb {
+  background: rgba(20, 184, 166, 0.4);
+  border-radius: 999px;
 }
+#dhikr-session-history.has-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 184, 166, 0.7);
+}
+
+/* Light mode scrollbar thumb */
+[data-theme="light"] #dhikr-session-history.has-scroll::-webkit-scrollbar-thumb {
+  background: rgba(15, 118, 110, 0.35);
+}
+[data-theme="light"] #dhikr-session-history.has-scroll {
+  scrollbar-color: rgba(15, 118, 110, 0.35) transparent;
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
+  mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
+}
+
+/* Remove mask when scrolled to bottom */
+#dhikr-session-history.has-scroll.scrolled-to-end {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 
 .dhikr-session-grid {
   display: grid;

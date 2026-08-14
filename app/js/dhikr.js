@@ -59,8 +59,18 @@ const Dhikr = {
 
     if (!this.initialized) {
       this.bindKeyboard();
+      this._bindHistoryScroll();
       this.initialized = true;
     }
+  },
+
+  _bindHistoryScroll() {
+    const el = document.getElementById('dhikr-session-history');
+    if (!el) return;
+    el.addEventListener('scroll', () => {
+      const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 8;
+      el.classList.toggle('scrolled-to-end', atBottom);
+    }, { passive: true });
   },
 
   onDataUpdated() {
@@ -277,6 +287,13 @@ const Dhikr = {
     Array.from(grid.children).forEach(child => {
       if (!validIds.includes(child.id)) grid.removeChild(child);
     });
+
+    // Toggle scroll mode when > 3 items
+    if (entries.length > 3) {
+      el.classList.add('has-scroll');
+    } else {
+      el.classList.remove('has-scroll');
+    }
   },
 
   renderLogDate() {
