@@ -285,6 +285,9 @@ const Finance = {
     this.initChart(stats);
   },
 
+  rateSource: 'TradingView',
+  rateChangePct: null,
+
   async fetchExchangeRate(isManual = false) {
     // Instant: apply last cached rate immediately (no network wait)
     try {
@@ -293,6 +296,8 @@ const Finance = {
         const p = JSON.parse(raw);
         if (p && p.rate && p.rate !== this.exchangeRate) {
           this.exchangeRate = (typeof p.rate === 'number' && isFinite(p.rate) && p.rate > 0 && p.rate <= 100000) ? p.rate : 118;
+          if (p.source) this.rateSource = p.source;
+          if (typeof p.changePct === 'number') this.rateChangePct = p.changePct;
           if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
         }
       }
@@ -305,33 +310,63 @@ const Finance = {
       }
       return;
     }
+
+    let newRate = null;
+    let source = 'TradingView';
+    let changePct = null;
+
+    // 1. Try Live TradingView endpoint
     try {
       const ctrl = new AbortController();
-      const to = setTimeout(() => ctrl.abort(), 10000);
-      const res = await fetch('https://open.er-api.com/v6/latest/USD', { signal: ctrl.signal });
+      const to = setTimeout(() => ctrl.abort(), 6000);
+      const res = await fetch('/api/forex', { signal: ctrl.signal });
       clearTimeout(to);
-      if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
-      if (data && data.rates && data.rates.BDT) {
-        const newRate = data.rates.BDT;
-        const safeRate = (typeof newRate === 'number' && isFinite(newRate) && newRate > 0 && newRate <= 100000) ? newRate : 118;
-        this.exchangeRate = safeRate;
-        try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: newRate })); } catch (e) { /* ignore */ }
-        if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
-        const modal = document.getElementById('finance-modal-overlay');
-        if (modal && modal.classList.contains('show')) {
-          const title = modal.querySelector('.fin-modal-title')?.innerText || '';
-          if (title.includes('Finance Settings')) this.showToolsModal();
-        }
-        if (isManual && typeof Utils !== 'undefined') {
-          Utils.toast('Live Forex rate updated: 1 USD = ' + safeRate.toFixed(2) + ' BDT', 'success');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && typeof data.rate === 'number' && isFinite(data.rate) && data.rate > 0) {
+          newRate = data.rate;
+          source = data.source || 'TradingView';
+          changePct = data.changePct;
         }
       }
-    } catch (e) {
-      console.warn('Exchange rate fetch failed:', e.message || e);
+    } catch (e) { /* Fall through to OpenER backup */ }
+
+    // 2. Fallback to OpenER if /api/forex is unavailable
+    if (!newRate) {
+      try {
+        const ctrl = new AbortController();
+        const to = setTimeout(() => ctrl.abort(), 8000);
+        const res = await fetch('https://open.er-api.com/v6/latest/USD', { signal: ctrl.signal });
+        clearTimeout(to);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.rates && data.rates.BDT) {
+            newRate = data.rates.BDT;
+            source = 'OpenER';
+          }
+        }
+      } catch (e) {
+        console.warn('Exchange rate fetch failed:', e.message || e);
+      }
+    }
+
+    if (newRate) {
+      const safeRate = (typeof newRate === 'number' && isFinite(newRate) && newRate > 0 && newRate <= 100000) ? newRate : 118;
+      this.exchangeRate = safeRate;
+      this.rateSource = source;
+      this.rateChangePct = changePct;
+      try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: safeRate, source, changePct })); } catch (e) { /* ignore */ }
+      if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
+      const modal = document.getElementById('finance-modal-overlay');
+      if (modal && modal.classList.contains('show')) {
+        const title = modal.querySelector('.fin-modal-title')?.innerText || '';
+        if (title.includes('Finance Settings')) this.showToolsModal();
+      }
       if (isManual && typeof Utils !== 'undefined') {
-        Utils.toast('Could not reach Forex API. Using cached rate.', 'info');
+        Utils.toast(`Live ${source} rate updated: 1 USD = ${safeRate.toFixed(2)} BDT`, 'success');
       }
+    } else if (isManual && typeof Utils !== 'undefined') {
+      Utils.toast('Could not reach Forex API. Using cached rate.', 'info');
     }
   },
 
@@ -350,32 +385,11 @@ const Finance = {
   getSymbol() { return DB.getSettings().currency === 'BDT' ? '৳' : '$'; },
 
   // Return a sane, finite, positive exchange rate (USD→BDT).
-  // Uses custom user rate if defined, or falls back to live auto rate.
   _getFXRate() {
-    const s = DB.getSettings();
-    if (s.customFxRate && typeof s.customFxRate === 'number' && isFinite(s.customFxRate) && s.customFxRate > 0 && s.customFxRate <= 100000) {
-      return s.customFxRate;
-    }
     const r = this.exchangeRate;
-    if (typeof r !== 'number' || !isFinite(r) || r <= 0) return 118;
+    if (typeof r !== 'number' || !isFinite(r) || r <= 0) return 123.48;
     if (r > 100000) return 100000;
     return r;
-  },
-
-  setCustomRate(val) {
-    const num = parseFloat(val);
-    const s = DB.getSettings();
-    if (isNaN(num) || num <= 0 || num > 100000) {
-      delete s.customFxRate;
-      DB.setSettings(s);
-      if (typeof Utils !== 'undefined') Utils.toast('Reset to Live Auto Market Rate', 'info');
-    } else {
-      s.customFxRate = Number(num.toFixed(4));
-      DB.setSettings(s);
-      if (typeof Utils !== 'undefined') Utils.toast('Custom rate applied: 1 USD = ' + s.customFxRate + ' BDT', 'success');
-    }
-    if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
-    this.showToolsModal();
   },
 
   setCurrency(code) {
@@ -1803,9 +1817,12 @@ const Finance = {
   },
   showToolsModal() {
     const s = DB.getSettings();
-    const isCustom = typeof s.customFxRate === 'number' && isFinite(s.customFxRate) && s.customFxRate > 0;
     const activeRate = this._getFXRate();
     const exchangeRateText = `1 USD = ${activeRate.toFixed(2)} BDT`;
+    const sourceLabel = this.rateSource || 'TradingView';
+    const changeBadge = typeof this.rateChangePct === 'number' 
+      ? `<span style="font-size:11px; font-weight:700; color:${this.rateChangePct >= 0 ? '#10b981' : '#ef4444'};">${this.rateChangePct >= 0 ? '+' : ''}${this.rateChangePct.toFixed(2)}%</span>` 
+      : '';
 
     const html = `
       <div class="finance-modal-content" style="max-width:420px;">
@@ -1825,12 +1842,12 @@ const Finance = {
           <div class="fin-settings-section-label">Live Forex Market</div>
           <div class="fin-exchange-card">
             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:8px;">
-              <div class="fin-live-badge ${isCustom ? 'custom' : ''}">
-                <span class="fin-pulse-dot" style="${isCustom ? 'background:#3b82f6; box-shadow:0 0 8px #3b82f6;' : ''}"></span>
-                ${isCustom ? 'Custom Override' : 'Live Benchmark'}
+              <div class="fin-live-badge">
+                <span class="fin-pulse-dot"></span>
+                Live Spot Market
               </div>
-              <div style="display:flex; gap:6px; align-items:center;">
-                ${isCustom ? `<button class="fin-fx-sync-btn" onclick="Finance.setCustomRate(null)" title="Reset to Live Auto Rate"><span>Reset Auto</span></button>` : ''}
+              <div style="display:flex; gap:8px; align-items:center;">
+                ${changeBadge}
                 <button class="fin-fx-sync-btn" onclick="Finance.syncRateManual(this)" title="Fetch latest live market rate" aria-label="Sync live rate">
                   <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                   <span>Sync Now</span>
@@ -1841,15 +1858,10 @@ const Finance = {
             <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:8px; display:flex; align-items:center; justify-content:space-between; width:100%;">
               <span style="display:inline-flex; align-items:center; gap:5px;">
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                ${isCustom ? 'User defined rate' : 'Auto-synced via OpenER'}
+                Live via ${sourceLabel}
               </span>
               <span style="font-size:10.5px; opacity:0.8; font-weight:700;">${activeRate.toFixed(4)} ৳</span>
             </div>
-          </div>
-
-          <div style="margin-top:10px; display:flex; gap:8px; align-items:center;">
-            <input type="number" step="0.01" id="fin-custom-rate-input" placeholder="Set custom rate (e.g. 123.48)" value="${isCustom ? activeRate : ''}" class="fin-modal-input" style="flex:1; padding:9px 12px; font-size:12.5px; font-weight:600; border-radius:12px; margin:0;" />
-            <button class="fin-save-btn" onclick="Finance.setCustomRate(document.getElementById('fin-custom-rate-input').value)" style="width:auto; padding:0 16px; min-height:38px; font-size:12px; border-radius:12px; margin:0; flex-shrink:0; background:linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">Set Rate</button>
           </div>
 
           <div class="fin-settings-section-label" style="color:var(--fin-red); margin-top:22px;">Danger Zone</div>
