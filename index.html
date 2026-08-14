@@ -2988,6 +2988,16 @@
         if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
       });
     })();
+
+    // Instant prefetch on touchstart for zero-delay app launch
+    document.querySelectorAll('a[href*="app/index.html"]').forEach(function(el) {
+      el.addEventListener('touchstart', function() {
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = 'app/index.html';
+        document.head.appendChild(link);
+      }, { passive: true, once: true });
+    });
   </script>
 </body>
 </html>
