@@ -673,11 +673,14 @@
               </button>
             </div>
 
-            <!-- Center Brand with Signature 3D Ribbon Logo (tap navigates to website with scroll state saved) -->
-            <a class="topbar-brand" href="../index.html" onclick="try { sessionStorage.setItem('lamim_home_scroll', (window.scrollY || document.documentElement.scrollTop || 0).toString()); } catch(e){}" title="Visit Website" aria-label="Visit Website">
-              <img src="assets/logo-mark.png" alt="Lamim Logo" style="height:20px; width:auto; object-fit:contain;">
-              <span class="topbar-brand-name">lamim</span>
-            </a>
+            <!-- Center: Signature Ribbon Logo for Home OR Section Title for others -->
+            <div class="topbar-center">
+              <a class="topbar-brand" id="topbar-brand-home" href="../index.html" onclick="try { sessionStorage.setItem('lamim_home_scroll', (window.scrollY || document.documentElement.scrollTop || 0).toString()); } catch(e){}" title="Visit Website" aria-label="Visit Website">
+                <img src="assets/logo-mark.png" alt="Lamim Logo" style="height:20px; width:auto; object-fit:contain;">
+                <span class="topbar-brand-name">lamim</span>
+              </a>
+              <span class="topbar-section-title" id="topbar-section-title" style="display:none"></span>
+            </div>
 
             <!-- Right: Profile Avatar -->
             <div class="topbar-right">
@@ -807,38 +810,6 @@
 
             </div>
           </section>
-
-          <!-- Section Topbar (non-home sections on mobile — PREMIUM) -->
-          <div class="topbar topbar-section" id="topbar-section" style="display:none">
-            <!-- Left: Theme Toggle & Hamburger -->
-            <div class="topbar-left">
-              <button class="topbar-hamburger" id="sidebar-toggle-section" aria-label="Menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-              </button>
-              <button class="topbar-theme-toggle" onclick="Profile.toggleTheme()" title="Toggle Theme"
-                aria-label="Toggle theme">
-                <div class="theme-toggle-track">
-                  <span class="theme-icon theme-icon-sun">️</span>
-                  <span class="theme-icon theme-icon-moon"></span>
-                  <div class="theme-toggle-thumb"></div>
-                </div>
-              </button>
-            </div>
-
-            <!-- Center: Section Title with gradient -->
-            <div class="topbar-brand">
-              <span class="topbar-section-title" id="topbar-section-title"></span>
-            </div>
-
-            <!-- Right: Profile Avatar -->
-            <div class="topbar-right">
-              <div class="avatar" id="topbar-avatar-section" style="cursor:pointer" onclick="App.navigateTo('profile')">
-                ?</div>
-            </div>
-          </div>
-
 
           <!-- ===== SALAH (Redesigned) ===== -->
           <section class="section-panel" id="section-salah">

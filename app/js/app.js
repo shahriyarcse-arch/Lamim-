@@ -451,18 +451,16 @@ updateSectionTitle() {
     // Toggle Home-active flag (pauses aurora animation when away from Home)
     document.body.classList.toggle('home-active', sectionId === 'home');
 
-    // Toggle topbars - home shows main topbar, others show section topbar
-    const topbar = document.getElementById('topbar');
-    const topbarSection = document.getElementById('topbar-section');
-    if (topbar && topbarSection) {
-      if (sectionId === 'home') {
-        topbar.style.display = '';
-        topbarSection.style.display = 'none';
-      } else {
-        topbar.style.display = 'none';
-        topbarSection.style.display = '';
-        this.updateSectionTitle();
-      }
+    // Update single unified topbar: Home shows signature brand, others show section title
+    const topbarBrand = document.getElementById('topbar-brand-home');
+    const topbarTitle = document.getElementById('topbar-section-title');
+    if (sectionId === 'home') {
+      if (topbarBrand) topbarBrand.style.display = 'inline-flex';
+      if (topbarTitle) topbarTitle.style.display = 'none';
+    } else {
+      if (topbarBrand) topbarBrand.style.display = 'none';
+      if (topbarTitle) topbarTitle.style.display = 'inline-block';
+      this.updateSectionTitle();
     }
 
     // Init section with error boundary + recovery
