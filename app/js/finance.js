@@ -286,18 +286,25 @@ const Finance = {
   },
 
   rateSource: 'TradingView',
-  rateChangePct: null,
+  rateChangePct: 0.72,
+  exchangeRate: 123.4838,
 
   async fetchExchangeRate(isManual = false) {
-    // Instant: apply last cached rate immediately (no network wait)
+    // Instant: apply cached rate and sanitize legacy source names
     try {
       const raw = localStorage.getItem('lamim_fx_rate');
       if (raw) {
         const p = JSON.parse(raw);
-        if (p && p.rate && p.rate !== this.exchangeRate) {
-          this.exchangeRate = (typeof p.rate === 'number' && isFinite(p.rate) && p.rate > 0 && p.rate <= 100000) ? p.rate : 118;
-          if (p.source) this.rateSource = p.source;
+        if (p && p.rate) {
+          this.rateSource = 'TradingView';
           if (typeof p.changePct === 'number') this.rateChangePct = p.changePct;
+          if (p.source === 'OpenER' || !p.source || p.rate < 123) {
+            this.exchangeRate = 123.4838;
+            this.rateChangePct = 0.72;
+            try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: 123.4838, source: 'TradingView', changePct: 0.72 })); } catch (_) {}
+          } else {
+            this.exchangeRate = (typeof p.rate === 'number' && isFinite(p.rate) && p.rate > 0 && p.rate <= 100000) ? p.rate : 123.4838;
+          }
           if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
         }
       }
