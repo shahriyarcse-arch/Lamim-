@@ -361,18 +361,6 @@ const Finance = {
     }
   },
 
-  async syncRateManual(btn) {
-    if (btn) {
-      btn.disabled = true;
-      btn.classList.add('spinning');
-    }
-    await this.fetchExchangeRate(true);
-    if (btn) {
-      btn.disabled = false;
-      btn.classList.remove('spinning');
-    }
-  },
-
   getSymbol() { return DB.getSettings().currency === 'BDT' ? '৳' : '$'; },
 
   // Return a sane, finite, positive exchange rate (USD→BDT).
@@ -1839,12 +1827,8 @@ const Finance = {
                 <span class="fin-pulse-dot"></span>
                 Live Spot Market
               </div>
-              <div style="display:flex; gap:8px; align-items:center;">
+              <div>
                 ${changeBadge}
-                <button class="fin-fx-sync-btn" onclick="Finance.syncRateManual(this)" title="Fetch latest live market rate" aria-label="Sync live rate">
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-                  <span>Sync Now</span>
-                </button>
               </div>
             </div>
             <div style="font-size:22px; font-weight:900; color:var(--color-text-primary); letter-spacing:-0.5px;">${exchangeRateText}</div>
