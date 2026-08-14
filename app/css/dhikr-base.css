@@ -392,54 +392,46 @@
 .dhikr-preset-card {
   --dc: #14b8a6;
   flex: 0 0 auto;
-  width: 92px;
-  min-height: 56px;
-  padding: 14px 10px;
-  display: flex;
-  flex-direction: column;
+  min-width: auto;
+  max-width: none;
+  height: 46px;
+  padding: 0 20px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
 
   background: var(--color-surface-card);
   border: 1px solid var(--color-border);
-  border-radius: 18px;
+  border-radius: 99px;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   scroll-snap-align: start;
   touch-action: pan-x pan-y;
   user-select: none;
   -webkit-user-select: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-}
-.dhikr-preset-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--dc);
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .dhikr-preset-card:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--dc) 45%, var(--color-border));
+  transform: translateY(-2px);
+  border-color: var(--dc);
   background: color-mix(in srgb, var(--dc) 8%, var(--color-surface-card));
+  box-shadow: 0 6px 16px rgba(20, 184, 166, 0.15);
 }
-  border-color: var(--color-accent-green);
-  background: color-mix(in srgb, var(--color-accent-green) 10%, var(--color-surface-card));
+
+.dhikr-preset-card.active {
+  border-color: var(--dc);
+  background: color-mix(in srgb, var(--dc) 16%, var(--color-surface-card));
+  box-shadow: 0 4px 18px rgba(20, 184, 166, 0.22);
 }
-.dhikr-add-card .dhikr-preset-icon {
-  color: var(--color-accent-green);
-  background: color-mix(in srgb, var(--color-accent-green) 16%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-accent-green) 35%, transparent);
-}
+
 .dhikr-add-card .dhikr-preset-name {
-  color: var(--color-accent-green);
+  color: var(--color-accent-teal, #14b8a6);
+  font-weight: 800;
 }
 
 

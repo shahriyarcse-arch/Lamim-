@@ -1317,59 +1317,108 @@
 }
 
 /* On wider screens, 2 columns */
-@media (min-width: 400px) {
+@media (min-width: 480px) {
   .dhikr-session-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+    gap: 12px !important;
   }
 }
 
 .dhikr-session-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 12px 18px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  transition: all 0.2s ease;
+  justify-content: space-between;
+  gap: 14px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .dhikr-session-item:hover {
   transform: translateY(-2px);
-  border-color: var(--color-accent-primary);
+  border-color: var(--color-accent-teal, #14b8a6);
+  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.15);
 }
 
 .ds-icon {
-  color: var(--color-accent-primary);
-  opacity: 0.8;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(6, 182, 212, 0.10));
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  color: #14b8a6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ds-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ds-info {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .ds-name {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--color-text-primary);
+  letter-spacing: -0.01em;
 }
 
 .ds-count {
-  font-size: 11px;
-  color: var(--color-accent-gold);
+  font-size: 13px;
+  color: #0d9488;
   font-weight: 800;
+  background: rgba(20, 184, 166, 0.12);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Light Mode Support */
 [data-theme="light"] .dhikr-log-card {
-  background: #FFFFFF !important;
-  border-color: #E2E8F0 !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04) !important;
 }
 
 [data-theme="light"] .dhikr-session-item {
-  background: #F8FAFC !important;
-  border-color: #E2E8F0 !important;
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+}
+
+[data-theme="light"] .dhikr-session-item:hover {
+  border-color: #14b8a6 !important;
+  box-shadow: 0 6px 18px rgba(20, 184, 166, 0.12) !important;
+}
+
+[data-theme="light"] .ds-icon {
+  background: rgba(20, 184, 166, 0.10);
+  border-color: rgba(20, 184, 166, 0.2);
+  color: #0d9488;
 }
 
 [data-theme="light"] .ds-name {
-  color: #1E293B !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .ds-count {
+  color: #047857 !important;
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(20, 184, 166, 0.25);
 }
 
 /* Dhikr Premium Button Enhancements */
@@ -1470,42 +1519,56 @@
 }
 
 .dhikr-preset-card {
-  min-width: 90px;
-  max-width: 110px;
-  height: 90px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  display: flex;
-  flex-direction: column;
+  min-width: auto;
+  max-width: none;
+  height: 46px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 6px;
+  padding: 0 20px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   flex-shrink: 0;
   text-align: center;
   overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .dhikr-preset-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
 .dhikr-preset-card:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  transform: translateY(-2px);
+  border-color: var(--color-accent-teal, #14b8a6) !important;
+  box-shadow: 0 6px 16px rgba(20, 184, 166, 0.15) !important;
+}
+
+[data-theme="dark"] .dhikr-preset-card:hover {
   background: rgba(255, 255, 255, 0.08) !important;
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: var(--color-accent-teal, #14b8a6) !important;
+  box-shadow: 0 6px 18px rgba(20, 184, 166, 0.25) !important;
 }
 
 .dhikr-preset-card.active {
-  background: rgba(13, 148, 136, 0.12) !important;
-  border: 2px solid #0d9488 !important;
-  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.2) !important;
-  transform: scale(1.02);
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.16), rgba(6, 182, 212, 0.10)) !important;
+  border: 1.5px solid #14b8a6 !important;
+  box-shadow: 0 4px 18px rgba(20, 184, 166, 0.22) !important;
+  transform: scale(1.03);
 }
 
 .dhikr-preset-name {
-  font-size: 10px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  letter-spacing: -0.01em !important;
   color: var(--color-text-secondary) !important;
   transition: color 0.2s ease;
   background: none !important;
@@ -1514,9 +1577,10 @@
   animation: none !important;
   filter: none !important;
   text-shadow: none !important;
-  line-height: 1.25 !important;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
   max-width: 100%;
 }
 
@@ -1529,26 +1593,26 @@
 
 /* Light Mode Support */
 [data-theme="light"] .dhikr-preset-card {
-  background: #F8FAFC !important;
-  border-color: #E2E8F0 !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
 }
 
 [data-theme="light"] .dhikr-preset-card.active {
   background: #E6F4F1 !important;
   border-color: #0d9488 !important;
-  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.18) !important;
 }
 
 [data-theme="light"] .dhikr-preset-name {
-  color: #0f172a !important;
-  font-weight: 800 !important;
-  -webkit-text-fill-color: #0f172a !important;
+  color: #334155 !important;
+  font-weight: 700 !important;
+  -webkit-text-fill-color: #334155 !important;
 }
 
 [data-theme="light"] .dhikr-preset-card.active .dhikr-preset-name {
   color: #047857 !important;
   font-weight: 800 !important;
-  text-shadow: none !important;
+  -webkit-text-fill-color: #047857 !important;
 }
 
 .dhikr-hadith-text {
