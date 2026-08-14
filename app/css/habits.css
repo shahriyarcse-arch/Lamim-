@@ -1277,8 +1277,18 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: none;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+#section-habits .section-tools-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: block;
 }
 
 #section-habits .section-tools-btn:hover {

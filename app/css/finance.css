@@ -16,6 +16,13 @@
   cursor: pointer;
   transition: all 0.22s ease;
   margin-left: auto;
+  flex-shrink: 0;
+}
+.section-tools-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: block;
 }
 .section-tools-btn:hover {
   transform: translateY(-2px) rotate(35deg);
