@@ -442,8 +442,10 @@
   transition: transform 0.3s ease;
 }
 
-.salah-prayer-card:hover .salah-prayer-icon-wrap {
-  transform: scale(1.05) rotate(-2deg);
+@media (hover: hover) and (pointer: fine) {
+  .salah-prayer-card:hover .salah-prayer-icon-wrap {
+    transform: scale(1.05) rotate(-2deg);
+  }
 }
 
 .salah-prayer-emoji {
@@ -576,11 +578,9 @@
 @keyframes lockedFadeIn {
   from {
     opacity: 0;
-    transform: translateY(2px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -629,13 +629,15 @@
   background: #FFFFFF;
   border-color: rgba(99, 102, 241, 0.1);
   box-shadow: 0 8px 20px rgba(99, 102, 241, 0.04);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-[data-theme="light"] .salah-prayer-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.12);
-  border-color: rgba(99, 102, 241, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  [data-theme="light"] .salah-prayer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.25);
+  }
 }
 
 [data-theme="light"] .salah-cal-cell.empty {
