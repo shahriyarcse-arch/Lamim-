@@ -331,13 +331,15 @@ const Dhikr = {
     }).filter(d => d.total > 0);
 
     if (dayStats.length === 0) {
-      body.innerHTML = `<div class="empty-state" style="padding:var(--space-6)">
-        <div class="empty-icon" style="color:var(--color-text-muted); margin-bottom: 10px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
-        </div>
-        <p>${this.getLang() === 'bn' ? 'কোনো ইতিহাস নেই' : 'No history found'}</p>
+      body.innerHTML = `<div class="dhikr-hist-empty">
+        <div class="dhe-orb"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg></div>
+        <p class="dhe-text">${this.getLang() === 'bn' ? 'কোনো ইতিহাস নেই' : 'No history yet — start your dhikr journey!'}</p>
       </div>`;
-    } else {
+      el.classList.remove('hidden');
+      return;
+    }
+
+    {
       const totalAll = dayStats.reduce((s, d) => s + d.total, 0);
       const activeDays = dayStats.length;
       const best = dayStats.reduce((m, d) => Math.max(m, d.total), 0);
@@ -346,10 +348,34 @@ const Dhikr = {
       const isBn = this.getLang() === 'bn';
       let html = `
         <div class="dhikr-hist-summary">
-          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(totalAll) : totalAll}</span><span class="dhs-label">${isBn ? 'মোট যিকির' : 'Total Dhikr'}</span></div>
-          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(activeDays) : activeDays}</span><span class="dhs-label">${isBn ? 'সক্রিয় দিন' : 'Active Days'}</span></div>
-          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(best) : best}</span><span class="dhs-label">${isBn ? 'সেরা দিন' : 'Best Day'}</span></div>
-          <div class="dhs-card"><span class="dhs-val">${window.n ? window.n(streak) : streak}</span><span class="dhs-label">${isBn ? 'ধারাবাহিক' : 'Streak'}</span></div>
+          <div class="dhs-card dhs-total">
+            <div class="dhs-icon-wrap">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg>
+            </div>
+            <span class="dhs-val">${window.n ? window.n(totalAll) : totalAll}</span>
+            <span class="dhs-label">${isBn ? 'মোট যিকির' : 'Total'}</span>
+          </div>
+          <div class="dhs-card dhs-days">
+            <div class="dhs-icon-wrap">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+            </div>
+            <span class="dhs-val">${window.n ? window.n(activeDays) : activeDays}</span>
+            <span class="dhs-label">${isBn ? 'সক্রিয় দিন' : 'Days'}</span>
+          </div>
+          <div class="dhs-card dhs-best">
+            <div class="dhs-icon-wrap">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </div>
+            <span class="dhs-val">${window.n ? window.n(best) : best}</span>
+            <span class="dhs-label">${isBn ? 'সেরা দিন' : 'Best'}</span>
+          </div>
+          <div class="dhs-card dhs-streak">
+            <div class="dhs-icon-wrap">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <span class="dhs-val">${window.n ? window.n(streak) : streak}</span>
+            <span class="dhs-label">${isBn ? 'ধারাবাহিক' : 'Streak'}</span>
+          </div>
         </div>
         <div class="dhikr-hist-list">
       `;
@@ -363,17 +389,17 @@ const Dhikr = {
           const formattedDt = dt.toLocaleDateString(isBn ? 'bn-BD' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
           displayDate = window.n ? window.n(formattedDt) : formattedDt;
         }
+        const isToday = date === Utils.todayStr();
         html += `
           <div class="dhikr-history-card">
             <div class="dhikr-history-header">
-              <span class="dhikr-history-date">${displayDate}</span>
-              <span class="dhikr-history-total">${window.n ? window.n(d.total) : d.total} ${isBn ? 'টি' : ''}</span>
+              <span class="dhikr-history-date${isToday ? ' is-today' : ''}">${displayDate}</span>
+              <span class="dhikr-history-total">${window.n ? window.n(d.total) : d.total}${isBn ? ' টি' : ''}</span>
             </div>
             <div class="dhikr-history-list">
         `;
         d.entries.forEach(([id, cnt]) => {
           const preset = this.getAllPresets().find(p => p.id === id) || { latin: id, icon: Icons.tasbeeh, color: '' };
-          const color = preset.color || '#14b8a6';
           html += `
             <div class="dhikr-history-item" ${preset.color ? `style="--dc:${preset.color}"` : ''}>
               <div class="dhikr-history-item-left">
