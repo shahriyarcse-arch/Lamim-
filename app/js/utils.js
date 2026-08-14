@@ -979,19 +979,13 @@ const UI = {
     if (opts.desc && desc) desc.textContent = opts.desc;
     if (opts.confirmText && confirmBtn) confirmBtn.textContent = opts.confirmText;
 
-    // Dynamic Icon/Color theming
-    if (opts.type === 'danger' && iconOrb && confirmBtn) {
-      iconOrb.style.background = 'rgba(248,113,113,0.1)';
-      iconOrb.style.color = '#f87171';
-      iconOrb.style.borderColor = 'rgba(248,113,113,0.2)';
-      confirmBtn.style.background = '#ef4444';
-    }
-
-    // Reset to default if not danger
-    if (opts.type !== 'danger' && iconOrb && confirmBtn) {
+    // Reset inline overrides so CSS classes dictate the modern aesthetic
+    if (iconOrb) {
       iconOrb.style.background = '';
       iconOrb.style.color = '';
       iconOrb.style.borderColor = '';
+    }
+    if (confirmBtn) {
       confirmBtn.style.background = '';
     }
 

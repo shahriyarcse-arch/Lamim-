@@ -2385,17 +2385,12 @@
     </div>
 
     <!-- Section Settings Modal (Custom Popup) -->
-    <div id="section-settings-modal" class="modal-overlay hidden">
-      <div class="modal card card-glass anim-scale-up"
-        style="max-width:340px; width:90%; padding:30px 28px; border-radius:16px; position:relative; border:1px solid var(--color-divider-subtle, rgba(255,255,255,0.08));">
-        <button class="modal-close" onclick="UI.hideSettingsModal()"
-          style="position:absolute; top:14px; right:14px; z-index:5; width:30px; height:30px; border-radius:8px; background:transparent; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--color-text-muted); font-size:16px; transition:background 0.2s, color 0.2s;"
-          onmouseover="this.style.background='rgba(255,255,255,0.08)';this.style.color='var(--color-text-primary)'"
-          onmouseout="this.style.background='transparent';this.style.color='var(--color-text-muted)'"></button>
-        <div class="flex flex-col items-center text-center gap-3">
-          <div class="modal-icon-orb" id="settings-modal-icon"
-            style="width:54px; height:54px; background:rgba(248,113,113,0.1); color:#f87171; border-radius:13px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(248,113,113,0.2);">
-            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none"
+    <div id="section-settings-modal" class="modal-overlay hidden" onclick="if(event.target===this) UI.hideSettingsModal()">
+      <div class="confirm-modal-card anim-scale-up">
+        <button class="confirm-modal-close" onclick="UI.hideSettingsModal()" aria-label="Close"></button>
+        <div class="confirm-modal-body">
+          <div class="confirm-modal-icon-orb" id="settings-modal-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 6h18" />
               <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
@@ -2404,21 +2399,11 @@
               <line x1="14" y1="11" x2="14" y2="17" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold" id="settings-modal-title"
-            style="margin:0; font-size:18px; letter-spacing:-0.01em;">Reset Data?</h3>
-          <p class="text-sm text-muted" id="settings-modal-desc"
-            style="margin:0; line-height:1.55; font-size:13px; max-width:260px;">Are you sure you want to clear all data
-            for this section today?</p>
-
-          <div class="flex flex-col w-full gap-2.5 mt-5">
-            <button class="btn" id="settings-confirm-btn"
-              style="background:#ef4444; color:#fff; border-radius:11px; padding:13px; font-weight:600; border:none; width:100%; transition:background 0.2s;"
-              onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">Yes, Clear
-              Data</button>
-            <button class="btn btn-secondary" onclick="UI.hideSettingsModal()"
-              style="border-radius:11px; padding:12px; font-weight:600; width:100%; background:transparent; border:1px solid var(--color-divider-subtle, rgba(255,255,255,0.14)); color:var(--color-text-primary, #fff); transition:background 0.2s, border-color 0.2s;"
-              onmouseover="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.22)'"
-              onmouseout="this.style.background='transparent';this.style.borderColor='var(--color-divider-subtle, rgba(255,255,255,0.14))'">Cancel</button>
+          <h3 class="confirm-modal-title" id="settings-modal-title">Reset Data?</h3>
+          <p class="confirm-modal-desc" id="settings-modal-desc">Are you sure you want to clear all data for this section today?</p>
+          <div class="confirm-modal-actions">
+            <button class="confirm-modal-confirm-btn" id="settings-confirm-btn">Yes, Clear All</button>
+            <button class="confirm-modal-cancel-btn" onclick="UI.hideSettingsModal()">Cancel</button>
           </div>
         </div>
       </div>

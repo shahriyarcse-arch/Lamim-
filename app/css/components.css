@@ -1912,5 +1912,318 @@ select.input option:disabled {
   }
 }
 
+/* ========================================================
+   SECTION RESET / CONFIRM MODAL (Universal Modern Redesign)
+   ======================================================== */
+.confirm-modal-card {
+  position: relative;
+  width: 90%;
+  max-width: 360px;
+  background: var(--color-surface-card, #131722);
+  border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+  border-radius: 24px;
+  padding: 28px 24px 24px;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+[data-theme="light"] .confirm-modal-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.03) inset;
+}
+
+.confirm-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-muted, #94a3b8);
+  transition: all 0.2s ease;
+}
+
+.confirm-modal-close::before {
+  content: "✕";
+  font-size: 14px;
+  line-height: 1;
+}
+
+.confirm-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary, #ffffff);
+  transform: scale(1.05);
+}
+
+[data-theme="light"] .confirm-modal-close {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .confirm-modal-close:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #0f172a;
+}
+
+.confirm-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.confirm-modal-icon-orb {
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.05));
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.2);
+}
+
+.confirm-modal-title {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary, #ffffff);
+  margin: 0 0 8px 0;
+  line-height: 1.25;
+}
+
+[data-theme="light"] .confirm-modal-title {
+  color: #0f172a;
+}
+
+.confirm-modal-desc {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--color-text-muted, #94a3b8);
+  margin: 0 0 24px 0;
+  max-width: 280px;
+}
+
+[data-theme="light"] .confirm-modal-desc {
+  color: #64748b;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.confirm-modal-confirm-btn {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 14px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.4);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.confirm-modal-confirm-btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -4px rgba(239, 68, 68, 0.5);
+}
+
+.confirm-modal-confirm-btn:active {
+  transform: translateY(0);
+}
+
+.confirm-modal-cancel-btn {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #cbd5e1);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-modal-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-text-primary, #ffffff);
+}
+
+[data-theme="light"] .confirm-modal-cancel-btn {
+  color: #475569;
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .confirm-modal-cancel-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+/* ========================================================
+   SECTION RESET / SETTINGS BUTTON (Universal Modern Redesign)
+   ======================================================== */
+.section-settings-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-card, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+  color: var(--color-text-secondary, #94a3b8);
+  cursor: pointer;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-settings-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-settings-btn:hover {
+  transform: translateY(-1.5px) scale(1.04);
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.3);
+}
+
+.section-settings-btn:hover svg {
+  transform: rotate(45deg);
+}
+
+.section-settings-btn:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Light Theme defaults */
+[data-theme="light"] .section-settings-btn {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #64748b;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .section-settings-btn:hover {
+  background: #f8fafc;
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific Section Accent Variations */
+#section-salah .section-settings-btn {
+  color: var(--color-accent-gold, #f59e0b);
+}
+#section-salah .section-settings-btn:hover {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  box-shadow: 0 6px 18px -4px rgba(245, 158, 11, 0.25);
+}
+[data-theme="light"] #section-salah .section-settings-btn {
+  color: #d97706;
+}
+[data-theme="light"] #section-salah .section-settings-btn:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+  color: #b45309;
+}
+
+#section-dhikr .section-settings-btn {
+  color: var(--color-accent-teal, #14b8a6);
+}
+#section-dhikr .section-settings-btn:hover {
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(20, 184, 166, 0.35);
+  color: #2dd4bf;
+  box-shadow: 0 6px 18px -4px rgba(20, 184, 166, 0.25);
+}
+[data-theme="light"] #section-dhikr .section-settings-btn {
+  color: #0d9488;
+}
+[data-theme="light"] #section-dhikr .section-settings-btn:hover {
+  background: rgba(20, 184, 166, 0.1);
+  border-color: #14b8a6;
+  color: #0f766e;
+}
+
+#section-nafl .section-settings-btn {
+  color: var(--color-accent-purple, #a855f7);
+}
+#section-nafl .section-settings-btn:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #c084fc;
+  box-shadow: 0 6px 18px -4px rgba(168, 85, 247, 0.25);
+}
+[data-theme="light"] #section-nafl .section-settings-btn {
+  color: #9333ea;
+}
+[data-theme="light"] #section-nafl .section-settings-btn:hover {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: #a855f7;
+  color: #7e22ce;
+}
+
+#section-gym .section-settings-btn {
+  color: var(--gh-primary, #06b6d4);
+}
+#section-gym .section-settings-btn:hover {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: rgba(6, 182, 212, 0.35);
+  color: #22d3ee;
+  box-shadow: 0 6px 18px -4px rgba(6, 182, 212, 0.25);
+}
+[data-theme="light"] #section-gym .section-settings-btn {
+  color: #0891b2;
+}
+[data-theme="light"] #section-gym .section-settings-btn:hover {
+  background: rgba(6, 182, 212, 0.1);
+  border-color: #06b6d4;
+  color: #0e7490;
+}
+
+#section-career .section-settings-btn {
+  color: var(--cb-primary, #6366f1);
+}
+#section-career .section-settings-btn:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.35);
+  color: #818cf8;
+  box-shadow: 0 6px 18px -4px rgba(99, 102, 241, 0.25);
+}
+[data-theme="light"] #section-career .section-settings-btn {
+  color: #4f46e5;
+}
+[data-theme="light"] #section-career .section-settings-btn:hover {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: #6366f1;
+  color: #4338ca;
+}
+
+
 
 
