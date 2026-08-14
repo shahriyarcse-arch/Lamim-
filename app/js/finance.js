@@ -984,10 +984,13 @@ const Finance = {
 
         <div class="fin-deposit-hero fin-spend-hero">
           <div class="fin-deposit-icon fin-spend-icon">
-            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M5 12a7 7 0 0 1 14 0"/></svg>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
           </div>
           <div class="fin-deposit-label">Log Spending</div>
-          <div class="fin-deposit-amount-row">
+          <div class="fin-deposit-sub" style="font-size:12px; font-weight:600; color:var(--color-text-muted); margin:-2px 0 10px;">Record your daily expense</div>
+          <div class="fin-deposit-amount-row fin-spend-amount-row">
             <span class="fin-modal-currency" style="color:var(--fin-red);">${sym}</span>
             <input type="number" id="finance-expense-amount" placeholder="0.00" class="fin-modal-amount-input fin-spend-amount" autofocus onkeydown="Finance.advanceFromAmount(event, 'fin-cat-search-input')" onblur="Finance.advanceToField(event, 'fin-cat-search-input')">
           </div>
@@ -1001,7 +1004,7 @@ const Finance = {
             </span>
           </label>
           <div class="fin-modal-search-box">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.45;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             <input type="text" placeholder="Search categories..." oninput="Finance.handleCatSearch(this.value)" class="fin-cat-search-input">
           </div>
           <div class="fin-cat-grid" id="fin-cat-list">
@@ -1025,8 +1028,8 @@ const Finance = {
           <div class="fin-date-pop hidden" id="finance-expense-date-pop"></div>
         </div>
 
-        <div class="fin-modal-actions">
-          <button class="fin-save-btn expense" onclick="Finance.saveExpense()">Confirm Payment</button>
+        <div class="fin-modal-actions" style="margin-top:20px;">
+          <button class="fin-save-btn expense" onclick="Finance.saveExpense()">Log Expense</button>
         </div>
       </div>
     `;

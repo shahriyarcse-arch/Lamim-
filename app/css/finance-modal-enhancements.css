@@ -73,18 +73,19 @@
 }
 
 .fin-cat-pill.active {
-  background: var(--fin-blue);
-  border-color: var(--fin-blue);
-  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+  background: color-mix(in srgb, var(--fin-red) 12%, transparent) !important;
+  border-color: var(--fin-red) !important;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--fin-red) 22%, transparent) !important;
 }
 
 .fin-cat-pill.active .fin-cat-name {
-  color: #fff;
+  color: var(--fin-red) !important;
+  font-weight: 800 !important;
 }
 
 .fin-cat-pill.active .fin-cat-icon {
-  background: rgba(255, 255, 255, 0.2) !important;
-  color: #fff !important;
+  background: color-mix(in srgb, var(--fin-red) 16%, transparent) !important;
+  color: var(--fin-red) !important;
 }
 
 .fin-cat-icon {
