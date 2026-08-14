@@ -285,7 +285,7 @@ const Finance = {
     this.initChart(stats);
   },
 
-  async fetchExchangeRate() {
+  async fetchExchangeRate(isManual = false) {
     // Instant: apply last cached rate immediately (no network wait)
     try {
       const raw = localStorage.getItem('lamim_fx_rate');
@@ -299,7 +299,12 @@ const Finance = {
     } catch (e) { /* ignore */ }
 
     // Background: refresh from network and cache the result
-    if (!navigator.onLine) return;
+    if (!navigator.onLine) {
+      if (isManual && typeof Utils !== 'undefined') {
+        Utils.toast('Device is offline. Using cached rate: 1 USD = ' + this._getFXRate().toFixed(2) + ' BDT', 'info');
+      }
+      return;
+    }
     try {
       const ctrl = new AbortController();
       const to = setTimeout(() => ctrl.abort(), 10000);
@@ -310,19 +315,35 @@ const Finance = {
       if (data && data.rates && data.rates.BDT) {
         const newRate = data.rates.BDT;
         const safeRate = (typeof newRate === 'number' && isFinite(newRate) && newRate > 0 && newRate <= 100000) ? newRate : 118;
-        if (safeRate !== this.exchangeRate) {
-          this.exchangeRate = safeRate;
-          if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
-          const modal = document.getElementById('finance-modal-overlay');
-          if (modal && modal.classList.contains('show')) {
-             const title = modal.querySelector('.fin-modal-title')?.innerText || '';
-             if (title.includes('Finance Settings')) this.showToolsModal();
-          }
-        }
+        this.exchangeRate = safeRate;
         try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: newRate })); } catch (e) { /* ignore */ }
+        if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
+        const modal = document.getElementById('finance-modal-overlay');
+        if (modal && modal.classList.contains('show')) {
+          const title = modal.querySelector('.fin-modal-title')?.innerText || '';
+          if (title.includes('Finance Settings')) this.showToolsModal();
+        }
+        if (isManual && typeof Utils !== 'undefined') {
+          Utils.toast('Live Forex rate updated: 1 USD = ' + safeRate.toFixed(2) + ' BDT', 'success');
+        }
       }
     } catch (e) {
       console.warn('Exchange rate fetch failed:', e.message || e);
+      if (isManual && typeof Utils !== 'undefined') {
+        Utils.toast('Could not reach Forex API. Using cached rate.', 'info');
+      }
+    }
+  },
+
+  async syncRateManual(btn) {
+    if (btn) {
+      btn.disabled = true;
+      btn.classList.add('spinning');
+    }
+    await this.fetchExchangeRate(true);
+    if (btn) {
+      btn.disabled = false;
+      btn.classList.remove('spinning');
     }
   },
 
@@ -1786,12 +1807,18 @@ const Finance = {
                 <span class="fin-pulse-dot"></span>
                 Live Market Rate
               </div>
-              <span style="font-size:11px; font-weight:700; color:var(--color-text-muted); opacity:0.8;">OpenER API</span>
+              <button class="fin-fx-sync-btn" onclick="Finance.syncRateManual(this)" title="Fetch latest live market rate" aria-label="Sync live rate">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                <span>Sync Now</span>
+              </button>
             </div>
             <div style="font-size:22px; font-weight:900; color:var(--color-text-primary); letter-spacing:-0.5px;">${exchangeRateText}</div>
-            <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:8px; display:flex; align-items:center; gap:5px;">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Auto-synced with offline storage fallback
+            <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:8px; display:flex; align-items:center; justify-content:space-between; width:100%;">
+              <span style="display:inline-flex; align-items:center; gap:5px;">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Auto-synced via OpenER
+              </span>
+              <span style="font-size:10.5px; opacity:0.8; font-weight:700;">${this._getFXRate().toFixed(4)} ৳</span>
             </div>
           </div>
 
