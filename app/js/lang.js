@@ -206,6 +206,9 @@ const Translations = {
   'Sunnah Missed': 'সুন্নাহ মিস হয়েছে',
   'Alhamdulillah': 'আলহামদুলিল্লাহ',
   'Missed today': 'আজ মিস হয়েছে',
+  '12 Rak\'ah': '১২ রাকাত',
+  'Night Prayers': 'রাতের সালাত',
+  'Tahajjud & Witr': 'তাহাজ্জুদ ও বিতর',
   // Tahajjud card labels
   'Tahajjud': 'তাহাজ্জুদ',
   'Night Vigils': 'রাতের ইবাদত',
