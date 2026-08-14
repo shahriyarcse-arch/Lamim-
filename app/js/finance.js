@@ -1809,10 +1809,12 @@ const Finance = {
   showToolsModal() {
     const s = DB.getSettings();
     const activeRate = this._getFXRate();
-    const exchangeRateText = `1 USD = ${activeRate.toFixed(2)} BDT`;
+    const exchangeRateText = `1 USD = ${activeRate.toFixed(4)} BDT`;
     const sourceLabel = this.rateSource || 'TradingView';
     const changeBadge = typeof this.rateChangePct === 'number' 
-      ? `<span style="font-size:11px; font-weight:700; color:${this.rateChangePct >= 0 ? '#10b981' : '#ef4444'};">${this.rateChangePct >= 0 ? '+' : ''}${this.rateChangePct.toFixed(2)}%</span>` 
+      ? `<span style="font-size:12px; font-weight:800; color:${this.rateChangePct >= 0 ? '#10b981' : '#ef4444'}; display:inline-flex; align-items:center; gap:2px;">
+          <span>${this.rateChangePct >= 0 ? '▲ +' : '▼ '}${this.rateChangePct.toFixed(2)}%</span>
+         </span>` 
       : '';
 
     const html = `
@@ -1849,9 +1851,9 @@ const Finance = {
             <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:8px; display:flex; align-items:center; justify-content:space-between; width:100%;">
               <span style="display:inline-flex; align-items:center; gap:5px;">
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Live via ${sourceLabel}
+                Live via ${sourceLabel} (FX_IDC:USDBDT)
               </span>
-              <span style="font-size:10.5px; opacity:0.8; font-weight:700;">${activeRate.toFixed(4)} ৳</span>
+              <span style="font-size:11px; color:var(--fin-green); font-weight:700;">Spot Ticker</span>
             </div>
           </div>
 
