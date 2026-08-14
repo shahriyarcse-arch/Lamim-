@@ -188,29 +188,25 @@ updateSectionTitle() {
       }
     }, 60000);
 
-    // Splash → route (ultra-fast offline boot sequence)
+    // Splash → route (instant zero-latency boot sequence)
     this._bootComplete = false;
-    setTimeout(() => {
-      const user = DB.getUser();
-      
-      if (user) {
-        if (DB.refreshSpiritScore) DB.refreshSpiritScore();
-        this.showDashboard();
-        this.checkBackupReminder();
-      } else {
-        this.showPage('setup');
-      }
+    const user = DB.getUser();
+    
+    if (user) {
+      if (DB.refreshSpiritScore) DB.refreshSpiritScore();
+      this.showDashboard();
+      this.checkBackupReminder();
+    } else {
+      this.showPage('setup');
+    }
 
-      // Ensure target section is fully painted behind opaque splash before starting fade-out
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          this._hideSplash();
-          this._bootComplete = true;
-        });
-      });
-    }, 180);
+    // Immediately hide splash in the next frame as dashboard is active
+    requestAnimationFrame(() => {
+      this._hideSplash();
+      this._bootComplete = true;
+    });
 
-    // Safety fallback - guarantees splash screen disappears within 1.2s under any circumstance
+    // Safety fallback - guarantees splash screen disappears within 800ms under any circumstance
     setTimeout(() => {
       if (this._bootComplete) return; 
       console.warn('[Boot] Quick safety fallback triggered');
@@ -221,11 +217,9 @@ updateSectionTitle() {
       } else {
         this.showPage('setup');
       }
-      requestAnimationFrame(() => {
-        this._hideSplash();
-        this._bootComplete = true;
-      });
-    }, 1200);
+      this._hideSplash();
+      this._bootComplete = true;
+    }, 800);
 
     // Nav bindings
     this.bindNav();

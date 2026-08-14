@@ -46,19 +46,34 @@
   }
   </script>
 
-  <!-- Speculation Rules for Instant Pre-rendering -->
+  <!-- Speculation Rules for Instant Pre-rendering & Zero-Latency App Opening -->
   <script type="speculationrules">
   {
     "prerender": [
       {
+        "source": "list",
+        "urls": ["app/index.html", "./app/index.html", "app/"],
+        "eagerness": "immediate"
+      },
+      {
         "where": { "href_matches": "/*" },
         "eagerness": "moderate"
+      }
+    ],
+    "prefetch": [
+      {
+        "source": "list",
+        "urls": ["app/index.html", "./app/index.html"],
+        "eagerness": "immediate"
       }
     ]
   }
   </script>
 
-  <!-- Preconnect for performance -->
+  <!-- Preconnect & Prefetch App Core for Instant Transition -->
+  <link rel="prefetch" href="app/index.html">
+  <link rel="prefetch" href="app/css/styles.min.css">
+  <link rel="prefetch" href="app/js/app.js">
   <script>history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
