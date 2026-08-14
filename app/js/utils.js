@@ -620,11 +620,25 @@ const Utils = {
       }));
     }).observe(document.body, { childList: true, subtree: true });
 
-    // Tab trap while any modal is open
+    // Tab trap and universal Escape dismissal while any modal is open
     document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Tab') return;
       const open = document.querySelector('.modal-overlay:not(.hidden)');
       if (!open) return;
+
+      // Universal Escape key dismissal
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        // Look for custom close handlers first
+        const closeBtn = open.querySelector('.modal-close, .fin-modal-close, .confirm-modal-close');
+        if (closeBtn && typeof closeBtn.click === 'function') {
+          closeBtn.click();
+        } else {
+          open.classList.add('hidden');
+        }
+        return;
+      }
+
+      if (e.key !== 'Tab') return;
       const f = focusablesIn(open);
       if (!f.length) { e.preventDefault(); return; }
       const first = f[0], last = f[f.length - 1];

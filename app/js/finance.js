@@ -1231,11 +1231,18 @@ const Finance = {
   },
 
   saveIncome() { 
+    if (this._submitting) return;
+    this._submitting = true;
+    setTimeout(() => { this._submitting = false; }, 400);
+
     const desc = (document.getElementById('finance-income-desc').value || '').trim(); 
     let a = parseFloat(document.getElementById('finance-income-amount').value); 
     const d = document.getElementById('finance-income-date').value || Utils.todayStr(); 
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-    if (!desc || isNaN(a) || a <= 0) return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields','error'); 
+    if (!desc || isNaN(a) || a <= 0) {
+      this._submitting = false;
+      return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields','error'); 
+    }
     if (DB.getSettings().currency==='BDT') a /= this._getFXRate(); 
     this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d }); 
     this.saveData(); this.closeModal(); this.render(); 
@@ -1615,12 +1622,20 @@ const Finance = {
   },
 
   confirmVaultDeposit(id) {
+    if (this._submitting) return;
+    this._submitting = true;
+    setTimeout(() => { this._submitting = false; }, 400);
+
     const goal = this.data.savings.find(s => s.id === id);
-    if (!goal) return;
+    if (!goal) {
+      this._submitting = false;
+      return;
+    }
 
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     let amount = parseFloat(document.getElementById('vault-deposit-amount').value);
     if (isNaN(amount) || amount <= 0) {
+      this._submitting = false;
       return Utils.toast(isBn ? 'সঠিক পরিমাণ লিখুন' : 'Invalid amount entered', 'error');
     }
 
@@ -1635,12 +1650,14 @@ const Finance = {
     const allExpenses = this.data.expenses.reduce((s, o) => s + o.amount, 0);
     const availCash = allIncome - allExpenses;
     if (amountInBase > availCash + 0.0001) {
+      this._submitting = false;
       const sym = this.getSymbol();
       return Utils.toast(isBn ? `অপর্যাপ্ত ব্যালেন্স! বিদ্যমান: ${sym}${this.formatVal(availCash)}` : `Insufficient balance! Available: ${sym}${this.formatVal(availCash)}`, 'error');
     }
 
     // Strict validation: Prevent depositing more than remaining target (with a 0.01 tolerance for currency conversions)
     if (amountInBase > remainingInBase + 0.0001) {
+      this._submitting = false;
       const remainingDisplay = remainingInBase * mult;
       const sym = this.getSymbol();
       return Utils.toast(isBn ? `বাকি লক্ষ্যের চেয়ে বেশি জমা দেওয়া যাবে না! প্রয়োজন: ${sym}${this.formatVal(remainingDisplay)}` : `Cannot exceed remaining target! Needed: ${sym}${this.formatVal(remainingDisplay)}`, 'error');

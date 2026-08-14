@@ -218,6 +218,8 @@ const Dhikr = {
     if (this._keyHandler) document.removeEventListener('keydown', this._keyHandler);
     this._keyHandler = (e) => {
       if (e.code === 'Space' && document.getElementById('section-dhikr')?.classList.contains('active')) {
+        // Do not trigger tap if a modal is currently open or user is typing
+        if (document.querySelector('.modal-overlay:not(.hidden)')) return;
         const tag = e.target && e.target.tagName;
         if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
         e.preventDefault();
