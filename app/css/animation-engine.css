@@ -745,3 +745,16 @@
   }
 }
 
+/* === BATTERY & GPU ACCESSIBILITY OPTIMIZATION (Phase 5) === */
+@media (prefers-reduced-motion: reduce) {
+  .iw-badge-container .iw-mini-badge-icon,
+  .iron-will-widget .iw-mini-badge-icon,
+  .iw-mini-badge.earned,
+  .iw-mini-badge.earned .iw-mini-badge-icon svg {
+    animation: none !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
