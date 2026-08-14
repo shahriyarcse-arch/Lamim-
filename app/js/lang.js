@@ -207,6 +207,7 @@ const Translations = {
   'Alhamdulillah': 'আলহামদুলিল্লাহ',
   'Missed today': 'আজ মিস হয়েছে',
   '12 Rak\'ah': '১২ রাকাত',
+  '12 Rak\'ah + Witr': '১২ রাকাত + বিতর',
   'Night Prayers': 'রাতের সালাত',
   'Tahajjud & Witr': 'তাহাজ্জুদ ও বিতর',
   'Witr & Tahajjud': 'বিতর ও তাহাজ্জুদ',
