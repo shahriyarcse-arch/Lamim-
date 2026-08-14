@@ -6,7 +6,7 @@
 window.LamimVerses = window.LamimVerses || [];
 
 // Single source of truth mapping a section id to its module (used by router + bus).
-const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, habits: Habits, finance: Finance, gym: Gym, career: Career };
+const SECTION_MODULES = { home: Home, salah: Salah, dhikr: Dhikr, nafl: Goals, analysis: Analysis, profile: Profile, habits: Habits, finance: Finance, gym: Gym, career: Career, landing: { init() {}, render() {} } };
 
 const App = {
   currentSection: '',
@@ -325,7 +325,7 @@ updateSectionTitle() {
     if (dash) dash.classList.add('active');
 
     if (!initialSection) {
-      const valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'finance', 'gym', 'career'];
+      const valid = ['home', 'salah', 'dhikr', 'nafl', 'analysis', 'profile', 'habits', 'finance', 'gym', 'career', 'landing'];
       initialSection = new URLSearchParams(location.search).get('section');
       // On mobile a refresh often carries the active section in history.state
       // rather than the URL query — fall back to it before defaulting to home.
@@ -451,16 +451,22 @@ updateSectionTitle() {
     // Toggle Home-active flag (pauses aurora animation when away from Home)
     document.body.classList.toggle('home-active', sectionId === 'home');
 
-    // Update single unified topbar: Home shows signature brand, others show section title
+    // Update single unified topbar: Landing hides topbar, Home shows signature brand, others show section title
+    const topbar = document.getElementById('topbar');
     const topbarBrand = document.getElementById('topbar-brand-home');
     const topbarTitle = document.getElementById('topbar-section-title');
-    if (sectionId === 'home') {
-      if (topbarBrand) topbarBrand.style.display = 'inline-flex';
-      if (topbarTitle) topbarTitle.style.display = 'none';
+    if (sectionId === 'landing') {
+      if (topbar) topbar.style.display = 'none';
     } else {
-      if (topbarBrand) topbarBrand.style.display = 'none';
-      if (topbarTitle) topbarTitle.style.display = 'inline-block';
-      this.updateSectionTitle();
+      if (topbar) topbar.style.display = 'flex';
+      if (sectionId === 'home') {
+        if (topbarBrand) topbarBrand.style.display = 'inline-flex';
+        if (topbarTitle) topbarTitle.style.display = 'none';
+      } else {
+        if (topbarBrand) topbarBrand.style.display = 'none';
+        if (topbarTitle) topbarTitle.style.display = 'inline-block';
+        this.updateSectionTitle();
+      }
     }
 
     // Init section with error boundary + recovery

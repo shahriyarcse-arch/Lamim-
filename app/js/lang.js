@@ -14,6 +14,7 @@ const Translations = {
   'Profile': 'প্রোফাইল',
   'Data & Backup': 'ডেটা ও ব্যাকআপ',
   'About': 'সম্পর্কে',
+  'Landing': 'ল্যান্ডিং',
   // Gym & Career redesign
   'Gym & Diet': 'জিম ও ডায়েট',
   'Career Builder': 'ক্যারিয়ার বিল্ডার',
