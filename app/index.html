@@ -189,9 +189,9 @@
   <link rel="stylesheet" href="css/activity-log.css">
   <link rel="stylesheet" href="css/profile-premium.css?v=144" media="print" onload="this.media='all'">
 
-  <!-- Habits CSS MUST load last to override all competing rules -->
   <link rel="stylesheet" href="css/habits.css?v=143">
   <link rel="stylesheet" href="css/home.css?v=148">
+  <link rel="stylesheet" href="css/manual.css?v=1">
   <link rel="stylesheet" href="css/ui-system.css?v=8">
   <link rel="stylesheet" href="css/responsive.css?v=2">
   <noscript>
@@ -629,7 +629,13 @@
                   <path
                     d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
                   <circle cx="12" cy="12" r="3" />
-                </svg></span><span class="nav-label">Profile</span></div>
+                </svg></span><span class="nav-label" data-i18n="Profile">Profile</span></div>
+            <div class="nav-item" onclick="Manual.open(0)"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
+                  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg></span><span class="nav-label" data-i18n="Manual">Manual</span></div>
           </div>
           <div class="sidebar-footer">
             <a class="nav-item" href="../index.html" target="_blank" rel="noopener"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
@@ -704,6 +710,10 @@
                     <h2 class="home-greeting" id="home-greeting">Welcome</h2>
                     <div class="home-date" id="home-date">Loading...</div>
                     <div class="home-hijri-date" id="home-hijri-date"></div>
+                    <button type="button" id="home-manual-btn" class="home-manual-btn" onclick="Manual.open(0)" title="Open User Manual" aria-label="Open User Manual">
+                      <span>📖</span>
+                      <span id="home-manual-btn-label">User Manual</span>
+                    </button>
                   </div>
 
                   <div class="home-spirit-orb-container" onclick="App.navigateTo('analysis')">
@@ -2402,9 +2412,8 @@
 
 
 
-    <link rel="stylesheet" href="css/setup-wizard.css" media="print" onload="this.media='all'">
-
     <script defer src="js/prayer-notifier.js?v=2"></script>
+    <script defer src="js/manual.js?v=1"></script>
     <script defer src="js/home.js?v=149"></script>
     <script defer src="js/app.js?v=223"></script>
 

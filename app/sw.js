@@ -1,8 +1,10 @@
-const CACHE_NAME = 'lamim-v236';
+const CACHE_NAME = 'lamim-v237';
 const CORE_ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './css/manual.css',
+  './js/manual.js'
 ];
 
 // Install: Cache core shell + best-effort precache of every local CSS/JS

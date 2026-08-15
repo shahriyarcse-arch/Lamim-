@@ -54,6 +54,11 @@ const Home = {
     if (greetingEl) {
       greetingEl.textContent = user.name ? `${greeting}, ${user.name}` : greeting;
     }
+    const manualBtnLabel = document.getElementById('home-manual-btn-label');
+    if (manualBtnLabel) {
+      const isBn = (typeof App !== 'undefined' && App.lang === 'bn');
+      manualBtnLabel.textContent = isBn ? 'ব্যবহার নির্দেশিকা' : 'User Manual';
+    }
   },
 
   getGreeting() {

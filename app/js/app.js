@@ -366,6 +366,10 @@ updateSectionTitle() {
     if (typeof PrayerNotifier !== 'undefined') {
       PrayerNotifier.init();
     }
+    // Check first-time user manual prompt
+    if (typeof Manual !== 'undefined' && typeof Manual.checkFirstTimePrompt === 'function') {
+      Manual.checkFirstTimePrompt();
+    }
   },
 
   updateSectionTitle() {
