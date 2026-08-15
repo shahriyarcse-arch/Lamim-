@@ -109,68 +109,47 @@ const Salah = {
       const isFuture = dateStr > Utils.todayStr();
       const isBeforeJoin = joinDateStr && dateStr < joinDateStr;
 
-      let color = 'var(--color-glass)';
-      let opacity = 1;
-      let glow = '';
       let extraClass = '';
 
       if (!isFuture) {
         if (score.done === 5) {
-          color = 'var(--color-accent-green)'; 
-          
-          // 0 or 1 Qaza (90-100 pts) -> Maximum (Live glossy animation)
+          // 0 or 1 Qaza (>=90% score, 45-50 pts) -> Maximum (Live glossy animation)
           if (score.pct >= 90) {
             extraClass = ' tier-max';
           } 
-          // 2 or 3 Qaza (70-89 pts) -> High (Just shine, no animation)
+          // 2 or 3 Qaza (70-89% score, 35-44 pts) -> High (Solid emerald shine)
           else if (score.pct >= 70) {
             extraClass = ' tier-high';
           }
-          // 4 or 5 Qaza (<70 pts) -> Base (Solid green)
+          // 4 or 5 Qaza (<70% score, 15-34 pts) -> Base (Solid darker green)
           else {
             extraClass = ' tier-base';
           }
-          glow = ''; 
         }
         else if (score.done >= 3) {
-          const avg = score.pct / score.done;
-          if (avg >= 15) {
-            color = '#38bdf8'; // Solid Blue (Mostly on-time)
-            glow = 'box-shadow:0 0 4px rgba(56,189,248,0.3);';
-          } else {
-            color = 'rgba(56,189,248,0.15)'; // Hollow Blue (Mostly Qaza)
-            glow = 'box-shadow: inset 0 0 0 2px #38bdf8;';
-          }
+          const isMostlyOnTime = (score.onTime || 0) >= (score.qaza || 0);
+          extraClass = isMostlyOnTime ? ' tier-blue-solid' : ' tier-blue-hollow';
         }
         else if (score.done > 0) {
-          const avg = score.pct / score.done;
-          if (avg >= 15) {
-            color = '#fbbf24'; // Solid Amber (Mostly on-time)
-            glow = 'box-shadow:0 0 4px rgba(251,191,36,0.3);';
-          } else {
-            color = 'rgba(251,191,36,0.15)'; // Hollow Amber (Mostly Qaza)
-            glow = 'box-shadow: inset 0 0 0 2px #fbbf24;';
-          }
+          const isMostlyOnTime = (score.onTime || 0) >= (score.qaza || 0);
+          extraClass = isMostlyOnTime ? ' tier-amber-solid' : ' tier-amber-hollow';
         }
         else {
           const hasLoggedAny = ['fajr','dhuhr','asr','maghrib','isha'].some(p => data[p]);
           if ((isToday && !hasLoggedAny) || (isBeforeJoin && !hasLoggedAny)) {
-            color = 'var(--color-glass)';
-            if (isBeforeJoin) opacity = 0.4;
+            extraClass = ' tier-empty';
           } else {
-            color = 'var(--color-accent-red)';
-            opacity = 0.85;
+            extraClass = ' tier-red';
           }
         }
       } else {
-         opacity = 0.5; // Future days should be visible in light mode too
+        extraClass = ' tier-future';
       }
 
       const formattedDayNum = window.n ? window.n(i) : i;
 
       html += `<div class="salah-cal-cell ${isToday ? 'today' : ''} ${isSelected && !isToday ? 'selected' : ''}${extraClass}" 
-                   data-date="${dateStr}" 
-                   style="background:${color};opacity:${opacity};${glow}">
+                   data-date="${dateStr}">
                 <span class="salah-cal-day">${formattedDayNum}</span>
               </div>`;
     }
@@ -197,38 +176,32 @@ const Salah = {
       const isFuture = dateStr > Utils.todayStr();
       const isBeforeJoin = joinDateStr && dateStr < joinDateStr;
 
-      let color = 'var(--color-glass)';
-      let opacity = 1;
-      let glow = 'none';
       let extraClass = '';
       if (!isFuture) {
         if (score.done === 5) {
-          color = 'var(--color-accent-green)';
           if (score.pct >= 90) extraClass = ' tier-max';
           else if (score.pct >= 70) extraClass = ' tier-high';
           else extraClass = ' tier-base';
         } else if (score.done >= 3) {
-          const avg = score.pct / score.done;
-          if (avg >= 15) { color = '#38bdf8'; glow = '0 0 4px rgba(56,189,248,0.3)'; }
-          else { color = 'rgba(56,189,248,0.15)'; glow = 'inset 0 0 0 2px #38bdf8'; }
+          const isMostlyOnTime = (score.onTime || 0) >= (score.qaza || 0);
+          extraClass = isMostlyOnTime ? ' tier-blue-solid' : ' tier-blue-hollow';
         } else if (score.done > 0) {
-          const avg = score.pct / score.done;
-          if (avg >= 15) { color = '#fbbf24'; glow = '0 0 4px rgba(251,191,36,0.3)'; }
-          else { color = 'rgba(251,191,36,0.15)'; glow = 'inset 0 0 0 2px #fbbf24'; }
+          const isMostlyOnTime = (score.onTime || 0) >= (score.qaza || 0);
+          extraClass = isMostlyOnTime ? ' tier-amber-solid' : ' tier-amber-hollow';
         } else {
           const hasLoggedAny = ['fajr','dhuhr','asr','maghrib','isha'].some(p => data[p]);
           if ((isToday && !hasLoggedAny) || (isBeforeJoin && !hasLoggedAny)) {
-            color = 'var(--color-glass)';
-            if (isBeforeJoin) opacity = 0.4;
+            extraClass = ' tier-empty';
           } else {
-            color = 'var(--color-accent-red)';
-            opacity = 0.85;
+            extraClass = ' tier-red';
           }
         }
-      } else { opacity = 0.5; }
-      cell.style.background = color;
-      cell.style.opacity = opacity;
-      cell.style.boxShadow = glow;
+      } else {
+        extraClass = ' tier-future';
+      }
+      cell.style.background = '';
+      cell.style.opacity = '';
+      cell.style.boxShadow = '';
       cell.className = `salah-cal-cell${isToday ? ' today' : ''}${isSelected && !isToday ? ' selected' : ''}${extraClass}`;
     });
   },

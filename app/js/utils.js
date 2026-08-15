@@ -515,19 +515,33 @@ const Utils = {
 
   // Salah completion score for a day
   salahScore(salahData) {
-    if (!salahData || typeof salahData !== 'object') return { done: 0, total: 5, pct: 0 };
+    if (!salahData || typeof salahData !== 'object') return { done: 0, total: 5, pct: 0, pts: 0, qaza: 0, onTime: 0 };
     const prayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
     let done = 0;
     let pctScore = 0;
+    let pts = 0;
+    let qaza = 0;
+    let onTime = 0;
     prayers.forEach(p => {
       const s = salahData[p];
       if (s && s !== 'missed') {
         done++;
-        if (s === 'jamaat' || s === 'alone') pctScore += 20;
-        else if (s === 'qaza') pctScore += 10;
+        if (s === 'jamaat') {
+          pctScore += 20;
+          pts += 10;
+          onTime++;
+        } else if (s === 'alone') {
+          pctScore += 20;
+          pts += 7;
+          onTime++;
+        } else if (s === 'qaza') {
+          pctScore += 10;
+          pts += 3;
+          qaza++;
+        }
       }
     });
-    return { done, total: 5, pct: pctScore };
+    return { done, total: 5, pct: pctScore, pts, qaza, onTime };
   },
 
   // Motivational quotes (updates every minute with Bengali translation)
