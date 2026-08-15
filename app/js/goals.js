@@ -884,11 +884,12 @@ const Goals = {
         Object.keys(day.data.sunnah).forEach(id => {
           const item = this.sunnahList.find(s => s.id === id);
           if (item) {
+            const label = window.t ? window.t(item.label) : item.label;
             if (day.data.sunnah[id] === true || day.data.sunnah[id] === 'prayed') {
-              sunnahDone.push(item.label);
+              sunnahDone.push(label);
               dayRakat += item.rakat;
             } else if (day.data.sunnah[id] === 'missed' || isPastDay) {
-              sunnahMissed.push(item.label);
+              sunnahMissed.push(label);
             }
           }
         });
@@ -897,7 +898,7 @@ const Goals = {
       if (isPastDay) {
         this.sunnahList.forEach(s => {
           if (!day.data.sunnah || day.data.sunnah[s.id] === undefined) {
-            sunnahMissed.push(s.label);
+            sunnahMissed.push(window.t ? window.t(s.label) : s.label);
           }
         });
       }
@@ -906,6 +907,8 @@ const Goals = {
       const wRakat = day.data.witr > 0 ? day.data.witr : 0;
       const total = dayRakat + tRakat + wRakat;
       const allSunnahMissed = sunnahDone.length === 0 && sunnahMissed.length > 0;
+      const labelTahajjud = window.t ? window.t('Tahajjud') : 'Tahajjud';
+      const labelWitr = window.t ? window.t('Witr') : 'Witr';
 
       if (total === 0 && sunnahDone.length === 0 && sunnahMissed.length === 0) return '';
 
@@ -924,8 +927,8 @@ const Goals = {
           <div class="h-item-content">
             <div class="h-item-main">
                ${sunnahDone.map(name => `<div class="h-pill prayed"><span class="dot"></span>${name}</div>`).join('')}
-               ${tRakat > 0 ? `<div class="h-pill tahajjud"><span class="dot"></span>Tahajjud (${window.n ? window.n(tRakat) : tRakat})</div>` : ''}
-               ${wRakat > 0 ? `<div class="h-pill witr"><span class="dot"></span>Witr (${window.n ? window.n(wRakat) : wRakat})</div>` : ''}
+               ${tRakat > 0 ? `<div class="h-pill tahajjud"><span class="dot"></span>${labelTahajjud} (${window.n ? window.n(tRakat) : tRakat})</div>` : ''}
+               ${wRakat > 0 ? `<div class="h-pill witr"><span class="dot"></span>${labelWitr} (${window.n ? window.n(wRakat) : wRakat})</div>` : ''}
                ${sunnahMissed.map(name => `<div class="h-pill missed"><span class="dot"></span>${name}</div>`).join('')}
             </div>
           </div>
