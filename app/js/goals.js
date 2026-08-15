@@ -199,12 +199,14 @@ const Goals = {
         const isMissed = status === 'missed';
         const pts = 2;
 
+        const dateKey = this.currentDate;
         const statusKey = isLocked ? (isPrayed ? 'prayed' : 'missed') : 'pending';
 
-        // Diff check: If status hasn't changed, skip DOM mutations completely
-        if (card.dataset.status === statusKey) {
+        // Diff check: If status and date haven't changed, skip DOM mutations completely
+        if (card.dataset.date === dateKey && card.dataset.status === statusKey) {
           return;
         }
+        card.dataset.date = dateKey;
         card.dataset.status = statusKey;
 
         const targetClassName = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
@@ -399,10 +401,12 @@ const Goals = {
 
     const card = document.getElementById('tahajjud-salah-card');
     if (skipAnim && card && !isFuture) {
+      const dateKey = this.currentDate;
       const statusKey = isLocked ? (isPrayed ? `prayed_${rakat}` : 'missed') : 'pending';
-      if (card.dataset.status === statusKey) {
+      if (card.dataset.date === dateKey && card.dataset.status === statusKey) {
         return;
       }
+      card.dataset.date = dateKey;
       card.dataset.status = statusKey;
 
       const targetClassName = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;
@@ -615,10 +619,12 @@ const Goals = {
 
     const card = document.getElementById('witr-salah-card');
     if (skipAnim && card && !isFuture) {
+      const dateKey = this.currentDate;
       const statusKey = isLocked ? (isPrayed ? 'prayed' : 'missed') : 'pending';
-      if (card.dataset.status === statusKey) {
+      if (card.dataset.date === dateKey && card.dataset.status === statusKey) {
         return;
       }
+      card.dataset.date = dateKey;
       card.dataset.status = statusKey;
 
       const targetClassName = `salah-prayer-card nafl-sunnah-card-modern ${isLocked ? (isPrayed ? 'has-status status-jamaat active' : 'has-status status-missed') : ''}`;

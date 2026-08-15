@@ -21,7 +21,9 @@ const Salah = {
   },
 
   init() {
-    this.selectedDate = Utils.todayStr();
+    if (!this.selectedDate) {
+      this.selectedDate = Utils.todayStr();
+    }
     this._reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     // Play the staggered entrance animation only on the very first mount ever,
     // not on every cold start / refresh / PWA reopen (avoids a re-animation flash).
@@ -57,7 +59,7 @@ const Salah = {
     const cal = document.getElementById('salah-calendar');
     if (!cal) return;
 
-    const [y, m] = this.selectedDate.split('-');
+    const [y, m] = (this.selectedDate || Utils.todayStr()).split('-');
     const year = parseInt(y, 10);
     const month = parseInt(m, 10) - 1;
     const monthKey = `${year}-${month}`;
@@ -103,6 +105,7 @@ const Salah = {
       const score = Utils.salahScore(data);
       
       const isToday = dateStr === Utils.todayStr();
+      const isSelected = dateStr === this.selectedDate;
       const isFuture = dateStr > Utils.todayStr();
       const isBeforeJoin = joinDateStr && dateStr < joinDateStr;
 
@@ -165,7 +168,7 @@ const Salah = {
 
       const formattedDayNum = window.n ? window.n(i) : i;
 
-      html += `<div class="salah-cal-cell ${isToday ? 'today' : ''}${extraClass}" 
+      html += `<div class="salah-cal-cell ${isToday ? 'today' : ''} ${isSelected && !isToday ? 'selected' : ''}${extraClass}" 
                    data-date="${dateStr}" 
                    style="background:${color};opacity:${opacity};${glow}">
                 <span class="salah-cal-day">${formattedDayNum}</span>
@@ -190,6 +193,7 @@ const Salah = {
       const data = DB.getSalah(dateStr);
       const score = Utils.salahScore(data);
       const isToday = dateStr === Utils.todayStr();
+      const isSelected = dateStr === this.selectedDate;
       const isFuture = dateStr > Utils.todayStr();
       const isBeforeJoin = joinDateStr && dateStr < joinDateStr;
 
@@ -225,7 +229,7 @@ const Salah = {
       cell.style.background = color;
       cell.style.opacity = opacity;
       cell.style.boxShadow = glow;
-      cell.className = `salah-cal-cell${isToday ? ' today' : ''}${extraClass}`;
+      cell.className = `salah-cal-cell${isToday ? ' today' : ''}${isSelected && !isToday ? ' selected' : ''}${extraClass}`;
     });
   },
 
@@ -480,7 +484,7 @@ const Salah = {
 
   /* ---- Prayer cards (Farz only, no edit after selection) ---- */
   renderPrayerCards(date, skipAnim = false, targetPrayer = null) {
-    date = date || this.selectedDate;
+    date = date || this.selectedDate || Utils.todayStr();
     this.selectedDate = date;
     const salah = DB.getSalah(date);
     const settings = DB.getSettings();
@@ -501,7 +505,7 @@ const Salah = {
       (nextPrayer ? nextPrayer.name : '') + '|' + isToday + '|' + isFuture + '|' + corr + '|' + (showJumuah ? '1' : '0');
     if (skipAnim && this._cardsKey === key && container.children.length) {
       this.renderHeader();
-      this.renderStats();
+      this.renderStats(date);
       return;
     }
     this._cardsKey = key;
@@ -526,16 +530,18 @@ const Salah = {
         const statusInfo = normStatus ? (this.statusMeta[normStatus] || this.statusMeta.alone) : null;
         const isNext = isToday && nextPrayer && nextPrayer.name === p;
 
+        const dateKey = date;
         const statusKey = currentStatus || 'pending';
         const editKey = forceEdit ? '1' : '0';
         const nextKey = (isNext && !isLocked) ? '1' : '0';
         const jumuahKey = (p === 'dhuhr' && showJumuah) ? '1' : '0';
 
         // Fine-grained diff check: Skip untouched cards completely to eliminate all DOM thrashing
-        if (card.dataset.status === statusKey && card.dataset.edit === editKey && card.dataset.isnext === nextKey && card.dataset.jumuah === jumuahKey) {
+        if (card.dataset.date === dateKey && card.dataset.status === statusKey && card.dataset.edit === editKey && card.dataset.isnext === nextKey && card.dataset.jumuah === jumuahKey) {
           return;
         }
 
+        card.dataset.date = dateKey;
         card.dataset.status = statusKey;
         card.dataset.edit = editKey;
         card.dataset.isnext = nextKey;
@@ -564,11 +570,9 @@ const Salah = {
                </div>`;
         }
 
-        const selectorEl = card.querySelector('.salah-status-selector');
-        const lockedEl = card.querySelector('.salah-locked-result');
-
-        if (showSelector && lockedEl) {
-          lockedEl.outerHTML = `
+        const bodyWrap = card.querySelector('.salah-status-selector, .salah-locked-result');
+        const newBodyHTML = showSelector
+          ? `
             <div class="salah-status-selector">
               <div class="salah-options-label">${window.t ? window.t('How did you pray?') : 'How did you pray?'}</div>
               <div class="salah-options-grid">
@@ -586,9 +590,8 @@ const Salah = {
                 }).join('')}
               </div>
             </div>
-          `;
-        } else if (!showSelector && selectorEl && statusInfo) {
-          selectorEl.outerHTML = `
+          `
+          : `
             <div class="salah-locked-result">
               <div class="salah-locked-icon" style="color:${statusInfo.color};filter:drop-shadow(${statusInfo.glow})">${statusInfo.icon}</div>
               <div class="salah-locked-info">
@@ -602,11 +605,16 @@ const Salah = {
               <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             </div>
           `;
+
+        if (bodyWrap) {
+          bodyWrap.outerHTML = newBodyHTML;
+        } else {
+          card.insertAdjacentHTML('beforeend', newBodyHTML);
         }
       });
 
       this.renderHeader();
-      this.renderStats();
+      this.renderStats(date);
       if (this._reduceMotion) this._stripSmil(document.getElementById('section-salah'));
       return;
     }
@@ -640,6 +648,7 @@ const Salah = {
           return `
             <div class="salah-prayer-card ${currentStatus ? 'has-status status-' + currentStatus : ''} ${isNext && !isLocked ? 'is-next' : ''}"
                  id="salah-card-${p}"
+                 data-date="${date}"
                  data-status="${currentStatus || 'pending'}"
                  data-edit="${forceEdit ? '1' : '0'}"
                  data-isnext="${(isNext && !isLocked) ? '1' : '0'}"
@@ -709,7 +718,7 @@ const Salah = {
     `;
 
     this.renderHeader();
-    this.renderStats();
+    this.renderStats(date);
 
     // Reduced-motion: SMIL <animate>/<animateTransform> (prayer/status/stat icons)
     // can't be disabled via CSS, so strip them from the rendered DOM. Runs after
@@ -726,6 +735,8 @@ const Salah = {
 
   /* ---- Select status (re-selectable so mistakes can be corrected) ---- */
   selectStatus(prayer, status, date) {
+    date = date || this.selectedDate || Utils.todayStr();
+    this.selectedDate = date;
     const salah = DB.getSalah(date);
     // Allow updates even if already set, so user can correct mistakes
     salah[prayer] = status;
@@ -738,6 +749,11 @@ const Salah = {
     // Partial update targeted to this specific prayer to guarantee zero DOM thrashing & 0 blinking
     this.renderPrayerCards(date, true, prayer);
     this.renderCalendar(date);
+
+    // If today was updated, refresh home timeline & stats
+    if (date === Utils.todayStr() && typeof Home !== 'undefined' && typeof Home.updateSalahTimeline === 'function') {
+      Home.updateSalahTimeline();
+    }
 
     const sm = this.statusMeta[status];
     const result = sm.result === 'successful' ? '' : sm.result === 'qaza' ? '⏰' : '';
@@ -754,6 +770,8 @@ const Salah = {
 
   // Re-open the status selector for a locked prayer so the user can correct it.
   editStatus(prayer, date) {
+    date = date || this.selectedDate || Utils.todayStr();
+    this.selectedDate = date;
     this._correcting = { date, prayer };
     this.renderPrayerCards(date, true, prayer);
   },
@@ -769,14 +787,14 @@ const Salah = {
     this.navBound = true;
     document.getElementById('salah-prev-day')?.addEventListener('click', (e) => {
       e.preventDefault();
-      const d = Utils.parseDate(this.selectedDate);
+      const d = Utils.parseDate(this.selectedDate || Utils.todayStr());
       d.setDate(d.getDate() - 1);
       this.selectedDate = Utils.dateStr(d);
       this.renderAll(true); // instant swap when navigating dates
     });
     document.getElementById('salah-next-day')?.addEventListener('click', (e) => {
       e.preventDefault();
-      const d = Utils.parseDate(this.selectedDate);
+      const d = Utils.parseDate(this.selectedDate || Utils.todayStr());
       d.setDate(d.getDate() + 1);
       if (Utils.dateStr(d) <= Utils.todayStr()) {
         this.selectedDate = Utils.dateStr(d);
@@ -785,11 +803,13 @@ const Salah = {
     });
   },
 
-
   jumpToDate(date) {
     this.selectedDate = date;
     this.renderAll(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const salahSection = document.getElementById('section-salah');
+    if (salahSection) {
+      salahSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   },
 
   /* ---- Export PDF (Billion Dollar Company Style) ---- */
@@ -1117,18 +1137,9 @@ const Salah = {
       const isFuture = dateStr > Utils.todayStr();
       if (isFuture) return;
 
-      const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768;
-      
-      if (isMobile) {
-        if (tooltip.dataset.activeDate === dateStr && !tooltip.classList.contains('hidden')) {
-          Salah.jumpToDate(dateStr);
-          tooltip.classList.add('hidden');
-        } else {
-          showTooltip(e);
-        }
-      } else {
-        Salah.jumpToDate(dateStr);
-      }
+      tooltip.classList.add('hidden');
+      tooltip.dataset.activeDate = '';
+      Salah.jumpToDate(dateStr);
     };
 
     const mouseoutHandler = (e) => {

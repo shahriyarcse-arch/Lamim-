@@ -178,6 +178,7 @@ const Home = {
           if (dot) dot.textContent = isBn ? p.bnInitial : p.initial;
           if (lbl) lbl.textContent = window.t ? window.t(p.label) : p.label;
           node.setAttribute('aria-label', `Go to Salah section for ${p.label}`);
+          node.setAttribute('onclick', `App.navigateTo('salah'); if (typeof Salah !== 'undefined') { Salah.selectedDate = Utils.todayStr(); Salah.renderAll(true); Salah.scrollToPrayer('${p.key}'); }`);
         });
         return;
       }
@@ -188,7 +189,7 @@ const Home = {
         const initial = isBn ? p.bnInitial : p.initial;
         const label = window.t ? window.t(p.label) : p.label;
         html += `
-          <div class="timeline-node ${statusClass}" onclick="App.navigateTo('salah')" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p.label}">
+          <div class="timeline-node ${statusClass}" onclick="App.navigateTo('salah'); if (typeof Salah !== 'undefined') { Salah.selectedDate = Utils.todayStr(); Salah.renderAll(true); Salah.scrollToPrayer('${p.key}'); }" style="cursor:pointer;" role="button" aria-label="Go to Salah section for ${p.label}">
             <div class="timeline-dot">${initial}</div>
             <span class="timeline-label">${label}</span>
           </div>
