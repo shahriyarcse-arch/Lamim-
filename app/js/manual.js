@@ -542,12 +542,57 @@ const Manual = {
     }
   },
 
+  renderChapterHTML(ch, idx, chapters, isBn) {
+    return `
+      <div class="manual-chapter-header">
+        <div class="manual-chapter-badge">${isBn ? `অধ্যায় ${idx + 1} / ${chapters.length}` : `Chapter ${idx + 1} of ${chapters.length}`}</div>
+        <h3 class="manual-chapter-title">${ch.title}</h3>
+        <div class="manual-chapter-subtitle">${ch.subtitle}</div>
+      </div>
+
+      <div class="manual-chapter-summary-box">
+        <p>${ch.summary}</p>
+      </div>
+
+      ${ch.sections.map(sec => `
+        <div class="manual-chapter-section">
+          <h4 class="manual-section-heading">${sec.heading}</h4>
+          <ul class="manual-section-list">
+            ${sec.items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('')}
+
+      ${ch.tips ? `
+        <div class="manual-callout-tip">
+          <div class="manual-callout-icon">💡</div>
+          <div class="manual-callout-content">
+            <strong>${isBn ? 'দরকারী টিপস:' : 'Helpful Tip:'}</strong> ${ch.tips}
+          </div>
+        </div>
+      ` : ''}
+
+      ${ch.warning ? `
+        <div class="manual-callout-warn">
+          <div class="manual-callout-icon">⚠️</div>
+          <div class="manual-callout-content">
+            <strong>${isBn ? 'সতর্কতা / সাধারণ ভুল:' : 'Important Notice:'}</strong> ${ch.warning}
+          </div>
+        </div>
+      ` : ''}
+    `;
+  },
+
   // --- MODAL RENDERING & CONTROLS ---
   open(chapterIndex = 0) {
     this.currentChapterIndex = Math.max(0, Math.min(chapterIndex, this.getChapters().length - 1));
     
-    // Remove existing modal if already open
-    this.close();
+    // If modal is already open, just switch chapter seamlessly
+    const existing = document.getElementById('manual-modal-overlay');
+    if (existing) {
+      this.goToChapter(this.currentChapterIndex);
+      return;
+    }
 
     const chapters = this.getChapters();
     const isBn = typeof App !== 'undefined' ? App.lang === 'bn' : (localStorage.getItem('lamim_lang') === 'bn');
@@ -593,43 +638,8 @@ const Manual = {
           </nav>
 
           <!-- Main Chapter Content Area -->
-          <div class="manual-chapter-content" id="manual-chapter-scroll">
-            <div class="manual-chapter-header">
-              <div class="manual-chapter-badge">${isBn ? `অধ্যায় ${this.currentChapterIndex + 1} / ${chapters.length}` : `Chapter ${this.currentChapterIndex + 1} of ${chapters.length}`}</div>
-              <h3 class="manual-chapter-title">${ch.title}</h3>
-              <div class="manual-chapter-subtitle">${ch.subtitle}</div>
-            </div>
-
-            <div class="manual-chapter-summary-box">
-              <p>${ch.summary}</p>
-            </div>
-
-            ${ch.sections.map(sec => `
-              <div class="manual-chapter-section">
-                <h4 class="manual-section-heading">${sec.heading}</h4>
-                <ul class="manual-section-list">
-                  ${sec.items.map(item => `<li>${item}</li>`).join('')}
-                </ul>
-              </div>
-            `).join('')}
-
-            ${ch.tips ? `
-              <div class="manual-callout-tip">
-                <div class="manual-callout-icon">💡</div>
-                <div class="manual-callout-content">
-                  <strong>${isBn ? 'দরকারী টিপস:' : 'Helpful Tip:'}</strong> ${ch.tips}
-                </div>
-              </div>
-            ` : ''}
-
-            ${ch.warning ? `
-              <div class="manual-callout-warn">
-                <div class="manual-callout-icon">⚠️</div>
-                <div class="manual-callout-content">
-                  <strong>${isBn ? 'সতর্কতা / সাধারণ ভুল:' : 'Important Notice:'}</strong> ${ch.warning}
-                </div>
-              </div>
-            ` : ''}
+          <div class="manual-chapter-content anim-fade" id="manual-chapter-scroll">
+            ${this.renderChapterHTML(ch, this.currentChapterIndex, chapters, isBn)}
           </div>
         </div>
 
@@ -685,9 +695,66 @@ const Manual = {
   },
 
   goToChapter(idx) {
-    this.open(idx);
+    const chapters = this.getChapters();
+    this.currentChapterIndex = Math.max(0, Math.min(idx, chapters.length - 1));
+    const isBn = typeof App !== 'undefined' ? App.lang === 'bn' : (localStorage.getItem('lamim_lang') === 'bn');
+    const ch = chapters[this.currentChapterIndex];
+
+    const overlay = document.getElementById('manual-modal-overlay');
+    if (!overlay) {
+      this.open(this.currentChapterIndex);
+      return;
+    }
+
+    // 1. Update Header Icon
+    const headerIcon = overlay.querySelector('.manual-header-icon');
+    if (headerIcon) headerIcon.textContent = ch.icon;
+
+    // 2. Update TOC active state seamlessly
+    overlay.querySelectorAll('.manual-toc-item').forEach((btn, i) => {
+      btn.classList.toggle('active', i === this.currentChapterIndex);
+    });
+
+    // 3. Update Chapter Content seamlessly with micro-animation
     const scrollEl = document.getElementById('manual-chapter-scroll');
-    if (scrollEl) scrollEl.scrollTop = 0;
+    if (scrollEl) {
+      scrollEl.classList.remove('anim-fade');
+      void scrollEl.offsetHeight; // trigger reflow
+      scrollEl.innerHTML = this.renderChapterHTML(ch, this.currentChapterIndex, chapters, isBn);
+      scrollEl.classList.add('anim-fade');
+      scrollEl.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    // 4. Update Footer Progress & Buttons
+    const progressText = overlay.querySelector('.manual-footer-progress span');
+    if (progressText) {
+      progressText.textContent = isBn 
+        ? `অধ্যায় ${this.currentChapterIndex + 1} / ${chapters.length}` 
+        : `Chapter ${this.currentChapterIndex + 1} of ${chapters.length}`;
+    }
+    const progressFill = overlay.querySelector('.manual-progress-fill');
+    if (progressFill) {
+      progressFill.style.width = `${((this.currentChapterIndex + 1) / chapters.length) * 100}%`;
+    }
+
+    const btnsContainer = overlay.querySelector('.manual-footer-btns');
+    if (btnsContainer) {
+      const isLast = this.currentChapterIndex === chapters.length - 1;
+      btnsContainer.innerHTML = `
+        <button class="manual-btn manual-btn-prev" onclick="Manual.prevChapter()" ${this.currentChapterIndex === 0 ? 'disabled' : ''}>
+          ← ${isBn ? 'পূর্ববর্তী' : 'Previous'}
+        </button>
+        ${!isLast ? `
+          <button class="manual-btn manual-btn-next" onclick="Manual.nextChapter()">
+            ${isBn ? 'পরবর্তী' : 'Next'} →
+          </button>
+        ` : `
+          <button class="manual-btn manual-btn-finish" onclick="Manual.finishGuide()">
+            ✓ ${isBn ? 'সম্পন্ন' : 'Got it!'}
+          </button>
+        `}
+      `;
+    }
   },
 
   nextChapter() {
