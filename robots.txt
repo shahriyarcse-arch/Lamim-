@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lamim.vercel.app/sitemap.xml
+Sitemap: https://www.lamim.tech/sitemap.xml
+
