@@ -827,11 +827,62 @@
   box-shadow: 0 10px 26px color-mix(in srgb, var(--fin-green) 30%, transparent);
 }
 
+.fin-modal-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0 20px;
+}
+
+.fin-modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.fin-modal-icon.income {
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--fin-green, #10b981);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+}
+
+.fin-modal-icon.expense {
+  background: rgba(244, 63, 94, 0.14);
+  color: var(--fin-red, #f43f5e);
+  box-shadow: 0 8px 24px rgba(244, 63, 94, 0.25);
+}
+
+.fin-modal-sub {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.fin-modal-amount-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 280px;
+  padding: 10px 16px;
+  background: var(--color-surface-nested, rgba(255, 255, 255, 0.04));
+  border-radius: 16px;
+  border: 1px solid var(--color-divider-strong, rgba(255, 255, 255, 0.08));
+}
+
 .fin-modal-currency { font-size: 30px; font-weight: 900; color: var(--fin-green); margin-right: 8px; }
 .fin-modal-amount-input {
   flex: 1; border: none; background: transparent; outline: none;
   font-size: 30px; font-weight: 900; color: var(--color-text-primary);
-  font-family: inherit; width: 100%;
+  font-family: inherit; width: 100%; text-align: center;
 }
 .fin-modal-amount-input::placeholder { color: var(--color-text-muted); opacity: 0.4; }
 
@@ -1504,7 +1555,10 @@
 
 /* Keep close button above hero gradients so it stays clickable */
 .fin-modal-close { z-index: 10; }
-.fin-deposit-modal .fin-modal-close { top: 12px; right: 12px; }
+.fin-deposit-modal .fin-modal-close,
+.fin-spend-modal .fin-modal-close,
+.fin-vault-delete-modal .fin-modal-close,
+.fin-vault-deposit-modal .fin-modal-close { top: 12px; right: 12px; }
 
 /* ---- Vault Responsive Refinements ---- */
 @media (max-width: 768px) {

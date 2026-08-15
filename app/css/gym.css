@@ -1169,22 +1169,96 @@
   color: #ffffff !important;
 }
 
-/* ---------- responsive tweaks ---------- */
-@media (max-width: 640px) {
-  .gh-hero-card {
-    padding: 20px;
-  }
-  .gh-hero-title {
-    font-size: 21px;
-  }
-  .gh-sleep-time-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .gh-workout-params-row {
-    gap: 6px;
-  }
-  .gh-param-chip {
-    padding: 8px 4px;
-  }
+/* ---------- modal overlay & food logger dialog ---------- */
+.gh-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+  animation: ghFadeIn 0.2s ease;
+}
+
+.gh-modal {
+  background: var(--gh-card-bg, #0f172a);
+  border: 1px solid var(--gh-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: ghScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] .gh-modal {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+.gh-modal-header h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gh-text);
+  margin-bottom: 6px;
+}
+
+[data-theme="light"] .gh-modal-header h3 {
+  color: #0f172a;
+}
+
+.gh-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gh-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gh-meta-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gh-text-muted);
+}
+
+.gh-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+.gh-btn-ghost {
+  background: transparent;
+  border: 1px solid var(--gh-border);
+  color: var(--gh-text-muted);
+}
+
+.gh-btn-primary {
+  background: linear-gradient(135deg, #22d3ee, #06b6d4);
+  color: #041f26;
+  border: none;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(34, 211, 238, 0.3);
+}
+
+@keyframes ghFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ghScaleUp {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }

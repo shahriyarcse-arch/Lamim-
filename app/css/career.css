@@ -671,9 +671,10 @@
 
 .cb-progress-hero-tile {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 16px;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--cb-border);
@@ -685,6 +686,22 @@
   border-color: rgba(15, 23, 42, 0.08);
 }
 
+.cb-progress-ring-wrap {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cb-progress-hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
 .cb-progress-hero-label {
   font-size: 10.5px;
   font-weight: 800;
@@ -694,7 +711,7 @@
 }
 
 .cb-progress-hero-val {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--cb-text);
   line-height: 1.1;
@@ -702,6 +719,12 @@
 
 [data-theme="light"] .cb-progress-hero-val {
   color: #0f172a;
+}
+
+.cb-progress-hero-sub {
+  font-size: 11px;
+  color: var(--cb-text-muted);
+  font-weight: 600;
 }
 
 .cb-month-stat-card {

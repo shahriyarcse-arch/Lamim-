@@ -296,7 +296,7 @@ const Auth = {
     this.selectedGender = null;
     this._dobReady = false;
     this._submitting = false;
-    ['setup-name', 'setup-dob', 'setup-lat', 'setup-lng', 'setup-bio'].forEach((id) => {
+    ['setup-name', 'setup-dob', 'setup-lat', 'setup-lng'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.value = '';
     });

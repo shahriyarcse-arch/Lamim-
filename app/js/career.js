@@ -589,7 +589,6 @@ const Career = {
   renderProgressMonthly() {
     const statsEl = document.getElementById('cb-progress-stats');
     const chartEl = document.getElementById('cb-progress-chart');
-    const extraEl = document.getElementById('cb-progress-extra');
     if (!statsEl) return;
 
     const now = Utils.parseDate(this.selectedDate);
@@ -725,7 +724,6 @@ const Career = {
   renderProgressYearly() {
     const statsEl = document.getElementById('cb-progress-stats');
     const chartEl = document.getElementById('cb-progress-chart');
-    const extraEl = document.getElementById('cb-progress-extra');
     if (!statsEl) return;
 
     const now = Utils.parseDate(this.selectedDate);

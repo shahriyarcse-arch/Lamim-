@@ -117,33 +117,8 @@ const Goals = {
 
   // --- DASHBOARD SUMMARY ---
   updateHomeSummary() {
-    const today = Utils.todayStr();
-    const salah = DB.getSalah(today);
-    const dhikr = DB.getDhikr(today);
-
-    let sCount = 0;
-    ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].forEach(p => { if (salah[p] && salah[p] !== 'missed') sCount++; });
-    const dTotal = Object.values(dhikr).reduce((a, b) => a + (b || 0), 0);
-
-    const sEl = document.getElementById('journey-salah-focus');
-    const dEl = document.getElementById('journey-dhikr-focus');
-    if (sEl) sEl.textContent = `${sCount} / 5`;
-    if (dEl) dEl.textContent = `${dTotal > 999 ? (dTotal / 1000).toFixed(1) + 'k' : dTotal} / 100`;
-
-    const history = DB.getSalahHistory(7);
-    let activeDays = history.filter(d => {
-      let done = 0;
-      ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].forEach(p => { if (d.data[p] && d.data[p] !== 'missed') done++; });
-      return done >= 1;
-    }).length;
-
-    const mEl = document.getElementById('home-mentor-message');
-    if (mEl) {
-      let msg = "Start your day with Bismillah... ";
-      if (activeDays >= 6) msg = "Excellent consistency this week! ";
-      else if (activeDays >= 3) msg = "You're building a strong habit. Keep it up! ";
-      else if (activeDays > 0) msg = "Every prayer is a step closer to peace. ️";
-      mEl.textContent = `"${msg}"`;
+    if (typeof Home !== 'undefined' && typeof Home.render === 'function') {
+      Home.render();
     }
   },
 

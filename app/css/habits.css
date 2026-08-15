@@ -1725,3 +1725,14 @@
     animation: none !important;
   }
 }
+
+.badge-icon-orb {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}

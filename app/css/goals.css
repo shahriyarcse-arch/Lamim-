@@ -973,3 +973,8 @@ div#nafl-night-grid .salah-prayer-card {
   color: #64748b !important;
 }
 
+.nafl-sunnah-card-modern {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
