@@ -453,6 +453,10 @@ const Finance = {
     }
     if (!this.currentViewDate) this.currentViewDate = new Date();
     const stats = this.getStats(this.currentViewDate);
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const monthSub = this.chartView === 'daily' 
+      ? (isBn ? this.currentViewDate.toLocaleString('bn-BD', { month: 'long', year: 'numeric' }) + ' এর দৈনিক হিসাব' : this.currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' }) + ' breakdown')
+      : (isBn ? (window.n ? window.n(this.currentViewDate.getFullYear()) : this.currentViewDate.getFullYear()) + ' সালের মাসিক হিসাব' : 'Monthly overview of ' + this.currentViewDate.getFullYear());
 
     container.innerHTML = `
       <div class="finance-container" style="position:relative;">
@@ -463,12 +467,12 @@ const Finance = {
         
         <div class="fin-chart-header">
           <div>
-            <div class="fin-section-title">Spending Analysis</div>
-            <div class="fin-section-subtitle">${this.chartView === 'daily' ? this.currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' }) + ' breakdown' : 'Monthly overview of ' + this.currentViewDate.getFullYear()}</div>
+            <div class="fin-section-title">${isBn ? 'ব্যয় বিশ্লেষণ' : 'Spending Analysis'}</div>
+            <div class="fin-section-subtitle">${monthSub}</div>
           </div>
           <div class="fin-chart-tabs">
-            <button class="fin-chart-tab ${this.chartView === 'daily' ? 'active' : ''}" onclick="Finance.setChartView('daily')">Daily</button>
-            <button class="fin-chart-tab ${this.chartView === 'monthly' ? 'active' : ''}" onclick="Finance.setChartView('monthly')">Monthly</button>
+            <button class="fin-chart-tab ${this.chartView === 'daily' ? 'active' : ''}" onclick="Finance.setChartView('daily')">${isBn ? 'দৈনিক' : 'Daily'}</button>
+            <button class="fin-chart-tab ${this.chartView === 'monthly' ? 'active' : ''}" onclick="Finance.setChartView('monthly')">${isBn ? 'মাসিক' : 'Monthly'}</button>
           </div>
         </div>
         <div class="fin-chart-container">
@@ -482,9 +486,9 @@ const Finance = {
         <div class="finance-premium-card" style="text-align: center; padding: 32px 24px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.03) 0%, rgba(59, 130, 246, 0.01) 100%); border: 1px dashed rgba(255, 255, 255, 0.08); border-radius: 20px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm);">
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 2; position: relative;">
             <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(212, 163, 89, 0.1); border: 1px solid rgba(212, 163, 89, 0.2); display: flex; align-items: center; justify-content: center; color: var(--color-accent-gold); box-shadow: 0 0 20px rgba(212, 163, 89, 0.15);">${this.renderIcon('mosque', 26)}</div>
-            <div style="font-weight: 800; font-size: 16px; color: var(--color-text-primary); letter-spacing: 0.5px;">Zakat & Sadaqah Hub</div>
-            <div style="font-size: 12px; color: var(--color-text-subtitle); max-width: 320px; line-height: 1.5; font-weight: 500; margin-bottom: 4px;">Comprehensive Zakat calculations, custom assets bookkeeping, live Nisab thresholds, and Sadaqah charity tracking are coming in the next update.</div>
-            <div style="font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--color-accent-gold); padding: 4px 14px; background: rgba(212, 163, 89, 0.08); border-radius: 20px; border: 1px solid rgba(212, 163, 89, 0.15);">Coming Soon</div>
+            <div style="font-weight: 800; font-size: 16px; color: var(--color-text-primary); letter-spacing: 0.5px;">${isBn ? 'যাকাত ও সাদাকাহ হাব' : 'Zakat & Sadaqah Hub'}</div>
+            <div style="font-size: 12px; color: var(--color-text-subtitle); max-width: 320px; line-height: 1.5; font-weight: 500; margin-bottom: 4px;">${isBn ? 'যাকাত হিসাব, কাস্টম সম্পদ মূল্যায়ন, লাইভ নিসাব এবং সাদাকাহ ট্র্যাকিং পরবর্তী আপডেটে আসছে।' : 'Comprehensive Zakat calculations, custom assets bookkeeping, live Nisab thresholds, and Sadaqah charity tracking are coming in the next update.'}</div>
+            <div style="font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--color-accent-gold); padding: 4px 14px; background: rgba(212, 163, 89, 0.08); border-radius: 20px; border: 1px solid rgba(212, 163, 89, 0.15);">${isBn ? 'শীঘ্রই আসছে' : 'Coming Soon'}</div>
           </div>
           <div class="vault-total-gloss"></div>
         </div>
@@ -505,7 +509,8 @@ const Finance = {
   },
 
   renderMonthControl() {
-    const monthStr = this.currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const monthStr = this.currentViewDate.toLocaleString(isBn ? 'bn-BD' : 'default', { month: 'long', year: 'numeric' });
     const isCurrent = this.currentViewDate.getMonth() === new Date().getMonth() && this.currentViewDate.getFullYear() === new Date().getFullYear();
 
     return `
@@ -516,7 +521,7 @@ const Finance = {
         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
         <span>${monthStr}</span>
       </div>
-      ${isCurrent ? '' : `<button onclick="Finance.goToCurrentMonth()" class="fin-today-chip">Today</button>`}
+      ${isCurrent ? '' : `<button onclick="Finance.goToCurrentMonth()" class="fin-today-chip">${isBn ? 'চলতি মাস' : 'Today'}</button>`}
       <button onclick="Finance.changeMonth(1)" class="fin-nav-arrow ${isCurrent ? 'hidden' : ''}" aria-label="Next month">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </button>
@@ -596,17 +601,18 @@ const Finance = {
     const totalSaved = this.data.savings.reduce((sum, g) => sum + (Number(g.saved) || 0), 0);
     const available = stats.closingBalance;
     const netWorth = available + totalSaved;
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
 
     return `
       <div class="finance-premium-card card-main-balance ${available < 0 ? 'is-negative' : ''}">
         <div class="balance-card-top">
           <div class="balance-card-info">
-            <span class="balance-label">${available < 0 ? 'Overdrawn' : 'Available Balance'}</span>
+            <span class="balance-label">${available < 0 ? (isBn ? 'নেতিবাচক ব্যালেন্স' : 'Overdrawn') : (isBn ? 'বর্তমান ব্যালেন্স' : 'Available Balance')}</span>
             <div class="balance-value">${sym}${this.formatVal(available)}</div>
             <div class="balance-sub">
-              <span>Vault-এ জমা ${sym}${this.formatVal(totalSaved)}</span>
+              <span>${isBn ? 'ভল্টে জমা' : 'In Vaults'} ${sym}${this.formatVal(totalSaved)}</span>
               <span class="sub-dot">•</span>
-              <span>Net Worth ${sym}${this.formatVal(netWorth)}</span>
+              <span>${isBn ? 'মোট সম্পদ' : 'Net Worth'} ${sym}${this.formatVal(netWorth)}</span>
             </div>
           </div>
           <div class="balance-card-icon" aria-hidden="true">
@@ -615,7 +621,7 @@ const Finance = {
         </div>
         <div class="balance-meta">
           <div class="trend-section">
-            <div class="trend-head">এ মাস বনাম গত মাস</div>
+            <div class="trend-head">${isBn ? 'এ মাস বনাম গত মাস' : 'This Mo. vs Last Mo.'}</div>
             ${trendHtml}
           </div>
           <div class="card-number-row">
@@ -628,14 +634,14 @@ const Finance = {
         <div class="fin-stat-card">
           <div class="fin-stat-label">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--fin-green)"><path d="M7 17l5-5 5 5M7 12l5-5 5 5"/></svg>
-            Income
+            ${isBn ? 'মোট আয়' : 'Income'}
           </div>
           <div class="fin-stat-value income">+${sym}${this.formatVal(stats.income)}</div>
         </div>
         <div class="fin-stat-card">
           <div class="fin-stat-label">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--fin-red)"><path d="M7 7l5 5 5-5M7 12l5 5 5-5"/></svg>
-            Expenses
+            ${isBn ? 'মোট ব্যয়' : 'Expenses'}
           </div>
           <div class="fin-stat-value expense">-${sym}${this.formatVal(stats.expenses)}</div>
         </div>
@@ -814,6 +820,7 @@ const Finance = {
 
   renderSavingsSection() {
     const sym = this.getSymbol();
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const total = this.data.savings.reduce((sum, goal) => sum + (Number(goal.saved) || 0), 0);
     const hasVaults = this.data.savings.length > 0;
     const displayedVaults = Math.min(4, this.data.savings.length);
@@ -823,21 +830,21 @@ const Finance = {
       <div class="vault-section-head">
         <div class="vault-section-titles">
           <div style="display:flex; align-items:center; gap:8px;">
-            <div class="fin-section-title">Vaults</div>
-            ${hasVaults ? `<span class="vault-count-badge">${this.data.savings.length}</span>` : ''}
+            <div class="fin-section-title">${isBn ? 'ভল্টসমূহ' : 'Vaults'}</div>
+            ${hasVaults ? `<span class="vault-count-badge">${window.n ? window.n(this.data.savings.length) : this.data.savings.length}</span>` : ''}
           </div>
           ${hasVaults ? `
             <div class="vault-total-pill">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              <span>Saved: <strong>${sym}${this.formatVal(total)}</strong></span>
+              <span>${isBn ? 'মোট সঞ্চয়:' : 'Saved:'} <strong>${sym}${this.formatVal(total)}</strong></span>
             </div>
           ` : `
-            <div class="fin-section-subtitle">Set a goal & start saving</div>
+            <div class="fin-section-subtitle">${isBn ? 'লক্ষ্য স্থির করুন এবং সঞ্চয় শুরু করুন' : 'Set a goal & start saving'}</div>
           `}
         </div>
         <button class="fin-create-vault-btn" onclick="Finance.showSavingsModal()">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          <span>New Vault</span>
+          <span>${isBn ? '+ নতুন ভল্ট' : 'New Vault'}</span>
         </button>
       </div>
 
@@ -850,8 +857,8 @@ const Finance = {
         })() : `
           <div class="vault-empty-state" role="button" tabindex="0" onclick="Finance.showSavingsModal()">
             <div class="vault-empty-icon">${this.renderIcon('gem', 32)}</div>
-            <div style="font-weight:700; font-size:14px; color:var(--color-text-muted);">Secure your future</div>
-            <div style="font-size:12px; color:var(--color-text-muted); opacity:0.6; margin-top:4px;">Tap to create your first savings goal</div>
+            <div style="font-weight:700; font-size:14px; color:var(--color-text-muted);">${isBn ? 'ভবিষ্যত সুরক্ষিত করুন' : 'Secure your future'}</div>
+            <div style="font-size:12px; color:var(--color-text-muted); opacity:0.6; margin-top:4px;">${isBn ? 'আপনার প্রথম সঞ্চয় লক্ষ্য তৈরি করতে ট্যাপ করুন' : 'Tap to create your first savings goal'}</div>
           </div>
         `}
       </div>
@@ -2356,9 +2363,13 @@ const Finance = {
       }
     };
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const spendLabel = isBn ? 'ব্যয়' : 'Spending';
+    const incomeLabel = isBn ? 'আয়' : 'Income';
+
     const datasets = [
       {
-        label: 'Spending',
+        label: spendLabel,
         data: spendData,
         borderColor: spendStroke,
         tension: 0.4,
@@ -2377,7 +2388,7 @@ const Finance = {
         spanGaps: true,
       },
       {
-        label: 'Income',
+        label: incomeLabel,
         data: incomeData,
         borderColor: haloColor,
         borderWidth: 6,
@@ -2392,7 +2403,7 @@ const Finance = {
         isHalo: true,
       },
       {
-        label: 'Income',
+        label: incomeLabel,
         data: incomeData,
         borderColor: incomeStroke,
         borderWidth: 4,
@@ -2445,15 +2456,15 @@ const Finance = {
             usePointStyle: true,
             filter: (item) => !datasets[item.datasetIndex].isHalo,
             callbacks: {
-              title: (items) => isDaily ? `Day ${items[0].label}` : items[0].label,
+              title: (items) => isDaily ? (isBn ? `দিন ${window.n ? window.n(items[0].label) : items[0].label}` : `Day ${items[0].label}`) : items[0].label,
               label: (item) => ` ${item.dataset.label}: ${sym}${this.formatVal(item.parsed.y)}`,
               footer: (items) => {
-                const sp = items.find(i => i.dataset.label === 'Spending');
-                const inc = items.find(i => i.dataset.label === 'Income');
+                const sp = items.find(i => i.dataset.label === spendLabel);
+                const inc = items.find(i => i.dataset.label === incomeLabel);
                 if (!sp || !inc) return '';
                 const net = inc.parsed.y - sp.parsed.y;
                 const sign = net >= 0 ? '+' : '-';
-                return `Net: ${sign}${sym}${this.formatVal(Math.abs(net))}`;
+                return `${isBn ? 'নেট' : 'Net'}: ${sign}${sym}${this.formatVal(Math.abs(net))}`;
               }
             },
             footerColor: isDark ? '#a7f3d0' : '#059669',

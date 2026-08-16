@@ -212,7 +212,7 @@ const Analysis = {
         <!-- Dashboard Header -->
         <div class="analysis-header-row" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom: 12px;">
           <h2 class="analysis-hero-title" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); font-size: 1.25rem; font-weight: 900; font-style: italic; opacity: 1; margin: 0; letter-spacing: -0.03em; background: linear-gradient(135deg, #a855f7, #6366f1, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; white-space: nowrap;">
-            Lamim Spirituality Score
+            ${isBn ? 'লামিম আধ্যাত্মিক স্কোর' : 'Lamim Spirituality Score'}
           </h2>
           
           <div class="analysis-actions-wrapper" style="display: flex; align-items: center; gap: 8px; flex-shrink: 0; white-space: nowrap;">
@@ -331,7 +331,7 @@ const Analysis = {
           `, null, noAnim)}
           ${this.renderCard(isBn ? 'যিকির' : 'Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>
-          `, `Lvl ${shs.level.dhikr}`, noAnim)}
+          `, isBn ? 'লেভেল ' + (window.n ? window.n(shs.level.dhikr) : shs.level.dhikr) : `Lvl ${shs.level.dhikr}`, noAnim)}
           ${this.renderCard(isBn ? 'অভ্যাস' : 'Habits', shs.breakdown.habits, 10, '#fbbf24', `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           `, null, noAnim)}
@@ -414,7 +414,7 @@ const Analysis = {
       grid.innerHTML = `
         ${this.renderCard(isBn ? 'ফরয নামাজ' : 'Salah', shs.breakdown.salah, 50, '#f87171', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H4c-1 0-2-1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4c0 1-1 2-2 2z"/><path d="M12 10V3"/><path d="M8 6h8"/></svg>`, null, true)}
         ${this.renderCard(isBn ? 'নফল ও সুন্নত' : 'Nafl', shs.breakdown.nafl, 15, '#a855f7', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`, null, true)}
-        ${this.renderCard(isBn ? 'যিকির' : 'Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>`, `Lvl ${shs.level.dhikr}`, true)}
+        ${this.renderCard(isBn ? 'যিকির' : 'Dhikr', shs.breakdown.dhikr, 15, '#38bdf8', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>`, isBn ? 'লেভেল ' + (window.n ? window.n(shs.level.dhikr) : shs.level.dhikr) : `Lvl ${shs.level.dhikr}`, true)}
         ${this.renderCard(isBn ? 'অভ্যাস' : 'Habits', shs.breakdown.habits, 10, '#fbbf24', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, null, true)}
         ${this.renderCard(isBn ? 'ধারাবাহিকতা' : 'Spirit', shs.breakdown.consistency, 10, '#10b981', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`, null, true)}
       `;
@@ -471,7 +471,8 @@ const Analysis = {
       (breakdown.consistency / 10) * 100  // Top-Left (Consistency)
     ];
 
-    const labels = ['Salah', 'Nafl', 'Dhikr', 'Habits', 'Spirit'];
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const labels = isBn ? ['সালাত', 'নফল', 'যিকির', 'হ্যাবিটস', 'স্পিরিট'] : ['Salah', 'Nafl', 'Dhikr', 'Habits', 'Spirit'];
     const colors = ['#f87171', '#a855f7', '#38bdf8', '#fbbf24', '#10b981'];
     
     const center = 100;

@@ -48,7 +48,7 @@ const Profile = {
 
       <div class="profile-stats">
         <div class="streak-badge active streak-perfect" style="background:rgba(255,214,10,0.1); border-color:rgba(255,214,10,0.3); color:var(--color-accent-gold);" title="Your Lamim Spiritual Score (LSS)">
-          <span class="badge-icon"></span>${Utils.escapeHTML(user.spirit_level || 'Awakening')} · ${n(Math.round(user.spirit_score || 0))} ${isBn ? 'পাওয়ার' : 'Power'}
+          <span class="badge-icon"></span>${Utils.escapeHTML(isBn ? (window.t ? window.t(user.spirit_level || 'Awakening') : (user.spirit_level || 'Awakening')) : (user.spirit_level || 'Awakening'))} · ${n(Math.round(user.spirit_score || 0))} ${isBn ? 'পাওয়ার' : 'Power'}
         </div>
         <div class="streak-badge ${streak.consistency > 0 ? 'active' : ''} streak-consistency" title="Consecutive days with 4+ prayers logged">
           <span class="badge-icon">${pIcons.consistency}</span>${n(streak.consistency)}${isBn ? ' দিন ধারাবাহিক' : 'd Consistent'}
@@ -157,7 +157,7 @@ const Profile = {
         </div>
       </div>
       <div class="settings-item" style="cursor:default">
-        <div class="settings-item-left"><div class="settings-item-icon ic-lime">${icons.dollar}</div><div><div class="settings-item-label">Currency</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-lime">${icons.dollar}</div><div><div class="settings-item-label" data-i18n="Currency">Currency</div></div></div>
         <div class="settings-item-right">
           <select class="input" onchange="Profile.saveSetting('currency',this.value)">
             <option value="USD" ${settings.currency==='USD'?'selected':''}>USD ($)</option>
@@ -166,7 +166,7 @@ const Profile = {
         </div>
       </div>
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.detectLocation(event)">
-        <div class="settings-item-left"><div class="settings-item-icon ic-teal">${icons.globe}</div><div><div class="settings-item-label">Detect Location</div>        <div class="settings-item-value">${Utils.escapeHTML(settings.locationName) || (settings.lat ? settings.lat.toFixed(2) + ', ' + settings.lng.toFixed(2) : 'Not set')}</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-teal">${icons.globe}</div><div><div class="settings-item-label" data-i18n="Detect Location">Detect Location</div>        <div class="settings-item-value">${Utils.escapeHTML(settings.locationName) || (settings.lat ? settings.lat.toFixed(2) + ', ' + settings.lng.toFixed(2) : (isBn ? 'সেট করা নেই' : 'Not set'))}</div></div></div>
         <div class="settings-item-right"><span>↻</span></div>
       </div>
       <div class="settings-item" style="cursor:default">
@@ -214,7 +214,7 @@ const Profile = {
     const ab = document.getElementById('profile-about');
     if (ab) ab.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.showAppInfo()">
-        <div class="settings-item-left"><div class="settings-item-icon ic-slate">${icons.info}</div><div><div class="settings-item-label" data-i18n="App Version">App Version</div><div class="settings-item-value">Release notes & build info</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-slate">${icons.info}</div><div><div class="settings-item-label" data-i18n="App Version">App Version</div><div class="settings-item-value" data-i18n="Release notes & build info">Release notes & build info</div></div></div>
         <div class="settings-item-right"><span class="ver-chip">v1.0.0</span><span>›</span></div>
       </div>
     `;

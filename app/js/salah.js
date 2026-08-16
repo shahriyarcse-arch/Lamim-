@@ -333,9 +333,11 @@ const Salah = {
     const streak = DB.getSalahStreak();
     const points = this.calcDayPoints(salah);
 
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const daySuffix = isBn ? ' দিন' : 'd';
     const valPrayed = `${window.n ? window.n(score.done) : score.done}/${window.n ? window.n(5) : 5}`;
-    const valPerfect = `${window.n ? window.n(streak.perfect) : streak.perfect}d`;
-    const valConsistent = `${window.n ? window.n(streak.consistency) : streak.consistency}d`;
+    const valPerfect = `${window.n ? window.n(streak.perfect) : streak.perfect}${daySuffix}`;
+    const valConsistent = `${window.n ? window.n(streak.consistency) : streak.consistency}${daySuffix}`;
     const valPoints = `${window.n ? window.n(points) : points}`;
     const valScore = `${window.n ? window.n(score.pct) : score.pct}%`;
 

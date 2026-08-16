@@ -368,12 +368,17 @@ const Gym = {
   },
 
   _formatTime12h(time24) {
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const [hStr, mStr] = time24.split(':');
     let h = parseInt(hStr, 10);
     const m = mStr;
     let ampm = 'AM';
     if (h >= 12) { ampm = 'PM'; if (h > 12) h -= 12; }
     if (h === 0) h = 12;
+    if (isBn) {
+      const bnTime = window.n ? window.n(`${h}:${m}`) : `${h}:${m}`;
+      return `${bnTime} ${ampm === 'AM' ? 'সকাল' : 'রাত'}`;
+    }
     return `${h}:${m} ${ampm}`;
   },
 
@@ -602,6 +607,7 @@ const Gym = {
     const data = DB.getGym(this.selectedDate);
     const water = data.water || { amount: 0, goal: 3000 };
     const n = window.n ? window.n : (x => x);
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const pct = water.goal ? Math.min(100, (water.amount / water.goal) * 100) : 0;
     const displayPct = (pct > 0 && pct < 10) ? pct.toFixed(1) : Math.round(pct);
 
@@ -609,7 +615,7 @@ const Gym = {
     const pctEl = document.getElementById('gym-water-pct-center');
     const glassFill = document.getElementById('gym-water-glass-fill');
 
-    if (valEl) valEl.textContent = `${n(water.amount)} ml`;
+    if (valEl) valEl.textContent = isBn ? `${n(water.amount)} মিলি` : `${n(water.amount)} ml`;
     if (pctEl) pctEl.textContent = n(displayPct) + '%';
     
     // Animate the glass fill height (ensure minimum 6% visual height when amount > 0)

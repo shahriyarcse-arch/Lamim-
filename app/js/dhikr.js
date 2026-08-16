@@ -16,16 +16,16 @@ const Icons = {
 };
 const Dhikr = {
   presets: [
-    { id: 'subhanallah', arabic: 'سُبْحَانَ اللَّهِ', latin: 'SubhanAllah', meaning: 'Glory be to Allah', category: 'general', icon: Icons.sparkles, target: 33 },
-    { id: 'alhamdulillah', arabic: 'الْحَمْدُ لِلَّهِ', latin: 'Alhamdulillah', meaning: 'All praise is due to Allah', category: 'general', icon: Icons.heart, target: 33 },
-    { id: 'allhuakbar', arabic: 'اللَّهُ أَكْبَرُ', latin: 'AllhuAkbar', meaning: 'Allah is the Greatest', category: 'general', icon: Icons.kaaba, target: 33 },
-    { id: 'la-ilaha', arabic: 'لَا إِلَٰهَ إِلَّا اللَّهُ', latin: 'La ilaha illallah', meaning: 'There is no god but Allah', category: 'general', icon: Icons.circle, target: 33 },
-    { id: 'astghfirullah', arabic: 'أَسْتَغْفِرُ اللَّهَ', latin: 'Astghfirullah', meaning: 'I seek forgiveness of Allah', category: 'morning', icon: Icons.hands, target: 33 },
-    { id: 'salawat', arabic: 'صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ', latin: 'Allahumma Salli', meaning: "Prayers upon the Prophet", category: 'general', icon: Icons.star, target: 33 },
-    { id: 'hasbunallah', arabic: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ', latin: 'Hasbunallah', meaning: 'Allah is Sufficient for us', category: 'morning', icon: Icons.water, target: 33 },
-    { id: 'ya-hayyu', arabic: 'يَا حَيُّ يَا قَيُّومُ', latin: 'Ya Hayyu Ya Qayyum', meaning: 'O Ever-Living, O Sustainer', category: 'evening', icon: Icons.moon, target: 33 },
-    { id: 'subhanallahi-wabihamdihi', arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', latin: 'SubhanAllahi Wabihamdihi', meaning: 'Glory and praise be to Allah', category: 'after-prayer', icon: Icons.sparkles, target: 33 },
-    { id: 'la-hawla', arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', latin: 'La Hawla Wala Quwwata', meaning: 'There is no power except with Allah', category: 'general', icon: Icons.circle, target: 33 },
+    { id: 'subhanallah', arabic: 'سُبْحَانَ اللَّهِ', latin: 'SubhanAllah', bnName: 'সুবহানাল্লাহ', meaning: 'Glory be to Allah', bnMeaning: 'আল্লাহর পবিত্রতা ঘোষণা', category: 'general', icon: Icons.sparkles, target: 33 },
+    { id: 'alhamdulillah', arabic: 'الْحَمْدُ لِلَّهِ', latin: 'Alhamdulillah', bnName: 'আলহামদুলিল্লাহ', meaning: 'All praise is due to Allah', bnMeaning: 'সকল প্রশংসা মহান আল্লাহর জন্য', category: 'general', icon: Icons.heart, target: 33 },
+    { id: 'allhuakbar', arabic: 'اللَّهُ أَكْبَرُ', latin: 'Allahu Akbar', bnName: 'আল্লাহু আকবার', meaning: 'Allah is the Greatest', bnMeaning: 'আল্লাহ সর্বশ্রেষ্ঠ', category: 'general', icon: Icons.kaaba, target: 33 },
+    { id: 'la-ilaha', arabic: 'لَا إِلَٰهَ إِلَّا اللَّهُ', latin: 'La ilaha illallah', bnName: 'লা ইলাহা ইল্লাল্লাহ', meaning: 'There is no god but Allah', bnMeaning: 'আল্লাহ ছাড়া কোনো উপাস্য নেই', category: 'general', icon: Icons.circle, target: 33 },
+    { id: 'astghfirullah', arabic: 'أَسْتَغْفِرُ اللَّهَ', latin: 'Astaghfirullah', bnName: 'আস্তাগফিরুল্লাহ', meaning: 'I seek forgiveness of Allah', bnMeaning: 'আল্লাহর কাছে ক্ষমা প্রার্থনা', category: 'morning', icon: Icons.hands, target: 33 },
+    { id: 'salawat', arabic: 'صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ', latin: 'Allahumma Salli', bnName: 'আল্লাহুম্মা সাল্লি', meaning: "Prayers upon the Prophet", bnMeaning: 'নবীজির (সা.) ওপর দরূদ', category: 'general', icon: Icons.star, target: 33 },
+    { id: 'hasbunallah', arabic: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ', latin: 'Hasbunallah', bnName: 'হাসবুনাল্লাহ', meaning: 'Allah is Sufficient for us', bnMeaning: 'আমাদের জন্য আল্লাহই যথেষ্ট', category: 'morning', icon: Icons.water, target: 33 },
+    { id: 'ya-hayyu', arabic: 'يَا حَيُّ يَا قَيُّومُ', latin: 'Ya Hayyu Ya Qayyum', bnName: 'ইয়া হাইয়্যু ইয়া কাইয়্যূম', meaning: 'O Ever-Living, O Sustainer', bnMeaning: 'হে চিরঞ্জীব, হে চিরস্থায়ী', category: 'evening', icon: Icons.moon, target: 33 },
+    { id: 'subhanallahi-wabihamdihi', arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', latin: 'SubhanAllahi Wabihamdihi', bnName: 'সুবহানাল্লাহি ওয়া বিহামদিহি', meaning: 'Glory and praise be to Allah', bnMeaning: 'আল্লাহর পবিত্রতা ও প্রশংসা', category: 'after-prayer', icon: Icons.sparkles, target: 33 },
+    { id: 'la-hawla', arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', latin: 'La Hawla Wala Quwwata', bnName: 'লা হাওলা ওয়ালা কুওয়াতা', meaning: 'There is no power except with Allah', bnMeaning: 'আল্লাহর সাহায্য ছাড়া কোনো শক্তি নেই', category: 'general', icon: Icons.circle, target: 33 },
   ],
 
   hadith: {
@@ -98,23 +98,26 @@ const Dhikr = {
     const grid = document.getElementById('dhikr-grid');
     if (!grid) return;
     const presets = this.getAllPresets();
+    const isBn = this.getLang() === 'bn';
 
     grid.innerHTML = presets.map((p) => {
       const color = p.color || '#14b8a6';
+      const displayName = isBn ? (p.bnName || p.latin) : p.latin;
       return `
         <div class="dhikr-preset-card ${p.id === this.currentId ? 'active' : ''}" role="button" tabindex="0" onclick="Dhikr.selectDhikr('${p.id}')" style="--dc:${color}">
-          <div class="dhikr-preset-name">${Utils.escapeHTML(p.latin)}</div>
+          <div class="dhikr-preset-name">${Utils.escapeHTML(displayName)}</div>
         </div>
       `;
     }).join('') + `
       <div class="dhikr-preset-card dhikr-add-card" role="button" tabindex="0" onclick="Dhikr.showAddModal()" style="--dc:#14b8a6">
-        <div class="dhikr-preset-name">${this.getLang() === 'bn' ? 'যোগ' : 'Add'}</div>
+        <div class="dhikr-preset-name">${isBn ? 'যোগ' : 'Add'}</div>
       </div>
     `;
   },
 
   renderHero() {
     const d = this.current;
+    const isBn = this.getLang() === 'bn';
     const countEl = document.getElementById('dhikr-tap-count');
     const infoEl = document.getElementById('dhikr-current-info');
     const beadsEl = document.getElementById('dhikr-beads-container');
@@ -122,13 +125,12 @@ const Dhikr = {
     if (countEl) countEl.textContent = window.n ? window.n(this.count) : this.count;
 
     if (infoEl) {
-      const currentName = infoEl.querySelector('.latin-name');
-      if (!currentName || currentName.textContent !== d.latin) {
-        infoEl.innerHTML = `
-          <div class="latin-name">${Utils.escapeHTML(d.latin)}</div>
-          <div class="meaning">${Utils.escapeHTML(d.meaning)}</div>
-        `;
-      }
+      const displayName = isBn ? (d.bnName || d.latin) : d.latin;
+      const displayMeaning = isBn ? (d.bnMeaning || (window.t ? window.t(d.meaning) : d.meaning)) : d.meaning;
+      infoEl.innerHTML = `
+        <div class="latin-name">${Utils.escapeHTML(displayName)}</div>
+        <div class="meaning">${Utils.escapeHTML(displayMeaning)}</div>
+      `;
     }
 
     // Render infinite looping beads (33 per loop) efficiently

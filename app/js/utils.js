@@ -34,6 +34,26 @@ const Utils = {
   },
 
   formatTime(date) {
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    if (isBn) {
+      let h = date.getHours();
+      const m = String(date.getMinutes()).padStart(2, '0');
+      let period = 'সকাল';
+      if (h >= 12) {
+        if (h < 15) period = 'দুপুর';
+        else if (h < 18) period = 'বিকাল';
+        else if (h < 20) period = 'সন্ধ্যা';
+        else period = 'রাত';
+        if (h > 12) h -= 12;
+      } else {
+        if (h < 4) period = 'রাত';
+        else if (h < 6) period = 'ভোর';
+        else period = 'সকাল';
+        if (h === 0) h = 12;
+      }
+      const timeStr = `${String(h).padStart(2, '0')}:${m}`;
+      return `${window.n ? window.n(timeStr) : timeStr} ${period}`;
+    }
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   },
 
