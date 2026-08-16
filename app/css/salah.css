@@ -456,6 +456,16 @@
 
 .salah-prayer-emoji {
   font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.salah-prayer-emoji svg {
+  display: block;
+  width: 22px;
+  height: 22px;
 }
 
 .salah-prayer-info {
