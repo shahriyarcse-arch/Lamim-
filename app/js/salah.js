@@ -539,7 +539,9 @@ const Salah = {
                  <span>${statusInfo.icon}</span> ${window.t ? window.t(statusInfo.label) : statusInfo.label}
                </div>`
             : `<div class="salah-status-chip salah-status-pending">
-                 <span>⏳</span> ${window.t ? window.t('Pending') : 'Pending'}
+                 <span class="salah-pending-dot"></span>
+                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
+                 <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                </div>`;
         }
 
@@ -646,7 +648,9 @@ const Salah = {
                          <span>${statusInfo.icon}</span> ${window.t ? window.t(statusInfo.label) : statusInfo.label}
                        </div>`
                     : `<div class="salah-status-chip salah-status-pending">
-                         <span>⏳</span> ${window.t ? window.t('Pending') : 'Pending'}
+                         <span class="salah-pending-dot"></span>
+                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
+                         <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                        </div>`
                   }
                 </div>
