@@ -219,10 +219,7 @@ const Goals = {
                   <span class="pts">+${window.n ? window.n(isPrayed ? pts : 0) : (isPrayed ? pts : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
                 </div>
               </div>
-              <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockSunnah('${item.id}')" title="Change status">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                <span>${window.t ? window.t('Edit') : 'Edit'}</span>
-              </button>
+              <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.6;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             </div>
           `;
         } else if (!isLocked && locked) {
@@ -305,10 +302,7 @@ const Goals = {
                      <span class="pts">+${window.n ? window.n(isPrayed ? pts : 0) : (isPrayed ? pts : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
                    </div>
                  </div>
-                 <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockSunnah('${item.id}')" title="Change status">
-                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                   <span>${window.t ? window.t('Edit') : 'Edit'}</span>
-                 </button>
+                 <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.6;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                </div>`
             : `<div class="salah-status-selector sunnah-status-selector">
                  <div class="sunnah-action-row">
@@ -417,10 +411,7 @@ const Goals = {
                 <span class="pts">+${window.n ? window.n(isPrayed ? 3 : 0) : (isPrayed ? 3 : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
               </div>
             </div>
-            <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockTahajjud()" title="Change status">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              <span>${window.t ? window.t('Edit') : 'Edit'}</span>
-            </button>
+            <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.6;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           </div>
         `;
       }
@@ -472,10 +463,7 @@ const Goals = {
                    <span class="pts">+${window.n ? window.n(isPrayed ? 3 : 0) : (isPrayed ? 3 : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
                  </div>
                </div>
-               <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockTahajjud()" title="Change status">
-                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                 <span>${window.t ? window.t('Edit') : 'Edit'}</span>
-               </button>
+               <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.6;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
              </div>`
           : `<div class="salah-status-selector sunnah-tahajjud-selector">
                <div class="sunnah-tahajjud-header">
@@ -635,10 +623,7 @@ const Goals = {
                 <span class="pts">+${window.n ? window.n(isPrayed ? 2 : 0) : (isPrayed ? 2 : 0)} ${window.t ? window.t('pts') : 'pts'}</span>
               </div>
             </div>
-            <button type="button" class="sunnah-edit-btn" onclick="Goals.unlockWitr()" title="Change status">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              <span>${window.t ? window.t('Edit') : 'Edit'}</span>
-            </button>
+            <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.6;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           </div>
         `;
       }

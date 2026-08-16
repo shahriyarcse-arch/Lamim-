@@ -684,8 +684,7 @@ const Salah = {
                           <span style="opacity:0.5;margin:0 2px">•</span> +${window.n ? window.n(statusInfo.points) : statusInfo.points} ${window.t ? window.t('pts') : 'pts'}
                         </div>
                       </div>
-                      <button class="salah-correct-btn" type="button" onclick="Salah.editStatus('${p}','${date}')">${window.t ? window.t('Correct') : 'Correct'}</button>
-                      <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                      <svg class="salah-lock-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.6;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>`
               }
             </div>
