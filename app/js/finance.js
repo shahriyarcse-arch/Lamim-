@@ -396,22 +396,26 @@ const Finance = {
   },
 
   loadData() {
-    const stored = DB.getFinance();
+    const stored = (typeof DB !== 'undefined' && DB.getFinance) ? DB.getFinance() : {};
     // Card number is tied to the account (settings), generated at account creation.
-    let cardNumber = DB.getSettings().cardNumber;
+    let cardNumber = (typeof DB !== 'undefined' && DB.getSettings) ? DB.getSettings()?.cardNumber : null;
     if (!cardNumber) {
       cardNumber = this.generateCardNumber();
-      const s = DB.getSettings();
-      s.cardNumber = cardNumber;
-      DB.setSettings(s);
+      if (typeof DB !== 'undefined' && DB.getSettings) {
+        const s = DB.getSettings() || {};
+        s.cardNumber = cardNumber;
+        DB.setSettings(s);
+      }
     }
     this.data = { 
-      expenses: stored.expenses || [], 
-      savings: stored.savings || [], 
-      income: stored.income || [],
+      expenses: stored?.expenses || [], 
+      savings: stored?.savings || [], 
+      income: stored?.income || [],
       cardNumber
     };
-    this.currentViewDate = new Date();
+    if (!this.currentViewDate) {
+      this.currentViewDate = new Date();
+    }
   },
 
   generateCardNumber() {
@@ -427,16 +431,27 @@ const Finance = {
   },
 
   formatCardNumber() {
-    const raw = (this.data.cardNumber || this.generateCardNumber()).replace(/\D/g, '');
+    if (!this.data) this.loadData();
+    const raw = (this.data?.cardNumber || this.generateCardNumber()).replace(/\D/g, '');
     const grouped = raw.replace(/(.{4})(?=.)/g, '$1 ');
     return `LAMIM ${grouped}`;
   },
 
-  saveData() { DB.setFinance(this.data); },
+  saveData() {
+    if (this.data && typeof DB !== 'undefined' && DB.setFinance) {
+      DB.setFinance(this.data);
+    }
+  },
 
   render() {
     const container = document.getElementById('finance-content');
     if (!container) return;
+    if (!this.data) this.loadData();
+    if (!this.categoryMap) {
+      this.categoryMap = new Map();
+      this.categories.forEach(cat => this.categoryMap.set(cat.id, cat));
+    }
+    if (!this.currentViewDate) this.currentViewDate = new Date();
     const stats = this.getStats(this.currentViewDate);
 
     container.innerHTML = `
@@ -2476,27 +2491,31 @@ const Finance = {
   },
 
   getStats(v = this.currentViewDate || new Date()) {
+    if (!this.data) this.loadData();
+    const incomeList = (this.data && Array.isArray(this.data.income)) ? this.data.income : [];
+    const expensesList = (this.data && Array.isArray(this.data.expenses)) ? this.data.expenses : [];
+
     const m = v.getMonth(), y = v.getFullYear();
     const endOfViewMonth = new Date(y, m + 1, 0, 23, 59, 59); // Last second of the viewed month
 
     // Monthly View Stats (Specific to this month) — exclude vault transfers so Spending matches the ledger
-    const monthlyIncome = this.data.income.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y; }).reduce((s, o) => s + o.amount, 0);
-    const monthlyExpenses = this.data.expenses.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y && o.category !== 'transfer'; }).reduce((s, o) => s + o.amount, 0);
+    const monthlyIncome = incomeList.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y; }).reduce((s, o) => s + (o.amount || 0), 0);
+    const monthlyExpenses = expensesList.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y && o.category !== 'transfer'; }).reduce((s, o) => s + (o.amount || 0), 0);
 
     // Previous calendar month stats (for month-over-month comparison)
     const pm = m === 0 ? 11 : m - 1;
     const py = m === 0 ? y - 1 : y;
-    const prevIncome = this.data.income.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py; }).reduce((s, o) => s + o.amount, 0);
-    const prevExpenses = this.data.expenses.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py && o.category !== 'transfer'; }).reduce((s, o) => s + o.amount, 0);
+    const prevIncome = incomeList.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py; }).reduce((s, o) => s + (o.amount || 0), 0);
+    const prevExpenses = expensesList.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py && o.category !== 'transfer'; }).reduce((s, o) => s + (o.amount || 0), 0);
 
     // Closing Balance of the viewed month (Cumulative up to the end of the viewed month)
-    const closingIncome = this.data.income.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + o.amount, 0);
-    const closingExpenses = this.data.expenses.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + o.amount, 0);
+    const closingIncome = incomeList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
+    const closingExpenses = expensesList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
     
     // Opening Balance of the viewed month (Cumulative up to the start of the viewed month)
     const startOfViewMonth = new Date(y, m, 1, 0, 0, 0);
-    const openingIncome = this.data.income.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + o.amount, 0);
-    const openingExpenses = this.data.expenses.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + o.amount, 0);
+    const openingIncome = incomeList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
+    const openingExpenses = expensesList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
     const openingBalance = openingIncome - openingExpenses;
     
     return { 
