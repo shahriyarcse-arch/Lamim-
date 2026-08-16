@@ -311,6 +311,8 @@ updateSectionTitle() {
     });
 
     window.addEventListener('appinstalled', () => {
+      const isBn = this.lang === 'bn';
+      Utils.toast(isBn ? '🎉 অ্যাপটি সফলভাবে ইনস্টল সম্পন্ন হয়েছে!' : '🎉 App successfully installed!', 'success', 5000);
       const btn = document.getElementById('pwa-install-btn');
       if (btn) btn.style.display = 'none';
       const sideBtn = document.getElementById('sidebar-pwa-install-btn');
