@@ -25,7 +25,13 @@ self.addEventListener('install', (e) => {
       );
     } catch (_) { /* offline install — shell-only fallback is fine */ }
   })());
-  self.skipWaiting();
+});
+
+// Message listener for user-triggered update
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // Activate: Cleanup ALL old caches & claim clients immediately

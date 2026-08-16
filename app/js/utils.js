@@ -890,6 +890,42 @@ const Utils = {
     if (cb) cb();
   },
 
+  // Focus Trapping Accessibility Helper
+  trapFocus(container) {
+    if (!container) return () => {};
+    const focusableEls = container.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (focusableEls.length === 0) return () => {};
+
+    const firstEl = focusableEls[0];
+    const lastEl = focusableEls[focusableEls.length - 1];
+    const prevActive = document.activeElement;
+
+    try { firstEl.focus(); } catch (e) {}
+
+    const handler = (e) => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        }
+      } else {
+        if (document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    };
+
+    container.addEventListener('keydown', handler);
+    return () => {
+      container.removeEventListener('keydown', handler);
+      if (prevActive && typeof prevActive.focus === 'function') {
+        try { prevActive.focus(); } catch (e) {}
+      }
+    };
+  },
+
 
   // NOTE: escapeHTML is defined once above (line 27). Do NOT add it again here.
 

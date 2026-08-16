@@ -145,11 +145,26 @@ updateSectionTitle() {
           }
         }).catch(() => {});
       } else {
-        // Register service worker with auto-update system on production
+        // Register service worker with controlled update system on production
         navigator.serviceWorker.register('./sw.js')
           .then((registration) => {
-            // Force immediate update check on reload
             registration.update();
+
+            // Check if there is already a waiting worker ready for update
+            if (registration.waiting) {
+              App.notifySwUpdateAvailable(registration.waiting);
+            }
+
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    App.notifySwUpdateAvailable(newWorker);
+                  }
+                });
+              }
+            });
           })
           .catch(() => { });
 
@@ -544,6 +559,19 @@ updateSectionTitle() {
       }
       window.deferredInstallPrompt = null;
     });
+  },
+
+  notifySwUpdateAvailable(worker) {
+    if (this._swUpdateNotified) return;
+    this._swUpdateNotified = true;
+    const isBn = this.lang === 'bn';
+    Utils.toast(
+      isBn ? 'নতুন ভার্সন প্রস্তুত! আপডেট করতে ট্যাপ করুন।' : 'New version available! Tap to reload and update.',
+      'info'
+    );
+    if (worker && worker.postMessage) {
+      worker.postMessage({ type: 'SKIP_WAITING' });
+    }
   },
 
   routeDataUpdate() {

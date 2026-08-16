@@ -656,6 +656,9 @@ const Profile = {
       modal = document.createElement('div');
       modal.id = 'profile-export-modal';
       modal.className = 'modal-backdrop hidden';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-labelledby', 'profile-export-title');
       document.body.appendChild(modal);
     }
 
@@ -667,18 +670,18 @@ const Profile = {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             </div>
             <div>
-              <div style="font-weight:800; font-size:16px; color:var(--color-text-primary);">${isBn ? 'ব্যাকআপ এক্সপোর্ট করুন' : 'Export Data Backup'}</div>
+              <div id="profile-export-title" style="font-weight:800; font-size:16px; color:var(--color-text-primary);">${isBn ? 'ব্যাকআপ এক্সপোর্ট করুন' : 'Export Data Backup'}</div>
               <div style="font-size:11px; color:var(--color-text-secondary);">${isBn ? 'এক্সপোর্টের ধরন বেছে নিন' : 'Choose export scope'}</div>
             </div>
           </div>
-          <button type="button" onclick="document.getElementById('profile-export-modal').classList.add('hidden')" style="background:none; border:none; color:var(--color-text-muted); cursor:pointer; padding:6px;">
+          <button type="button" id="profile-export-close-btn" aria-label="Close export dialog" style="background:none; border:none; color:var(--color-text-muted); cursor:pointer; padding:6px;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
         </div>
 
         <div style="display:flex; flex-direction:column; gap:12px;">
           <!-- Option 1: Current Active Profile -->
-          <div role="button" tabindex="0" onclick="Profile.performExport('current')" style="display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px; background:var(--color-surface-elevated, var(--color-glass)); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;">
+          <div role="button" tabindex="0" onclick="Profile.performExport('current')" onkeydown="if(event.key==='Enter'||event.key===' ')Profile.performExport('current')" style="display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px; background:var(--color-surface-elevated, var(--color-glass)); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;">
             <div style="width:42px; height:42px; border-radius:14px; background:rgba(99,102,241,0.15); color:#6366f1; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </div>
@@ -690,7 +693,7 @@ const Profile = {
           </div>
 
           <!-- Option 2: Full Vault (All Profiles) -->
-          <div role="button" tabindex="0" onclick="Profile.performExport('full')" style="display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px; background:var(--color-surface-elevated, var(--color-glass)); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;">
+          <div role="button" tabindex="0" onclick="Profile.performExport('full')" onkeydown="if(event.key==='Enter'||event.key===' ')Profile.performExport('full')" style="display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px; background:var(--color-surface-elevated, var(--color-glass)); border:1px solid var(--color-border); cursor:pointer; transition:all 0.2s ease;">
             <div style="width:42px; height:42px; border-radius:14px; background:rgba(16,185,129,0.15); color:#10b981; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><path d="M22 6l-10 7L2 6"></path></svg>
             </div>
@@ -705,9 +708,26 @@ const Profile = {
     `;
 
     modal.classList.remove('hidden');
-    modal.onclick = (e) => {
-      if (e.target === modal) modal.classList.add('hidden');
+    const release = Utils.trapFocus ? Utils.trapFocus(modal) : () => {};
+
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      release();
     };
+
+    const closeBtn = document.getElementById('profile-export-close-btn');
+    if (closeBtn) closeBtn.onclick = closeModal;
+    modal.onclick = (e) => {
+      if (e.target === modal) closeModal();
+    };
+
+    const onKey = (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+        document.removeEventListener('keydown', onKey);
+      }
+    };
+    document.addEventListener('keydown', onKey);
   },
 
   exportAll() {

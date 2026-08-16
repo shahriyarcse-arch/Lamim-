@@ -100,16 +100,32 @@ const DB = {
         window.dispatchEvent(new CustomEvent('lamim:data-updated'));
       }
     });
-
     // IndexedDB writes do NOT trigger storage events in other tabs, so propagate
     // them explicitly via BroadcastChannel. Other tabs update their in-memory
     // cache and re-render, preventing divergence / last-write-wins clobber.
+    if (!this._clientId) {
+      this._clientId = 'tab_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
+    }
+    if (!this._keyTimestamps) {
+      this._keyTimestamps = {};
+    }
+
     if (typeof BroadcastChannel !== 'undefined') {
       try {
         this._bc = new BroadcastChannel('lamim_db_sync');
         this._bc.onmessage = (ev) => {
           const msg = ev.data || {};
           if (!msg.key) return;
+
+          // Prevent self-loop if message was sent by this tab
+          if (msg.senderId && msg.senderId === this._clientId) return;
+
+          // Ignore stale out-of-order broadcasts
+          if (msg.ts && msg.key !== '*') {
+            const lastKnown = this._keyTimestamps[msg.key] || 0;
+            if (msg.ts < lastKnown) return;
+            this._keyTimestamps[msg.key] = msg.ts;
+          }
 
           // Detect profile identity changes from other tabs and re-initialize this tab cleanly
           if (msg.key === 'lamim_user' && msg.value !== null && msg.value !== undefined) {
@@ -129,6 +145,7 @@ const DB = {
 
           if (msg.type === 'clear') {
             this._cache = {};
+            this._keyTimestamps = {};
           } else if (msg.value !== null && msg.value !== undefined) {
             this._cache[msg.key] = msg.value;
           } else {
@@ -143,8 +160,21 @@ const DB = {
 
   // Notify other tabs of a write (IndexedDB path). No-op when unsupported.
   _broadcast(key, value, type) {
+    const ts = Date.now();
+    if (key && key !== '*') {
+      if (!this._keyTimestamps) this._keyTimestamps = {};
+      this._keyTimestamps[key] = ts;
+    }
     if (this._bc && this._bc.postMessage) {
-      try { this._bc.postMessage({ key, value: value === undefined ? null : value, type: type || 'set' }); } catch (e) { }
+      try {
+        this._bc.postMessage({
+          key,
+          value: value === undefined ? null : value,
+          type: type || 'set',
+          ts,
+          senderId: this._clientId || 'tab_main'
+        });
+      } catch (e) { }
     }
   },
 
@@ -180,11 +210,13 @@ const DB = {
   },
 
   _migrateFromLocalStorage() {
+    if (!this._db) return Promise.resolve();
+
     const keysToMigrate = [];
     for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k && k.startsWith('lamim_')) {
-        keysToMigrate.push(k);
+      const key = localStorage.key(i);
+      if (key && (key.startsWith('lamim_') || key.startsWith('usr_'))) {
+        keysToMigrate.push(key);
       }
     }
 
@@ -223,7 +255,7 @@ const DB = {
     });
   },
 
-  _asyncWrite(key, val) {
+  _asyncWrite(key, val, prevVal) {
     const run = (this._writeChain || Promise.resolve()).then(() => new Promise((resolve) => {
       if (!this._db) { resolve(); return; }
       try {
@@ -231,19 +263,33 @@ const DB = {
         const store = transaction.objectStore('keyvalue');
         const req = store.put(val, key);
 
-        req.onsuccess = () => { this._broadcast(key, val); resolve(); };
+        req.onsuccess = () => {
+          this._broadcast(key, val, 'set');
+          resolve();
+        };
         req.onerror = (e) => {
           const err = e.target.error;
           console.error(`[DB] Async write failed for key: ${key}`, err);
-          delete this._cache[key];
+          // Roll back in-memory cache to previous persistent state
+          if (prevVal !== undefined && prevVal !== null) {
+            this._cache[key] = prevVal;
+          } else {
+            delete this._cache[key];
+          }
+          window.dispatchEvent(new CustomEvent('lamim:write-failed', { detail: { key, error: err } }));
           if (err && (err.name === 'QuotaExceededError' || err.name === 'NS_ERROR_DOM_QUOTA_REACHED')) {
             this._showQuotaBanner();
           }
           resolve();
         };
       } catch (e) {
-        console.error(`[DB] Async write failed for key: ${key}`, e);
-        delete this._cache[key];
+        console.error(`[DB] Async write exception for key: ${key}`, e);
+        if (prevVal !== undefined && prevVal !== null) {
+          this._cache[key] = prevVal;
+        } else {
+          delete this._cache[key];
+        }
+        window.dispatchEvent(new CustomEvent('lamim:write-failed', { detail: { key, error: e } }));
         resolve();
       }
     }));
@@ -252,7 +298,7 @@ const DB = {
     return run;
   },
 
-  _asyncDelete(key) {
+  _asyncDelete(key, prevVal) {
     const run = (this._writeChain || Promise.resolve()).then(() => new Promise((resolve) => {
       if (!this._db) { resolve(); return; }
       try {
@@ -261,15 +307,21 @@ const DB = {
         const req = store.delete(key);
         let resolved = false;
         const done = () => { if (!resolved) { resolved = true; resolve(); } };
-        req.onsuccess = () => { this._broadcast(key, null); done(); };
+        req.onsuccess = () => { this._broadcast(key, null, 'delete'); done(); };
         req.onerror = (e) => {
           console.error(`[DB] Async delete failed for key: ${key}`, e.target.error);
+          if (prevVal !== undefined && prevVal !== null) {
+            this._cache[key] = prevVal;
+          }
           done();
         };
         transaction.oncomplete = done;
         transaction.onerror = done;
       } catch (e) {
         console.error(`[DB] Async delete execution error for key: ${key}`, e);
+        if (prevVal !== undefined && prevVal !== null) {
+          this._cache[key] = prevVal;
+        }
         resolve();
       }
     }));
@@ -363,6 +415,7 @@ const DB = {
   set(key, val) {
     try {
       const realKey = this._getEffectiveKey(key);
+      const prevVal = this._cache[realKey];
       const strVal = JSON.stringify(val);
       this._cache[realKey] = strVal;
 
@@ -372,7 +425,7 @@ const DB = {
         try { localStorage.setItem(realKey, strVal); } catch { }
       }
 
-      this._asyncWrite(realKey, strVal);
+      this._asyncWrite(realKey, strVal, prevVal);
       return true;
     } catch (e) {
       console.error(`[DB] Error in set for key: ${key}`, e);
@@ -382,12 +435,13 @@ const DB = {
 
   remove(key) {
     const realKey = this._getEffectiveKey(key);
+    const prevVal = this._cache[realKey];
     delete this._cache[realKey];
     delete this._cache[key];
     try { localStorage.removeItem(realKey); } catch { }
     try { localStorage.removeItem(key); } catch { }
-    this._asyncDelete(key);
-    return this._asyncDelete(realKey);
+    this._asyncDelete(key, prevVal);
+    return this._asyncDelete(realKey, prevVal);
   },
 
   rawGet(key) {
@@ -398,13 +452,14 @@ const DB = {
   rawSet(key, val) {
     try {
       const realKey = this._getEffectiveKey(key);
+      const prevVal = this._cache[realKey];
       this._cache[realKey] = val;
 
       if (realKey === 'lamim_lang' || realKey === 'lamim_settings' || realKey === 'lamim_user') {
         try { localStorage.setItem(realKey, val); } catch { }
       }
 
-      this._asyncWrite(realKey, val);
+      this._asyncWrite(realKey, val, prevVal);
       return true;
     } catch (e) {
       console.error(`[DB] Error in rawSet for key: ${key}`, e);
