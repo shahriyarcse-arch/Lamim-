@@ -3382,7 +3382,18 @@
                 window.deferredPwaPrompt = null;
               });
             } else {
-              window.location.href = 'app/index.html';
+              var isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+              if (isIos) {
+                var iosGuide = document.getElementById('launchIosGuide');
+                if (iosGuide) iosGuide.style.display = 'block';
+              } else {
+                var androidGuide = document.getElementById('launchAndroidGuide');
+                if (androidGuide) {
+                  androidGuide.style.display = 'block';
+                } else {
+                  window.location.href = 'app/index.html';
+                }
+              }
             }
           });
         }
@@ -3511,6 +3522,16 @@
             <ol>
               <li>নিচে সাফারির <strong>Share (📤)</strong> আইকনে চাপ দিন।</li>
               <li>তালিকা থেকে <strong>Add to Home Screen (➕)</strong> বেছে নিন।</li>
+            </ol>
+          </div>
+
+          <!-- Android specific step guide (if prompt suppressed or already installed) -->
+          <div class="ios-install-guide" id="launchAndroidGuide" style="display:none; border-color:var(--teal); background:#f4fbf1;">
+            <strong>Android-এ ইন্সটল করার নিয়ম:</strong>
+            <ol>
+              <li>উপরে বা নিচে ব্রাউজারের <strong>৩-ডট মেনু (⋮)</strong>-এ চাপ দিন।</li>
+              <li>তালিকা থেকে <strong>"Install app"</strong> বা <strong>"Add to Home screen"</strong> চাপুন।</li>
+              <li>(যদি অলরেডি ফোনে ইনস্টল থাকে, তবে হোমস্ক্রিন বা অ্যাপ ড্রয়ার থেকে সরাসরি ওপেন করুন।)</li>
             </ol>
           </div>
         </div>
