@@ -3367,98 +3367,53 @@
           if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
             closeLaunchModal();
           }
-        });
-
         if (installBtn) {
           installBtn.addEventListener('click', function() {
+            var isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (isIos) {
+              var iosGuide = document.getElementById('launchIosGuide');
+              if (iosGuide) iosGuide.style.display = 'block';
+              return;
+            }
+
             if (window.deferredPwaPrompt) {
               window.deferredPwaPrompt.prompt();
               window.deferredPwaPrompt.userChoice.then(function(choiceResult) {
                 if (choiceResult.outcome === 'accepted') {
-                  startInstallProgress();
+                  closeLaunchModal();
+                  showNativeInstallToast('ইনস্টল হচ্ছে... কয়েক সেকেন্ডের মধ্যে আপনার ফোনের হোমস্ক্রিনে অ্যাপটি চলে আসবে।');
                 } else {
                   closeLaunchModal();
                 }
                 window.deferredPwaPrompt = null;
               });
             } else {
-              var isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-              if (isIos) {
-                var iosGuide = document.getElementById('launchIosGuide');
-                if (iosGuide) iosGuide.style.display = 'block';
+              var androidGuide = document.getElementById('launchAndroidGuide');
+              if (androidGuide) {
+                androidGuide.style.display = 'block';
               } else {
-                var androidGuide = document.getElementById('launchAndroidGuide');
-                if (androidGuide) {
-                  androidGuide.style.display = 'block';
-                } else {
-                  window.location.href = 'app/index.html';
-                }
+                window.location.href = 'app/index.html';
               }
             }
           });
         }
 
-        function startInstallProgress() {
-          var optionsGrid = document.querySelector('.launch-options-grid');
-          var modalHead = document.querySelector('.launch-modal-head');
-          var progressBox = document.getElementById('launchInstallProgress');
-          var fill = document.getElementById('installTrackFill');
-          var pct = document.getElementById('installTrackPct');
-          var title = document.getElementById('installProgressTitle');
-          var sub = document.getElementById('installProgressSub');
-          var ring = document.getElementById('installRingSpinner');
-          var badge = document.getElementById('installSuccessBadge');
-          var openBtn = document.getElementById('installOpenAppBtn');
-
-          if (optionsGrid) optionsGrid.style.display = 'none';
-          if (modalHead) modalHead.style.display = 'none';
-          if (progressBox) progressBox.classList.add('active');
-
-          var currentPct = 0;
-          if (fill) fill.style.width = '0%';
-          if (pct) pct.textContent = '0%';
-          if (badge) badge.classList.remove('active');
-          if (ring) ring.classList.remove('completed');
-          if (title) title.textContent = 'ইনস্টল হচ্ছে...';
-          if (sub) sub.textContent = 'অ্যান্ড্রয়েড সিস্টেমে অ্যাপটি সেটআপ হচ্ছে। কয়েক সেকেন্ডের মধ্যে আপনার হোমস্ক্রিনে চলে আসবে।';
-
-          var startTime = Date.now();
-          var totalDuration = 2200; // Snappy 2.2 seconds ultra-fluid real-time progress
-
-          var animTimer = setInterval(function() {
-            var elapsed = Date.now() - startTime;
-            var ratio = Math.min(elapsed / totalDuration, 1);
-            
-            // Continuous smooth progress from 0 to 100
-            currentPct = Math.min(Math.floor(ratio * 100), 100);
-
-            if (fill) fill.style.width = currentPct + '%';
-            if (pct) pct.textContent = currentPct + '%';
-
-            if (ratio >= 1) {
-              clearInterval(animTimer);
-              completeInstall();
-            }
-          }, 20);
-
-          function completeInstall() {
-            clearInterval(animTimer);
-            if (fill) fill.style.width = '100%';
-            if (pct) pct.textContent = '100%';
-            if (ring) ring.classList.add('completed');
-            if (badge) badge.classList.add('active');
-            if (title) title.textContent = '🎉 অভিনন্দন! সফলভাবে ইনস্টল সম্পন্ন হয়েছে';
-            if (sub) sub.textContent = 'লামিম অ্যাপটি আপনার ফোনের হোমস্ক্রিন ও অ্যাপ ড্রয়ারে যুক্ত হয়েছে। এখন সরাসরি অফলাইনে ব্যবহার করতে পারবেন।';
-            if (openBtn) {
-              openBtn.style.display = 'inline-flex';
-              openBtn.innerHTML = '<span>অ্যাপে প্রবেশ করুন (Open App) ➔</span>';
-            }
-          }
-
-          window.addEventListener('appinstalled', function() {
-            completeInstall();
-          });
+        function showNativeInstallToast(msg) {
+          var toast = document.createElement('div');
+          toast.className = 'native-install-toast';
+          toast.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>' + msg + '</span>';
+          toast.style.cssText = 'position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#12261e; color:#ffffff; padding:14px 22px; border-radius:99px; font-size:14px; font-weight:700; display:flex; align-items:center; gap:10px; box-shadow:0 12px 36px rgba(0,0,0,0.35); z-index:999999; animation:toastIn 0.3s ease; border:1px solid rgba(255,255,255,0.15); text-align:center; max-width:90vw;';
+          document.body.appendChild(toast);
+          setTimeout(function() {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.4s ease';
+            setTimeout(function() { toast.remove(); }, 400);
+          }, 5000);
         }
+
+        window.addEventListener('appinstalled', function() {
+          showNativeInstallToast('🎉 লামিম সফলভাবে আপনার ফোনে ইনস্টল সম্পন্ন হয়েছে!');
+        });
       }
 
       if (document.readyState === 'loading') {
