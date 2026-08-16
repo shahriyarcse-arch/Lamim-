@@ -7,28 +7,28 @@ const Goals = {
   sunnahList: [
     {
       id: 'fajr_s', label: 'Fajr', rakat: 2,
-      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 22H6M12 18V2M4.93 10.93l1.41 1.41M17.66 10.93l-1.41 1.41M2 18h20M16 18a4 4 0 0 0-8 0"/></svg>`,
-      glow: '0 4px 12px rgba(244,114,182,0.3)'
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g><animateTransform attributeName="transform" type="translate" values="0,1; 0,-1; 0,1" dur="4s" repeatCount="indefinite"/><path d="M16 18a4 4 0 0 0-8 0"/></g><g><animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="m17.66 12.34 1.41-1.41"/><path d="M8 6l4-4 4 4"/><path d="M2 18h20"/><path d="M22 22H2"/></g><circle cx="12" cy="3" r="1" fill="#f472b6"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="6" cy="6" r="0.8" fill="#f472b6"><animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/></circle><circle cx="18" cy="7" r="0.6" fill="#f472b6"><animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/></circle></svg>`,
+      glow: '0 0 20px rgba(244,114,182,0.5)'
     },
     {
       id: 'dhuhr_s_b', label: 'Dhuhr (B)', rakat: 4,
-      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M5.64 18.36l-1.42 1.42M19.78 4.22l-1.42 1.42"/></svg>`,
-      glow: '0 4px 12px rgba(251,191,36,0.3)'
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g style="transform-origin: 12px 12px"><circle cx="12" cy="12" r="4"><animate attributeName="r" values="3.6; 4.4; 3.6" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.85; 1; 0.85" dur="2.4s" repeatCount="indefinite"/></circle><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></g></svg>`,
+      glow: '0 0 20px rgba(251,191,36,0.5)'
     },
     {
       id: 'dhuhr_s_a', label: 'Dhuhr (A)', rakat: 2,
-      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="6"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`,
-      glow: '0 4px 12px rgba(255,138,0,0.3)'
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g style="transform-origin: 12px 12px"><circle cx="12" cy="12" r="4.2"><animate attributeName="r" values="3.8; 4.5; 3.8" dur="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.8; 1; 0.8" dur="2.2s" repeatCount="indefinite"/></circle><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></g></svg>`,
+      glow: '0 0 20px rgba(255,138,0,0.5)'
     },
     {
       id: 'maghrib_s', label: 'Maghrib', rakat: 2,
-      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v2M4.93 4.93l1.41 1.41M17.66 4.93l-1.41 1.41M2 18h20M16 18a4 4 0 0 0-8 0"/></svg>`,
-      glow: '0 4px 12px rgba(168,85,247,0.3)'
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g><animateTransform attributeName="transform" type="translate" values="0,-1; 0,1.5; 0,-1" dur="5s" repeatCount="indefinite"/><path d="M16 18a4 4 0 0 0-8 0"/><path d="M12 10v4"/><path d="m4.93 10.93 1.41 1.41"/><path d="m17.66 12.34 1.41-1.41"/><path d="M8 14l4 4 4-4"/><path d="M2 18h20"/><path d="M22 22H2"/></g><circle cx="6" cy="17" r="1.5" fill="#a855f7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle><circle cx="18" cy="16" r="1" fill="#a855f7"><animate attributeName="opacity" values="1;0.4;1" dur="2.3s" repeatCount="indefinite"/></circle><circle cx="12" cy="4" r="0.8" fill="#a855f7"><animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite"/></circle></svg>`,
+      glow: '0 0 20px rgba(168,85,247,0.5)'
     },
     {
       id: 'isha_s', label: 'Isha', rakat: 2,
-      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
-      glow: '0 4px 12px rgba(99,102,241,0.3)'
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g style="transform-origin: 12px 12px"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/></g><circle cx="20" cy="4" r="1.2" fill="#6366f1"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite"/></circle><circle cx="4" cy="18" r="1" fill="#6366f1"><animate attributeName="opacity" values="1;0.2;1" dur="4s" repeatCount="indefinite"/></circle><circle cx="8" cy="6" r="0.7" fill="#6366f1"><animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/></circle><circle cx="16" cy="20" r="0.6" fill="#6366f1"><animate attributeName="opacity" values="1;0.4;1" dur="3.5s" repeatCount="indefinite"/></circle></svg>`,
+      glow: '0 0 20px rgba(99,102,241,0.5)'
     },
   ],
 
@@ -198,7 +198,9 @@ const Goals = {
                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                    </div>`)
             : `<div class="salah-status-chip salah-status-pending">
-                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
+                 <span class="salah-pending-dot"></span>
+                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
+                 <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                </div>`;
         }
 
@@ -282,7 +284,9 @@ const Goals = {
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                         </div>`)
                  : `<div class="salah-status-chip salah-status-pending">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
+                      <span class="salah-pending-dot"></span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
+                      <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                     </div>`
                }
             </div>
@@ -426,8 +430,8 @@ const Goals = {
         
         <!-- Prayer Header -->
         <div class="salah-prayer-header">
-          <div class="salah-prayer-icon-wrap" style="background: ${bgGradient}; box-shadow: 0 4px 12px rgba(129,140,248,0.3)">
-            <span class="salah-prayer-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4M17 5h4"/></svg></span>
+          <div class="salah-prayer-icon-wrap" style="background: ${bgGradient}; box-shadow: 0 0 20px rgba(129,140,248,0.5)">
+            <span class="salah-prayer-emoji"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g style="transform-origin: 12px 12px"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><animate attributeName="opacity" values="0.75;1;0.75" dur="3s" repeatCount="indefinite"/></g><g><animateTransform attributeName="transform" type="scale" values="0.85; 1.15; 0.85" dur="2.5s" repeatCount="indefinite" transform-origin="19 5"/><path d="M19 3v4M17 5h4" stroke-width="2"/></g><circle cx="6" cy="17" r="1.2" fill="#818cf8"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle><circle cx="14" cy="18" r="0.8" fill="#818cf8"><animate attributeName="opacity" values="1;0.3;1" dur="2.8s" repeatCount="indefinite"/></circle></svg></span>
           </div>
           <div class="salah-prayer-info">
             <div class="salah-prayer-name">${window.t ? window.t('Tahajjud') : 'Tahajjud'}</div>
@@ -443,7 +447,9 @@ const Goals = {
                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                      </div>`)
               : `<div class="salah-status-chip salah-status-pending">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
+                   <span class="salah-pending-dot"></span>
+                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
+                   <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                  </div>`
             }
           </div>
@@ -604,7 +610,9 @@ const Goals = {
                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                  </div>`)
           : `<div class="salah-status-chip salah-status-pending">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
+               <span class="salah-pending-dot"></span>
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
+               <span>${window.t ? window.t('Pending') : 'Pending'}</span>
              </div>`;
       }
       const selector = card.querySelector('.salah-status-selector');
@@ -638,8 +646,8 @@ const Goals = {
         
         <!-- Prayer Header -->
         <div class="salah-prayer-header">
-          <div class="salah-prayer-icon-wrap" style="background: ${bgGradient}; box-shadow: 0 4px 12px rgba(251,191,36,0.3)">
-            <span class="salah-prayer-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <div class="salah-prayer-icon-wrap" style="background: ${bgGradient}; box-shadow: 0 0 20px rgba(251,191,36,0.5)">
+            <span class="salah-prayer-emoji"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><g style="transform-origin: 12px 12px"><animateTransform attributeName="transform" type="rotate" values="0; 6; 0; -6; 0" dur="6s" repeatCount="indefinite"/><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></g><circle cx="12" cy="12" r="2.5" fill="currentColor"><animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.2s" repeatCount="indefinite"/></circle></svg></span>
           </div>
           <div class="salah-prayer-info">
             <div class="salah-prayer-name">${window.t ? window.t('Witr') : 'Witr'}</div>
@@ -655,7 +663,9 @@ const Goals = {
                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                      </div>`)
               : `<div class="salah-status-chip salah-status-pending">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
+                   <span class="salah-pending-dot"></span>
+                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
+                   <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                  </div>`
             }
           </div>
