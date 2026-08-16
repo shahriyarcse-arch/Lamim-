@@ -2287,6 +2287,34 @@ select.input option:disabled {
   color: #4338ca;
 }
 
+/* === PWA 1-CLICK INSTALL BUTTON === */
+.pwa-install-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.08));
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: var(--color-accent-primary, #a855f7);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.12);
+}
+.pwa-install-pill-btn:hover {
+  background: var(--color-accent-primary, #a855f7);
+  color: #ffffff;
+  border-color: var(--color-accent-primary, #a855f7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.3);
+}
+.pwa-install-pill-btn svg {
+  flex-shrink: 0;
+}
+
+
 
 
 

@@ -258,6 +258,8 @@ updateSectionTitle() {
       window.deferredInstallPrompt = e;
       const btn = document.getElementById('pwa-install-btn');
       if (btn) btn.style.display = 'inline-flex';
+      const sideBtn = document.getElementById('sidebar-pwa-install-btn');
+      if (sideBtn) sideBtn.style.display = 'flex';
     });
 
     // Auto re-detect location after travelling (app returns to foreground / relaunch)
@@ -591,6 +593,33 @@ updateSectionTitle() {
           }
         }, 'info');
       }, 5000);
+    }
+  },
+
+  triggerPwaInstall() {
+    if (window.deferredInstallPrompt) {
+      window.deferredInstallPrompt.prompt();
+      window.deferredInstallPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          const btn = document.getElementById('pwa-install-btn');
+          if (btn) btn.style.display = 'none';
+          const sideBtn = document.getElementById('sidebar-pwa-install-btn');
+          if (sideBtn) sideBtn.style.display = 'none';
+        }
+        window.deferredInstallPrompt = null;
+      });
+    } else {
+      const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (isIos) {
+        Utils.alert(
+          this.lang === 'bn' ? 'অ্যাপ ইনস্টল করার নিয়ম' : 'How to Install App',
+          this.lang === 'bn' 
+            ? '১. সাফারির নিচে শেয়ার (📤) বাটনে চাপ দিন।\n২. এরপর "Add to Home Screen (➕)" বেছে নিন।'
+            : '1. Tap the Share button (📤) at the bottom of Safari.\n2. Tap "Add to Home Screen (➕)".'
+        );
+      } else {
+        Utils.toast(this.lang === 'bn' ? 'ব্রাউজার মেনু থেকে "Install App" বা "Add to Home screen" চাপুন' : 'Use browser menu to "Install App" or "Add to Home screen"', 'info');
+      }
     }
   }
 };

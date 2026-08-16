@@ -349,6 +349,165 @@
     .dhikr-ring {
       animation: dhikr-ring-glow 3s ease-in-out infinite;
     }
+
+    /* ---- APP LAUNCH & INSTALL CHOICE MODAL ---- */
+    .launch-modal-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(12, 22, 17, 0.72);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(14px, 4vw, 28px);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s var(--ease), visibility 0.3s ease;
+    }
+    .launch-modal-overlay.active {
+      opacity: 1; visibility: visible;
+    }
+    .launch-modal-card {
+      width: 100%; max-width: 620px;
+      background: #ffffff;
+      border: 1px solid rgba(19, 33, 27, 0.12);
+      border-radius: clamp(24px, 4vw, 32px);
+      box-shadow: 0 28px 80px rgba(12, 22, 17, 0.38);
+      padding: clamp(22px, 4.5vw, 36px);
+      position: relative;
+      transform: scale(0.94) translateY(16px);
+      transition: transform 0.35s var(--ease);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .launch-modal-overlay.active .launch-modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .launch-modal-close {
+      position: absolute; top: 18px; right: 18px;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(19, 33, 27, 0.06); border: 1px solid rgba(19, 33, 27, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink); font-size: 1.25rem; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .launch-modal-close:hover {
+      background: rgba(19, 33, 27, 0.14); transform: scale(1.08);
+    }
+    .launch-modal-head {
+      text-align: center; margin-bottom: clamp(20px, 3.5vw, 28px);
+    }
+    .launch-modal-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 14px; border-radius: 99px;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(61,122,90,0.1); color: var(--teal); border: 1px solid rgba(61,122,90,0.22);
+      margin-bottom: 12px;
+    }
+    .launch-modal-title {
+      font-family: var(--font-display, serif);
+      font-size: clamp(1.6rem, 3.2vw, 2.2rem); font-weight: 800;
+      color: var(--ink); line-height: 1.15; margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+    .launch-modal-subtitle {
+      font-size: 0.95rem; color: var(--muted); line-height: 1.5; margin: 0 auto; max-width: 44ch;
+    }
+    .launch-options-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .launch-opt-card {
+      background: #fafbf8;
+      border: 1.5px solid rgba(19, 33, 27, 0.1);
+      border-radius: 20px;
+      padding: 22px 18px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      text-align: left;
+      position: relative;
+      transition: all 0.25s var(--ease);
+    }
+    .launch-opt-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 32px rgba(19, 33, 27, 0.08);
+    }
+    .launch-opt-card.featured {
+      background: linear-gradient(175deg, #f3faee 0%, #e9f6e0 100%);
+      border-color: var(--teal);
+      box-shadow: 0 10px 28px rgba(61, 122, 90, 0.12);
+    }
+    .launch-opt-tag {
+      position: absolute; top: -10px; right: 14px;
+      font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+      background: var(--teal); color: #ffffff;
+      padding: 3px 10px; border-radius: 99px;
+      box-shadow: 0 4px 10px rgba(61, 122, 90, 0.3);
+    }
+    .launch-opt-icon {
+      width: 46px; height: 46px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px; flex-shrink: 0;
+      background: #ffffff; border: 1px solid rgba(19, 33, 27, 0.08);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+    .launch-opt-title {
+      font-size: 1.15rem; font-weight: 800; color: var(--ink);
+      margin-bottom: 6px; letter-spacing: -0.02em;
+    }
+    .launch-opt-desc {
+      font-size: 0.84rem; color: var(--muted); line-height: 1.45;
+      margin-bottom: 18px; flex-grow: 1;
+    }
+    .launch-opt-perks {
+      display: flex; flex-direction: column; gap: 6px;
+      margin-bottom: 20px; font-size: 0.78rem; font-weight: 600; color: var(--ink);
+    }
+    .launch-opt-perk-item {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .launch-opt-perk-item svg {
+      color: var(--teal); flex-shrink: 0;
+    }
+    .launch-action-btn {
+      width: 100%; min-height: 44px; padding: 0 16px;
+      border-radius: 12px; font-weight: 700; font-size: 0.88rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer; transition: all 0.2s var(--ease); border: none; text-decoration: none;
+    }
+    .launch-action-btn.primary {
+      background: var(--dark); color: #ffffff;
+      box-shadow: 0 4px 14px rgba(18, 38, 30, 0.25);
+    }
+    .launch-action-btn.primary:hover {
+      background: #0a1711; transform: translateY(-1px);
+    }
+    .launch-action-btn.secondary {
+      background: #ffffff; color: var(--ink);
+      border: 1.5px solid rgba(19, 33, 27, 0.16);
+    }
+    .launch-action-btn.secondary:hover {
+      border-color: var(--ink); background: #f6f7f3;
+    }
+    
+    /* iOS Visual Guide Box inside Modal */
+    .ios-install-guide {
+      display: none;
+      background: #ffffff; border: 1.5px dashed var(--teal);
+      border-radius: 14px; padding: 12px 14px; margin-top: 10px;
+      font-size: 0.8rem; color: var(--ink); text-align: left;
+    }
+    .ios-install-guide ol {
+      margin: 6px 0 0 0; padding-left: 18px; line-height: 1.5;
+    }
+    .ios-install-guide li {
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .launch-options-grid {
+        grid-template-columns: 1fr; gap: 14px;
+      }
+      .launch-opt-card {
+        padding: 18px 16px;
+      }
+      .launch-opt-tag {
+        top: -8px; right: 12px; font-size: 0.6rem;
+      }
+    }
     .dhikr-ring:hover {
       box-shadow: 0 0 24px 6px rgba(61, 122, 90, 0.35) !important;
     }
@@ -3028,13 +3187,207 @@
         document.head.appendChild(link);
       }, { passive: true, once: true });
     });
-    // PWA Service Worker Registration
+
+    // PWA Service Worker Registration & Deferred Install Prompt
+    window.deferredPwaPrompt = null;
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      window.deferredPwaPrompt = e;
+      var installBtn = document.getElementById('launchModalInstallBtn');
+      if (installBtn) {
+        installBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Install Now (১ ক্লিকে ইনস্টল)</span>';
+      }
+    });
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js').catch(function() {});
       });
     }
+
+    // --- APP LAUNCH MODAL LOGIC ---
+    (function() {
+      function openLaunchModal(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+
+        var isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+        if (isStandalone) {
+          window.location.href = 'app/index.html';
+          return;
+        }
+
+        var launchModal = document.getElementById('app-launch-modal');
+        var installBtn = document.getElementById('launchModalInstallBtn');
+        var iosGuide = document.getElementById('launchIosGuide');
+
+        if (isIos && iosGuide) {
+          iosGuide.style.display = 'block';
+          if (installBtn) {
+            installBtn.style.display = 'none';
+          }
+        }
+
+        if (launchModal) {
+          launchModal.classList.add('active');
+          launchModal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      function closeLaunchModal() {
+        var launchModal = document.getElementById('app-launch-modal');
+        if (launchModal) {
+          launchModal.classList.remove('active');
+          launchModal.setAttribute('aria-hidden', 'true');
+        }
+        document.body.style.overflow = '';
+      }
+
+      function attachEvents() {
+        document.querySelectorAll('.navcta, .hero .actions .btn:not(.alt)').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openLaunchModal(e);
+          });
+        });
+
+        var launchClose = document.getElementById('launchModalClose');
+        var launchModal = document.getElementById('app-launch-modal');
+        var installBtn = document.getElementById('launchModalInstallBtn');
+
+        if (launchClose) launchClose.addEventListener('click', closeLaunchModal);
+        if (launchModal) {
+          launchModal.addEventListener('click', function(e) {
+            if (e.target === launchModal) closeLaunchModal();
+          });
+        }
+        document.addEventListener('keydown', function(e) {
+          var modal = document.getElementById('app-launch-modal');
+          if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+            closeLaunchModal();
+          }
+        });
+
+        if (installBtn) {
+          installBtn.addEventListener('click', function() {
+            if (window.deferredPwaPrompt) {
+              window.deferredPwaPrompt.prompt();
+              window.deferredPwaPrompt.userChoice.then(function(choiceResult) {
+                if (choiceResult.outcome === 'accepted') {
+                  closeLaunchModal();
+                }
+                window.deferredPwaPrompt = null;
+              });
+            } else {
+              window.location.href = 'app/index.html';
+            }
+          });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachEvents);
+      } else {
+        attachEvents();
+      }
+    })();
   </script>
+
+  <!-- APP LAUNCH & INSTALL CHOICE MODAL -->
+  <div class="launch-modal-overlay" id="app-launch-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="launchModalTitle">
+    <div class="launch-modal-card">
+      <button class="launch-modal-close" id="launchModalClose" aria-label="Close modal">&times;</button>
+      
+      <div class="launch-modal-head">
+        <div class="launch-modal-badge">
+          <img src="app/assets/logo-mark.png" alt="Lamim" style="width:14px; height:14px; object-fit:contain;">
+          <span>Lamim Living System</span>
+        </div>
+        <h2 class="launch-modal-title" id="launchModalTitle">How would you like to use Lamim?</h2>
+        <p class="launch-modal-subtitle">কীভাবে ব্যবহার করতে চান? বেছে নিন আপনার পছন্দের অপশন</p>
+      </div>
+
+      <div class="launch-options-grid">
+        <!-- Option 1: Install App -->
+        <div class="launch-opt-card featured">
+          <div class="launch-opt-tag">Recommended</div>
+          <div class="launch-opt-icon" style="background:#eaf7e3; color:var(--teal);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </div>
+          <h3 class="launch-opt-title">Install App (অ্যাপ)</h3>
+          <p class="launch-opt-desc">ফোনের হোমস্ক্রিন থেকে ১-ট্যাপে সরাসরি ফুলস্ক্রিনে চালু হবে।</p>
+          
+          <div class="launch-opt-perks">
+            <div class="launch-opt-perk-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>100% Offline with zero lag</span>
+            </div>
+            <div class="launch-opt-perk-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Azan & Prayer alerts</span>
+            </div>
+            <div class="launch-opt-perk-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Instant full-screen mode</span>
+            </div>
+          </div>
+
+          <button type="button" class="launch-action-btn primary" id="launchModalInstallBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Install App on Device</span>
+          </button>
+
+          <!-- iOS specific step guide -->
+          <div class="ios-install-guide" id="launchIosGuide">
+            <strong>iPhone / iPad-এ ইন্সটল করার নিয়ম:</strong>
+            <ol>
+              <li>নিচে সাফারির <strong>Share (📤)</strong> আইকনে চাপ দিন।</li>
+              <li>তালিকা থেকে <strong>Add to Home Screen (➕)</strong> বেছে নিন।</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Option 2: Web Browser -->
+        <div class="launch-opt-card">
+          <div class="launch-opt-icon" style="background:#f0f3f6; color:var(--ink);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h3 class="launch-opt-title">Continue on Web (ওয়েব)</h3>
+          <p class="launch-opt-desc">কোনো ইনস্টলেশন ছাড়াই আপনার বর্তমান ব্রাউজারে সরাসরি ব্যবহার করুন।</p>
+          
+          <div class="launch-opt-perks">
+            <div class="launch-opt-perk-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Instant access in browser</span>
+            </div>
+            <div class="launch-opt-perk-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>100% Private local storage</span>
+            </div>
+            <div class="launch-opt-perk-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>No extra space taken</span>
+            </div>
+          </div>
+
+          <a href="app/index.html" class="launch-action-btn secondary" id="launchModalWebBtn">
+            <span>Continue on Web ➔</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
 
