@@ -3382,6 +3382,9 @@
               window.deferredPwaPrompt.prompt();
               window.deferredPwaPrompt.userChoice.then(function(choiceResult) {
                 closeLaunchModal();
+                if (choiceResult.outcome === 'accepted') {
+                  showInstallingToast();
+                }
                 window.deferredPwaPrompt = null;
               });
             } else {
@@ -3393,6 +3396,20 @@
               }
             }
           });
+        }
+
+        function showInstallingToast() {
+          document.querySelectorAll('.native-install-toast').forEach(function(t) { t.remove(); });
+          var toast = document.createElement('div');
+          toast.className = 'native-install-toast';
+          toast.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>ইনস্টল শুরু হয়েছে... ফোনের নোটিফিকেশন বার চেক করুন</span>';
+          toast.style.cssText = 'position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#12261e; color:#ffffff; padding:12px 20px; border-radius:99px; font-size:13px; font-weight:700; display:flex; align-items:center; gap:8px; box-shadow:0 10px 30px rgba(0,0,0,0.3); z-index:999999; animation:toastIn 0.3s ease; border:1px solid rgba(255,255,255,0.15); text-align:center; max-width:90vw; pointer-events:none;';
+          document.body.appendChild(toast);
+          setTimeout(function() {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.4s ease';
+            setTimeout(function() { toast.remove(); }, 400);
+          }, 3500);
         }
       }
 
