@@ -1,5 +1,4 @@
 {
-  "id": "/app/",
   "name": "Lamim — Islamic Lifestyle Tracker",
   "short_name": "Lamim",
   "description": "Comprehensive Islamic Lifestyle Tracker: Salah prayer times, Quran verses, daily Dhikr, Halal Finance, habit routines, and spiritual analytics.",
@@ -7,104 +6,35 @@
   "dir": "ltr",
   "start_url": "/app/index.html",
   "scope": "/",
-  "scope_extensions": [
-    { "origin": "https://www.lamim.tech" },
-    { "origin": "https://lamim.tech" }
-  ],
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "portrait-primary",
   "background_color": "#090d16",
   "theme_color": "#090d16",
-  "categories": ["lifestyle", "productivity", "religion", "utilities"],
-  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "categories": ["lifestyle", "productivity", "utilities"],
   "icons": [
     {
-      "src": "assets/icon-192x192.png",
+      "src": "/app/assets/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-512x512.png",
+      "src": "/app/assets/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-maskable-512x512.png",
+      "src": "/app/assets/icon-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "assets/icon.svg",
+      "src": "/app/assets/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "assets/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Lamim Mobile App Interface"
-    },
-    {
-      "src": "assets/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Lamim Desktop Dashboard Interface"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Salah Prayers",
-      "short_name": "Salah",
-      "description": "Track your daily prayers and prayer times",
-      "url": "/app/index.html?section=salah",
-      "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
-      ]
-    },
-    {
-      "name": "Dhikr Counter",
-      "short_name": "Dhikr",
-      "description": "Daily tasbih and morning/evening adhkar",
-      "url": "/app/index.html?section=dhikr",
-      "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
-      ]
-    },
-    {
-      "name": "Halal Finance",
-      "short_name": "Finance",
-      "description": "Manage your halal wealth and zakat calculator",
-      "url": "/app/index.html?section=finance",
-      "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
-      ]
-    },
-    {
-      "name": "Goals & Habits",
-      "short_name": "Goals",
-      "description": "Spiritual goals and habit routines",
-      "url": "/app/index.html?section=nafl",
-      "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
-      ]
-    },
-    {
-      "name": "Analytics Hub",
-      "short_name": "Analytics",
-      "description": "Spiritual growth and habit consistency analysis",
-      "url": "/app/index.html?section=analysis",
-      "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
-      ]
     }
   ]
 }
