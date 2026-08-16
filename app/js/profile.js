@@ -729,6 +729,10 @@ const Profile = {
     };
   },
 
+  exportAll() {
+    return this.exportData();
+  },
+
   performExport(type = 'current') {
     const modal = document.getElementById('profile-export-modal');
     if (modal) modal.classList.add('hidden');
@@ -738,13 +742,27 @@ const Profile = {
       const data = {};
       const keys = DB.keys();
 
+      // Standardized Metadata Envelope
+      const meta = {
+        app: 'lamim.tech',
+        app_name: 'Lamim — Islamic Lifestyle Tracker',
+        version: '4.2.0',
+        schema_version: 2,
+        exported_at: new Date().toISOString(),
+        export_type: type === 'current' ? 'single_profile' : 'full_vault',
+        user_id: user.id || null,
+        user_name: user.name || 'User'
+      };
+
+      data._meta = meta;
+      data._exportType = meta.export_type;
+      data._exportedUser = user;
+
       if (type === 'current') {
         // Active Profile Only
         const currentId = user.id;
         const prefix = currentId ? `usr_${currentId}_` : null;
 
-        data._exportType = 'single_profile';
-        data._exportedUser = user;
         data.lamim_user = user;
         
         // Include shared settings and dictionary
@@ -767,7 +785,6 @@ const Profile = {
         }
       } else {
         // Full Vault Backup (All Profiles)
-        data._exportType = 'full_vault';
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
           if (key.startsWith('lamim_') || key.startsWith('usr_')) {
@@ -834,13 +851,18 @@ const Profile = {
     const isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     try {
       const text = await file.text();
-      const data = JSON.parse(text);
+      const rawImport = JSON.parse(text);
 
-      if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      if (!rawImport || typeof rawImport !== 'object' || Array.isArray(rawImport)) {
         throw new Error('Invalid JSON format');
       }
 
-      const isSingleProfile = (data._exportType === 'single_profile') || (data.lamim_user && !data.lamim_profiles_vault);
+      // Support both new envelope ({ _meta, data }) and legacy direct-key JSON formats seamlessly
+      const data = rawImport.data && typeof rawImport.data === 'object' && !Array.isArray(rawImport.data)
+        ? { ...rawImport.data, _meta: rawImport._meta, _exportType: rawImport._exportType || rawImport._meta?.export_type }
+        : rawImport;
+
+      const isSingleProfile = (data._exportType === 'single_profile') || (data._meta?.export_type === 'single_profile') || (data.lamim_user && !data.lamim_profiles_vault);
       const currentUser = DB.getUser();
 
       if (isSingleProfile && data.lamim_user) {
