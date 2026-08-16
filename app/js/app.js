@@ -27,29 +27,38 @@ const App = {
   applyTranslations() {
     const isBn = this.lang === 'bn';
 
-    // 1. Update dynamic module renders FIRST so they inject fresh English text
+    // 1. Update dynamic module renders FIRST so they inject fresh text
     this.updateSectionTitle();
     const current = this.currentSection;
-    if (current === 'dhikr' && typeof Dhikr !== 'undefined') {
-      Utils.safeRun(() => { Dhikr.renderMarquee(); Dhikr.renderSessionHistory(); Dhikr.renderHero(); Dhikr.renderPresetRow(); }, 'Dhikr Render');
+    if (typeof Home !== 'undefined' && Home.render) {
+      Utils.safeRun(() => Home.render(), 'Home Render');
     }
-    if (current === 'profile' && typeof Profile !== 'undefined') {
-      Utils.safeRun(() => Profile.renderSettings(), 'Profile Render');
-    }
-    if (current === 'salah' && typeof Salah !== 'undefined') {
+    if (typeof Salah !== 'undefined' && Salah.renderAll) {
       Utils.safeRun(() => Salah.renderAll(), 'Salah Render');
     }
-    if (current === 'nafl' && typeof Goals !== 'undefined') {
+    if (typeof Goals !== 'undefined' && Goals.render) {
       Utils.safeRun(() => Goals.render(), 'Goals Render');
     }
-    if (current === 'finance' && typeof Finance !== 'undefined') {
+    if (typeof Dhikr !== 'undefined') {
+      Utils.safeRun(() => { Dhikr.renderMarquee(); Dhikr.renderSessionHistory(); Dhikr.renderHero(); Dhikr.renderPresetRow(); }, 'Dhikr Render');
+    }
+    if (typeof Habits !== 'undefined' && Habits.render) {
+      Utils.safeRun(() => Habits.render(), 'Habits Render');
+    }
+    if (typeof Gym !== 'undefined' && Gym.renderAll) {
+      Utils.safeRun(() => Gym.renderAll(true), 'Gym Render');
+    }
+    if (typeof Career !== 'undefined' && Career.renderAll) {
+      Utils.safeRun(() => Career.renderAll(true), 'Career Render');
+    }
+    if (typeof Finance !== 'undefined' && Finance.render) {
       Utils.safeRun(() => Finance.render(), 'Finance Render');
     }
-    if (current === 'analysis' && typeof Analysis !== 'undefined') {
-      Utils.safeRun(() => Analysis.init(), 'Analysis Render');
+    if (typeof Analysis !== 'undefined' && Analysis.render) {
+      Utils.safeRun(() => Analysis.render(true), 'Analysis Render');
     }
-    if (current === 'habits' && typeof Habits !== 'undefined') {
-      Utils.safeRun(() => Habits.render(), 'Habits Render');
+    if (typeof Profile !== 'undefined') {
+      Utils.safeRun(() => { Profile.renderProfile(); Profile.renderSettings(); }, 'Profile Render');
     }
 
 

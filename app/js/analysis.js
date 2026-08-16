@@ -228,7 +228,7 @@ const Analysis = {
 
             <button class="btn-report-link" onclick="Analysis.exportMonthlyReport('${monthVal}')" title="Export monthly PDF report">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>PDF Report</span>
+              <span>${window.t ? window.t('PDF Report') : 'PDF Report'}</span>
             </button>
           </div>
         </div>
@@ -237,10 +237,10 @@ const Analysis = {
         <div class="shs-aura-container">
           <div class="shs-aura" style="--aura-color: ${rating.color}">
             <div class="shs-val">${window.n ? window.n(Math.round(shs.total)) : Math.round(shs.total)}</div>
-            <div class="shs-label">Total LSS</div>
+            <div class="shs-label">${window.t ? window.t('Total LSS') : 'Total LSS'}</div>
           </div>
           <div class="shs-rating-badge" id="shs-rating-badge" style="background: ${rating.color}20; color: ${rating.color}; border: 1px solid ${rating.color}40">
-            ${rating.label}
+            ${window.t ? window.t(rating.label) : rating.label}
           </div>
           <p class="shs-desc date-desc" style="font-size:11px; opacity:0.8; margin-bottom: 2px;"> ${scoreSubLabel}</p>
           <p class="shs-desc rating-desc">${rating.desc}</p>
