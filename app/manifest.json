@@ -7,13 +7,25 @@
   "dir": "ltr",
   "start_url": "/app/index.html",
   "scope": "/",
+  "scope_extensions": [
+    { "origin": "https://www.lamim.tech" },
+    { "origin": "https://lamim.tech" }
+  ],
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "portrait-primary",
   "background_color": "#090d16",
   "theme_color": "#090d16",
   "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=tech.lamim.app",
+      "id": "tech.lamim.app"
+    }
+  ],
   "categories": ["lifestyle", "productivity", "religion", "utilities"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
   "icons": [
     {
       "src": "assets/icon-192x192.png",
