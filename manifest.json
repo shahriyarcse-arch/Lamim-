@@ -16,25 +16,25 @@
   "categories": ["lifestyle", "productivity", "religion", "utilities"],
   "icons": [
     {
-      "src": "assets/icon-192x192.png",
+      "src": "/app/assets/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-512x512.png",
+      "src": "/app/assets/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon-maskable-512x512.png",
+      "src": "/app/assets/icon-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "assets/icon.svg",
+      "src": "/app/assets/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
@@ -42,14 +42,14 @@
   ],
   "screenshots": [
     {
-      "src": "assets/icon-512x512.png",
+      "src": "/app/assets/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Lamim Mobile App Interface"
     },
     {
-      "src": "assets/icon-512x512.png",
+      "src": "/app/assets/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "wide",
@@ -63,7 +63,7 @@
       "description": "Track your daily prayers and prayer times",
       "url": "/app/index.html?section=salah",
       "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
+        { "src": "/app/assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
       ]
     },
     {
@@ -72,7 +72,7 @@
       "description": "Daily tasbih and morning/evening adhkar",
       "url": "/app/index.html?section=dhikr",
       "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
+        { "src": "/app/assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
       ]
     },
     {
@@ -81,7 +81,7 @@
       "description": "Manage your halal wealth and zakat calculator",
       "url": "/app/index.html?section=finance",
       "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
+        { "src": "/app/assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
       ]
     },
     {
@@ -90,7 +90,7 @@
       "description": "Spiritual goals and habit routines",
       "url": "/app/index.html?section=nafl",
       "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
+        { "src": "/app/assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
       ]
     },
     {
@@ -99,7 +99,7 @@
       "description": "Spiritual growth and habit consistency analysis",
       "url": "/app/index.html?section=analysis",
       "icons": [
-        { "src": "assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
+        { "src": "/app/assets/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
       ]
     }
   ]
