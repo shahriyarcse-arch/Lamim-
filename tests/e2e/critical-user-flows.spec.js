@@ -21,4 +21,26 @@ test.describe('Critical User Flow E2E Tests', () => {
 
     expect(pageErrors.length).toBe(0);
   });
+
+  test('Bottom navigation bar items are properly translated in Bengali mode', async ({ page }) => {
+    await page.goto('/app/index.html');
+    await page.waitForFunction(() => typeof App !== 'undefined' && typeof DB !== 'undefined');
+
+    // Switch to Bengali
+    await page.evaluate(() => {
+      App.setLang('bn');
+    });
+
+    const gymNavText = await page.textContent('.bottom-nav-item[data-section="gym"]');
+    const careerNavText = await page.textContent('.bottom-nav-item[data-section="career"]');
+    const habitsNavText = await page.textContent('.bottom-nav-item[data-section="habits"]');
+    const financeNavText = await page.textContent('.bottom-nav-item[data-section="finance"]');
+    const analysisNavText = await page.textContent('.bottom-nav-item[data-section="analysis"]');
+
+    expect(gymNavText?.trim()).toBe('জিম');
+    expect(careerNavText?.trim()).toBe('ক্যারিয়ার');
+    expect(habitsNavText?.trim()).toBe('হ্যাবিটস');
+    expect(financeNavText?.trim()).toBe('ফাইন্যান্স');
+    expect(analysisNavText?.trim()).toBe('বিশ্লেষণ');
+  });
 });
