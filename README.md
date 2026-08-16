@@ -2,7 +2,7 @@
 
 [![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline%20First-059669?style=for-the-badge&logo=pwa)](https://github.com/shahriyarcse-arch/Lamim-)
 [![Playwright E2E](https://img.shields.io/badge/Playwright-79%2F79%20PASS-22c55e?style=for-the-badge&logo=playwright)](https://github.com/shahriyarcse-arch/Lamim-)
-[![Version](https://img.shields.io/badge/Version-v4.2.0%20Ultra-8b5cf6?style=for-the-badge)](https://github.com/shahriyarcse-arch/Lamim-)
+[![Version](https://img.shields.io/badge/Version-v1.0.0%20Genesis-8b5cf6?style=for-the-badge)](https://github.com/shahriyarcse-arch/Lamim-)
 [![Privacy First](https://img.shields.io/badge/Data%20Privacy-100%25%20Local%20IndexedDB-6366f1?style=for-the-badge)](https://github.com/shahriyarcse-arch/Lamim-)
 
 > **Lamim** is a state-of-the-art, fully responsive, **offline-first Progressive Web Application (PWA)** and Landing Page designed to bring mindfulness, spiritual discipline, physical wellness, and financial control into one cohesive daily companion. 

@@ -1,6 +1,6 @@
 # 🏛️ Lamim — Complete Technical Architecture & System Documentation
 
-[![Version](https://img.shields.io/badge/Version-v4.2.0-6366f1?style=for-the-badge)](file:///d:/Projects/lamimMain/README.md)
+[![Version](https://img.shields.io/badge/Version-v1.0.0-6366f1?style=for-the-badge)](file:///d:/Projects/lamimMain/README.md)
 [![PWA Ready](https://img.shields.io/badge/PWA-Offline%20First-059669?style=for-the-badge&logo=pwa)](https://github.com/shahriyarcse-arch/Lamim-)
 [![IndexedDB Engine](https://img.shields.io/badge/Database-IndexedDB%20RAM%20Cache-8b5cf6?style=for-the-badge)](file:///d:/Projects/lamimMain/app/js/db.js)
 [![Playwright Suite](https://img.shields.io/badge/Playwright%20E2E-60%2F60%20PASS-22c55e?style=for-the-badge&logo=playwright)](file:///d:/Projects/lamimMain/playwright.config.js)

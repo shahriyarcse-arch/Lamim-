@@ -1,7 +1,7 @@
 {
-  "name": "lamim-pwa",
-  "version": "4.2.0",
-  "description": "Lamim — Islamic Lifestyle Tracker & PWA",
+  "name": "lamimmain",
+  "version": "1.0.0",
+  "description": "Lamim — Precision Life Operating System",
   "scripts": {
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",

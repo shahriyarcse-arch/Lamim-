@@ -215,7 +215,7 @@ const Profile = {
     if (ab) ab.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.showAppInfo()">
         <div class="settings-item-left"><div class="settings-item-icon ic-slate">${icons.info}</div><div><div class="settings-item-label" data-i18n="App Version">App Version</div><div class="settings-item-value">Release notes & build info</div></div></div>
-        <div class="settings-item-right"><span class="ver-chip">v4.2.0</span><span>›</span></div>
+        <div class="settings-item-right"><span class="ver-chip">v1.0.0</span><span>›</span></div>
       </div>
     `;
   },
@@ -495,36 +495,17 @@ const Profile = {
 
 
   showAppInfo() {
-    const APP_VERSION = '4.2.0';
-    const CODENAME = 'Ultra';
+    const APP_VERSION = '1.0.0';
+    const CODENAME = 'Genesis';
     const CHANGELOG = [
       {
-        version: '4.2.0', codename: 'Ultra', date: '2026-08-10', tag: 'Latest Stable',
+        version: '1.0.0', codename: 'Genesis', date: Utils.todayStr(), tag: 'Initial Launch',
         notes: [
-          'Upgraded Profile & Settings hub with professional v4.2.0 build architecture.',
-          'Enhanced DOB date picker with local date parsing and age calculation.',
-          'Added high-precision location detection with IP-geolocation fallback.',
-          'Refined language, currency, theme toggles, and notification permission handlers.',
-          'Hardened factory reset and account wipe workflows with defensive data clearing.'
-        ]
-      },
-      {
-        version: '4.0.0', codename: 'Sovereign', date: '2026-07-19', tag: 'Previous',
-        notes: [
-          'Rebuilt Finance as a realistic, professional money manager with an available-balance, vault-savings and net-worth model.',
-          'Accurate currency handling with live USD→BDT conversion and clearly visible symbols in both light and dark themes.',
-          'Fixed critical data-integrity bugs — deleting a vault no longer erases saved money, and month-over-month trends now compare income vs spending correctly.',
-          'Redesigned the Home dashboard as a premium bento layout with spirit score, next-prayer countdown and daily verse.',
-          'Resolved Home scroll performance by removing a nested-scroll trap for smooth single-gesture scrolling.',
-          'Hardened security across the app: input validation, safe HTML escaping and insufficient-balance guards on vault deposits.'
-        ]
-      },
-      {
-        version: '3.5.0', codename: 'Aurora', date: '2026-05-02', tag: 'Previous',
-        notes: [
-          'Introduced the aurora theming engine and a cohesive glassmorphism design system.',
-          'Added the analysis dashboard with spirit-score insights.',
-          'Offline-first service worker with silent background auto-update.'
+          'Official public launch of Lamim Living System PWA.',
+          'Complete Islamic Lifestyle suite: Salah, Dhikr, Nafl, Habits, Gym, Career, and Halal Finance.',
+          '100% Offline-First client-side architecture with 0.1ms instant IndexedDB persistence.',
+          'Multi-account private vaults and standardized JSON export/import backup system.',
+          'Smart 1-click install flow for Android/PC and Safari Home Screen guide.'
         ]
       }
     ];
@@ -746,7 +727,7 @@ const Profile = {
       const meta = {
         app: 'lamim.tech',
         app_name: 'Lamim — Islamic Lifestyle Tracker',
-        version: '4.2.0',
+        version: '1.0.0',
         schema_version: 2,
         exported_at: new Date().toISOString(),
         export_type: type === 'current' ? 'single_profile' : 'full_vault',
