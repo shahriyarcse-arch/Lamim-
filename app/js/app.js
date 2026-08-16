@@ -76,6 +76,30 @@ const App = {
       }
     });
 
+    // 2b. Translate input/textarea placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (this.dict[key]) {
+        el.placeholder = isBn ? this.dict[key] : key;
+      }
+    });
+    document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(el => {
+      const ph = el.getAttribute('placeholder');
+      if (!ph || !ph.trim()) return;
+      if (!el.dataset.enPlaceholder) {
+        if (this.dict[ph.trim()]) {
+          el.dataset.enPlaceholder = ph.trim();
+        } else {
+          const engKey = this.reverseDict.get(ph.trim());
+          if (engKey) el.dataset.enPlaceholder = engKey;
+        }
+      }
+      const origPh = el.dataset.enPlaceholder;
+      if (origPh && this.dict[origPh]) {
+        el.placeholder = isBn ? this.dict[origPh] : origPh;
+      }
+    });
+
     // 3. Fallback TreeWalker for everything else without data-i18n
     const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
     let n;
