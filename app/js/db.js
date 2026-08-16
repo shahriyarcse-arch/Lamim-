@@ -81,6 +81,7 @@ const DB = {
         this._cache[k] = localStorage.getItem(k);
       }
     }
+    this._showFallbackWarning();
   },
 
   _setupMultiTabSync() {
@@ -373,6 +374,34 @@ const DB = {
       <span style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
         <button onclick="if(typeof Profile!=='undefined'&&Profile.exportAll)Profile.exportAll();" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;">${isBn ? 'ব্যাকআপ' : 'Backup'}</button>
         <button onclick="document.getElementById('lamim-quota-banner').remove();" style="background:transparent;border:none;color:#fff;cursor:pointer;padding:4px;opacity:0.8;display:flex;align-items:center;" aria-label="Dismiss">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </span>
+    `;
+    document.body ? document.body.prepend(banner) : document.addEventListener('DOMContentLoaded', () => document.body.prepend(banner));
+  },
+
+  _showFallbackWarning() {
+    if (typeof document === 'undefined' || document.getElementById('lamim-fallback-banner')) return;
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const banner = document.createElement('div');
+    banner.id = 'lamim-fallback-banner';
+    banner.setAttribute('role', 'status');
+    banner.style.cssText = [
+      'position:fixed', 'top:0', 'left:0', 'right:0', 'z-index:99999',
+      'background:linear-gradient(90deg,#d97706,#b45309)',
+      'color:#fff', 'font-size:13px', 'font-weight:600',
+      'padding:calc(10px + env(safe-area-inset-top, 0px)) 16px 10px 16px', 'display:flex', 'align-items:center',
+      'justify-content:space-between', 'gap:12px', 'box-shadow:0 2px 12px rgba(0,0,0,0.3)'
+    ].join(';');
+    banner.innerHTML = `
+      <span style="display:flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>${isBn ? 'ইনডেক্সড-ডিবি অনুপলব্ধ। অ্যাপ ব্যাকআপ মোডে চলছে।' : 'IndexedDB unavailable. App running in storage fallback mode.'}</span>
+      </span>
+      <span style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <button onclick="if(typeof Profile!=='undefined'&&Profile.exportAll)Profile.exportAll();" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;">${isBn ? 'ব্যাকআপ' : 'Backup'}</button>
+        <button onclick="document.getElementById('lamim-fallback-banner').remove();" style="background:transparent;border:none;color:#fff;cursor:pointer;padding:4px;opacity:0.8;display:flex;align-items:center;" aria-label="Dismiss">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </span>
