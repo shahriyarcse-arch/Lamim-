@@ -180,19 +180,21 @@ const Profile = {
       </div>
     `;
 
+    const t = (k) => window.t ? window.t(k) : k;
+
     // Danger
     const dg = document.getElementById('profile-danger');
     if (dg) dg.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Auth.logout()">
-        <div class="settings-item-left"><div class="settings-item-icon ic-red">${icons.logout}</div><div><div class="settings-item-label" style="color:var(--color-accent-red)" data-i18n="Log Out (Keep Data)">Log Out (Keep Data)</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-red">${icons.logout}</div><div><div class="settings-item-label" style="color:var(--color-accent-red)" data-i18n="Log Out (Keep Data)">${t('Log Out (Keep Data)')}</div></div></div>
         <div class="settings-item-right"><span>›</span></div>
       </div>
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.deleteAccount()">
-        <div class="settings-item-left"><div class="settings-item-icon ic-red">${icons.trash}</div><div><div class="settings-item-label" style="color:var(--color-accent-red)" data-i18n="Delete Account & All Data">Delete Account & All Data</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-red">${icons.trash}</div><div><div class="settings-item-label" style="color:var(--color-accent-red)" data-i18n="Delete Account & All Data">${t('Delete Account & All Data')}</div></div></div>
         <div class="settings-item-right"><span>›</span></div>
       </div>
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.fullReset()">
-        <div class="settings-item-left"><div class="settings-item-icon ic-orange">${icons.refresh}</div><div><div class="settings-item-label" style="color:#f97316" data-i18n="Factory Reset App">Factory Reset App</div><div class="settings-item-value" data-i18n="Factory Reset Sub">Erase app, data &amp; cache</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-orange">${icons.refresh}</div><div><div class="settings-item-label" style="color:#f97316" data-i18n="Factory Reset App">${t('Factory Reset App')}</div><div class="settings-item-value" data-i18n="Factory Reset Sub">${t('Factory Reset Sub')}</div></div></div>
         <div class="settings-item-right"><span>›</span></div>
       </div>
     `;
@@ -201,11 +203,11 @@ const Profile = {
     const dataEl = document.getElementById('profile-data-settings');
     if (dataEl) dataEl.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.exportData()">
-        <div class="settings-item-left"><div class="settings-item-icon ic-teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></div><div><div class="settings-item-label" data-i18n="Export Backup JSON">Export Backup JSON</div><div class="settings-item-value" data-i18n="Save backup file to device">Save backup file to device</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></div><div><div class="settings-item-label" data-i18n="Export Backup JSON">${t('Export Backup JSON')}</div><div class="settings-item-value" data-i18n="Save backup file to device">${t('Save backup file to device')}</div></div></div>
         <div class="settings-item-right"><span>›</span></div>
       </div>
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.triggerImport()">
-        <div class="settings-item-left"><div class="settings-item-icon ic-lime"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div><div><div class="settings-item-label" data-i18n="Restore Backup JSON">Restore Backup JSON</div><div class="settings-item-value" data-i18n="Import saved backup file">Import saved backup file</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-lime"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div><div><div class="settings-item-label" data-i18n="Restore Backup JSON">${t('Restore Backup JSON')}</div><div class="settings-item-value" data-i18n="Import saved backup file">${t('Import saved backup file')}</div></div></div>
         <div class="settings-item-right"><span>›</span></div>
       </div>
     `;
@@ -214,7 +216,7 @@ const Profile = {
     const ab = document.getElementById('profile-about');
     if (ab) ab.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.showAppInfo()">
-        <div class="settings-item-left"><div class="settings-item-icon ic-slate">${icons.info}</div><div><div class="settings-item-label" data-i18n="App Version">App Version</div><div class="settings-item-value" data-i18n="Release notes & build info">Release notes & build info</div></div></div>
+        <div class="settings-item-left"><div class="settings-item-icon ic-slate">${icons.info}</div><div><div class="settings-item-label" data-i18n="App Version">${t('App Version')}</div><div class="settings-item-value" data-i18n="Release notes & build info">${t('Release notes & build info')}</div></div></div>
         <div class="settings-item-right"><span class="ver-chip">v1.0.0</span><span>›</span></div>
       </div>
     `;

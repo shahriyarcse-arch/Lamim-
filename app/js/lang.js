@@ -529,6 +529,8 @@ const Translations = {
   'Delete Active Profile & Data': 'বর্তমান প্রোফাইল ও ডাটা মুছুন',
   'Factory Reset App': 'ফ্যাক্টরি রিসেট',
   'Factory Reset Sub': 'অ্যাপ, ডাটা ও ক্যাশে মুছে ফেলে',
+  'Erase app, data & cache': 'অ্যাপ, ডাটা ও ক্যাশে মুছে ফেলে',
+  'Erase app, data &amp; cache': 'অ্যাপ, ডাটা ও ক্যাশে মুছে ফেলে',
   'App Version': 'অ্যাপ ভার্সন',
   'Privacy Policy': 'প্রাইভেসি পলিসি',
   'Prayer Notifications': 'সালাতের নোটিফিকেশন',
