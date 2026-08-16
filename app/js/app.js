@@ -310,6 +310,15 @@ updateSectionTitle() {
       if (sideBtn) sideBtn.style.display = 'flex';
     });
 
+    window.addEventListener('appinstalled', () => {
+      const isBn = this.lang === 'bn';
+      Utils.toast(isBn ? '🎉 অ্যাপটি সফলভাবে ইনস্টল সম্পন্ন হয়েছে!' : '🎉 App successfully installed!', 'success', 6000);
+      const btn = document.getElementById('pwa-install-btn');
+      if (btn) btn.style.display = 'none';
+      const sideBtn = document.getElementById('sidebar-pwa-install-btn');
+      if (sideBtn) sideBtn.style.display = 'none';
+    });
+
     // Auto re-detect location after travelling (app returns to foreground / relaunch)
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') Utils.autoUpdateLocationOnTravel();
@@ -666,6 +675,7 @@ updateSectionTitle() {
           if (btn) btn.style.display = 'none';
           const sideBtn = document.getElementById('sidebar-pwa-install-btn');
           if (sideBtn) sideBtn.style.display = 'none';
+          Utils.toast(this.lang === 'bn' ? 'ইনস্টল হচ্ছে... কয়েক সেকেন্ডে ফোনের হোমস্ক্রিনে অ্যাপ চলে আসবে' : 'Installing... Lamim will appear on your home screen in a few seconds', 'info', 5000);
         }
         window.deferredInstallPrompt = null;
       });
