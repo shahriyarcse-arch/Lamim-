@@ -3403,18 +3403,27 @@
           if (modalHead) modalHead.style.display = 'none';
           if (progressBox) progressBox.classList.add('active');
 
-          var currentPct = 15;
-          if (fill) fill.style.width = currentPct + '%';
-          if (pct) pct.textContent = currentPct + '%';
+          var currentPct = 0;
+          if (fill) fill.style.width = '0%';
+          if (pct) pct.textContent = '0%';
+
+          var startTime = Date.now();
+          var duration = 3000; // 3 seconds smooth natural install feel
 
           var timer = setInterval(function() {
-            if (currentPct < 90) {
-              currentPct += Math.floor(Math.random() * 18) + 12;
-              if (currentPct > 90) currentPct = 90;
-              if (fill) fill.style.width = currentPct + '%';
-              if (pct) pct.textContent = currentPct + '%';
+            var elapsed = Date.now() - startTime;
+            var progress = Math.min(elapsed / duration, 0.92);
+            // Ease-out cubic curve for natural downloading momentum
+            var eased = 1 - Math.pow(1 - progress, 2.5);
+            currentPct = Math.floor(eased * 100);
+
+            if (fill) fill.style.width = currentPct + '%';
+            if (pct) pct.textContent = currentPct + '%';
+
+            if (progress >= 0.92) {
+              clearInterval(timer);
             }
-          }, 450);
+          }, 60);
 
           function completeInstall() {
             clearInterval(timer);
@@ -3431,7 +3440,7 @@
           }
 
           window.addEventListener('appinstalled', completeInstall);
-          setTimeout(completeInstall, 3200);
+          setTimeout(completeInstall, 3300);
         }
       }
 
