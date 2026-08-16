@@ -392,7 +392,8 @@ const Finance = {
   formatVal(val) {
     const converted = DB.getSettings().currency === 'BDT' ? val * this._getFXRate() : val;
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    return converted.toLocaleString(isBn ? 'bn-BD' : 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const numStr = converted.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return (isBn && window.n) ? window.n(numStr) : numStr;
   },
 
   loadData() {
@@ -2480,7 +2481,11 @@ const Finance = {
               maxRotation: 0,
               minRotation: 0,
               autoSkip: true,
-              maxTicksLimit: isDaily ? 10 : 12
+              maxTicksLimit: isDaily ? 10 : 12,
+              callback: function(val, index) {
+                const label = this.getLabelForValue(val);
+                return (isBn && window.n) ? window.n(label) : label;
+              }
             }
           },
           y: {

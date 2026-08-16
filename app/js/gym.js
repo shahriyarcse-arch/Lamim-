@@ -65,6 +65,11 @@ const Gym = {
   },
 
   renderHeader() {
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const exerciseInput = document.getElementById('gym-exercise-name');
+    if (exerciseInput) {
+      exerciseInput.placeholder = isBn ? 'অনুশীলনের নাম — যেমন বেঞ্চ প্রেস, স্কোয়াট...' : 'Exercise name — e.g. Bench Press, Squat...';
+    }
     const label = document.getElementById('gym-date-label');
     if (!label) return;
     const isToday = this.selectedDate === Utils.todayStr();

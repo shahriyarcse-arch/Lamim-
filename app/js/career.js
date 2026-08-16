@@ -60,6 +60,11 @@ const Career = {
   },
 
   renderHeader() {
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const input = document.getElementById('career-new-goal-text');
+    if (input) {
+      input.placeholder = isBn ? 'নতুন লক্ষ্য যোগ করুন...' : 'Add a new goal...';
+    }
     const label = document.getElementById('career-date-label');
     if (!label) return;
     const isToday = this.selectedDate === Utils.todayStr();
@@ -68,7 +73,7 @@ const Career = {
     } else {
       const dObj = Utils.parseDate(this.selectedDate);
       const formatted = dObj.toLocaleDateString(
-        (typeof App !== 'undefined' && App.lang === 'bn') ? 'bn-BD' : 'en-US',
+        isBn ? 'bn-BD' : 'en-US',
         { month: 'short', day: 'numeric' }
       );
       label.textContent = window.n ? window.n(formatted) : formatted;
