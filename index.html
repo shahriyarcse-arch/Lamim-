@@ -3383,7 +3383,8 @@
               window.deferredPwaPrompt.userChoice.then(function(choiceResult) {
                 if (choiceResult.outcome === 'accepted') {
                   closeLaunchModal();
-                  showNativeInstallToast('ইনস্টল হচ্ছে... কয়েক সেকেন্ডের মধ্যে আপনার ফোনের হোমস্ক্রিনে অ্যাপটি চলে আসবে।');
+                  var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                  showNativeInstallToast('ইনস্টল হচ্ছে... কয়েক সেকেন্ডের মধ্যে আপনার ' + (isMobile ? 'ফোনে' : 'ডিভাইসে') + ' অ্যাপটি চলে আসবে।');
                 } else {
                   closeLaunchModal();
                 }
@@ -3401,6 +3402,9 @@
         }
 
         function showNativeInstallToast(msg) {
+          // Remove any existing toast so they NEVER stack or overlap
+          document.querySelectorAll('.native-install-toast').forEach(function(t) { t.remove(); });
+
           var toast = document.createElement('div');
           toast.className = 'native-install-toast';
           toast.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>' + msg + '</span>';
@@ -3410,11 +3414,12 @@
             toast.style.opacity = '0';
             toast.style.transition = 'opacity 0.4s ease';
             setTimeout(function() { toast.remove(); }, 400);
-          }, 5000);
+          }, 4500);
         }
 
         window.addEventListener('appinstalled', function() {
-          showNativeInstallToast('🎉 লামিম সফলভাবে আপনার ফোনে ইনস্টল সম্পন্ন হয়েছে!');
+          var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+          showNativeInstallToast('🎉 লামিম সফলভাবে আপনার ' + (isMobile ? 'ফোনে' : 'ডিভাইসে') + ' ইনস্টল সম্পন্ন হয়েছে!');
         });
       }
 
