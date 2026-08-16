@@ -3412,7 +3412,7 @@
           if (sub) sub.textContent = 'অ্যান্ড্রয়েড সিস্টেমে অ্যাপটি সেটআপ হচ্ছে। কয়েক সেকেন্ডের মধ্যে আপনার হোমস্ক্রিনে চলে আসবে।';
 
           var startTime = Date.now();
-          var totalDuration = 3200; // Exactly 3.2 seconds uniform real-time progress
+          var totalDuration = 2200; // Snappy 2.2 seconds ultra-fluid real-time progress
 
           var animTimer = setInterval(function() {
             var elapsed = Date.now() - startTime;
@@ -3428,7 +3428,7 @@
               clearInterval(animTimer);
               completeInstall();
             }
-          }, 30);
+          }, 20);
 
           function completeInstall() {
             clearInterval(animTimer);
