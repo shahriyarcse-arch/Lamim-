@@ -3367,6 +3367,8 @@
           if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
             closeLaunchModal();
           }
+        });
+
         if (installBtn) {
           installBtn.addEventListener('click', function() {
             var isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
