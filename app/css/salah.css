@@ -1873,9 +1873,16 @@
 /* Calendar Heatmap Tiers */
 .salah-cal-cell.tier-max {
   background: linear-gradient(135deg, #10b981 0%, #059669 60%, #047857 100%) !important;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.45) !important;
   color: #ffffff !important;
   overflow: hidden;
+  position: relative;
+  animation: tierMaxPulse 2.2s ease-in-out infinite alternate !important;
+}
+
+.salah-cal-cell.today.tier-max {
+  box-shadow: 0 0 0 2px #38bdf8, 0 0 18px rgba(16, 185, 129, 0.85), inset 0 1px 3px rgba(255, 255, 255, 0.5) !important;
+  animation: tierMaxTodayPulse 2.2s ease-in-out infinite alternate !important;
 }
 
 .salah-cal-cell.tier-max::after {
@@ -1887,23 +1894,51 @@
   height: 200%;
   background: linear-gradient(
     45deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.35) 50%,
-    transparent 65%
+    transparent 30%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 70%
   );
   transform: rotate(30deg);
-  animation: tierMaxGloss 3.5s ease-in-out infinite;
+  animation: tierMaxGloss 2.4s ease-in-out infinite;
   pointer-events: none;
 }
 
+@keyframes tierMaxPulse {
+  0% {
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.85), inset 0 1px 3px rgba(255, 255, 255, 0.6);
+  }
+}
+
+@keyframes tierMaxTodayPulse {
+  0% {
+    box-shadow: 0 0 0 2px #38bdf8, 0 0 10px rgba(16, 185, 129, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 2.5px #67e8f9, 0 0 20px rgba(16, 185, 129, 0.95), inset 0 1px 3px rgba(255, 255, 255, 0.6);
+  }
+}
+
 @keyframes tierMaxGloss {
-  0%, 60% { transform: translateY(-100%) rotate(30deg); }
-  100% { transform: translateY(100%) rotate(30deg); }
+  0% { transform: translateY(-110%) rotate(30deg); }
+  100% { transform: translateY(110%) rotate(30deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .salah-cal-cell.tier-max,
+  .salah-cal-cell.today.tier-max {
+    animation: none !important;
+  }
+  .salah-cal-cell.tier-max::after {
+    display: none !important;
+  }
 }
 
 .salah-cal-cell.tier-high {
   background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-  box-shadow: 0 0 8px rgba(5, 150, 105, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 0 10px rgba(5, 150, 105, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
 }
 
