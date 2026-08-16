@@ -302,7 +302,7 @@ const Finance = {
           if (p.source === 'OpenER' || !p.source || p.rate < 123) {
             this.exchangeRate = 123.4838;
             this.rateChangePct = 0.72;
-            try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: 123.4838, source: 'TradingView', changePct: 0.72 })); } catch (_) {}
+            try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: 123.4838, source: 'TradingView', changePct: 0.72 })); } catch (_) { }
           } else {
             this.exchangeRate = (typeof p.rate === 'number' && isFinite(p.rate) && p.rate > 0 && p.rate <= 100000) ? p.rate : 123.4838;
           }
@@ -408,9 +408,9 @@ const Finance = {
         DB.setSettings(s);
       }
     }
-    this.data = { 
-      expenses: stored?.expenses || [], 
-      savings: stored?.savings || [], 
+    this.data = {
+      expenses: stored?.expenses || [],
+      savings: stored?.savings || [],
       income: stored?.income || [],
       cardNumber
     };
@@ -455,7 +455,7 @@ const Finance = {
     if (!this.currentViewDate) this.currentViewDate = new Date();
     const stats = this.getStats(this.currentViewDate);
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    const monthSub = this.chartView === 'daily' 
+    const monthSub = this.chartView === 'daily'
       ? (isBn ? this.currentViewDate.toLocaleString('bn-BD', { month: 'long', year: 'numeric' }) + ' এর দৈনিক হিসাব' : this.currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' }) + ' breakdown')
       : (isBn ? (window.n ? window.n(this.currentViewDate.getFullYear()) : this.currentViewDate.getFullYear()) + ' সালের মাসিক হিসাব' : 'Monthly overview of ' + this.currentViewDate.getFullYear());
 
@@ -558,7 +558,7 @@ const Finance = {
   changeMonth(delta) {
     const nextDate = new Date(this.currentViewDate); nextDate.setMonth(nextDate.getMonth() + delta);
     if (nextDate > new Date()) return;
-    this.currentViewDate = nextDate; 
+    this.currentViewDate = nextDate;
     this.showAllActivity = false; // Reset when changing month
     this.updateMonthViews();
   },
@@ -674,8 +674,8 @@ const Finance = {
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const exps = this.data.expenses.filter(e => { const d = Utils.parseDate(e.date); return d.getMonth() === m && d.getFullYear() === y; });
     const incs = this.data.income.filter(e => { const d = Utils.parseDate(e.date); return d.getMonth() === m && d.getFullYear() === y; });
-    
-    const allActivity = [...exps.map(e => ({...e, type: 'expense'})), ...incs.map(i => ({...i, type: 'income'}))]
+
+    const allActivity = [...exps.map(e => ({ ...e, type: 'expense' })), ...incs.map(i => ({ ...i, type: 'income' }))]
       .sort((a, b) => {
         const dateDiff = Utils.parseDate(b.date) - Utils.parseDate(a.date);
         if (dateDiff !== 0) return dateDiff;
@@ -685,7 +685,7 @@ const Finance = {
 
     const totalExp = exps.filter(e => e.category !== 'transfer').reduce((s, e) => s + e.amount, 0);
 
-    if (!allActivity.length) return `<div class="fin-section-title">${v.toLocaleString(isBn ? 'bn-BD' : 'default',{month:'long'})} ${isBn ? 'এর লেনদেন' : 'Activity'}</div><div style="text-align:center;padding:48px 20px;"><div style="font-size:40px;margin-bottom:12px;opacity:0.4;"></div><div style="font-size:14px;color:var(--color-text-secondary);font-weight:500;">${isBn ? 'এই মাসে কোনো লেনদেন নেই' : 'No records for this month'}</div><div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">${isBn ? 'নতুন লেনদেন যোগ করতে + চাপুন' : 'Tap + to add your first transaction'}</div></div>`;
+    if (!allActivity.length) return `<div class="fin-section-title">${v.toLocaleString(isBn ? 'bn-BD' : 'default', { month: 'long' })} ${isBn ? 'এর লেনদেন' : 'Activity'}</div><div style="text-align:center;padding:48px 20px;"><div style="font-size:40px;margin-bottom:12px;opacity:0.4;"></div><div style="font-size:14px;color:var(--color-text-secondary);font-weight:500;">${isBn ? 'এই মাসে কোনো লেনদেন নেই' : 'No records for this month'}</div><div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">${isBn ? 'নতুন লেনদেন যোগ করতে + চাপুন' : 'Tap + to add your first transaction'}</div></div>`;
 
     const groups = {};
     allActivity.forEach(e => {
@@ -693,7 +693,7 @@ const Finance = {
       groups[e.date].push(e);
     });
 
-    const sortedDates = Object.keys(groups).sort((a,b) => Utils.parseDate(b) - Utils.parseDate(a));
+    const sortedDates = Object.keys(groups).sort((a, b) => Utils.parseDate(b) - Utils.parseDate(a));
 
     let count = 0;
     const LIMIT = 8;
@@ -708,9 +708,9 @@ const Finance = {
 
       const dObj = Utils.parseDate(date);
       const isToday = date === Utils.todayStr();
-      const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
       const isYesterday = date === Utils.dateStr(yesterday);
-      
+
       let label = dObj.toLocaleDateString(isBn ? 'bn-BD' : 'default', { day: 'numeric', month: 'short' });
       if (isToday) label = isBn ? 'আজ' : 'Today';
       else if (isYesterday) label = isBn ? 'গতকাল' : 'Yesterday';
@@ -753,7 +753,7 @@ const Finance = {
     return `
       <div class="fin-activity-header">
         <div class="fin-activity-title-wrap">
-          <div class="fin-section-title" style="margin-bottom:0;">${v.toLocaleString('default',{month:'long'})} Activity</div>
+          <div class="fin-section-title" style="margin-bottom:0;">${v.toLocaleString('default', { month: 'long' })} Activity</div>
           <span class="fin-activity-count-pill">${allActivity.length}</span>
         </div>
         <button class="fin-export-pill-btn" onclick="Finance.exportPDF()" aria-label="Export Statement">
@@ -770,7 +770,7 @@ const Finance = {
           </div>
           <div class="ledger-summary-text">
             <div class="ledger-total-label">Monthly Spending</div>
-            <div class="ledger-total-sub">${v.toLocaleString('default',{month:'long'})} Outflow</div>
+            <div class="ledger-total-sub">${v.toLocaleString('default', { month: 'long' })} Outflow</div>
           </div>
         </div>
         <div class="ledger-total-value">-${sym}${this.formatVal(totalExp)}</div>
@@ -797,7 +797,7 @@ const Finance = {
     const c = isInc ? { name: 'Deposit', icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`, color: '#10B981' } : this.getCategory(e.category);
     const sym = this.getSymbol();
     const resolvedColor = this.getResolvedColor(c.color);
-    
+
     return `
       <div class="transaction-item" style="animation-delay: ${index * 0.04}s;">
         <div class="transaction-icon" style="background:${resolvedColor}18; color:${resolvedColor}; border: 1px solid ${resolvedColor}33;">
@@ -851,11 +851,11 @@ const Finance = {
 
       <div class="vault-grid${scrollVaults ? ' vault-grid--scroll' : ''}">
         ${hasVaults ? (() => {
-          const LIMIT = 4;
-          const reversedVaults = [...this.data.savings].reverse();
-          const displayVaults = reversedVaults.slice(0, LIMIT);
-          return displayVaults.map(s => this.renderSavingsItem(s)).join('');
-        })() : `
+        const LIMIT = 4;
+        const reversedVaults = [...this.data.savings].reverse();
+        const displayVaults = reversedVaults.slice(0, LIMIT);
+        return displayVaults.map(s => this.renderSavingsItem(s)).join('');
+      })() : `
           <div class="vault-empty-state" role="button" tabindex="0" onclick="Finance.showSavingsModal()">
             <div class="vault-empty-icon">${this.renderIcon('gem', 32)}</div>
             <div style="font-weight:700; font-size:14px; color:var(--color-text-muted);">${isBn ? 'ভবিষ্যত সুরক্ষিত করুন' : 'Secure your future'}</div>
@@ -1030,8 +1030,8 @@ const Finance = {
         <div class="vault-action-slot">
           <button type="button" class="vault-add-btn" onclick="event.stopPropagation(); Finance.addToSavings('${g.id}')" aria-label="Deposit to vault">
             ${completed
-              ? `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Achieved</span>`
-              : `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Deposit</span>`}
+        ? `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Achieved</span>`
+        : `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Deposit</span>`}
           </button>
           <button type="button" class="vault-del-btn" onclick="event.stopPropagation(); Finance.deleteVault('${g.id}')" title="Delete Vault" aria-label="Delete Vault">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
@@ -1118,9 +1118,9 @@ const Finance = {
   },
 
   renderCategoryGrid(search) {
-    const filtered = this.categories.filter(c => 
-      c.name.toLowerCase().includes(search) || 
-      c.id.includes(search) || 
+    const filtered = this.categories.filter(c =>
+      c.name.toLowerCase().includes(search) ||
+      c.id.includes(search) ||
       c.section.toLowerCase().includes(search)
     );
 
@@ -1132,7 +1132,7 @@ const Finance = {
         currentSection = c.section;
         html += `<div class="fin-cat-section-header">${currentSection.toUpperCase()}</div>`;
       }
-      const rc = this.getResolvedColor(c.color); 
+      const rc = this.getResolvedColor(c.color);
       html += `
         <div class="fin-cat-pill ${this.selectedCategory === c.id ? 'active' : ''}" role="button" tabindex="0" onclick="Finance.selectCategory('${c.id}')" id="cat-${c.id}">
           <div class="fin-cat-icon" style="background:${rc}15; color:${rc}">${c.icon}</div>
@@ -1275,20 +1275,20 @@ const Finance = {
     }
   },
 
-  saveIncome() { 
+  saveIncome() {
     if (this._submitting) return;
     this._submitting = true;
     setTimeout(() => { this._submitting = false; }, 400);
 
-    const desc = (document.getElementById('finance-income-desc').value || '').trim(); 
-    let a = parseFloat(document.getElementById('finance-income-amount').value); 
-    const d = document.getElementById('finance-income-date').value || Utils.todayStr(); 
+    const desc = (document.getElementById('finance-income-desc').value || '').trim();
+    let a = parseFloat(document.getElementById('finance-income-amount').value);
+    const d = document.getElementById('finance-income-date').value || Utils.todayStr();
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     if (!desc || isNaN(a) || a <= 0) {
       this._submitting = false;
-      return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields','error'); 
+      return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields', 'error');
     }
-    if (DB.getSettings().currency==='BDT') a /= this._getFXRate(); 
+    if (DB.getSettings().currency === 'BDT') a /= this._getFXRate();
 
     // Refresh data directly from DB to prevent concurrent multi-tab overwrites
     const fresh = DB.getFinance();
@@ -1296,8 +1296,8 @@ const Finance = {
     this.data.expenses = fresh.expenses || [];
     this.data.savings = fresh.savings || [];
 
-    this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d }); 
-    this.saveData(); this.closeModal(); this.render(); 
+    this.data.income.push({ id: Utils.uid(), description: desc, amount: a, date: d });
+    this.saveData(); this.closeModal(); this.render();
   },
 
   formatPickerDate(iso) {
@@ -1353,7 +1353,7 @@ const Finance = {
         </button>
       </div>
       <div class="fin-date-grid-head">
-        ${['S','M','T','W','T','F','S'].map(w => `<span>${w}</span>`).join('')}
+        ${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(w => `<span>${w}</span>`).join('')}
       </div>
       <div class="fin-date-grid">${cells}</div>
       <button type="button" class="fin-date-today" onclick="Finance.pickDate('${targetId}','${todayStr}')">Today</button>
@@ -1374,7 +1374,7 @@ const Finance = {
     const trigger = document.getElementById(targetId + '-trigger');
     if (trigger) trigger.setAttribute('aria-expanded', 'false');
   },
-  
+
   deleteExpense(id) {
     const e = this.data.expenses.find(x => x.id === id);
     if (!e) return;
@@ -1693,7 +1693,7 @@ const Finance = {
 
     const mult = DB.getSettings().currency === 'BDT' ? this._getFXRate() : 1;
     const remainingInBase = goal.target - goal.saved; // USD base
-    
+
     let amountInBase = amount;
     if (DB.getSettings().currency === 'BDT') amountInBase = amount / this._getFXRate();
 
@@ -1719,13 +1719,13 @@ const Finance = {
     goal.saved += amountInBase;
 
     // FIX: Vault deposit should act as an expense so it reduces available balance
-    this.data.expenses.push({ 
-      id: Utils.uid(), 
-      description: `Vault Deposit: ${goal.name}`, 
-      amount: amountInBase, 
-      category: 'transfer', 
+    this.data.expenses.push({
+      id: Utils.uid(),
+      description: `Vault Deposit: ${goal.name}`,
+      amount: amountInBase,
+      category: 'transfer',
       vaultId: goal.id,
-      date: Utils.todayStr() 
+      date: Utils.todayStr()
     });
 
     this.saveData();
@@ -1744,7 +1744,7 @@ const Finance = {
 
 
 
-  showModal(c) { let o = document.getElementById('finance-modal-overlay'); if (!o) { o = document.createElement('div'); o.id = 'finance-modal-overlay'; o.className = 'finance-modal-overlay'; document.body.appendChild(o); } o.innerHTML = c; o.classList.add('show'); o.onclick = (e) => { if(e.target === o) this.closeModal(); }; },
+  showModal(c) { let o = document.getElementById('finance-modal-overlay'); if (!o) { o = document.createElement('div'); o.id = 'finance-modal-overlay'; o.className = 'finance-modal-overlay'; document.body.appendChild(o); } o.innerHTML = c; o.classList.add('show'); o.onclick = (e) => { if (e.target === o) this.closeModal(); }; },
   closeModal() {
     this._submitting = false;
     document.querySelectorAll('.fin-date-pop').forEach(p => p.classList.add('hidden'));
@@ -1755,7 +1755,7 @@ const Finance = {
   showFullHistory() {
     this.historySearch = '';
     this.historyCategory = 'all';
-    
+
     let overlay = document.getElementById('finance-history-overlay');
     if (!overlay) {
       overlay = document.createElement('div');
@@ -1765,7 +1765,7 @@ const Finance = {
     }
 
     const monthStr = this.currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-    const categoriesHtml = `<div class="fin-filter-pill ${this.historyCategory === 'all' ? 'active' : ''}" onclick="Finance.setHistoryFilter('all')">All</div>` + 
+    const categoriesHtml = `<div class="fin-filter-pill ${this.historyCategory === 'all' ? 'active' : ''}" onclick="Finance.setHistoryFilter('all')">All</div>` +
       this.categories.map(c => `<div class="fin-filter-pill ${this.historyCategory === c.id ? 'active' : ''}" onclick="Finance.setHistoryFilter('${c.id}')">${Utils.escapeHTML(c.name)}</div>`).join('');
 
     overlay.innerHTML = `
@@ -1815,13 +1815,13 @@ const Finance = {
       p.classList.toggle('active', p.innerText.toLowerCase() === cat || (cat === 'all' && p.innerText === 'All'));
     });
     this.renderHistoryItems();
-    
+
     const filters = document.querySelector('.fin-history-filters');
     if (filters) {
       const pills = filters.querySelectorAll('.fin-filter-pill');
       pills.forEach(p => p.classList.remove('active'));
-      const activePill = Array.from(pills).find(p => 
-        (cat === 'all' && p.innerText === 'All') || 
+      const activePill = Array.from(pills).find(p =>
+        (cat === 'all' && p.innerText === 'All') ||
         (this.categories.find(c => c.id === cat)?.name === p.innerText)
       );
       if (activePill) activePill.classList.add('active');
@@ -1839,7 +1839,7 @@ const Finance = {
       const matchesSearch = e.description.toLowerCase().includes(this.historySearch);
       const matchesCat = this.historyCategory === 'all' || e.category === this.historyCategory;
       return matchesMonth && matchesSearch && matchesCat;
-    }).map(e => ({...e, type: 'expense'}));
+    }).map(e => ({ ...e, type: 'expense' }));
 
     const incs = this.data.income.filter(e => {
       const d = new Date(e.date);
@@ -1847,7 +1847,7 @@ const Finance = {
       const matchesSearch = e.description.toLowerCase().includes(this.historySearch);
       const matchesCat = this.historyCategory === 'all';
       return matchesMonth && matchesSearch && matchesCat;
-    }).map(i => ({...i, type: 'income'}));
+    }).map(i => ({ ...i, type: 'income' }));
 
     let filtered = [...exps, ...incs].sort((a, b) => {
       const dateDiff = new Date(b.date) - new Date(a.date);
@@ -1874,7 +1874,7 @@ const Finance = {
     for (const date of sortedDates) {
       const dObj = new Date(date);
       const label = dObj.toLocaleDateString('default', { day: 'numeric', month: 'short', weekday: 'short' });
-      
+
       let itemsHtml = "";
       for (const e of groups[date]) {
         itemsHtml += this.renderActivityItem(e, itemIdx++);
@@ -1948,7 +1948,7 @@ const Finance = {
     if (!container) return;
 
     const filtered = [...this.data.savings].reverse().filter(v => v.name.toLowerCase().includes(this.vaultSearch));
-    
+
     if (filtered.length === 0) {
       container.innerHTML = `<div style="text-align:center; padding:60px 20px; opacity:0.3; font-size:14px;">No vaults found</div>`;
       return;
@@ -1961,10 +1961,10 @@ const Finance = {
     const activeRate = this._getFXRate();
     const exchangeRateText = `1 USD = ${activeRate.toFixed(4)} BDT`;
     const sourceLabel = this.rateSource || 'TradingView';
-    const changeBadge = typeof this.rateChangePct === 'number' 
+    const changeBadge = typeof this.rateChangePct === 'number'
       ? `<span style="font-size:12px; font-weight:800; color:${this.rateChangePct >= 0 ? '#10b981' : '#ef4444'}; display:inline-flex; align-items:center; gap:2px;">
           <span>${this.rateChangePct >= 0 ? '▲ +' : '▼ '}${this.rateChangePct.toFixed(2)}%</span>
-         </span>` 
+         </span>`
       : '';
 
     const html = `
@@ -2035,10 +2035,10 @@ const Finance = {
     const m = this.currentViewDate.getMonth(), y = this.currentViewDate.getFullYear();
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     const monthName = this.currentViewDate.toLocaleString(isBn ? 'bn-BD' : 'default', { month: 'long' });
-    
+
     Utils.confirm(
-      isBn ? 'মাসিক ডেটা রিসেট' : 'Reset Month', 
-      isBn ? `${monthName} ${y}-এর সকল লেনদেন ও রেকর্ড মুছে ফেলতে চান?` : `Delete all transactions and records for ${monthName} ${y}?`, 
+      isBn ? 'মাসিক ডেটা রিসেট' : 'Reset Month',
+      isBn ? `${monthName} ${y}-এর সকল লেনদেন ও রেকর্ড মুছে ফেলতে চান?` : `Delete all transactions and records for ${monthName} ${y}?`,
       () => {
         // Decrement any vault savings that were funded by transfers in this month
         this.data.expenses.forEach(e => {
@@ -2056,7 +2056,7 @@ const Finance = {
         this.closeModal();
         this.render();
         Utils.toast(isBn ? `${monthName}-এর ডেটা মুছে ফেলা হয়েছে` : `${monthName} data cleared`, 'info');
-      }, 
+      },
       'warning'
     );
   },
@@ -2064,15 +2064,15 @@ const Finance = {
   resetAllData() {
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     Utils.confirm(
-      isBn ? 'সকল আর্থিক ডেটা মুছবেন?' : 'WIPE ALL DATA', 
-      isBn ? 'এটি চিরতরে আপনার সমস্ত লেনদেন, আয় এবং ভল্ট মুছে ফেলবে। এই কাজটি অপরিবর্তনীয়। এগিয়ে যেতে চান?' : 'This will delete ALL transactions, income, and vaults forever across all years. This action is irreversible. Proceed?', 
+      isBn ? 'সকল আর্থিক ডেটা মুছবেন?' : 'WIPE ALL DATA',
+      isBn ? 'এটি চিরতরে আপনার সমস্ত লেনদেন, আয় এবং ভল্ট মুছে ফেলবে। এই কাজটি অপরিবর্তনীয়। এগিয়ে যেতে চান?' : 'This will delete ALL transactions, income, and vaults forever across all years. This action is irreversible. Proceed?',
       () => {
         this.data = { expenses: [], savings: [], income: [] };
         this.saveData();
         this.closeModal();
         this.render();
         Utils.toast(isBn ? 'সকল আর্থিক ইতিহাস মুছে ফেলা হয়েছে' : 'All finance history wiped', 'info');
-      }, 
+      },
       'danger'
     );
   },
@@ -2237,15 +2237,15 @@ const Finance = {
               </thead>
               <tbody>
                 ${txs.map(t => {
-                  const isInc = t.type === 'income';
-                  const sign = isInc ? '+' : '-';
-                  const classColor = isInc ? 'pos' : 'neg';
-                  const catText = isInc ? 'INCOME' : t.category;
-                  const catBg = isInc ? 'rgba(16, 185, 129, 0.08)' : '#f8fafc';
-                  const catColor = isInc ? '#10b981' : '#64748b';
-                  const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#f1f5f9';
+      const isInc = t.type === 'income';
+      const sign = isInc ? '+' : '-';
+      const classColor = isInc ? 'pos' : 'neg';
+      const catText = isInc ? 'INCOME' : t.category;
+      const catBg = isInc ? 'rgba(16, 185, 129, 0.08)' : '#f8fafc';
+      const catColor = isInc ? '#10b981' : '#64748b';
+      const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#f1f5f9';
 
-                  return `
+      return `
                     <tr>
                       <td style="color:#6366f1; font-weight:800; font-size:13px;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
                       <td style="font-weight:700; color:#1e1b4b; font-size:15px;">${Utils.escapeHTML(t.description)}</td>
@@ -2253,7 +2253,7 @@ const Finance = {
                       <td class="amount ${classColor}">${sign}${sym}${this.formatVal(t.amount)}</td>
                     </tr>
                   `;
-                }).join('')}
+    }).join('')}
               </tbody>
             </table>
 
@@ -2482,7 +2482,7 @@ const Finance = {
               minRotation: 0,
               autoSkip: true,
               maxTicksLimit: isDaily ? 10 : 12,
-              callback: function(val, index) {
+              callback: function (val, index) {
                 const label = this.getLabelForValue(val);
                 return (isBn && window.n) ? window.n(label) : label;
               }
@@ -2527,16 +2527,16 @@ const Finance = {
     // Closing Balance of the viewed month (Cumulative up to the end of the viewed month)
     const closingIncome = incomeList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
     const closingExpenses = expensesList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
-    
+
     // Opening Balance of the viewed month (Cumulative up to the start of the viewed month)
     const startOfViewMonth = new Date(y, m, 1, 0, 0, 0);
     const openingIncome = incomeList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
     const openingExpenses = expensesList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
     const openingBalance = openingIncome - openingExpenses;
-    
-    return { 
-      income: monthlyIncome, 
-      expenses: monthlyExpenses, 
+
+    return {
+      income: monthlyIncome,
+      expenses: monthlyExpenses,
       prevIncome: prevIncome,
       prevExpenses: prevExpenses,
       balance: monthlyIncome - monthlyExpenses,
@@ -2548,7 +2548,7 @@ const Finance = {
   destroy() {
     this._removeGlobalListeners();
     if (this.mainChart) {
-      try { this.mainChart.destroy(); } catch (e) {}
+      try { this.mainChart.destroy(); } catch (e) { }
       this.mainChart = null;
     }
     if (this._debouncedDataUpdate) {
