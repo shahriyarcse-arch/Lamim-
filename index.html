@@ -3406,41 +3406,47 @@
           var currentPct = 0;
           if (fill) fill.style.width = '0%';
           if (pct) pct.textContent = '0%';
+          if (badge) badge.classList.remove('active');
+          if (ring) ring.classList.remove('completed');
+          if (title) title.textContent = 'ইনস্টল হচ্ছে...';
+          if (sub) sub.textContent = 'অ্যান্ড্রয়েড সিস্টেমে অ্যাপটি সেটআপ হচ্ছে। কয়েক সেকেন্ডের মধ্যে আপনার হোমস্ক্রিনে চলে আসবে।';
 
           var startTime = Date.now();
-          var duration = 3000; // 3 seconds smooth natural install feel
+          var totalDuration = 3200; // Exactly 3.2 seconds uniform real-time progress
 
-          var timer = setInterval(function() {
+          var animTimer = setInterval(function() {
             var elapsed = Date.now() - startTime;
-            var progress = Math.min(elapsed / duration, 0.92);
-            // Ease-out cubic curve for natural downloading momentum
-            var eased = 1 - Math.pow(1 - progress, 2.5);
-            currentPct = Math.floor(eased * 100);
+            var ratio = Math.min(elapsed / totalDuration, 1);
+            
+            // Continuous smooth progress from 0 to 100
+            currentPct = Math.min(Math.floor(ratio * 100), 100);
 
             if (fill) fill.style.width = currentPct + '%';
             if (pct) pct.textContent = currentPct + '%';
 
-            if (progress >= 0.92) {
-              clearInterval(timer);
+            if (ratio >= 1) {
+              clearInterval(animTimer);
+              completeInstall();
             }
-          }, 60);
+          }, 30);
 
           function completeInstall() {
-            clearInterval(timer);
+            clearInterval(animTimer);
             if (fill) fill.style.width = '100%';
             if (pct) pct.textContent = '100%';
             if (ring) ring.classList.add('completed');
             if (badge) badge.classList.add('active');
-            if (title) title.textContent = '🎉 সফলভাবে ইনস্টল সম্পন্ন হয়েছে!';
-            if (sub) sub.textContent = 'অ্যাপটি আপনার ফোনের হোমস্ক্রিন এবং অ্যাপ ড্রয়ারে সফলভাবে যুক্ত হয়েছে।';
+            if (title) title.textContent = '🎉 অভিনন্দন! সফলভাবে ইনস্টল সম্পন্ন হয়েছে';
+            if (sub) sub.textContent = 'লামিম অ্যাপটি আপনার ফোনের হোমস্ক্রিন ও অ্যাপ ড্রয়ারে যুক্ত হয়েছে। এখন সরাসরি অফলাইনে ব্যবহার করতে পারবেন।';
             if (openBtn) {
               openBtn.style.display = 'inline-flex';
               openBtn.innerHTML = '<span>অ্যাপে প্রবেশ করুন (Open App) ➔</span>';
             }
           }
 
-          window.addEventListener('appinstalled', completeInstall);
-          setTimeout(completeInstall, 3300);
+          window.addEventListener('appinstalled', function() {
+            completeInstall();
+          });
         }
       }
 
