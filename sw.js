@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-root-v240';
+const CACHE_NAME = 'lamim-root-v1.0.0';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
