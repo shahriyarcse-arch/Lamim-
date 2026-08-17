@@ -250,24 +250,24 @@ updateSectionTitle() {
     }
 
     // Immediately hide splash in the next frame as dashboard is active
+    this._bootComplete = true;
     requestAnimationFrame(() => {
       this._hideSplash();
-      this._bootComplete = true;
     });
 
     // Safety fallback - guarantees splash screen disappears within 800ms under any circumstance
     setTimeout(() => {
-      if (this._bootComplete) return; 
-      console.warn('[Boot] Quick safety fallback triggered');
-      if (DB.getUser()) {
-        if (DB.refreshSpiritScore) DB.refreshSpiritScore();
-        this.showDashboard();
-        this.checkBackupReminder();
-      } else {
-        this.showPage('setup');
+      const sp = document.getElementById('splash');
+      if (sp && !sp.dataset.hidden) {
+        if (DB.getUser()) {
+          if (DB.refreshSpiritScore) DB.refreshSpiritScore();
+          this.showDashboard();
+          this.checkBackupReminder();
+        } else {
+          this.showPage('setup');
+        }
+        this._hideSplash();
       }
-      this._hideSplash();
-      this._bootComplete = true;
     }, 800);
 
     // Nav bindings

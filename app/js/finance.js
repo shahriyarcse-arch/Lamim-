@@ -327,10 +327,9 @@ const Finance = {
     try {
       const ctrl = new AbortController();
       const to = setTimeout(() => ctrl.abort(), 6000);
-      let res = await fetch('/api/forex', { signal: ctrl.signal });
-      if (!res.ok) res = await fetch('../api/forex', { signal: ctrl.signal });
+      const res = await fetch('/api/forex', { signal: ctrl.signal });
       clearTimeout(to);
-      if (res.ok) {
+      if (res && res.ok) {
         const data = await res.json();
         if (data && typeof data.rate === 'number' && isFinite(data.rate) && data.rate > 0) {
           newRate = data.rate;
@@ -339,7 +338,7 @@ const Finance = {
         }
       }
     } catch (e) {
-      console.warn('TradingView Forex fetch failed:', e.message || e);
+      // Quiet failover to cached rate or static spot rate when offline / local preview
     }
 
     if (newRate) {
