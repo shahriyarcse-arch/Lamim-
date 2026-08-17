@@ -333,21 +333,37 @@ You have exhaustive, in-depth architectural knowledge of every module, feature, 
 
 Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable in Islamic lifestyle and productivity. Answer concisely and warmly in ${lang === 'bn' ? 'Bengali (বাংলা)' : 'English'}. If user asks casually or about any feature, explain accurately with clear steps or formulas!`;
 
+      // Build clean alternating conversation turns
       const contents = [];
-      if (Array.isArray(history)) {
-        history.slice(-4).forEach(h => {
+      if (Array.isArray(history) && history.length > 1) {
+        // Exclude the current query which was pushed right before ask()
+        const past = history.slice(0, -1).slice(-4);
+        let lastRole = null;
+        past.forEach(h => {
           if (h && h.role && h.text) {
-            contents.push({
-              role: h.role === 'user' ? 'user' : 'model',
-              parts: [{ text: String(h.text) }]
-            });
+            const role = h.role === 'user' ? 'user' : 'model';
+            if (role !== lastRole) {
+              contents.push({ role, parts: [{ text: String(h.text) }] });
+              lastRole = role;
+            }
           }
         });
       }
       contents.push({
         role: 'user',
-        parts: [{ text: `${systemPrompt}\n\nUser: ${prompt}` }]
+        parts: [{ text: prompt }]
       });
+
+      const bodyPayload = {
+        system_instruction: {
+          parts: [{ text: systemPrompt }]
+        },
+        contents,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 600
+        }
+      };
 
       const ctrl = new AbortController();
       const timeout = setTimeout(() => ctrl.abort(), 8000);
@@ -357,10 +373,7 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
         const res = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents,
-            generationConfig: { temperature: 0.7, maxOutputTokens: 600 }
-          }),
+          body: JSON.stringify(bodyPayload),
           signal: ctrl.signal
         });
         clearTimeout(timeout);
@@ -371,7 +384,7 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
           const res2 = await fetch(fallbackUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents, generationConfig: { temperature: 0.7, maxOutputTokens: 600 } })
+            body: JSON.stringify(bodyPayload)
           });
           if (res2.ok) {
             const data2 = await res2.json();

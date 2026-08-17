@@ -87,20 +87,21 @@ You have exhaustive, in-depth architectural knowledge of every module, feature, 
 Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable in Islamic lifestyle and productivity. Answer concisely and warmly in ${lang === 'bn' ? 'Bengali (বাংলা)' : 'English'}. If user asks casually or about any feature, explain accurately with clear steps or formulas!`;
 
     const contents = [];
-    // Convert history
-    if (Array.isArray(history)) {
+    if (Array.isArray(history) && history.length > 0) {
+      let lastRole = null;
       history.slice(-4).forEach(h => {
         if (h && h.role && h.text) {
-          contents.push({
-            role: h.role === 'user' ? 'user' : 'model',
-            parts: [{ text: String(h.text) }]
-          });
+          const role = h.role === 'user' ? 'user' : 'model';
+          if (role !== lastRole) {
+            contents.push({ role, parts: [{ text: String(h.text) }] });
+            lastRole = role;
+          }
         }
       });
     }
     contents.push({
       role: 'user',
-      parts: [{ text: `${systemPrompt}\n\nUser Question: ${prompt}` }]
+      parts: [{ text: prompt }]
     });
 
     const ctrl = new AbortController();
@@ -111,10 +112,13 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        system_instruction: {
+          parts: [{ text: systemPrompt }]
+        },
         contents: contents,
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 500
+          maxOutputTokens: 600
         }
       }),
       signal: ctrl.signal
