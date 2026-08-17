@@ -8,155 +8,195 @@
   'use strict';
 
   // ==========================================================================
-  // 1. DEEP OFFLINE KNOWLEDGE ENGINE (100% ON-DEVICE DOMAIN EXPERT)
+  // 1. DEEP OFFLINE KNOWLEDGE & CONVERSATIONAL ENGINE (100% ON-DEVICE NLP)
   // ==========================================================================
   const AIKnowledgeEngine = {
-    // Curated bilingual knowledge items across all 9 modules of Lamim
+    // Curated bilingual knowledge items across all modules + chit-chat / conversational greetings
     items: [
+      {
+        id: 'greeting-salam',
+        section: null,
+        keywords: ['hi', 'hello', 'hey', 'salam', 'assalam', 'assalamu alaikum', 'assalamu alaykum', 'সালাম', 'আসসালামু আলাইকুম', 'হাই', 'হ্যালো', 'হে', 'হেলো', 'slm'],
+        replyBn: `ওয়ালাইকুমুস সালাম! 🌟 আমি **লামিম এআই সহকারী**।\n\nআপনার দিনটি বরকতময় হোক! সালাত ট্র্যাকিং, ডিজিটাল জিকির, হালাল ফাইন্যান্স হিসাব, ৪-৭-৮ ব্রিদিং এক্সারসাইজ বা জিম ওয়ার্কআউট নিয়ে যেকোনো কিছু আমাকে জিজ্ঞেস করতে পারেন। বলুন, আজ কীভাবে সাহায্য করতে পারি?`,
+        replyEn: `Wa Alaikumus Salam & Hello! 🌟 I am your **Lamim AI Assistant**.\n\nMay your day be blessed! Feel free to ask me anything about Salah tracking, Dhikr, Halal Finance, 4-7-8 Breathing, or Gym workouts. How can I help you today?`,
+        actionLabelBn: null,
+        actionLabelEn: null
+      },
+      {
+        id: 'chit-chat-status',
+        section: null,
+        keywords: ['ki koro', 'kikoro', 'ki korcho', 'kemon acho', 'kemon aso', 'kemon achish', 'who are you', 'tumi ke', 'apni ke', 'কেমন আছো', 'কী করো', 'কি করো', 'কেমন আছেন', 'তুমি কে', 'তোমার কাজ কি', 'আপনার পরিচয়'],
+        replyBn: `আলহামদুলিল্লাহ, আমি সবসময় প্রস্তুত আপনাকে সাহায্য করতে! 😊\n\nআমি **লামিম লাইফ অপারেটিং সিস্টেমের** স্মার্ট এআই গাইড। আপনার প্রতিদিনের ৫ ওয়াক্ত নামাজ, তাসবীহ জিকির, হালাল অর্থ লেজার ও স্বাস্থ্যবিধি সহজে মেইনটেইন করাই আমার কাজ।\n\nআপনি চাইলে নিচের বাটন চেপে যেকোনো সেকশনে যেতে পারেন অথবা যেকোনো প্রশ্ন লিখতে পারেন!`,
+        replyEn: `Alhamdulillah, I am doing great and ready to assist you! 😊\n\nI am your personal smart guide inside **Lamim Life OS**. I help you manage your 5 daily prayers, tasbih dhikr, halal finance ledger, and wellness routines seamlessly.`,
+        actionLabelBn: null,
+        actionLabelEn: null
+      },
+      {
+        id: 'thanks-appreciation',
+        section: null,
+        keywords: ['thanks', 'thank you', 'dhonnobad', 'dhonnobaad', 'shukran', 'jazakallah', 'jazakallahu khair', 'ধন্যবাদ', 'শুকরিয়া', 'জাজাকাল্লাহ', 'থ্যাংকস', 'থ্যাংক ইউ'],
+        replyBn: `আপনাকেও অনেক অনেক ধন্যবাদ! বারাকাল্লাহু ফিকুম। 🤲\n\nআপনার প্রতিটি ভালো কাজ কবুল হোক। আর কোনো বিষয় জানতে চাইলে নিঃসঙ্কোচে লিখুন।`,
+        replyEn: `You are most welcome! JazakAllahu Khairan. 🤲\n\nMay Allah bless your time and efforts. Feel free to ask whenever you need anything!`,
+        actionLabelBn: null,
+        actionLabelEn: null
+      },
       {
         id: 'salah-tracking',
         section: 'salah',
-        keywords: ['salah', 'namaz', 'prayer', 'fajr', 'dhuhr', 'asr', 'maghrib', 'isha', 'সালাত', 'নামাজ', 'ওয়াক্ত', 'ফজর', 'যোহর', 'আসর', 'মাগরিব', 'এশা', 'কাযা', 'qaza', 'জায়নামাজ', 'জামাত', 'jamat'],
+        keywords: ['salah', 'salat', 'namaj', 'namaz', 'namajer', 'namajporbo', 'fajr', 'fojor', 'dhuhr', 'zohr', 'johr', 'asr', 'asor', 'magrib', 'maghrib', 'isha', 'eshe', 'qaza', 'kaza', 'jamat', 'jamaat', 'tahajjud', 'nafl', 'সালাত', 'নামাজ', 'নামাজের', 'ওয়াক্ত', 'ফজর', 'যোহর', 'জোহর', 'আসর', 'মাগরিব', 'এশা', 'কাযা', 'কাজা', 'জামাত', 'জায়নামাজ', 'তাহাজ্জুদ', 'নফল', 'আজান', 'ওয়াক্তের সময়'],
         replyBn: `🕌 **সালাত ট্র্যাকার (Salah Tracker)**:
-- **৫ ওয়াক্ত নামাজ**: ফজর, যোহর, আসর, মাগরিব ও এশা সহজে ট্র্যাক করুন।
-- **জামাত / একাকী / কাযা**: প্রতি ওয়াক্তে জামাতে পড়েছেন, একা পড়েছেন নাকি কাযা হয়েছে তা ১-ট্যাপে চিহ্নিত করতে পারবেন।
-- **২১ দিনের হিটম্যাপ**: আপনার নামাজের ধারাবাহিকতা ও রুটিন ভিজ্যুয়াল হিটম্যাপে দেখতে পাবেন।
-- **লোকাল সোলার ক্যালকুলেশন**: আপনার জিপিএস/শহর অনুযায়ী ইন্টারনেট ছাড়াই নিখুঁত ওয়াক্ত হিসাব হয়।`,
+• **৫ ওয়াক্ত নামাজ**: ফজর, যোহর, আসর, মাগরিব ও এশা সহজে ট্র্যাক করুন।
+• **জামাত / একাকী / কাযা**: প্রতি ওয়াক্তে জামাতে পড়েছেন, একা পড়েছেন নাকি কাযা হয়েছে তা ১-ট্যাপে চিহ্নিত করতে পারবেন।
+• **২১ দিনের হিটম্যাপ**: আপনার নামাজের ধারাবাহিকতা ও রুটিন ভিজ্যুয়াল হিটম্যাপে দেখতে পাবেন।
+• **লোকাল সোলার ক্যালকুলেশন**: আপনার জিপিএস/শহর অনুযায়ী ইন্টারনেট ছাড়াই নিখুঁত ওয়াক্ত হিসাব হয়।`,
         replyEn: `🕌 **Salah Tracker**:
-- **5 Daily Prayers**: Track Fajr, Dhuhr, Asr, Maghrib, and Isha.
-- **Jama'at / Alone / Qaza**: Log whether you prayed in congregation, alone, or made up missed prayers.
-- **21-Day Heatmap**: Visual consistency grid for your spiritual rhythm.
-- **Local Solar Angles**: Computes exact prayer times completely offline based on your coordinates.`,
+• **5 Daily Prayers**: Track Fajr, Dhuhr, Asr, Maghrib, and Isha.
+• **Jama'at / Alone / Qaza**: Log whether you prayed in congregation, alone, or made up missed prayers.
+• **21-Day Heatmap**: Visual consistency grid for your spiritual rhythm.
+• **Local Solar Angles**: Computes exact prayer times completely offline based on your coordinates.`,
         actionLabelBn: 'সালাত ট্র্যাকার খুলুন ➔',
         actionLabelEn: 'Open Salah Tracker ➔'
       },
       {
         id: 'dhikr-counter',
         section: 'dhikr',
-        keywords: ['dhikr', 'zikr', 'tasbih', 'subhanallah', 'alhamdulillah', 'allahu akbar', 'astaghfirullah', 'জিকির', 'তাসবীহ', 'সুবহানাল্লাহ', 'আলহামদুলিল্লাহ', 'আল্লাহু আকবার', 'আস্তাগফিরুল্লাহ', 'তসবীহ'],
+        keywords: ['dhikr', 'zikr', 'tasbih', 'tasbee', 'tasbi', 'subhanallah', 'alhamdulillah', 'allahuakbar', 'allahu akbar', 'astaghfirullah', 'istighfar', 'darood', 'ayatul kursi', 'dua', 'dowa', 'surah', 'quran', 'জিকির', 'তাসবীহ', 'তাসবিহ', 'তসবীহ', 'সুবহানাল্লাহ', 'আলহামদুলিল্লাহ', 'আল্লাহু আকবার', 'আস্তাগফিরুল্লাহ', 'ইস্তিগফার', 'দোয়া', 'দুয়া', 'কুরআন', 'দরূদ', 'আয়াতুল কুরসি'],
         replyBn: `📿 **ডিজিটাল তাসবীহ ও জিকির (Dhikr Engine)**:
-- **স্মার্ট কাউন্টার**: স্ক্রিনে বড় করে ট্যাপ করে জিকির গণনা করুন (ভাইব্রেশন হ্যাপটিক্স সাপোর্টসহ)।
-- **কাস্টম প্রিসেট**: সুবহানাল্লাহ (৩৩), আলহামদুলিল্লাহ (৩৩), আল্লাহু আকবার (৩৪), আয়াতুল কুরসি ও দরূদ শরীফের প্রিসেট।
-- **দৈনিক হিসাব**: আজকের সর্বমোট জিকির ও লাইফটাইম কাউন্ট স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।`,
+• **স্মার্ট কাউন্টার**: স্ক্রিনে বড় করে ট্যাপ করে জিকির গণনা করুন (ভাইব্রেশন হ্যাপটিক্স সাপোর্টসহ)।
+• **কাস্টম প্রিসেট**: সুবহানাল্লাহ (৩৩), আলহামদুলিল্লাহ (৩৩), আল্লাহু আকবার (৩৪), আয়াতুল কুরসি ও দরূদ শরীফের প্রিসেট।
+• **দৈনিক হিসাব**: আজকের সর্বমোট জিকির ও লাইফটাইম কাউন্ট স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।`,
         replyEn: `📿 **Digital Dhikr & Tasbih**:
-- **Smart Counter**: Tap anywhere with responsive tactile vibration haptics.
-- **Preset Targets**: Quick switches for SubhanAllah (33), Alhamdulillah (33), Allahu Akbar (34), and Istighfar.
-- **Daily Persistence**: Automatically tracks today's count and total lifetime repetitions.`,
+• **Smart Counter**: Tap anywhere with responsive tactile vibration haptics.
+• **Preset Targets**: Quick switches for SubhanAllah (33), Alhamdulillah (33), Allahu Akbar (34), and Istighfar.
+• **Daily Persistence**: Automatically tracks today's count and total lifetime repetitions.`,
         actionLabelBn: 'জিকির কাউন্টারে যান ➔',
         actionLabelEn: 'Open Dhikr Counter ➔'
       },
       {
         id: 'halal-finance',
         section: 'finance',
-        keywords: ['finance', 'money', 'zakat', 'income', 'expense', 'dollar', 'bdt', 'forex', 'টাকা', 'হিসাব', 'টাকা পয়সা', 'আয়', 'ব্যয়', 'যাকাত', 'জাকাত', 'ডলার', 'ফাইন্যান্স', 'সঞ্চয়', 'saving'],
+        keywords: ['finance', 'money', 'zakat', 'jakat', 'nisab', 'income', 'expense', 'khoroch', 'taka', 'poisa', 'hisab', 'bdt', 'dollar', 'forex', 'saving', 'টাকা', 'পয়সা', 'খরচ', 'হিসাব', 'যাকাত', 'জাকাত', 'আয়', 'ব্যয়', 'সঞ্চয়', 'ফাইন্যান্স', 'নিসাব', 'ডলার', 'টাকা পয়সা'],
         replyBn: `💰 **হালাল ফাইন্যান্স লেজার (Halal Finance)**:
-- **১০০% প্রাইভেট লেজার**: আপনার আয়, ব্যয় ও জমার হিসাব সম্পূর্ণ আপনার ডিভাইসে সংরক্ষিত থাকে, ক্লাউডে কোনো ডেটা যায় না।
-- **লাইভ ফরেক্স রেট**: রিয়েল-টাইম TradingView USD/BDT কারেন্সি কনভার্শন।
-- **যাকাত ক্যালকুলেটর**: নিসাব অনুযায়ী আপনার স্বর্ণ, রৌপ্য ও ক্যাশ টাকার যাকাত নিমিষেই হিসাব করুন।`,
+• **১০০% প্রাইভেট লেজার**: আপনার আয়, ব্যয় ও জমার হিসাব সম্পূর্ণ আপনার ডিভাইসে সংরক্ষিত থাকে, ক্লাউডে কোনো ডেটা যায় না।
+• **লাইভ ফরেক্স রেট**: রিয়েল-টাইম TradingView USD/BDT কারেন্সি কনভার্শন।
+• **যাকাত ক্যালকুলেটর**: নিসাব অনুযায়ী আপনার স্বর্ণ, রৌপ্য ও ক্যাশ টাকার যাকাত নিমিষেই হিসাব করুন।`,
         replyEn: `💰 **Halal Finance Ledger**:
-- **100% Private Ledger**: Income, expenses, and savings stay strictly on your device with zero cloud tracking.
-- **Live FX Conversion**: Real-time TradingView USD/BDT spot rates.
-- **Zakat Calculator**: Calculate your annual Zakat entitlement based on current Nisab values in seconds.`,
+• **100% Private Ledger**: Income, expenses, and savings stay strictly on your device with zero cloud tracking.
+• **Live FX Conversion**: Real-time TradingView USD/BDT spot rates.
+• **Zakat Calculator**: Calculate your annual Zakat entitlement based on current Nisab values in seconds.`,
         actionLabelBn: 'ফাইন্যান্স লেজার খুলুন ➔',
         actionLabelEn: 'Open Halal Finance ➔'
       },
       {
         id: 'habits-breathing',
         section: 'habits',
-        keywords: ['habit', 'habits', 'water', 'breathe', 'breathing', '4-7-8', 'পানি', 'অভ্যাস', 'ব্রিদিং', 'শ্বাস', 'মেডিটেশন', 'হাইড্রেশন', 'ঘুম', 'রুটিন'],
+        keywords: ['habit', 'habits', 'water', 'pani', 'breathe', 'breathing', 'shash', 'meditation', 'sleep', 'ghoom', 'routine', '4-7-8', 'অভ্যাস', 'পানি', 'ব্রিদিং', 'শ্বাস', 'মেডিটেশন', 'হাইড্রেশন', 'ঘুম', 'রুটিন', 'ব্যায়াম'],
         replyBn: `🌿 **হ্যাবিটস ও ৪-৭-৮ ব্রিদিং (Habits & Wellness)**:
-- **দৈনিক ভালো অভ্যাস**: সকালের রুটিন, কিতাব তিলাওয়াত, পানি পান এবং রাতের প্রস্তুতি ট্র্যাক করুন।
-- **৪-৭-৮ গাইডেড ব্রিদিং**: মন শান্ত করতে ও স্ট্রেস কমাতে বৈজ্ঞানিক ৪ সেকেন্ড শ্বাস নেওয়া, ৭ সেকেন্ড ধরে রাখা এবং ৮ সেকেন্ড ছাড়ার ইন্টারেক্টিভ এক্সারসাইজ।`,
+• **দৈনিক ভালো অভ্যাস**: সকালের রুটিন, কিতাব তিলাওয়াত, পানি পান এবং রাতের প্রস্তুতি ট্র্যাক করুন।
+• **৪-৭-৮ গাইডেড ব্রিদিং**: মন শান্ত করতে ও স্ট্রেস কমাতে বৈজ্ঞানিক ৪ সেকেন্ড শ্বাস নেওয়া, ৭ সেকেন্ড ধরে রাখা এবং ৮ সেকেন্ড ছাড়ার ইন্টারেক্টিভ এক্সারসাইজ।`,
         replyEn: `🌿 **Habits & Guided 4-7-8 Breathing**:
-- **Daily Habit Streaks**: Track Quran reading, hydration, morning rituals, and sleep preparation.
-- **4-7-8 Deep Breathing**: Interactive calming exercise (4s Inhale, 7s Hold, 8s Exhale) to ground yourself.`,
+• **Daily Habit Streaks**: Track Quran reading, hydration, morning rituals, and sleep preparation.
+• **4-7-8 Deep Breathing**: Interactive calming exercise (4s Inhale, 7s Hold, 8s Exhale) to ground yourself.`,
         actionLabelBn: 'হ্যাবিটস মডিউল দেখুন ➔',
         actionLabelEn: 'Open Habits & Breathing ➔'
       },
       {
         id: 'spiritual-health-score',
         section: 'analysis',
-        keywords: ['shs', 'score', 'spiritual score', 'analysis', 'health score', 'স্কোর', 'অ্যানালাইসিস', 'স্পিরিট স্কোর', 'গ্রাফ', 'রিপোর্ট', 'অগ্রগতি', 'প্রগ্রেস'],
+        keywords: ['shs', 'score', 'spiritual score', 'analysis', 'health score', 'report', 'graph', 'progress', 'স্কোর', 'অ্যানালাইসিস', 'স্পিরিট স্কোর', 'গ্রাফ', 'রিপোর্ট', 'অগ্রগতি', 'প্রগ্রেস'],
         replyBn: `📈 **স্পিরিচুয়াল হেলথ স্কোর (SHS Engine)**:
-- **০-১০০ স্কেল**: আপনার নামাজ, জিকির, নফল আমল ও অভ্যাসের ধারাবাহিকতার ভিত্তিতে এটি আপনার আত্মিক অগ্রগতির স্কোর তৈরি করে।
-- **ট্রেন্ড গ্রাফ**: ৭ দিন ও ৩০ দিনের অ্যানালিটিক্স চার্ট পুরোপুরি অফলাইনে জেনারেট হয়।
-- **৭টি ধাপ**: Awakening থেকে শুরু করে Ihsan (ইহসান) স্তর পর্যন্ত অগ্রগতি ট্র্যাক করা যায়।`,
+• **০-১০০ স্কেল**: আপনার নামাজ, জিকির, নফল আমল ও অভ্যাসের ধারাবাহিকতার ভিত্তিতে এটি আপনার আত্মিক অগ্রগতির স্কোর তৈরি করে।
+• **ট্রেন্ড গ্রাফ**: ৭ দিন ও ৩০ দিনের অ্যানালিটিক্স চার্ট পুরোপুরি অফলাইনে জেনারেট হয়।
+• **৭টি ধাপ**: Awakening থেকে শুরু করে Ihsan (ইহসান) স্তর পর্যন্ত অগ্রগতি ট্র্যাক করা যায়।`,
         replyEn: `📈 **Spiritual Health Score (SHS)**:
-- **0-100 Synthetic Index**: Synthesizes your Salah regularity, Dhikr, Nafl, and daily habit consistency.
-- **Trend Charts**: 7-day and 30-day analytics charts rendered completely offline.
-- **7 Spiritual Stages**: Progress through ranks from Awakening to peak Ihsan.`,
+• **0-100 Synthetic Index**: Synthesizes your Salah regularity, Dhikr, Nafl, and daily habit consistency.
+• **Trend Charts**: 7-day and 30-day analytics charts rendered completely offline.
+• **7 Spiritual Stages**: Progress through ranks from Awakening to peak Ihsan.`,
         actionLabelBn: 'অ্যানালাইসিস হাব খুলুন ➔',
         actionLabelEn: 'Open Analysis Hub ➔'
       },
       {
         id: 'gym-workout',
         section: 'gym',
-        keywords: ['gym', 'workout', 'exercise', 'fitness', 'reps', 'weight', 'জিম', 'ব্যায়াম', 'শরীরচর্চা', 'ফিটনেস', 'পুশআপ', 'ওজন'],
+        keywords: ['gym', 'workout', 'exercise', 'fitness', 'bayam', 'bayem', 'body', 'muscle', 'reps', 'weight', 'pushup', 'জিম', 'ব্যায়াম', 'শরীরচর্চা', 'ফিটনেস', 'মাসল', 'ওজন', 'পুশআপ'],
         replyBn: `💪 **জিম ও ওয়ার্কআউট ট্র্যাকার (Gym Tracker)**:
-- **মাসল গ্রুপ স্প্লিট**: Chest, Back, Legs, Shoulders, Arms ওয়ার্কআউট লগ।
-- **সেট ও রেপস**: প্রতিটি এক্সারসাইজের ওজন ও রেপস হিসাব রাখা।
-- **প্রোগ্রেসিভ ওভারলোড**: আপনার শক্তি ও ধারাবাহিকতা ট্র্যাক করতে সাহায্য করে।`,
+• **মাসল গ্রুপ স্প্লিট**: Chest, Back, Legs, Shoulders, Arms ওয়ার্কআউট লগ।
+• **সেট ও রেপস**: প্রতিটি এক্সারসাইজের ওজন ও রেপস হিসাব রাখা।
+• **প্রোগ্রেসিভ ওভারলোড**: আপনার শক্তি ও ধারাবাহিকতা ট্র্যাক করতে সাহায্য করে।`,
         replyEn: `💪 **Gym & Fitness Tracker**:
-- **Muscle Splits**: Track Chest, Back, Legs, Shoulders, and Arms workouts.
-- **Sets & Reps**: Log weight, sets, and repetitions for progressive overload.`,
+• **Muscle Splits**: Track Chest, Back, Legs, Shoulders, and Arms workouts.
+• **Sets & Reps**: Log weight, sets, and repetitions for progressive overload.`,
         actionLabelBn: 'জিম ট্র্যাকার দেখুন ➔',
         actionLabelEn: 'Open Gym Tracker ➔'
       },
       {
         id: 'career-focus',
         section: 'career',
-        keywords: ['career', 'work', 'study', 'focus', 'deep work', 'timer', 'ক্যারিয়ার', 'কাজ', 'পড়াশোনা', 'ফোকাস', 'ডিপ ওয়ার্ক', 'টাইমার', 'লক্ষ্য'],
+        keywords: ['career', 'work', 'kaj', 'kam', 'job', 'study', 'porashona', 'focus', 'deep work', 'timer', 'ক্যারিয়ার', 'কাজ', 'পড়াশোনা', 'চাকরি', 'ফোকাস', 'ডিপ ওয়ার্ক', 'টাইমার', 'লক্ষ্য'],
         replyBn: `🎯 **ক্যারিয়ার ও ডিপ ওয়ার্ক (Career Hub)**:
-- **ডেলি ফোকাস গোলস**: দিনের সবচেয়ে গুরুত্বপূর্ণ ৩টি ক্যারিয়ার টাস্ক চেকলিস্ট।
-- **ডিপ ওয়ার্ক আওয়ার্স**: নিরবচ্ছিন্ন কাজের সময় ও উইকলি গ্রোথ ট্র্যাকিং।`,
+• **ডেলি ফোকাস গোলস**: দিনের সবচেয়ে গুরুত্বপূর্ণ ৩টি ক্যারিয়ার টাস্ক চেকলিস্ট।
+• **ডিপ ওয়ার্ক আওয়ার্স**: নিরবচ্ছিন্ন কাজের সময় ও উইকলি গ্রোথ ট্র্যাকিং।`,
         replyEn: `🎯 **Career & Deep Work**:
-- **Daily Focus Checklist**: Prioritize your top tasks with interactive checklists.
-- **Deep Work Hours**: Log uninterrupted work blocks and weekly productivity momentum.`,
+• **Daily Focus Checklist**: Prioritize your top tasks with interactive checklists.
+• **Deep Work Hours**: Log uninterrupted work blocks and weekly productivity momentum.`,
         actionLabelBn: 'ক্যারিয়ার হাব খুলুন ➔',
         actionLabelEn: 'Open Career Hub ➔'
       },
       {
         id: 'privacy-security',
         section: 'profile',
-        keywords: ['privacy', 'security', 'data', 'cloud', 'backup', 'export', 'নিরাপত্তা', 'প্রাইভেসি', 'গোপনীয়তা', 'ডেটা', 'ব্যাকআপ', 'এক্সপোর্ট', 'লোকাল'],
+        keywords: ['privacy', 'security', 'data', 'cloud', 'backup', 'export', 'import', 'save', 'নিরাপত্তা', 'প্রাইভেসি', 'গোপনীয়তা', 'ডেটা', 'ব্যাকআপ', 'এক্সপোর্ট', 'ইমপোর্ট', 'লোকাল'],
         replyBn: `🛡️ **প্রাইভেসি ও ১০০% লোকাল ডেটা**:
-- **জিরো ক্লাউড ট্র্যাকিং**: আপনার কোনো তথ্য বা লগ কোনো সার্ভারে পাঠানো হয় না।
-- **IndexedDB এনক্রিপশন**: সব তথ্য আপনার ডিভাইসের নিজস্ব ব্রাউজার ডেটাবেসে সুরক্ষিত।
-- **JSON ব্যাকআপ**: প্রোফাইল থেকে ১-ক্লিকে ফুল ব্যাকআপ এক্সপোর্ট ও ইমপোর্ট করতে পারবেন।`,
+• **জিরো ক্লাউড ট্র্যাকিং**: আপনার কোনো তথ্য বা লগ কোনো সার্ভারে পাঠানো হয় না।
+• **IndexedDB এনক্রিপশন**: সব তথ্য আপনার ডিভাইসের নিজস্ব ব্রাউজার ডেটাবেসে সুরক্ষিত।
+• **JSON ব্যাকআপ**: প্রোফাইল থেকে ১-ক্লিকে ফুল ব্যাকআপ এক্সপোর্ট ও ইমপোর্ট করতে পারবেন।`,
         replyEn: `🛡️ **Privacy & Local Storage Architecture**:
-- **Zero Cloud Tracking**: Nothing you log is ever uploaded to external servers.
-- **Isolated IndexedDB**: All data lives locally inside your browser's indexed database.
-- **JSON Backup**: Easily export or import your full database snapshot anytime in Settings.`,
+• **Zero Cloud Tracking**: Nothing you log is ever uploaded to external servers.
+• **Isolated IndexedDB**: All data lives locally inside your browser's indexed database.
+• **JSON Backup**: Easily export or import your full database snapshot anytime in Settings.`,
         actionLabelBn: 'প্রোফাইল ও ব্যাকআপ খুলুন ➔',
         actionLabelEn: 'Open Profile & Backup ➔'
       },
       {
         id: 'pwa-offline',
         section: 'home',
-        keywords: ['install', 'pwa', 'offline', 'app', 'apk', 'ইনস্টল', 'অ্যাপ', 'অফলাইন', 'ইন্টারনেট ছাড়া', 'ডাউনলোড'],
+        keywords: ['install', 'pwa', 'offline', 'app', 'apk', 'download', 'ইনস্টল', 'অ্যাপ', 'অফলাইন', 'ইন্টারনেট ছাড়া', 'ডাউনলোড'],
         replyBn: `📱 **PWA ইনস্টলেশন ও অফলাইন সুবিধা**:
-- **১-ক্লিক ইনস্টল**: ব্রাউজারের ৩-ডট মেনু বা ইন-অ্যাপ ইনস্টল বাটনে চাপ দিয়ে অ্যাপ হিসেবে হোমস্ক্রিনে যোগ করতে পারবেন।
-- **১০০% অফলাইন**: ইন্টারনেট সংযোগ বন্ধ থাকলেও অ্যাপের প্রতিটি ফিচার নিখুঁতভাবে চলবে।`,
+• **১-ক্লিক ইনস্টল**: ব্রাউজারের ৩-ডট মেনু বা ইন-অ্যাপ ইনস্টল বাটনে চাপ দিয়ে অ্যাপ হিসেবে হোমস্ক্রিনে যোগ করতে পারবেন।
+• **১০০% অফলাইন**: ইন্টারনেট সংযোগ বন্ধ থাকলেও অ্যাপের প্রতিটি ফিচার নিখুঁতভাবে চলবে।`,
         replyEn: `📱 **PWA Installation & Offline Support**:
-- **1-Click Install**: Add Lamim directly to your home screen without app stores.
-- **100% Offline Capability**: Runs seamlessly even with zero internet signal.`,
+• **1-Click Install**: Add Lamim directly to your home screen without app stores.
+• **100% Offline Capability**: Runs seamlessly even with zero internet signal.`,
         actionLabelBn: 'হোম ড্যাশবোর্ড দেখুন ➔',
         actionLabelEn: 'Go to Home ➔'
       }
     ],
 
-    // Fast tokenizer and semantic scoring
+    // Smart Multi-Token & Banglish NLP Matcher
     query(rawText, lang) {
       const q = (rawText || '').toLowerCase().trim();
       const isBn = lang === 'bn' || /[\u0980-\u09FF]/.test(q);
+      const tokens = q.split(/[\s,?.!/\\;:+-_]+/).filter(Boolean);
+
       let bestMatch = null;
       let highestScore = 0;
 
       for (const item of this.items) {
         let score = 0;
         for (const kw of item.keywords) {
-          if (q === kw) score += 15;
-          else if (q.includes(kw)) score += kw.length > 3 ? 6 : 3;
+          const lowerKw = kw.toLowerCase();
+          // Exact full query match
+          if (q === lowerKw) {
+            score += 30;
+          }
+          // Exact token match (e.g. "namaj", "taka", "hi", "salam")
+          else if (tokens.includes(lowerKw)) {
+            score += lowerKw.length > 2 ? 18 : 10;
+          }
+          // Substring match
+          else if (q.includes(lowerKw)) {
+            score += lowerKw.length > 3 ? 12 : 5;
+          }
         }
 
         if (score > highestScore) {
@@ -165,7 +205,7 @@
         }
       }
 
-      if (bestMatch && highestScore >= 3) {
+      if (bestMatch && highestScore >= 5) {
         return {
           reply: isBn ? bestMatch.replyBn : bestMatch.replyEn,
           actionSection: bestMatch.section,
@@ -174,16 +214,16 @@
         };
       }
 
-      // Default contextual guidance
+      // Friendly fallback that gives a rich conversational overview
       if (isBn) {
         return {
-          reply: `আমি **লামিম এআই সহকারী**। আপনি নিচের যেকোনো বিষয় নিয়ে আমাকে জিজ্ঞেস করতে পারেন:\n\n• **সালাত ট্র্যাকার ও নামাজের ওয়াক্ত**\n• **ডিজিটাল তাসবীহ ও জিকির**\n• **হালাল ফাইন্যান্স ও যাকাত ক্যালকুলেটর**\n• **৪-৭-৮ ব্রিদিং ও দৈনিক অভ্যাস**\n• **স্পিরিচুয়াল হেলথ স্কোর (SHS)**\n• **জিম ও ওয়ার্কআউট লগ**\n• **ডাটা ব্যাকআপ ও প্রাইভেসি**`,
+          reply: `আমি **লামিম এআই সহকারী**। আপনি নিচের বিষয়গুলো নিয়ে যেকোনো কিছু জিজ্ঞেস করতে পারেন:\n\n• **নামাজ ও সালাত ট্র্যাকার** (ফজর, যোহর, আসর, মাগরিব, এশা)\n• **ডিজিটাল তাসবীহ ও জিকির কাউন্টার**\n• **হালাল ফাইন্যান্স, আয়-ব্যয় ও যাকাত হিসাব**\n• **দৈনিক অভ্যাস ও ৪-৭-৮ ব্রিদিং রিল্যাক্সেশন**\n• **স্পিরিচুয়াল হেলথ স্কোর (SHS)**\n• **জিম ও ক্যারিয়ার গোল ট্র্যাকিং**`,
           source: 'offline-knowledge',
           actionSection: null
         };
       } else {
         return {
-          reply: `I am **Lamim AI Assistant**. Ask me anything about:\n\n• **Salah tracking & prayer times**\n• **Digital Dhikr & Tasbih**\n• **Halal Finance & Zakat calculator**\n• **4-7-8 Breathing & Daily habits**\n• **Spiritual Health Score (SHS)**\n• **Gym & Career workflows**\n• **Data privacy & JSON backup**`,
+          reply: `I am **Lamim AI Assistant**. Ask me anything about:\n\n• **Salah tracking & 5 daily prayer times**\n• **Digital Dhikr & Tasbih presets**\n• **Halal Finance, Income-Expense & Zakat**\n• **Daily habits & 4-7-8 Breathing exercises**\n• **Spiritual Health Score (SHS)**\n• **Gym workouts & Career focus**`,
           source: 'offline-knowledge',
           actionSection: null
         };
@@ -192,7 +232,7 @@
   };
 
   // ==========================================================================
-  // 2. CLOUD AI ADAPTER (SERVERLESS PROXY WITH AUTO-FALLBACK)
+  // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (GEMINI 1.5 FLASH)
   // ==========================================================================
   const AICloudAdapter = {
     async fetchResponse(prompt, lang, history) {
@@ -200,9 +240,10 @@
         return { fallback: true };
       }
 
+      // Strategy 1: Serverless proxy (/api/agent)
       try {
         const ctrl = new AbortController();
-        const timeout = setTimeout(() => ctrl.abort(), 2500); // 2.5s snappy timeout
+        const timeout = setTimeout(() => ctrl.abort(), 2500);
 
         const res = await fetch('/api/agent', {
           method: 'POST',
@@ -212,15 +253,78 @@
         });
         clearTimeout(timeout);
 
-        if (!res.ok) return { fallback: true };
-        const data = await res.json();
-        if (data && data.reply && !data.fallback) {
-          return { reply: data.reply, source: 'cloud-ai' };
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.reply && !data.fallback) {
+            return { reply: data.reply, source: 'cloud-ai' };
+          }
         }
-        return { fallback: true };
       } catch (err) {
-        return { fallback: true };
+        // Fall through to direct client key if configured
       }
+
+      // Strategy 2: Direct Client Gemini API call (if client key is present in localStorage)
+      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key');
+      if (clientKey) {
+        try {
+          const directReply = await this.callDirectGemini(prompt, lang, history, clientKey);
+          if (directReply) return { reply: directReply, source: 'cloud-ai' };
+        } catch (e) {
+          // fallback to offline knowledge
+        }
+      }
+
+      return { fallback: true };
+    },
+
+    async callDirectGemini(prompt, lang, history, apiKey) {
+      const systemPrompt = `You are "Lamim AI Assistant" (লামিম এআই সহকারী), the smart in-app guide and Islamic lifestyle assistant built directly inside the Lamim Precision Life Operating System PWA.
+Core Modules:
+1. Salah Tracker (5 prayers, solar angles, heatmap, Jama'at/Alone/Qaza).
+2. Dhikr Counter (digital tasbih, presets, haptic vibrations).
+3. Halal Finance & Zakat (100% private ledger, USD/BDT live FX, Zakat nisab).
+4. Habits & 4-7-8 Breathing (habit streaks, guided breathing).
+5. Spiritual Health Score - SHS (0-100 synthetic score).
+6. Gym & Workout (muscle splits, reps, sets).
+7. Career Hub (daily top 3 tasks, deep work hours).
+8. Privacy: 100% private local IndexedDB.
+
+Language: ${lang === 'bn' ? 'Bengali (বাংলা)' : 'English'}. Reply warmly, accurately, realistically and concisely. If user asks casually (like "hi", "ki koro", "kemon acho"), reply like a helpful friendly Islamic lifestyle assistant.`;
+
+      const contents = [];
+      if (Array.isArray(history)) {
+        history.slice(-4).forEach(h => {
+          if (h && h.role && h.text) {
+            contents.push({
+              role: h.role === 'user' ? 'user' : 'model',
+              parts: [{ text: String(h.text) }]
+            });
+          }
+        });
+      }
+      contents.push({
+        role: 'user',
+        parts: [{ text: `${systemPrompt}\n\nUser: ${prompt}` }]
+      });
+
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 6000);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents,
+          generationConfig: { temperature: 0.7, maxOutputTokens: 600 }
+        }),
+        signal: ctrl.signal
+      });
+      clearTimeout(timeout);
+
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
     }
   };
 
@@ -294,6 +398,11 @@
             </div>
             <div class="lamim-ai-header-actions">
               <button class="lamim-ai-lang-toggle" id="lamim-ai-lang-btn" title="Toggle Language">বাংলা</button>
+              <button class="lamim-ai-btn-icon" id="lamim-ai-key-btn" title="Gemini API Key Settings" aria-label="Gemini API Key Settings">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                </svg>
+              </button>
               <button class="lamim-ai-btn-icon" id="lamim-ai-clear-btn" title="Clear Chat">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
@@ -363,6 +472,11 @@
         });
       }
 
+      const keyBtn = document.getElementById('lamim-ai-key-btn');
+      if (keyBtn) {
+        keyBtn.addEventListener('click', () => this.configureApiKey());
+      }
+
       if (langBtn) {
         langBtn.addEventListener('click', () => {
           this.lang = this.lang === 'bn' ? 'en' : 'bn';
@@ -402,12 +516,34 @@
     _updateOnlineBadge() {
       const badge = document.getElementById('lamim-ai-badge');
       if (!badge) return;
+      const hasClientKey = !!(localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key'));
       if (navigator.onLine) {
         badge.className = 'lamim-ai-mode-badge online';
-        badge.textContent = '● Hybrid AI';
+        badge.textContent = hasClientKey ? '⚡ Gemini AI' : '● Hybrid AI';
       } else {
         badge.className = 'lamim-ai-mode-badge offline';
         badge.textContent = '📴 Offline';
+      }
+    },
+
+    configureApiKey() {
+      const current = localStorage.getItem('lamim_gemini_key') || '';
+      const promptMsg = this.lang === 'bn'
+        ? 'আপনার Google Gemini API Key দিন (সরাসরি ব্রাউজারে জেনারেটিভ AI রেসপন্স পাওয়ার জন্য):\n\n(ফাঁকা রেখে OK দিলে এটি ক্লিয়ার হবে)'
+        : 'Enter your Google Gemini API Key (for direct in-browser generative responses):\n\n(Leave empty to clear)';
+      const entered = window.prompt(promptMsg, current);
+      if (entered !== null) {
+        const trimmed = entered.trim();
+        if (trimmed) {
+          localStorage.setItem('lamim_gemini_key', trimmed);
+          const confirmMsg = this.lang === 'bn' ? '✅ Gemini API Key সংরক্ষিত হয়েছে!' : '✅ Gemini API Key saved!';
+          this._appendMessage('assistant', confirmMsg, { source: 'cloud-ai' });
+        } else {
+          localStorage.removeItem('lamim_gemini_key');
+          const clearMsg = this.lang === 'bn' ? 'ℹ️ Gemini API Key মুছে ফেলা হয়েছে (অফলাইন মোড সক্রিয়)।' : 'ℹ️ Gemini API Key removed (offline mode active).';
+          this._appendMessage('assistant', clearMsg, { source: 'offline-knowledge' });
+        }
+        this._updateOnlineBadge();
       }
     },
 

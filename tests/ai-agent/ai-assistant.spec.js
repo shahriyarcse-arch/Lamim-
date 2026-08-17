@@ -76,4 +76,26 @@ test.describe('Lamim Hybrid AI Assistant Tests', () => {
     await page.keyboard.press('Escape');
     await expect(overlay).not.toHaveClass(/open/);
   });
+
+  test('Banglish queries like "namaj" and conversational queries like "ki koro" respond intelligently', async ({ page }) => {
+    const launcher = page.locator('#lamim-ai-launcher');
+    await launcher.click();
+
+    const input = page.locator('#lamim-ai-input');
+    const sendBtn = page.locator('#lamim-ai-send');
+
+    // Test 1: Banglish query "namaj"
+    await input.fill('namaj');
+    await sendBtn.click();
+
+    const assistantMsg1 = page.locator('.lamim-ai-msg.assistant').last();
+    await expect(assistantMsg1).toContainText('সালাত ট্র্যাকার', { timeout: 6000 });
+
+    // Test 2: Conversational query "ki koro"
+    await input.fill('ki koro');
+    await sendBtn.click();
+
+    const assistantMsg2 = page.locator('.lamim-ai-msg.assistant').last();
+    await expect(assistantMsg2).toContainText('আলহামদুলিল্লাহ', { timeout: 6000 });
+  });
 });

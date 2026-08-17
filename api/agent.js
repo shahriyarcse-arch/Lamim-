@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Prompt is required' });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY || req.headers['x-gemini-key'] || (req.body && req.body.apiKey);
     if (!apiKey) {
       // Quiet signal to client to use rich built-in offline engine
       return res.status(200).json({
