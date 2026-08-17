@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-app-v1.2.3';
+const CACHE_NAME = 'lamim-app-v1.2.4';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const CORE_ASSETS = [
 // after install (no need for a prior online visit). Promise.allSettled keeps a
 // single missing asset from aborting the whole install.
 self.addEventListener('install', (e) => {
+  self.skipWaiting();
   e.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     await Promise.allSettled(CORE_ASSETS.map((u) => cache.add(u)));

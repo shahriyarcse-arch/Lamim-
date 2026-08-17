@@ -157,8 +157,22 @@ const Career = {
     const list = data.checklist || [];
     container.innerHTML = '';
 
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+
+    const counterEl = document.getElementById('career-goals-counter');
+    if (counterEl) {
+      if (list.length > 0) {
+        const doneCount = list.filter(x => x.done).length;
+        counterEl.style.display = 'inline-flex';
+        counterEl.textContent = isBn
+          ? `${(window.n ? window.n(doneCount) : doneCount)}/${(window.n ? window.n(list.length) : list.length)} সম্পন্ন`
+          : `${doneCount}/${list.length} Done`;
+      } else {
+        counterEl.style.display = 'none';
+      }
+    }
+
     if (list.length === 0) {
-      const isBn = typeof App !== 'undefined' && App.lang === 'bn';
       container.innerHTML = `<div class="cb-empty-state"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>${isBn ? 'এখনো কোনো লক্ষ্য যোগ করা হয়নি' : 'No goals yet — add one above'}</p></div>`;
       return;
     }
@@ -169,9 +183,15 @@ const Career = {
       const div = document.createElement('div');
       div.className = 'cb-check-item' + (item.done ? ' done' : '');
       div.dataset.id = item.id;
+      div.setAttribute('role', 'checkbox');
+      div.setAttribute('aria-checked', item.done ? 'true' : 'false');
+      div.setAttribute('tabindex', '0');
       div.innerHTML =
+        '<div class="cb-check-indicator" aria-hidden="true">' +
+          '<svg class="cb-check-svg" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+        '</div>' +
         '<div class="cb-check-main"><div class="cb-check-text">' + Utils.escapeHTML(text) + '</div></div>' +
-        '<button class="cb-check-del" data-id="' + item.id + '" aria-label="Delete goal"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>';
+        '<button class="cb-check-del" data-id="' + item.id + '" aria-label="Delete goal" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>';
       container.appendChild(div);
     });
   },

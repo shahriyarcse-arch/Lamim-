@@ -136,7 +136,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; frame-src 'self' data: blob:; child-src 'self' data: blob:; connect-src 'self' https://ipwho.is https://ipinfo.io https://get.geojs.io https://freeipapi.com https://api.ipapi.is https://api.bigdatacloud.net https://cdn.jsdelivr.net; worker-src 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; frame-src 'self' data: blob:; child-src 'self' data: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://ipwho.is https://ipinfo.io https://get.geojs.io https://freeipapi.com https://api.ipapi.is https://api.bigdatacloud.net https://cdn.jsdelivr.net https://scanner.tradingview.com; worker-src 'self';">
   <title>Lamim — Islamic Lifestyle Tracker | Salah, Dhikr, Goals & Finance</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1628,17 +1628,20 @@
 
             <!-- Card 1: Daily Goals -->
             <div class="gh-card cb-card cb-goals-card" style="margin-bottom:24px; overflow:hidden;">
-              <div class="cb-card-head" style="margin-bottom: 10px; gap: 12px;">
-                <div>
-                  <div class="cb-card-title" style="color:var(--cb-primary)">
-                    <span class="cb-card-title-ico ico-goals">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                        <polyline points="22 4 12 14.01 9 11.01" />
-                      </svg>
-                    </span>
-                    <span data-i18n="Daily Goals">Daily Goals</span>
+              <div class="cb-card-head" style="margin-bottom: 12px; gap: 12px;">
+                <div style="flex:1;">
+                  <div class="cb-card-title" style="color:var(--cb-primary); display:flex; align-items:center; justify-content:space-between; width:100%;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <span class="cb-card-title-ico ico-goals">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                          <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                      </span>
+                      <span data-i18n="Daily Goals">Daily Goals</span>
+                    </div>
+                    <span id="career-goals-counter" class="cb-goals-badge" style="display:none;"></span>
                   </div>
                   <p class="cb-card-copy" data-i18n="A focused workspace for your most important goals. Tap a task to complete it, or use smart suggestions to move faster.">A focused workspace for your most important goals. Tap a task to complete it,
                     or use smart suggestions to move faster.</p>
@@ -1646,8 +1649,16 @@
               </div>
 
               <form id="career-goal-form" class="cb-checklist-add" autocomplete="off">
-                <input type="text" class="cb-input" id="career-new-goal-text" placeholder="Add a new goal..."
-                  data-i18n-placeholder="Add a new goal..." maxlength="120" aria-label="New daily goal">
+                <div class="cb-input-wrap">
+                  <span class="cb-input-ico" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </span>
+                  <input type="text" class="cb-input" id="career-new-goal-text" placeholder="Add a new goal..."
+                    data-i18n-placeholder="Add a new goal..." maxlength="120" aria-label="New daily goal">
+                </div>
                 <button type="submit" class="cb-btn cb-btn-primary" aria-label="Add goal">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

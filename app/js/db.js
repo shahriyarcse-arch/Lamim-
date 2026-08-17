@@ -9,6 +9,7 @@ const DB = {
   init() {
     return new Promise((resolve) => {
       let resolved = false;
+      let retried = false;
       const safeResolve = () => {
         if (!resolved) {
           resolved = true;
@@ -25,51 +26,90 @@ const DB = {
         safeResolve();
       }, 3000);
 
-      // 1. Open IndexedDB
-      let request;
-      try {
-        request = indexedDB.open('lamim_db', 1);
-      } catch (err) {
-        console.error("IndexedDB.open failed, falling back to localStorage", err);
-        clearTimeout(timeout);
-        this._fallbackToLocalStorage();
-        safeResolve();
-        return;
-      }
-
-      request.onupgradeneeded = (e) => {
-        const db = e.target.result;
-        if (!db.objectStoreNames.contains('keyvalue')) {
-          db.createObjectStore('keyvalue');
+      const tryOpen = (openVersion) => {
+        let request;
+        try {
+          if (typeof indexedDB === 'undefined') {
+            throw new Error('IndexedDB not supported in this browser environment');
+          }
+          request = typeof openVersion === 'number' ? indexedDB.open('lamim_db', openVersion) : indexedDB.open('lamim_db');
+        } catch (err) {
+          console.warn("[DB] IndexedDB.open threw exception, falling back to localStorage:", err);
+          clearTimeout(timeout);
+          this._fallbackToLocalStorage();
+          safeResolve();
+          return;
         }
+
+        request.onblocked = (e) => {
+          console.warn("[DB] IndexedDB connection blocked by another open tab or transaction:", e);
+        };
+
+        request.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('keyvalue')) {
+            db.createObjectStore('keyvalue');
+          }
+        };
+
+        request.onsuccess = (e) => {
+          clearTimeout(timeout);
+          this._db = e.target.result;
+          // Handle version change from another tab gracefully to prevent connection locks
+          this._db.onversionchange = () => {
+            try {
+              if (this._db) {
+                this._db.close();
+                this._db = null;
+              }
+            } catch (err) { }
+          };
+
+          this._loadCache()
+            .then(() => this._migrateFromLocalStorage())
+            .then(() => {
+              this.migrate();
+              this._rescopeOrphans();
+              this._setupMultiTabSync();
+              safeResolve();
+            })
+            .catch((err) => {
+              console.error("[DB] IndexedDB cache loading/migration failed, falling back:", err);
+              this._fallbackToLocalStorage();
+              this._setupMultiTabSync();
+              safeResolve();
+            });
+        };
+
+        request.onerror = (e) => {
+          const err = e.target ? e.target.error : e;
+          // Auto-recovery 1: Version mismatch (e.g. VersionError) -> retry without explicit version
+          if (!retried && err && err.name === 'VersionError') {
+            retried = true;
+            console.info("[DB] VersionError encountered, auto-recovering with native DB version...");
+            tryOpen();
+            return;
+          }
+
+          // Auto-recovery 2: Transient lock/busy error -> single retry with short backoff if timeout still valid
+          if (!retried && !resolved) {
+            retried = true;
+            console.info("[DB] Transient IndexedDB error, retrying once before fallback:", err?.message || err?.name || err);
+            setTimeout(() => {
+              if (!resolved) tryOpen(1);
+            }, 120);
+            return;
+          }
+
+          clearTimeout(timeout);
+          console.warn("[DB] IndexedDB unavailable (" + (err?.name || 'Error') + "), falling back to localStorage:", err?.message || err);
+          this._fallbackToLocalStorage();
+          this._setupMultiTabSync();
+          safeResolve();
+        };
       };
 
-      request.onsuccess = (e) => {
-        clearTimeout(timeout);
-        this._db = e.target.result;
-        this._loadCache()
-          .then(() => this._migrateFromLocalStorage())
-          .then(() => {
-            this.migrate();
-            this._rescopeOrphans();
-            this._setupMultiTabSync();
-            safeResolve();
-          })
-          .catch((err) => {
-            console.error("IndexedDB cache loading/migration failed, falling back", err);
-            this._fallbackToLocalStorage();
-            this._setupMultiTabSync();
-            safeResolve();
-          });
-      };
-
-      request.onerror = (e) => {
-        clearTimeout(timeout);
-        console.error("IndexedDB onerror, falling back to localStorage", e);
-        this._fallbackToLocalStorage();
-        this._setupMultiTabSync();
-        safeResolve();
-      };
+      tryOpen(1);
     });
   },
 
