@@ -277,6 +277,7 @@
       return { fallback: true };
     },
 
+    async callDirectGemini(prompt, lang, history, apiKey) {
       const systemPrompt = `You are "Lamim AI Assistant" (লামিম এআই সহকারী), the official intelligent co-pilot and Islamic precision lifestyle guide built directly into the Lamim Precision Life Operating System PWA.
 
 You have exhaustive, in-depth architectural knowledge of every module, feature, calculation, and setting in Lamim:
