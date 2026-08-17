@@ -263,8 +263,8 @@
         // Fall through to direct client key if configured
       }
 
-      // Strategy 2: Direct Client Gemini API call (if client key is present in localStorage)
-      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key');
+      // Strategy 2: Direct Client Gemini API call (using stored key in localStorage)
+      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key') || '';
       if (clientKey) {
         try {
           const directReply = await this.callDirectGemini(prompt, lang, history, clientKey);
@@ -308,23 +308,41 @@ Language: ${lang === 'bn' ? 'Bengali (বাংলা)' : 'English'}. Reply warm
       });
 
       const ctrl = new AbortController();
-      const timeout = setTimeout(() => ctrl.abort(), 6000);
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const timeout = setTimeout(() => ctrl.abort(), 8000);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
 
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents,
-          generationConfig: { temperature: 0.7, maxOutputTokens: 600 }
-        }),
-        signal: ctrl.signal
-      });
-      clearTimeout(timeout);
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents,
+            generationConfig: { temperature: 0.7, maxOutputTokens: 600 }
+          }),
+          signal: ctrl.signal
+        });
+        clearTimeout(timeout);
 
-      if (!res.ok) return null;
-      const data = await res.json();
-      return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
+        if (!res.ok) {
+          // Fallback to flash-latest if needed
+          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
+          const res2 = await fetch(fallbackUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents, generationConfig: { temperature: 0.7, maxOutputTokens: 600 } })
+          });
+          if (res2.ok) {
+            const data2 = await res2.json();
+            return data2?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
+          }
+          return null;
+        }
+
+        const data = await res.json();
+        return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
+      } catch (err) {
+        return null;
+      }
     }
   };
 
