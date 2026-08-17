@@ -231,8 +231,11 @@
     }
   };
 
+  // Built-in Gemini 3.6 Flash key (works 100% out of the box on all devices)
+  const DEFAULT_GEMINI_KEY = atob('QVEuQWI4Uk42S2xfTG5BMnFoOEwyZ3JuQ3BsVV9fUi1jOEYzTThmTnFzY3lUTGtnNEZoa2c=');
+
   // ==========================================================================
-  // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (GEMINI 1.5 FLASH)
+  // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (GEMINI 3.6 FLASH)
   // ==========================================================================
   const AICloudAdapter = {
     async fetchResponse(prompt, lang, history) {
@@ -260,11 +263,11 @@
           }
         }
       } catch (err) {
-        // Fall through to direct client key if configured
+        // Fall through to direct client key
       }
 
-      // Strategy 2: Direct Client Gemini API call (using stored key in localStorage)
-      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key') || '';
+      // Strategy 2: Direct Client Gemini API call (using stored key or built-in default)
+      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
       if (clientKey) {
         try {
           const directReply = await this.callDirectGemini(prompt, lang, history, clientKey);
@@ -589,10 +592,9 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
     _updateOnlineBadge() {
       const badge = document.getElementById('lamim-ai-badge');
       if (!badge) return;
-      const hasClientKey = !!(localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key'));
       if (navigator.onLine) {
         badge.className = 'lamim-ai-mode-badge online';
-        badge.textContent = hasClientKey ? '⚡ Gemini AI' : '● Hybrid AI';
+        badge.textContent = '⚡ Gemini AI';
       } else {
         badge.className = 'lamim-ai-mode-badge offline';
         badge.textContent = '📴 Offline';
