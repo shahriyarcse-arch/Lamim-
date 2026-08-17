@@ -235,7 +235,7 @@
   const DEFAULT_GEMINI_KEY = atob('QVEuQWI4Uk42S2xfTG5BMnFoOEwyZ3JuQ3BsVV9fUi1jOEYzTThmTnFzY3lUTGtnNEZoa2c=');
 
   // ==========================================================================
-  // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (GEMINI 3.6 FLASH)
+  // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (ULTRA-FAST GEMINI ENGINE)
   // ==========================================================================
   const AICloudAdapter = {
     async fetchResponse(prompt, lang, history) {
@@ -243,10 +243,21 @@
         return { fallback: true };
       }
 
-      // Strategy 1: Serverless proxy (/api/agent)
+      // Strategy 1: Direct Client Gemini API call (Ultra-fast, zero proxy delay)
+      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
+      if (clientKey) {
+        try {
+          const directReply = await this.callDirectGemini(prompt, lang, history, clientKey);
+          if (directReply) return { reply: directReply, source: 'cloud-ai' };
+        } catch (e) {
+          // fallback to proxy
+        }
+      }
+
+      // Strategy 2: Serverless proxy (/api/agent) if deployed on Vercel
       try {
         const ctrl = new AbortController();
-        const timeout = setTimeout(() => ctrl.abort(), 2500);
+        const timeout = setTimeout(() => ctrl.abort(), 3000);
 
         const res = await fetch('/api/agent', {
           method: 'POST',
@@ -262,20 +273,7 @@
             return { reply: data.reply, source: 'cloud-ai' };
           }
         }
-      } catch (err) {
-        // Fall through to direct client key
-      }
-
-      // Strategy 2: Direct Client Gemini API call (using stored key or built-in default)
-      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
-      if (clientKey) {
-        try {
-          const directReply = await this.callDirectGemini(prompt, lang, history, clientKey);
-          if (directReply) return { reply: directReply, source: 'cloud-ai' };
-        } catch (e) {
-          // fallback to offline knowledge
-        }
-      }
+      } catch (err) {}
 
       return { fallback: true };
     },
@@ -363,14 +361,14 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
         },
         contents,
         generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 600
+          temperature: 0.6,
+          maxOutputTokens: 400
         }
       };
 
       const ctrl = new AbortController();
-      const timeout = setTimeout(() => ctrl.abort(), 8000);
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
+      const timeout = setTimeout(() => ctrl.abort(), 6000);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
 
       try {
         const res = await fetch(url, {
@@ -382,8 +380,8 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
         clearTimeout(timeout);
 
         if (!res.ok) {
-          // Fallback to flash-latest if needed
-          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
+          // Fallback to 3.6-flash or flash-latest if needed
+          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
           const res2 = await fetch(fallbackUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -474,11 +472,6 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
             </div>
             <div class="lamim-ai-header-actions">
               <button class="lamim-ai-lang-toggle" id="lamim-ai-lang-btn" title="Toggle Language">বাংলা</button>
-              <button class="lamim-ai-btn-icon" id="lamim-ai-key-btn" title="Gemini API Key Settings" aria-label="Gemini API Key Settings">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-                </svg>
-              </button>
               <button class="lamim-ai-btn-icon" id="lamim-ai-clear-btn" title="Clear Chat">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
@@ -546,11 +539,6 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
           if (msgContainer) msgContainer.innerHTML = '';
           this._renderWelcome();
         });
-      }
-
-      const keyBtn = document.getElementById('lamim-ai-key-btn');
-      if (keyBtn) {
-        keyBtn.addEventListener('click', () => this.configureApiKey());
       }
 
       if (langBtn) {
