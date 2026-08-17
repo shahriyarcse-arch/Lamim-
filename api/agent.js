@@ -105,40 +105,44 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
       parts: [{ text: prompt }]
     });
 
-    const ctrl = new AbortController();
-    const to = setTimeout(() => ctrl.abort(), 9000);
+    const candidateModels = ['gemini-3.1-flash-lite', 'gemini-3.5-flash-lite', 'gemini-3.6-flash'];
+    const payload = {
+      system_instruction: {
+        parts: [{ text: systemPrompt }]
+      },
+      contents: contents,
+      generationConfig: {
+        temperature: 0.6,
+        maxOutputTokens: 400
+      }
+    };
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
-    const apiRes = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: systemPrompt }]
-        },
-        contents: contents,
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 600
+    for (const model of candidateModels) {
+      try {
+        const ctrl = new AbortController();
+        const to = setTimeout(() => ctrl.abort(), 6000);
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const apiRes = await fetch(geminiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: ctrl.signal
+        });
+        clearTimeout(to);
+
+        if (apiRes.ok) {
+          const data = await apiRes.json();
+          const replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (replyText) {
+            return res.status(200).json({
+              reply: replyText.trim(),
+              source: 'cloud-ai',
+              model: model,
+              ts: Date.now()
+            });
+          }
         }
-      }),
-      signal: ctrl.signal
-    });
-    clearTimeout(to);
-
-    if (!apiRes.ok) {
-      return res.status(200).json({ fallback: true, source: 'local-knowledge' });
-    }
-
-    const data = await apiRes.json();
-    const replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (replyText) {
-      return res.status(200).json({
-        reply: replyText.trim(),
-        source: 'cloud-ai',
-        ts: Date.now()
-      });
+      } catch (err) {}
     }
 
     return res.status(200).json({ fallback: true, source: 'local-knowledge' });

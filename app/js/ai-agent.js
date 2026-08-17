@@ -366,39 +366,33 @@ Tone & Persona: Friendly, wise, motivating, respectful, and deeply knowledgeable
         }
       };
 
-      const ctrl = new AbortController();
-      const timeout = setTimeout(() => ctrl.abort(), 6000);
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
+      const candidateModels = ['gemini-3.1-flash-lite', 'gemini-3.5-flash-lite', 'gemini-3.6-flash'];
 
-      try {
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bodyPayload),
-          signal: ctrl.signal
-        });
-        clearTimeout(timeout);
+      for (const model of candidateModels) {
+        try {
+          const ctrl = new AbortController();
+          const timeout = setTimeout(() => ctrl.abort(), 6000);
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-        if (!res.ok) {
-          // Fallback to 3.6-flash or flash-latest if needed
-          const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
-          const res2 = await fetch(fallbackUrl, {
+          const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bodyPayload)
+            body: JSON.stringify(bodyPayload),
+            signal: ctrl.signal
           });
-          if (res2.ok) {
-            const data2 = await res2.json();
-            return data2?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
-          }
-          return null;
-        }
+          clearTimeout(timeout);
 
-        const data = await res.json();
-        return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
-      } catch (err) {
-        return null;
+          if (res.ok) {
+            const data = await res.json();
+            const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+            if (reply) return reply;
+          }
+        } catch (err) {
+          // Try next high-quota model in cascade
+        }
       }
+
+      return null;
     }
   };
 
