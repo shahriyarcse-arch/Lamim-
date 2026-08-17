@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-app-v1.2.4';
+const CACHE_NAME = 'lamim-app-v1.2.5';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -57,7 +57,7 @@ self.addEventListener('fetch', (e) => {
   // Only handle HTTP/HTTPS requests (ignores chrome-extension://, data:, etc.)
   if (!e.request.url.startsWith('http')) return;
 
-  // Skip external database, dynamic API, and Google API calls to prevent stale data
+  // Skip external database, dynamic API, and Google API / Font calls to prevent stale data & CSP interception
   const skipUrls = [
     '/api/',
     'scanner.tradingview.com',
@@ -67,7 +67,8 @@ self.addEventListener('fetch', (e) => {
     'get.geojs.io',
     'freeipapi.com',
     'api.ipapi.is',
-    'googleapis.com'
+    'googleapis.com',
+    'gstatic.com'
   ];
   if (skipUrls.some(url => e.request.url.includes(url))) return;
 
