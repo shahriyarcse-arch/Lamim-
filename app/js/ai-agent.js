@@ -49,9 +49,9 @@
       {
         id: 'salah-tracker',
         section: 'salah',
-        keywords: ['salah', 'salat', 'namaz', 'namaj', 'prayer', 'fajr', 'dhuhr', 'asr', 'maghrib', 'isha', 'tahajjud', 'witr', 'jamah', 'jamaat', 'qaza', 'kaza', 'নামাজ', 'সালাত', 'ফজর', 'যোহর', 'জোহর', 'আসর', 'মাগরিব', 'এশা', 'তাহাজ্জুদ', 'বিতর', 'জামাআত', 'কাজা', 'ওয়াক্ত'],
-        replyBn: `**সালাত ট্র্যাকার (Salah Tracker)**:\n• **৫ ওয়াক্ত সালাত**: ফজর, যোহর, আসর, মাগরিব ও এশার নির্ভুল ওয়াক্ত ট্র্যাকিং।\n• **জামাআত ও কাজা মোড**: জামাআতে আদায় (২৭ গুণ সওয়াব), একাকী নাকি কাজা হয়েছে তা সংরক্ষণ।\n• **২১ দিনের হিটম্যাপ**: আপনার নামাজের ধারাবাহিকতা ও রুটিন ভিজ্যুয়াল হিটম্যাপে দেখতে পাবেন।\n• **লোকাল সোলার ক্যালকুলেশন**: আপনার জিপিএস/শহর অনুযায়ী ইন্টারনেট ছাড়াই নিখুঁত ওয়াক্ত হিসাব হয়।`,
-        replyEn: `**Salah Tracker**:\n• **5 Daily Prayers**: Track Fajr, Dhuhr, Asr, Maghrib, and Isha.\n• **Jama'at / Alone / Qaza**: Log whether you prayed in congregation, alone, or made up missed prayers.\n• **21-Day Heatmap**: Visual consistency grid for your spiritual rhythm.\n• **Local Solar Angles**: Computes exact prayer times completely offline based on your coordinates.`,
+        keywords: ['salah', 'salat', 'namaz', 'namaj', 'prayer', 'fajr', 'dhuhr', 'asr', 'maghrib', 'isha', 'tahajjud', 'witr', 'jamah', 'jamaat', 'qaza', 'kaza', 'perfect', 'pefect', 'perfect day', 'parfect', 'streak', 'namaz streak', 'নামাজ', 'সালাত', 'ফজর', 'যোহর', 'জোহর', 'আসর', 'মাগরিব', 'এশা', 'তাহাজ্জুদ', 'বিতর', 'জামাআত', 'কাজা', 'পারফেক্ট', 'পারফেক্ট দিন', 'স্ট্রাইক'],
+        replyBn: `**সালাত ট্র্যাকার ও পারফেক্ট দিন (Perfect Salah Day)**:\n• **পারফেক্ট দিন (Perfect Day)**: দিনে ৫ ওয়াক্ত ফরজ নামাজ (ফজর, যোহর, আসর, মাগরিব ও এশা) সম্পন্ন করলে তা ১টি 'পারফেক্ট দিন' (5/5) হিসেবে গণ্য হয়।\n• **পারফেক্ট স্ট্রাইক (Perfect Streak)**: একটানা কতদিন সব নামাজ আদায় করেছেন তার গোল্ডেন স্টার রেকর্ড।\n• **জামাআত মোড (+২৭ গুণ)**: জামাআতে আদায় মার্ক করলে স্পিরিচুয়াল হেলথ স্কোরে ২৭ গুণ বোনাস পয়েন্ট যুক্ত হয়।\n• **কাজা ও কাজা উমরি**: মিসড নামাজ এবং অতীতের কাজা হিসাব রাখার ডেডিকেটেড ক্যালকুলেটর।\n• **২১ দিনের হিটম্যাপ ও সোলার টাইম**: শতভাগ অফলাইনে সঠিক ওয়াক্ত গণনা ও ধারাবাহিকতা চার্ট।`,
+        replyEn: `**Salah Tracker & Perfect Days**:\n• **Perfect Day (5/5)**: Completing all 5 daily prayers in a day logs a 'Perfect Day'.\n• **Perfect Streak**: Tracks uninterrupted consecutive days with all 5 prayers performed (Gold Star on Profile).\n• **Jama'at Mode (+27x)**: Logging congregational prayer adds a +27x multiplier to your Spiritual Health Score.\n• **Qaza & Qaza Omri**: Calculate and systematically fulfill past missed prayers.\n• **21-Day Heatmap & Solar Engine**: 100% offline prayer time calculation and habit heatmap.`,
         actionLabelBn: 'সালাত ট্র্যাকার খুলুন ➔',
         actionLabelEn: 'Open Salah Tracker ➔'
       },
@@ -239,9 +239,54 @@
     },
 
     async callDirectGemini(prompt, lang, history, apiKey) {
-      const systemPrompt = `Tone & Persona: Friendly, highly intelligent, concise, and deeply professional Islamic lifestyle & productivity co-pilot for the Lamim OS PWA.
-Answer in ${lang === 'bn' ? 'Bengali (বাংলা)' : 'English'}.
-Strict Aesthetic Rule: Do NOT use decorative emojis (such as 🌟, 🕌, 💰, 📿, 🌿, 🎯, 💪, 😊, 🤲, etc.). Maintain a strictly clean, professional, and elegant format with clean bold headers, structured paragraphs, and neat bullet points.`;
+      const systemPrompt = `You are the super-intelligent, deeply knowledgeable, and professional AI Assistant built into Lamim Life Operating System (Lamim PWA).
+You understand English, pure Bengali (বাংলা), and Banglish (Bengali written in English letters, slang, shorthand, or with phonetic typos like "salah er pefect feature", "namaj hisab", "jakat kemne ber korbo", "breathe", "streak ki", "shs score ki", "perfect day ki", etc.).
+Always intelligently map user questions (even with typos or partial phrases) to the exact Lamim feature and give direct, precise, and well-structured answers.
+
+Language Rule: Answer in ${lang === 'bn' ? 'Bengali (বাংলা)' : 'English'}.
+Strict Style: NO decorative emojis (no 🌟, 🕌, 💰, 📿, 🌿, 🎯, etc.). Use clean markdown with bold titles and structured bullet points.
+
+=== EXHAUSTIVE LAMIM KNOWLEDGE BASE ===
+1. SALAH TRACKER (সালাত ট্র্যাকার):
+• "Perfect Day" / "পারফেক্ট দিন": A day where all 5 fardh prayers (Fajr, Dhuhr, Asr, Maghrib, Isha) are marked as completed (5/5).
+• "Perfect Streak" (পারফেক্ট স্ট্রাইক): Consecutive continuous days where all 5 prayers were completed every single day without missing any. Represented with a special Gold Star badge on Profile and Home.
+• "Consistency Streak": Number of consecutive days with at least 1 prayer logged.
+• "Jama'at" (জামাআত): Logging a prayer in congregation grants a +27x multiplier in the Spiritual Health Score calculation.
+• "Qaza Omri" (কাজা উমরি): Lifetime missed prayer calculator allowing users to track and systematically complete accumulated missed prayers.
+• Calculation Engine: 100% offline local solar angle calculation supporting Karachi, ISNA, MWL, Umm Al-Qura, Egypt, Tehran with Hanafi/Shafi'i Asr options, high-latitude adjustments, and audio Adhan notifications.
+• Visuals: 21-day consistency heatmap and 365-day spiritual grid.
+
+2. DIGITAL DHIKR & TASBIH (ডিজিটাল তাসবীহ):
+• Tap anywhere smart counter with tactile haptic vibration.
+• Presets: SubhanAllah (33), Alhamdulillah (33), Allahu Akbar (34), Astaghfirullah (100), Ayat al-Kursi, Durood Sharif, Morning & Evening Adhkar.
+• Lifetime and daily counter persistence in IndexedDB.
+
+3. HALAL FINANCE & ZAKAT (হালাল ফাইন্যান্স):
+• 100% Client-side private ledger (IndexedDB, zero data leaves the device).
+• Multi-currency support (BDT, USD, EUR, GBP, SAR, AED) with live TradingView FX rates.
+• Zakat Calculator: Calculates Zakat (2.5%) based on current Gold Nisab (87.48g / 7.5 Bhori) or Silver Nisab (612.36g / 52.5 Bhori) minus liabilities/debts.
+• Emergency Fund Runway calculator (3-6 month safety buffer) and full JSON data backup/export.
+
+4. HABITS, HYDRATION & 4-7-8 BREATHING (অভ্যাস ও ব্রিদিং):
+• 4-7-8 Deep Breathing Exercise: Calming cycle of 4s Inhale, 7s Hold, 8s Exhale with visual expanding pulse ring and relaxing audio chime.
+• Habits Tracker: Morning/evening Quran reading, sleep hygiene, daily reading streaks.
+• Hydration Tracker: Quick 250ml glass logger with 2000ml+ daily goal.
+
+5. SPIRITUAL HEALTH SCORE (SHS) / আধ্যাত্মিক স্বাস্থ্য স্কোর:
+• 0-100 Synthetic Index algorithm: Salah timeliness & completeness (35%), Jama'at multiplier (+15%), Dhikr consistency (20%), Habits & Quran (15%), Halal Finance & Sadaqah (10%), Hydration & Breathing (5%).
+• 5 Spiritual Tiers: Muqarrabun (90-100), Muttaqin (75-89), Salihin (50-74), Mujtahid (25-49), Ghafil (0-24).
+
+6. GYM & FITNESS (জিম ট্র্যাকার):
+• Splits: Push/Pull/Legs (PPL), Upper/Lower, Full Body, Muscle Groups.
+• Logs sets, reps, weight, RPE, rest intervals, and 1RM calculation.
+
+7. CAREER HUB & DEEP WORK (ক্যারিয়ার হাব):
+• Daily Top 3 Priority Goals (MIT).
+• "Career Perfect Day": Days where 100% of daily top tasks are completed.
+• Deep Work Pomodoro Focus timer (25/5 and 50/10 intervals).
+
+8. PRIVACY & PWA OFFLINE:
+• 100% Offline-First Architecture: Service Worker caching, IndexedDB local persistence, zero cloud tracking or telemetry.`;
 
       const contents = [];
       if (Array.isArray(history) && history.length > 1) {
@@ -268,8 +313,8 @@ Strict Aesthetic Rule: Do NOT use decorative emojis (such as 🌟, 🕌, 💰, �
         },
         contents,
         generationConfig: {
-          temperature: 0.6,
-          maxOutputTokens: 400
+          temperature: 0.5,
+          maxOutputTokens: 800
         }
       };
 
@@ -624,9 +669,27 @@ Strict Aesthetic Rule: Do NOT use decorative emojis (such as 🌟, 🕌, 💰, �
     _formatMarkdown(text) {
       if (!text) return '';
       let safe = Utils && Utils.escapeHTML ? Utils.escapeHTML(text) : text;
+      
+      // 1. Clean Headings (###, ##, #)
+      safe = safe.replace(/^###\s+(.*)$/gm, '<h4 class="lamim-ai-heading">$1</h4>');
+      safe = safe.replace(/^##\s+(.*)$/gm, '<h3 class="lamim-ai-heading-lg">$1</h3>');
+      safe = safe.replace(/^#\s+(.*)$/gm, '<h2 class="lamim-ai-heading-xl">$1</h2>');
+
+      // 2. Bold (**text** or __text__)
       safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      safe = safe.replace(/^[•\-\*]\s+(.*)$/gm, '• $1');
+      safe = safe.replace(/__(.*?)__/g, '<strong>$1</strong>');
+
+      // 3. Structured Lists (Numbered & Bullets)
+      safe = safe.replace(/^(\d+)\.\s+(.*)$/gm, '<div class="lamim-ai-list-item"><span class="lamim-ai-num">$1.</span><span>$2</span></div>');
+      safe = safe.replace(/^[•\-\*]\s+(.*)$/gm, '<div class="lamim-ai-list-item"><span class="lamim-ai-bullet">•</span><span>$1</span></div>');
+
+      // 4. Standalone Italic (_text_)
+      safe = safe.replace(/\b_([^_]+)_\b/g, '<em>$1</em>');
+
+      // 5. Clean Paragraph Breaks
+      safe = safe.replace(/\n\n+/g, '<div class="lamim-ai-spacer"></div>');
       safe = safe.replace(/\n/g, '<br/>');
+
       return safe;
     },
 
