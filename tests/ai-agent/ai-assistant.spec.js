@@ -1,0 +1,79 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('Lamim Hybrid AI Assistant Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    // Inject mock user profile to bypass onboarding setup wizard
+    await page.addInitScript(() => {
+      localStorage.setItem('lamim_user', JSON.stringify({
+        name: 'Test User',
+        created_at: new Date().toISOString()
+      }));
+      localStorage.setItem('lamim_lang', 'bn');
+    });
+
+    await page.goto('/app/index.html');
+    await page.waitForLoadState('domcontentloaded');
+  });
+
+  test('Floating AI launcher is rendered with translucent resting state', async ({ page }) => {
+    const launcher = page.locator('#lamim-ai-launcher');
+    await expect(launcher).toBeVisible({ timeout: 5000 });
+
+    // Verify opacity is resting around ~0.65
+    const opacity = await launcher.evaluate(el => window.getComputedStyle(el).opacity);
+    expect(parseFloat(opacity)).toBeLessThanOrEqual(0.75);
+  });
+
+  test('Clicking launcher opens AI chat drawer and shows welcome message', async ({ page }) => {
+    const launcher = page.locator('#lamim-ai-launcher');
+    await launcher.click();
+
+    const overlay = page.locator('#lamim-ai-overlay');
+    await expect(overlay).toHaveClass(/open/);
+
+    const drawer = page.locator('#lamim-ai-drawer');
+    await expect(drawer).toBeVisible();
+
+    // Verify welcome message is present
+    const messages = page.locator('#lamim-ai-messages .lamim-ai-msg');
+    await expect(messages.first()).toBeVisible();
+    await expect(messages.first()).toContainText('লামিম এআই সহকারী');
+  });
+
+  test('Querying via suggestion chips or text returns offline knowledge with deep action link', async ({ page }) => {
+    const launcher = page.locator('#lamim-ai-launcher');
+    await launcher.click();
+
+    const input = page.locator('#lamim-ai-input');
+    await input.fill('হালাল ফাইন্যান্স');
+    await page.locator('#lamim-ai-send').click();
+
+    // Verify user bubble appears
+    await expect(page.locator('.lamim-ai-msg.user')).toContainText('হালাল ফাইন্যান্স');
+
+    // Verify assistant responds with knowledge and deep link action button
+    const assistantBubble = page.locator('.lamim-ai-msg.assistant').last();
+    await expect(assistantBubble).toContainText('হালাল ফাইন্যান্স লেজার', { timeout: 6000 });
+
+    const actionBtn = assistantBubble.locator('.lamim-ai-action-btn');
+    await expect(actionBtn).toBeVisible();
+    await expect(actionBtn).toHaveAttribute('data-section', 'finance');
+
+    // Click action link to verify navigation
+    await actionBtn.click();
+    await expect(page.locator('#section-finance')).toHaveClass(/active/, { timeout: 6000 });
+    await expect(page.locator('#section-finance')).toBeVisible();
+  });
+
+  test('Escape key and close button smoothly close the assistant drawer', async ({ page }) => {
+    const launcher = page.locator('#lamim-ai-launcher');
+    await launcher.click();
+
+    const overlay = page.locator('#lamim-ai-overlay');
+    await expect(overlay).toHaveClass(/open/);
+
+    // Press Escape
+    await page.keyboard.press('Escape');
+    await expect(overlay).not.toHaveClass(/open/);
+  });
+});

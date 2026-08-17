@@ -1,10 +1,12 @@
-const CACHE_NAME = 'lamim-app-v1.2.6';
+const CACHE_NAME = 'lamim-app-v1.2.7';
 const CORE_ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './css/manual.css',
-  './js/manual.js'
+  './js/manual.js',
+  './css/ai-agent.css',
+  './js/ai-agent.js'
 ];
 
 // Install: Cache core shell + best-effort precache of every local CSS/JS
