@@ -1059,7 +1059,7 @@
     </section>
 
     
-    <!-- 00 · AI INTELLIGENT COMPANION SHOWCASE (ISLAND BENTO WITH 3D ROBOT VIDEO) -->
+    <!-- 00 · AI INTELLIGENT COMPANION SHOWCASE -->
     <section class="ai-showcase-section" id="ai-companion" aria-label="AI Intelligent Companion">
       <div class="wrap">
         <div class="ai-island-card reveal" id="aiIslandCard">
@@ -1074,7 +1074,7 @@
             </div>
             <h2 class="ai-island-title">An assistant that actually understands your day.</h2>
             <p class="ai-island-subtitle">
-              Ask naturally in Banglish, Bengali, or English. Lamim AI calculates prayers, Zakat, habits, and focus &mdash; with instant clarity and complete offline privacy.
+              Ask naturally in Banglish, Bengali, or English. Instant clarity and complete offline privacy.
             </p>
           </div>
 
@@ -1138,14 +1138,19 @@
             <div class="ai-video-card">
               <div class="ai-video-frame">
                 <video 
+                  id="aiCompanionVideoEl"
                   class="ai-companion-video" 
-                  src="app/assets/ai-companion.mp4" 
+                  poster="app/assets/ai-companion-poster.jpg"
                   autoplay 
                   loop 
                   muted 
                   playsinline 
-                  preload="metadata"
+                  webkit-playsinline
+                  preload="auto"
                   aria-label="3D AI Intelligent Mascot interacting with holographic lifestyle analytics HUD">
+                  <source src="app/assets/ai-companion.webm" type="video/webm">
+                  <source src="app/assets/ai-companion.mp4" type="video/mp4">
+                  <img src="app/assets/ai-companion-poster.jpg" alt="3D AI Assistant">
                 </video>
                 <div class="ai-video-hud-overlay">
                   <span class="ai-video-pill">
@@ -1154,7 +1159,7 @@
                 </div>
               </div>
 
-              <!-- Video Card Caption -->
+              <!-- Clean Video Card Caption -->
               <div class="ai-video-caption">
                 <div class="ai-video-caption-title">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cfee82" stroke-width="2.6">
@@ -1163,24 +1168,8 @@
                   <span>Lively Analytics &amp; Instant Guidance</span>
                 </div>
                 <p class="ai-video-caption-desc">
-                  From daily prayer consistency and spiritual health index to emergency fund runway &mdash; your assistant analyzes patterns and gives clear next steps.
+                  From daily prayer consistency to emergency fund runway &mdash; your assistant analyzes patterns and gives clear next steps.
                 </p>
-
-                <!-- Micro Badges -->
-                <div class="ai-video-features-row">
-                  <div class="ai-video-badge-item">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#cfee82" stroke-width="2.4"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    <span>Instant Response</span>
-                  </div>
-                  <div class="ai-video-badge-item">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#cfee82" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-                    <span>100% On-Device Privacy</span>
-                  </div>
-                  <div class="ai-video-badge-item">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#cfee82" stroke-width="2.4"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    <span>Banglish &amp; Bangla</span>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -3678,9 +3667,27 @@
 
     </div>
   </div>
-<!-- Interactive AI Showcase Controller -->
+<!-- Interactive AI Showcase & Autoplay Engine -->
   <script>
     (function () {
+      // 1. Force Video Autoplay Resilience
+      const video = document.getElementById('aiCompanionVideoEl');
+      if (video) {
+        video.muted = true;
+        video.defaultMuted = true;
+        const tryPlay = () => {
+          const p = video.play();
+          if (p !== undefined) {
+            p.catch(() => {});
+          }
+        };
+        tryPlay();
+        window.addEventListener('scroll', tryPlay, { once: true, passive: true });
+        window.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+        window.addEventListener('click', tryPlay, { once: true, passive: true });
+      }
+
+      // 2. Interactive Dialog Simulation
       const scenarios = [
         {
           user: 'namaj er pefect din mane?',
