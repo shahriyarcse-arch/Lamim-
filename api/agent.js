@@ -95,7 +95,7 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
 
 7. DATA PRIVACY & STORAGE ARCHITECTURE:
    • 100% Offline-First: Zero cloud sync, zero telemetry, zero analytics tracking.
-   • Local IndexedDB: High-speed local database (`lamim_db`) with synchronous RAM caching (<0.01ms reads).
+   • Local IndexedDB: High-speed local database ('lamim_db') with synchronous RAM caching (<0.01ms reads).
    • JSON Full Backup: 1-click full database export and import restoration under Profile Settings.
    • PWA Capabilities: Works completely offline without internet connection once loaded.`;
 
