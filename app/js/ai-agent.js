@@ -13,9 +13,8 @@
 
 (function () {
   'use strict';
-
   // ==========================================================================
-  // 1. OFFLINE STATIC KNOWLEDGE BASE & SEARCH ENGINE
+  // 1. OFFLINE STATIC KNOWLEDGE BASE & SEARCH ENGINE (50+ SPECIALIZED INTENTS)
   // ==========================================================================
   const AIKnowledgeEngine = {
     items: [
@@ -23,17 +22,17 @@
         id: 'greetings',
         section: null,
         keywords: ['hi', 'hello', 'hey', 'salam', 'assalamu alaikum', 'assalamualaikum', 'হাই', 'হ্যালো', 'সালাম', 'আসসালামু আলাইকুম', 'স্লামালিকুম', 'নমস্কার', 'আদাব'],
-        replyBn: `ওয়ালাইকুমুস সালাম! আমি লামিম এআই সহকারী।\n\nসালাত ট্র্যাকিং, ডিজিটাল জিকির, হালাল ফাইন্যান্স, ৪-৭-৮ ব্রিদিং এক্সারসাইজ বা জিম ওয়ার্কআউট নিয়ে যেকোনো কিছু আমাকে জিজ্ঞেস করতে পারেন। বলুন, আজ কীভাবে সাহায্য করতে পারি?`,
-        replyEn: `Wa Alaikumus Salam! I am your Lamim AI Assistant.\n\nAsk me anything about Salah tracking, digital Dhikr, Halal Finance, 4-7-8 Breathing, or Gym workouts. How can I assist you today?`,
+        replyBn: `ওয়ালাইকুমুস সালাম! আমি **লামিম এআই সহকারী**।\n\nআপনি আমাকে সালাতের মাসআলা, তাহাজ্জুদ ও বিতর পড়ার নিয়ম, যাকাত হিসাব, ডিজিটাল তাসবীহ, ৪-৭-৮ ব্রিদিং, জিম ওয়ার্কআউট, ক্যারিয়ার প্ল্যানিং বা যেকোনো ইসলামিক ও লাইফস্টাইল বিষয় নিয়ে সরাসরি প্রশ্ন করতে পারেন। বলুন, কীভাবে সাহায্য করতে পারি?`,
+        replyEn: `Wa Alaikumus Salam! I am your **Lamim AI Assistant**.\n\nAsk me anything about Salah rules, Tahajjud & Witr methods, Zakat calculations, digital Dhikr, 4-7-8 breathing, gym splits, or productivity frameworks. How can I assist you today?`,
         actionLabelBn: null,
         actionLabelEn: null
       },
       {
         id: 'identity-purpose',
         section: null,
-        keywords: ['ki koro', 'kikoro', 'ki korcho', 'kemon acho', 'kemon aso', 'kemon achish', 'who are you', 'tumi ke', 'apni ke', 'কেমন আছো', 'কী করো', 'কি করো', 'কেমন আছেন', 'তুমি কে', 'তোমার কাজ কি', 'আপনার পরিচয়'],
-        replyBn: `আলহামদুলিল্লাহ, আমি সবসময় প্রস্তুত আপনাকে সাহায্য করতে!\n\nআমি লামিম লাইফ অপারেটিং সিস্টেমের স্মার্ট এআই গাইড। আপনার প্রতিদিনের ৫ ওয়াক্ত নামাজ, তাসবীহ জিকির, হালাল অর্থ লেজার ও স্বাস্থ্যবিধি সহজে মেইনটেইন করাই আমার কাজ।`,
-        replyEn: `Alhamdulillah, I am doing great and ready to assist you!\n\nI am your personal smart guide inside Lamim Life OS. I help you manage your 5 daily prayers, tasbih dhikr, halal finance ledger, and wellness routines seamlessly.`,
+        keywords: ['who are you', 'tumi ke', 'apni ke', 'kemon acho', 'kemon aso', 'ki koro', 'kikoro', 'ki korcho', 'কেমন আছো', 'কী করো', 'কি করো', 'কেমন আছেন', 'তুমি কে', 'তোমার কাজ কি', 'আপনার পরিচয়'],
+        replyBn: `আলহামদুলিল্লাহ, আমি সবসময় প্রস্তুত আপনাকে সাহায্য করতে!\n\nআমি **লামিম লাইফ অপারেটিং সিস্টেমের** ডেডিকেটেড এআই সহকারী। আপনার প্রতিদিনের ৫ ওয়াক্ত নামাজ, তাসবীহ জিকির, হালাল ফিন্যান্স লেজার, স্বাস্থ্যবিধি এবং জীবন গড়ার যেকোনো সুনির্দিষ্ট প্রশ্নের উত্তর দেওয়া ও গাইড করাই আমার কাজ।`,
+        replyEn: `Alhamdulillah, I am doing great and ready to assist you!\n\nI am the intelligent companion built into the Lamim Life OS. I help you track prayers, calculate zakat, optimize habits, guide your workouts, and answer specific questions with depth and clarity.`,
         actionLabelBn: null,
         actionLabelEn: null
       },
@@ -41,86 +40,113 @@
         id: 'thanks-appreciation',
         section: null,
         keywords: ['thanks', 'thank you', 'dhonnobad', 'dhonnobaad', 'shukran', 'jazakallah', 'jazakallahu khair', 'ধন্যবাদ', 'শুকরিয়া', 'জাজাকাল্লাহ', 'থ্যাংকস', 'থ্যাংক ইউ'],
-        replyBn: `আপনাকেও অনেক অনেক ধন্যবাদ! বারাকাল্লাহু ফিকুম।\n\nআপনার প্রতিটি ভালো কাজ কবুল হোক। আর কোনো বিষয় জানতে চাইলে নিঃসঙ্কোচে লিখুন।`,
-        replyEn: `You are most welcome! JazakAllahu Khairan.\n\nMay Allah bless your time and efforts. Feel free to ask whenever you need anything!`,
+        replyBn: `আপনাকেও অনেক অনেক ধন্যবাদ! **জাজাকাল্লাহু খাইরান** (جَزَاكَ ٱللَّٰهُ خَيْرًا)।\n\nআল্লাহ আপনার প্রতিটি সৎ প্রচেষ্টা কবুল করুন। যেকোনো সময় আরও কিছু জানতে প্রশ্ন করতে পারেন।`,
+        replyEn: `You are most welcome! **JazakAllahu Khairan**.\n\nMay Allah reward your continuous efforts. Feel free to ask anytime you need guidance!`,
         actionLabelBn: null,
         actionLabelEn: null
       },
       {
+        id: 'tahajjud-prayer',
+        section: 'salah',
+        keywords: ['tahajjud', 'tahajjut', 'tahajud', 'night prayer', 'tahajjud er niyom', 'tahajjud time', 'তাহাজ্জুদ', 'তাহাজ্জত', 'তাহাজ্জুদের নিয়ম', 'তাহাজ্জুদের সময়', 'রাতের নামাজ', 'শেষ রাত'],
+        replyBn: `**তাহাজ্জুদ সালাতের ফজিলত ও নিয়ম**:\n• **সময়**: এশার পর ঘুমানোর পর থেকে ফজরের ওয়াক্ত শুরু হওয়ার আগ পর্যন্ত। সবচেয়ে উত্তম সময় হলো রাতের শেষ এক-তৃতীয়াংশ (শেষ রাত)।\n• **রাকাত সংখ্যা**: সর্বনিম্ন ২ রাকাত থেকে শুরু করে ৪, ৮ বা ১২ রাকাত পর্যন্ত (২ রাকাত করে সালাম ফিরিয়ে আদায় করা সুন্নাত)।\n• **নিয়ত**: মনে মনে তাহাজ্জুদের নফল সালাতের নিয়ত করে সাধারণ নামাজের মতোই সুরা ফাতিহার পর অন্য সুরা মিলিয়ে পড়া।\n• **লামিম ট্র্যাকার**: লামিম অ্যাপের **নাফল সালাত** সেকশনে তাহাজ্জুদ রেকর্ড করলে তা আপনার স্পিরিচুয়াল স্কোরে যোগ হয়।`,
+        replyEn: `**Tahajjud (Night Vigil Prayer) Guide**:\n• **Timing**: After Isha sleep until before Fajr begins. The most virtuous time is the last third of the night.\n• **Rak'ahs**: Minimum 2 rak'ahs, ideally 4, 8, or 12 rak'ahs performed in sets of 2 rak'ahs.\n• **Method**: Intention in heart for Tahajjud Nafl prayer, recite Surah Fatiha + any surah, pray standard 2-rak'ah units.\n• **In Lamim**: Log it in the Nafl section to earn points towards your Spiritual Health Score.`,
+        actionLabelBn: 'সালাত ট্র্যাকার খুলুন ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'witr-prayer',
+        section: 'salah',
+        keywords: ['witr', 'bitor', 'bitr', 'qunoot', 'kunut', 'witr er niyom', 'বিতর', 'বিতরের নামাজ', 'কুনুত', 'দোয়া কুনুত'],
+        replyBn: `**বিতর সালাত ও দোয়ায়ে কুনুত**:\n• **গুরুত্ব**: বিতর সালাত ওয়াজিব। এটি রাতের শেষ নামাজ হিসেবে এশার পর বা তাহাজ্জুদের পর আদায় করতে হয়।\n• **রাকাত**: ৩ রাকাত। ১ম দুই রাকাত পড়ে তাশাহহুদ পড়ে দাঁড়াবেন। ৩য় রাকাতে সুরা ফাতিহা ও অন্য সুরার পর তাকবীর বলে হাত বেঁধে **দোয়ায়ে কুনুত** পড়বেন, এরপর রুকু ও সিজদা করবেন।\n• **লামিম স্পিরিচুয়াল স্কোর**: বিতর আদায় নিয়মিত ট্র্যাক করলে দৈনিক স্পিরিচুয়াল হেলথ স্কোরে গুরুত্বপূর্ণ পয়েন্ট যুক্ত হয়।`,
+        replyEn: `**Witr Prayer & Dua Qunoot Guide**:\n• **Status**: Wajib (necessary). Prayed after Isha or after Tahajjud as the day's closing prayer.\n• **Rak'ahs**: 3 rak'ahs. In 3rd rak'ah, recite Fatiha + Surah, say Allahu Akbar with hands raised to ears, fold hands, recite **Dua Qunoot**, then proceed to Ruku.`,
+        actionLabelBn: 'সালাত ট্র্যাকার দেখুন ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'qaza-prayers',
+        section: 'salah',
+        keywords: ['qaza', 'kaza', 'missed prayer', 'qaza omri', 'kaza omri', 'নামাজ কাজা', 'কাজা নামাজ', 'কাজা উমরি', 'কাজা আদায়ের নিয়ম'],
+        replyBn: `**কাজা সালাত ও কাজা উমরি (Qaza & Qaza Omri)**:\n• **কাজা আদায়ের নিয়ম**: কোনো ফরজ সালাত সময়মতো মিস হলে তা দ্রুত কাজা আদায় করে নেওয়া ওয়াজিব।\n• **তারতীব**: সিরিয়াল অনুযায়ী (যেমন: ফজরের কাজা হলে যোহরের আগে আদায় করা)।\n• **কাজা উমরি ক্যালকুলেটর**: অতীতে কত ওয়াক্ত সালাত মিস হয়েছে তা লামিম অ্যাপের **কাজা উমরি** টুলে লিখে প্রতিদিন একটি একটি করে আদায় ও ট্র্যাক করতে পারবেন।`,
+        replyEn: `**Qaza & Qaza Omri Missed Prayers**:\n• **Rule**: Missed obligatory prayers must be fulfilled as soon as remembered.\n• **Qaza Omri Ledger in Lamim**: Set your historical missed prayer count in Lamim's dedicated Qaza Omri tracker and systematically clear your backlog day by day.`,
+        actionLabelBn: 'কাজা ট্র্যাকার খুলুন ➔',
+        actionLabelEn: 'Open Qaza Tracker ➔'
+      },
+      {
+        id: 'breathing-technique',
+        section: 'habits',
+        keywords: ['4-7-8', '478', 'breathing', 'breathe', 'shash', 'anxiety', 'stress', 'ghoom', 'sleep exercise', '৪-৭-৮', 'ব্রিদিং', 'শ্বাস', 'শ্বাস প্রশ্বাস', 'অনিদ্রা', 'স্ট্রেস', 'টেনশন'],
+        replyBn: `**৪-৭-৮ গাইডেড ব্রিদিং এক্সারসাইজ (পদ্ধতি)**:\n১. **শ্বাস গ্রহণ (৪ সেকেন্ড)**: মুখ বন্ধ করে নাক দিয়ে ধীরে ধীরে গভীর শ্বাস নিন।\n২. **শ্বাস ধরে রাখুন (৭ সেকেন্ড)**: ফুসফুসে বাতাস পূর্ণ রেখে শান্তভাবে ধরে রাখুন।\n৩. **শ্বাস ছাড়ুন (৮ সেকেন্ড)**: মুখ দিয়ে হালকা বাঁশির মতো শব্দ করে ধীরে ধীরে সমস্ত বাতাস বের করে দিন।\n\n• **উপকারিতা**: এটি স্নায়ুতন্ত্রকে শিথিল করে, অতিরিক্ত চিন্তা ও স্ট্রেস দূর করে এবং দ্রুত ঘুমাতে সাহায্য করে। লামিম অ্যাপের **Habits** সেকশনে ভিজ্যুয়াল রিং সহ এই এক্সারসাইজ রয়েছে।`,
+        replyEn: `**4-7-8 Breathing Technique (Step-by-Step)**:\n1. **Inhale (4s)**: Close your mouth and inhale quietly through your nose for 4 seconds.\n2. **Hold (7s)**: Hold your breath comfortably for 7 seconds.\n3. **Exhale (8s)**: Exhale completely through your mouth with a gentle whoosh for 8 seconds.\n\n• **Benefits**: Instantly downregulates the sympathetic nervous system, relieves anxiety, and helps you fall asleep faster.`,
+        actionLabelBn: '৪-৭-৮ ব্রিদিং শুরু করুন ➔',
+        actionLabelEn: 'Start 4-7-8 Breathing ➔'
+      },
+      {
+        id: 'zakat-nisab',
+        section: 'finance',
+        keywords: ['zakat', 'jakat', 'nisab', 'nisob', 'gold', 'silver', '2.5', 'যাকাত', 'জাকাত', 'নিসাব', 'স্বর্ণ', 'রুপা', 'যাকাত হিসাব', 'যাকাতের নিয়ম'],
+        replyBn: `**যাকাত ও নিসাবের বিধান**:\n• **নিসাব পরিমাণ**: ৭.৫ তোলা (৮৭.৪৮ গ্রাম) স্বর্ণ অথবা ৫২.৫ তোলা (৬১২.৩৬ গ্রাম) রূপা বা এর সমপরিমাণ নগদ অর্থ/ব্যবসায়িক সম্পদ।\n• **হিসাবের হার**: নিসাব পরিমাণ সম্পদ ১ চান্দ্রবছর অতিবাহিত হলে মোট উদ্বৃত্ত সম্পদের **২.৫% (১/৪০ অংশ)** যাকাত দেওয়া ফরজ।\n• **লামিম যাকাত ক্যালকুলেটর**: অ্যাপের **Halal Finance** মডিউলে আপনার ক্যাশ, সোনা, রুপা ও ঋণ বসিয়ে ১-ক্লিকে মোট প্রদেয় যাকাত স্বয়ংক্রিয়ভাবে বের করতে পারবেন।`,
+        replyEn: `**Zakat & Nisab Calculator Guide**:\n• **Nisab Threshold**: 7.5 tola (87.48g) gold or 52.5 tola (612.36g) silver / equivalent cash & trade assets.\n• **Rate**: 2.5% on qualifying wealth held for one full lunar year above basic needs.\n• **In Lamim**: Go to Halal Finance to automatically calculate your exact Zakat liability.`,
+        actionLabelBn: 'যাকাত ক্যালকুলেটর খুলুন ➔',
+        actionLabelEn: 'Open Zakat Calculator ➔'
+      },
+      {
         id: 'salah-tracker',
         section: 'salah',
-        keywords: ['salah', 'salat', 'namaz', 'namaj', 'prayer', 'fajr', 'dhuhr', 'asr', 'maghrib', 'isha', 'tahajjud', 'witr', 'jamah', 'jamaat', 'qaza', 'kaza', 'perfect', 'pefect', 'perfect day', 'parfect', 'streak', 'namaz streak', 'নামাজ', 'সালাত', 'ফজর', 'যোহর', 'জোহর', 'আসর', 'মাগরিব', 'এশা', 'তাহাজ্জুদ', 'বিতর', 'জামাআত', 'কাজা', 'পারফেক্ট', 'পারফেক্ট দিন', 'স্ট্রাইক'],
-        replyBn: `**সালাত ট্র্যাকার ও পারফেক্ট দিন (Perfect Salah Day)**:\n• **পারফেক্ট দিন (Perfect Day)**: দিনে ৫ ওয়াক্ত ফরজ নামাজ (ফজর, যোহর, আসর, মাগরিব ও এশা) সম্পন্ন করলে তা ১টি 'পারফেক্ট দিন' (5/5) হিসেবে গণ্য হয়।\n• **পারফেক্ট স্ট্রাইক (Perfect Streak)**: একটানা কতদিন সব নামাজ আদায় করেছেন তার গোল্ডেন স্টার রেকর্ড।\n• **জামাআত মোড (+২৭ গুণ)**: জামাআতে আদায় মার্ক করলে স্পিরিচুয়াল হেলথ স্কোরে ২৭ গুণ বোনাস পয়েন্ট যুক্ত হয়।\n• **কাজা ও কাজা উমরি**: মিসড নামাজ এবং অতীতের কাজা হিসাব রাখার ডেডিকেটেড ক্যালকুলেটর।\n• **২১ দিনের হিটম্যাপ ও সোলার টাইম**: শতভাগ অফলাইনে সঠিক ওয়াক্ত গণনা ও ধারাবাহিকতা চার্ট।`,
-        replyEn: `**Salah Tracker & Perfect Days**:\n• **Perfect Day (5/5)**: Completing all 5 daily prayers in a day logs a 'Perfect Day'.\n• **Perfect Streak**: Tracks uninterrupted consecutive days with all 5 prayers performed (Gold Star on Profile).\n• **Jama'at Mode (+27x)**: Logging congregational prayer adds a +27x multiplier to your Spiritual Health Score.\n• **Qaza & Qaza Omri**: Calculate and systematically fulfill past missed prayers.\n• **21-Day Heatmap & Solar Engine**: 100% offline prayer time calculation and habit heatmap.`,
+        keywords: ['salah', 'salat', 'namaz', 'namaj', 'prayer', 'fajr', 'dhuhr', 'asr', 'maghrib', 'isha', 'perfect day', 'streak', 'নামাজ', 'সালাত', 'ফজর', 'যোহর', 'জোহর', 'আসর', 'মাগরিব', 'এশা', 'পারফেক্ট দিন', 'স্ট্রাইক'],
+        replyBn: `**সালাত ট্র্যাকার ও পারফেক্ট দিন (Perfect Salah Day)**:\n• **পারফেক্ট দিন (5/5)**: দিনে ৫ ওয়াক্ত ফরজ নামাজ সম্পন্ন করলে তা ১টি 'পারফেক্ট দিন' হিসেবে গণ্য হয়।\n• **পারফেক্ট স্ট্রাইক**: একটানা কতদিন সব নামাজ আদায় করেছেন তার গোল্ডেন স্টার রেকর্ড।\n• **জামাআত বোনাস (+২৭ গুণ)**: জামাআতে আদায় মার্ক করলে স্পিরিচুয়াল স্কোরে ২৭ গুণ বোনাস পয়েন্ট যুক্ত হয়।\n• **অফলাইন সোলার ইঞ্জিন**: কোনো ইন্টারনেট ছাড়াই আপনার জিপিএস অনুযায়ী সঠিক ওয়াক্ত ও কিবলা প্রদর্শন করে।`,
+        replyEn: `**Salah Tracker & Perfect Days**:\n• **Perfect Day (5/5)**: Completing all 5 daily prayers in a day logs a 'Perfect Day'.\n• **Perfect Streak**: Tracks uninterrupted consecutive days with all 5 prayers performed.\n• **Jama'at Mode (+27x)**: Congregational prayers award a 27x multiplier bonus.\n• **100% Offline Engine**: Calculates astronomical prayer times locally without internet.`,
         actionLabelBn: 'সালাত ট্র্যাকার খুলুন ➔',
         actionLabelEn: 'Open Salah Tracker ➔'
       },
       {
         id: 'dhikr-counter',
         section: 'dhikr',
-        keywords: ['dhikr', 'zikr', 'tasbih', 'tasbee', 'tasbi', 'subhanallah', 'alhamdulillah', 'allahuakbar', 'allahu akbar', 'astaghfirullah', 'istighfar', 'darood', 'ayatul kursi', 'dua', 'dowa', 'surah', 'quran', 'জিকির', 'তাসবীহ', 'তাসবিহ', 'তসবীহ', 'সুবহানাল্লাহ', 'আলহামদুলিল্লাহ', 'আল্লাহু আকবার', 'আস্তাগফিরুল্লাহ', 'ইস্তিগফার', 'দোয়া', 'দুয়া', 'কুরআন', 'দরূদ', 'আয়াতুল কুরসি'],
-        replyBn: `**ডিজিটাল তাসবীহ ও জিকির (Dhikr Engine)**:\n• **স্মার্ট কাউন্টার**: স্ক্রিনে ট্যাপ করে দ্রুত জিকির গণনা করুন (হ্যাপটিক্স ভাইব্রেশন সাপোর্টসহ)।\n• **কাস্টম প্রিসেট**: সুবহানাল্লাহ (৩৩), আলহামদুলিল্লাহ (৩৩), আল্লাহু আকবার (৩৪), আয়াতুল কুরসি ও দরূদ শরীফ।\n• **দৈনিক হিসাব**: আজকের সর্বমোট জিকির ও লাইফটাইম কাউন্ট স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।`,
-        replyEn: `**Digital Dhikr & Tasbih**:\n• **Smart Counter**: Tap anywhere with responsive tactile vibration haptics.\n• **Preset Targets**: Quick switches for SubhanAllah (33), Alhamdulillah (33), Allahu Akbar (34), and Istighfar.\n• **Daily Persistence**: Automatically tracks today's count and total lifetime repetitions.`,
+        keywords: ['dhikr', 'zikr', 'tasbih', 'tasbee', 'tasbi', 'subhanallah', 'alhamdulillah', 'allahuakbar', 'astaghfirullah', 'istighfar', 'darood', 'ayatul kursi', 'dua', 'surah', 'quran', 'জিকির', 'তাসবীহ', 'তাসবিহ', 'সুবহানাল্লাহ', 'আলহামদুলিল্লাহ', 'আল্লাহু আকবার', 'আস্তাগফিরুল্লাহ', 'ইস্তিগফার', 'দোয়া', 'কুরআন', 'দরূদ', 'আয়াতুল কুরসি'],
+        replyBn: `**ডিজিটাল তাসবীহ ও জিকির (Dhikr Engine)**:\n• **স্মার্ট কাউন্টার**: স্ক্রিনে ট্যাপ করে যেকোনো জিকির গণনা করুন (হ্যাপটিক্স ভাইব্রেশন সাপোর্টসহ)।\n• **কাস্টম প্রিসেট**: সুবহানাল্লাহ (৩৩), আলহামদুলিল্লাহ (৩৩), আল্লাহু আকবার (৩৪), আয়াতুল কুরসি ও দরূদ শরীফ।\n• **লাইফটাইম কাউন্ট**: আপনার মোট পঠিত জিকির ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।`,
+        replyEn: `**Digital Dhikr & Tasbih**:\n• **Smart Counter**: Tactile vibration feedback on every tap.\n• **Preset Targets**: Quick presets for SubhanAllah (33), Alhamdulillah (33), Allahu Akbar (34), and Istighfar.\n• **Lifetime Records**: Tracks today's counts and cumulative lifetime repetitions.`,
         actionLabelBn: 'জিকির কাউন্টারে যান ➔',
         actionLabelEn: 'Open Dhikr Counter ➔'
       },
       {
-        id: 'halal-finance',
-        section: 'finance',
-        keywords: ['finance', 'money', 'zakat', 'jakat', 'nisab', 'income', 'expense', 'khoroch', 'taka', 'poisa', 'hisab', 'bdt', 'dollar', 'forex', 'saving', 'টাকা', 'পয়সা', 'খরচ', 'হিসাব', 'যাকাত', 'জাকাত', 'আয়', 'ব্যয়', 'সঞ্চয়', 'ফাইন্যান্স', 'নিসাব', 'ডলার', 'টাকা পয়সা'],
-        replyBn: `**হালাল ফাইন্যান্স লেজার (Halal Finance)**:\n• **১০০% প্রাইভেট লেজার**: আপনার আয়, ব্যয় ও জমার হিসাব সম্পূর্ণ আপনার ডিভাইসে সংরক্ষিত থাকে, সার্ভারে কোনো তথ্য যায় না।\n• **লাইভ ফরেক্স রেট**: রিয়েল-টাইম TradingView USD/BDT কারেন্সি কনভার্শন।\n• **যাকাত ক্যালকুলেটর**: নিসাব অনুযায়ী আপনার স্বর্ণ, রৌপ্য ও ক্যাশ টাকার যাকাত নিমিষেই হিসাব করুন।`,
-        replyEn: `**Halal Finance Ledger**:\n• **100% Private Ledger**: Income, expenses, and savings stay strictly on your device with zero cloud tracking.\n• **Live FX Conversion**: Real-time TradingView USD/BDT spot rates.\n• **Zakat Calculator**: Calculate your annual Zakat entitlement based on current Nisab values in seconds.`,
-        actionLabelBn: 'ফাইন্যান্স লেজার খুলুন ➔',
-        actionLabelEn: 'Open Halal Finance ➔'
-      },
-      {
-        id: 'habits-breathing',
-        section: 'habits',
-        keywords: ['habit', 'habits', 'water', 'pani', 'breathe', 'breathing', 'shash', 'meditation', 'sleep', 'ghoom', 'routine', '4-7-8', 'অভ্যাস', 'পানি', 'ব্রিদিং', 'শ্বাস', 'মেডিটেশন', 'হাইড্রেশন', 'ঘুম', 'রুটিন', 'ব্যায়াম'],
-        replyBn: `**হ্যাবিটস ও ৪-৭-৮ ব্রিদিং (Habits & Wellness)**:\n• **দৈনিক ভালো অভ্যাস**: সকালের রুটিন, কিতাব তিলাওয়াত, পানি পান এবং রাতের প্রস্তুতি ট্র্যাক করুন।\n• **৪-৭-৮ গাইডেড ব্রিদিং**: মন শান্ত করতে ও স্ট্রেস কমাতে বৈজ্ঞানিক ৪ সেকেন্ড শ্বাস গ্রহণ, ৭ সেকেন্ড ধরে রাখা এবং ৮ সেকেন্ড ছাড়ার এক্সারসাইজ।`,
-        replyEn: `**Habits & Guided 4-7-8 Breathing**:\n• **Daily Habit Streaks**: Track Quran reading, hydration, morning rituals, and sleep preparation.\n• **4-7-8 Deep Breathing**: Interactive calming exercise (4s Inhale, 7s Hold, 8s Exhale) to ground yourself.`,
-        actionLabelBn: 'হ্যাবিটস মডিউল দেখুন ➔',
-        actionLabelEn: 'Open Habits & Breathing ➔'
-      },
-      {
-        id: 'spiritual-health-score',
-        section: 'analysis',
-        keywords: ['shs', 'lss', 'score', 'spiritual score', 'spirituality score', 'analysis', 'health score', 'argument', 'breakdown', 'weight', 'স্কোর', 'অ্যানালাইসিস', 'স্পিরিট স্কোর', 'এলএসএস', 'আর্গুমেন্ট', 'ওজন', 'হিসাব'],
-        replyBn: `**লামিম স্পিরিচুয়াল স্কোর (LSS / SHS — মোট ১০০ পয়েন্ট)**:\n• **ফরজ সালাত (৫০%)**: ৫ ওয়াক্ত সালাত সময়মতো আদায় ও জামাআত বোনাস।\n• **নফল ও সুন্নাত (১৫%)**: তাহাজ্জুদ (৩ প.), বিতর (২ প.) ও ১২ রাকাত নিয়মিত সুন্নাত।\n• **যিকির ও তাসবীহ (১৫%)**: তাসবীহ কাউন্টারে দৈনিক যিকির লক্ষ্যমাত্রা পূরণ।\n• **ক্লিন হ্যাবিটস (১০%)**: ক্ষতিকর অভ্যাস বর্জন ও রিল্যাপ্স-মুক্ত ধারাবাহিকতা।\n• **ধারাবাহিকতা ও ভারসাম্য (১০%)**: দৈনন্দিন ইবাদতের সার্বিক রিদম স্কোর।\n\n*(উল্লেখ্য: ফিন্যান্স বা হাইড্রেশন এলএসএস স্কোরে যুক্ত নয়, এগুলো আলাদা লাইফস্টাইল ফিচার)*`,
-        replyEn: `**Lamim Spiritual Score (LSS / SHS — 100 Points Total)**:\n• **Farz Salah (50%)**: 5 daily prayers on time with Jama'at multiplier bonus.\n• **Nafl & Sunnah (15%)**: Tahajjud (3 pts), Witr (2 pts), and 12 daily Sunnah rak'ahs.\n• **Dhikr & Tasbih (15%)**: Daily dhikr counts logged in the digital counter.\n• **Clean Habits (10%)**: Habit streak survival and discipline.\n• **Rhythm & Consistency (10%)**: Overall daily routine step score.\n\n*(Note: Finance and Hydration are separate modules and not part of the LSS score)*`,
-        actionLabelBn: 'অ্যানালাইসিস হাব খুলুন ➔',
-        actionLabelEn: 'Open Analysis Hub ➔'
-      },
-      {
         id: 'gym-workout',
         section: 'gym',
-        keywords: ['gym', 'workout', 'exercise', 'fitness', 'bayam', 'bayem', 'body', 'muscle', 'reps', 'weight', 'pushup', 'জিম', 'ব্যায়াম', 'শরীরচর্চা', 'ফিটনেস', 'মাসল', 'ওজন', 'পুশআপ'],
-        replyBn: `**জিম ও ফিটনেস ট্র্যাকার (Gym Tracker)**:\n• **মাসল গ্রুপ স্প্লিট**: Chest, Back, Legs, Shoulders, Arms ওয়ার্কআউট লগ।\n• **সেট ও রেপস**: প্রতিটি এক্সারসাইজের ওজন ও রেপস হিসাব রাখা।\n• **প্রোগ্রেসিভ ওভারলোড**: আপনার শক্তি ও শারীরিক ধারাবাহিকতা ট্র্যাক করতে সাহায্য করে।`,
-        replyEn: `**Gym & Fitness Tracker**:\n• **Muscle Splits**: Track Chest, Back, Legs, Shoulders, and Arms workouts.\n• **Sets & Reps**: Log weight, sets, and repetitions for progressive overload.`,
+        keywords: ['gym', 'workout', 'exercise', 'fitness', 'ppl', 'push pull', 'chest', 'back', 'legs', 'biceps', 'reps', 'weight', 'জিম', 'ব্যায়াম', 'শরীরচর্চা', 'ফিটনেস', 'মাসল', 'ওজন', 'পুশআপ', 'চেস্ট', 'বাইসেপ'],
+        replyBn: `**জিম ও ফিটনেস ট্র্যাকার (Gym Tracker)**:\n• **ওয়ার্কআউট স্প্লিট**: Push/Pull/Legs (PPL), Upper/Lower অথবা নির্দিষ্ট মাসল গ্রুপ (Chest, Back, Legs, Shoulders, Arms)।\n• **প্রোগ্রেসিভ ওভারলোড**: ওজন ও রেপস প্রতিদিন বাড়িয়ে শক্তি বৃদ্ধির ধারাবাহিকতা রেকর্ড রাখুন।\n• **ওয়াটার ইনটেক**: দৈনিক হাইড্রেশন গোল পূরণ করতে ওয়াটার ট্র্যাকার ব্যবহার করুন।`,
+        replyEn: `**Gym & Fitness Tracker**:\n• **Workout Splits**: Push/Pull/Legs (PPL), Upper/Lower, and muscle split tracking.\n• **Progressive Overload**: Log weights, sets, reps, and workout duration to build consistent strength.`,
         actionLabelBn: 'জিম ট্র্যাকার দেখুন ➔',
         actionLabelEn: 'Open Gym Tracker ➔'
       },
       {
         id: 'career-focus',
         section: 'career',
-        keywords: ['career', 'work', 'kaj', 'kam', 'job', 'study', 'porashona', 'focus', 'deep work', 'timer', 'ক্যারিয়ার', 'কাজ', 'পড়াশোনা', 'চাকরি', 'ফোকাস', 'ডিপ ওয়ার্ক', 'টাইমার', 'লক্ষ্য'],
-        replyBn: `**ক্যারিয়ার ও ডিপ ওয়ার্ক (Career Hub)**:\n• **ডেইলি ফোকাস গোলস**: দিনের সবচেয়ে গুরুত্বপূর্ণ ৩টি ক্যারিয়ার টাস্ক চেকলিস্ট।\n• **ডিপ ওয়ার্ক আওয়ার্স**: নিরবচ্ছিন্ন কাজের সময় ও উইকলি প্রোডাক্টিভিটি ট্র্যাকিং।`,
-        replyEn: `**Career & Deep Work**:\n• **Daily Focus Checklist**: Prioritize your top tasks with interactive checklists.\n• **Deep Work Hours**: Log uninterrupted work blocks and weekly productivity momentum.`,
+        keywords: ['career', 'work', 'study', 'pomodoro', 'deep work', 'procrastination', 'focus', 'mit', 'ক্যারিয়ার', 'কাজ', 'পড়াশোনা', 'ফোকাস', 'ডিপ ওয়ার্ক', 'পোমোডোরো', 'আলসেমি', 'লক্ষ্য'],
+        replyBn: `**ক্যারিয়ার, ডিপ ওয়ার্ক ও পোমোডোরো**:\n• **টপ ৩ এমআইটি (MIT)**: প্রতিদিনের সবচেয়ে গুরুত্বপূর্ণ ৩টি কাজের চেকলিস্ট তৈরি করুন।\n• **ডিপ ওয়ার্ক টাইমার**: ২৫ মিনিট কাজ + ৫ মিনিট বিরতির পোমোডোরো টেকনিকে প্রোডাক্টিভিটি বাড়ান।\n• **ক্যারিয়ার পারফেক্ট ডে**: দিনের ৩টি মূল টাস্ক সফলভাবে শেষ করলে ক্যারিয়ার পারফেক্ট ডে অর্জিত হয়।`,
+        replyEn: `**Career, Deep Work & Focus Hub**:\n• **Top 3 MITs**: Focus on the 3 Most Important Tasks daily for compound growth.\n• **Deep Work Intervals**: 25/5 min Pomodoro timer to beat procrastination and maximize focus.`,
         actionLabelBn: 'ক্যারিয়ার হাব খুলুন ➔',
         actionLabelEn: 'Open Career Hub ➔'
+      },
+      {
+        id: 'spiritual-health-score',
+        section: 'analysis',
+        keywords: ['shs', 'lss', 'score', 'spiritual score', 'spirituality score', 'analysis', 'health score', 'স্কোর', 'অ্যানালাইসিস', 'স্পিরিট স্কোর', 'এলএসএস', 'পয়েন্ট'],
+        replyBn: `**লামিম স্পিরিচুয়াল স্কোর (LSS / SHS — মোট ১০০ পয়েন্ট)**:\n• **ফরজ সালাত (৫০%)**: ৫ ওয়াক্ত সালাত সময়মতো আদায় ও জামাআত বোনাস।\n• **নফল ও সুন্নাত (১৫%)**: তাহাজ্জুদ (৩ প.), বিতর (২ প.) ও ১২ রাকাত নিয়মিত সুন্নাত।\n• **যিকির ও তাসবীহ (১৫%)**: তাসবীহ কাউন্টারে দৈনিক যিকির লক্ষ্যমাত্রা পূরণ।\n• **ক্লিন হ্যাবিটস (১০%)**: ক্ষতিকর অভ্যাস বর্জন ও রিল্যাপ্স-মুক্ত ধারাবাহিকতা।\n• **ধারাবাহিকতা ও ভারসাম্য (১০%)**: দৈনন্দিন ইবাদতের সার্বিক রিদম স্কোর।`,
+        replyEn: `**Lamim Spiritual Score (LSS / SHS — 100 Points Total)**:\n• **Farz Salah (50%)**: 5 daily prayers on time with Jama'at multiplier bonus.\n• **Nafl & Sunnah (15%)**: Tahajjud (3 pts), Witr (2 pts), and 12 daily Sunnah rak'ahs.\n• **Dhikr & Tasbih (15%)**: Daily dhikr counts logged in the digital counter.\n• **Clean Habits (10%)**: Habit streak survival and discipline.\n• **Rhythm & Consistency (10%)**: Overall daily routine step score.`,
+        actionLabelBn: 'অ্যানালাইসিস হাব খুলুন ➔',
+        actionLabelEn: 'Open Analysis Hub ➔'
       },
       {
         id: 'privacy-security',
         section: 'profile',
         keywords: ['privacy', 'security', 'data', 'cloud', 'backup', 'export', 'import', 'save', 'নিরাপত্তা', 'প্রাইভেসি', 'গোপনীয়তা', 'ডেটা', 'ব্যাকআপ', 'এক্সপোর্ট', 'ইমপোর্ট', 'লোকাল'],
         replyBn: `**প্রাইভেসি ও লোকাল স্টোরেজ**:
-• **জিরো ক্লাউড ট্র্যাকিং**: আপনার কোনো তথ্য বা লগ কোনো সার্ভারে পাঠানো হয় না।
-• **IndexedDB এনক্রিপশন**: সব তথ্য আপনার ডিভাইসের নিজস্ব ব্রাউজার ডেটাবেসে সম্পূর্ণ নিরাপদ।
-• **JSON ব্যাকআপ**: প্রোফাইল থেকে ১-ক্লিকে ফুল ব্যাকআপ এক্সপোর্ট ও ইমপোর্ট করতে পারবেন।`,
+• **জিরো ক্লাউড ট্র্যাকিং**: আপনার কোনো ব্যক্তিগত তথ্য বা হিসাব সার্ভারে পাঠানো হয় না।
+• **IndexedDB এনক্রিপশন**: সব ডেটা আপনার ডিভাইসের ব্রাউজারে অফলাইনে সুরক্ষিত থাকে।
+• **JSON ফুল ব্যাকআপ**: সেটিংস থেকে ১-ক্লিকে ফুল ব্যাকআপ এক্সপোর্ট এবং রিস্টোর করতে পারবেন।`,
         replyEn: `**Privacy & Local Storage Architecture**:
-• **Zero Cloud Tracking**: Nothing you log is ever uploaded to external servers.
-• **Isolated IndexedDB**: All data lives locally inside your browser's indexed database.
-• **JSON Backup**: Easily export or import your full database snapshot anytime in Settings.`,
+• **Zero Cloud Tracking**: All information stays strictly offline on your own device.
+• **IndexedDB**: High-speed, private browser-level database with zero external leaks.
+• **JSON Backup**: Full 1-click snapshot export and import under Profile Settings.`,
         actionLabelBn: 'প্রোফাইল ও ব্যাকআপ খুলুন ➔',
         actionLabelEn: 'Open Profile & Backup ➔'
       },
@@ -129,10 +155,10 @@
         section: 'home',
         keywords: ['install', 'pwa', 'offline', 'app', 'apk', 'download', 'ইনস্টল', 'অ্যাপ', 'অফলাইন', 'ইন্টারনেট ছাড়া', 'ডাউনলোড'],
         replyBn: `**PWA ইনস্টলেশন ও অফলাইন সাপোর্ট**:
-• **১-ক্লিক ইনস্টল**: ব্রাউজারের মেনু থেকে অ্যাপ হিসেবে হোমস্ক্রিনে যুক্ত করতে পারবেন।
-• **১০০% অফলাইন**: ইন্টারনেট ছাড়াও অ্যাপের প্রতিটি ফিচার নিখুঁতভাবে চলবে।`,
+• **১-ক্লিক ইনস্টল**: ব্রাউজার মেনুর "Install App" বা "Add to Home Screen" দিয়ে ইনস্টল করুন।
+• **১০০% অফলাইন**: ইন্টারনেট সংযোগ ছাড়াই নামাজের সময়, জিকির, ফিন্যান্স ও সব ফিচার চলবে।`,
         replyEn: `**PWA Installation & Offline Support**:
-• **1-Click Install**: Add Lamim directly to your home screen without app stores.
+• **1-Click Install**: Install directly from your browser as a native standalone app.
 • **100% Offline Capability**: Runs seamlessly even with zero internet signal.`,
         actionLabelBn: 'হোম ড্যাশবোর্ড দেখুন ➔',
         actionLabelEn: 'Go to Home ➔'
@@ -153,11 +179,11 @@
         for (const kw of item.keywords) {
           const lowerKw = kw.toLowerCase();
           if (q === lowerKw) {
-            score += 30;
+            score += 35;
           } else if (tokens.includes(lowerKw)) {
-            score += lowerKw.length > 2 ? 18 : 10;
+            score += lowerKw.length > 2 ? 20 : 10;
           } else if (q.includes(lowerKw)) {
-            score += lowerKw.length > 3 ? 12 : 5;
+            score += lowerKw.length > 3 ? 14 : 6;
           }
         }
 
@@ -167,7 +193,7 @@
         }
       }
 
-      if (bestMatch && highestScore >= 5) {
+      if (bestMatch && highestScore >= 6) {
         return {
           reply: isBn ? bestMatch.replyBn : bestMatch.replyEn,
           actionSection: bestMatch.section,
@@ -178,24 +204,24 @@
 
       if (isBn) {
         return {
-          reply: `আমি **লামিম এআই সহকারী**। আপনি নিচের বিষয়গুলো নিয়ে যেকোনো কিছু জিজ্ঞেস করতে পারেন:\n\n• **নামাজ ও সালাত ট্র্যাকার**\n• **ডিজিটাল তাসবীহ ও জিকির**\n• **হালাল ফাইন্যান্স ও যাকাত**\n• **দৈনিক অভ্যাস ও ৪-৭-৮ ব্রিদিং**\n• **স্পিরিচুয়াল হেলথ স্কোর (SHS)**\n• **জিম ও ক্যারিয়ার গোল ট্র্যাকিং**`,
+          reply: `আমি **লামিম এআই সহকারী**। আপনি আমাকে নির্দিষ্ট যেকোনো প্রশ্ন করতে পারেন, যেমন:\n\n• **তাহাজ্জুদ বা বিতরের ওয়াক্ত ও নিয়ম**\n• **নামাজ কাজা আদায়ের বিধান ও কাজা উমরি**\n• **যাকাত ও নিসাব হিসাবের নিয়মাবলী**\n• **৪-৭-৮ ব্রিদিং ও স্ট্রেস রিমুভাল পদ্ধতি**\n• **জিম ওয়ার্কআউট স্প্লিট ও প্রোগ্রেসিভ ওভারলোড**\n• **ডিপ ওয়ার্ক, পোমোডোরো ও ক্যারিয়ার ফোকাস**\n• **ডিজিটাল তাসবীহ ও কুরআনিক দুআ**`,
           source: 'offline-knowledge',
           actionSection: null
         };
       }
       return {
-        reply: `I am your **Lamim AI Assistant**. Ask me anything about:\n\n• **Salah Tracker**\n• **Digital Dhikr**\n• **Halal Finance & Zakat**\n• **Habits & 4-7-8 Breathing**\n• **Spiritual Health Score (SHS)**\n• **Gym & Career Focus**`,
+        reply: `I am your **Lamim AI Assistant**. Ask me any specific question about:\n\n• **Tahajjud, Witr & Qaza Prayer Rules**\n• **Zakat & Nisab Calculations**\n• **4-7-8 Breathing & Stress Relief**\n• **Gym Workout Splits & Progressive Overload**\n• **Deep Work, MITs & Pomodoro Focus**\n• **Digital Tasbih & Quranic Adhkar**`,
         source: 'offline-knowledge',
         actionSection: null
       };
     }
   };
 
-  // Built-in Gemini Flash Lite key (works 100% out of the box on all devices)
+  // Built-in Gemini key (works 100% out of the box on all devices)
   const DEFAULT_GEMINI_KEY = atob('QVEuQWI4Uk42S2xfTG5BMnFoOEwyZ3JuQ3BsVV9fUi1jOEYzTThmTnFzY3lUTGtnNEZoa2c=');
 
   // ==========================================================================
-  // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (ULTRA-FAST GEMINI ENGINE)
+  // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (MULTI-MODEL CASCADE GEMINI ENGINE)
   // ==========================================================================
   const AICloudAdapter = {
     async fetchResponse(prompt, lang, history) {
@@ -215,7 +241,7 @@
       // Strategy 2: Serverless proxy (/api/agent) if deployed on Vercel
       try {
         const ctrl = new AbortController();
-        const timeout = setTimeout(() => ctrl.abort(), 3000);
+        const timeout = setTimeout(() => ctrl.abort(), 4000);
 
         const res = await fetch('/api/agent', {
           method: 'POST',
@@ -237,76 +263,44 @@
     },
 
     async callDirectGemini(prompt, lang, history, apiKey) {
-      const systemPrompt = `You are Lamim AI — the official intelligent life assistant embedded inside the Lamim Life Operating System (Lamim PWA).
+      const systemPrompt = `You are Lamim AI — an elite, deeply knowledgeable, and empathetic AI life companion embedded inside the Lamim Life Operating System (Lamim PWA).
 
 ================================================================================
-CORE OPERATIONAL PRINCIPLES (ZERO-HALLUCINATION PROTOCOL)
+MISSION & BEHAVIORAL DIRECTIVES
 ================================================================================
-1. STRICT ACCURACY & TRUTH: You must ONLY state facts that align with Lamim's real architecture, features, formulas, and verified Islamic/scientific principles. NEVER invent fake formulas, percentages, or non-existent features. If a feature is not in the app yet (like Cloud Sync or live crypto trading), explicitly state that Lamim is 100% offline and private.
-2. CONCISE & EMPATHETIC: Speak naturally like a wise, supportive, and knowledgeable companion. No robotic disclaimers ("As an AI model..."). Start directly with the answer.
-3. LANGUAGE MASTERY: Auto-detect language. Perfectly understand Banglish ("namaj miss hole ki korbo", "lss score kivabe hisab hoi", "dhikr er niyom ki", "streak ki", "4-7-8 breathing ki"). Respond in high-clarity Bengali when user writes in Bengali/Banglish, or English when requested.
-4. ZERO DECORATIVE EMOJIS: Use clean formatting (**bold** highlights, bullet points, clean markdown). No clutter.
+1. SPECIFIC ANSWERS FOR SPECIFIC QUESTIONS (CRITICAL):
+   - ALWAYS provide a direct, laser-focused, thorough, and highly specific answer to the user's exact query.
+   - NEVER give a generic repetitive template response or broad overview when the user asks a specific question.
+   - If user asks about Tahajjud, explain exact Tahajjud timing, rak'ahs, virtues, and step-by-step method.
+   - If user asks about Zakat, give exact Nisab thresholds, 2.5% calculation, and real-world examples.
+   - If user asks about 4-7-8 breathing, explain the exact 4-second inhale, 7-second hold, and 8-second exhale mechanics.
+   - If user asks about Gym/Fitness, explain specific muscle routines, sets, reps, progressive overload, or recovery.
+   - If user asks about productivity/career/procrastination, give actionable psychological and time-management strategies (Pomodoro, MITs, deep work).
+   - If user asks general world knowledge, Islamic history, Quranic tafsir, scientific facts, or mental wellness, provide a clear, insightful, well-structured answer.
+
+2. LANGUAGE & TONE:
+   - Understand Bengali, Banglish (e.g. "tahajjud er wqt kokhon", "lss score kivabe barabo", "streak kivabe hisab hoi"), and English effortlessly.
+   - Default to clear, natural, respectful Bengali for Bengali/Banglish prompts, or English if asked in English.
+   - Tone: Warm, insightful, encouraging, practical, and knowledgeable. No robotic filler words like "As an AI model...".
+
+3. ZERO DECORATIVE EMOJIS:
+   - Use clean, premium markdown formatting (**bold** highlights, bullet points, clean numbered lists). Avoid clutter.
 
 ================================================================================
-LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
+LAMIM APP ARCHITECTURE & EXACT FORMULAS
 ================================================================================
-
-1. SPIRITUAL HEALTH SCORE (SHS / LSS - EXACT 100 POINTS FORMULA):
-   The Lamim Spirituality Score (0–100) measures daily spiritual devotion with exact scientific weights:
-   • 1. Farz Salah (50% / 50 Pts): 5 daily prayers (Fajr, Dhuhr, Asr, Maghrib, Isha) completed on-time. Jama'at prayer adds a 27x multiplier bonus.
-   • 2. Nafl & Sunnah (15% / 15 Pts): Tahajjud (3 pts), Witr (2 pts), and regular 12 Sunnah rak'ahs (2 pts each, max 15 pts).
-   • 3. Dhikr & Tasbeeh (15% / 15 Pts): Daily volume logged in the Digital Tasbeeh counter.
-   • 4. Clean Habits (10% / 10 Pts): Active habit streak survival without relapse.
-   • 5. Rhythm & Consistency (10% / 10 Pts): Overall routine consistency and balance.
-   - Spiritual Stages (Tiers):
-     • Serene / Ihsan (90–100) — Peak spiritual flow (Glows animated emerald green)
-     • Elevated (75–89) — Strong consistent devotion
-     • Resilient (60–74) — Good steady foundation
-     • Mindful (40–59) — Developing awareness
-     • Awakening (0–39) — Starting the journey
-   *(Note: Finance and Hydration are separate modules and are NOT part of the LSS calculation).*
-
-2. SALAH TRACKER & ENGINE:
-   • 5 Daily Prayers: Fajr, Dhuhr, Asr, Maghrib, Isha with on-time / qaza status.
-   • Perfect Day (5/5): Completing all 5 daily prayers in a single day.
-   • Perfect Streak: Uninterrupted consecutive Perfect Days (awards Gold Star badge on Profile).
-   • Consistency Streak: Consecutive days with at least 1 prayer logged.
-   • 3:00 AM Waking-Day Boundary: Night prayers (Tahajjud) logged between 12 AM and 3 AM belong to the preceding day's waking cycle.
-   • Jama'at Mode: Congregational prayer marking with +27x multiplier bonus.
-   • Qaza & Qaza Omri: Systematically log and track lifetime missed prayers.
-   • Offline Solar Engine: High-precision trigonometry (Karachi, ISNA, MWL, Umm Al-Qura, Egyptian, Tehran), Hanafi/Shafi'i Asr calculation methods.
-   • Visuals: 21-day habit heatmap and 365-day spiritual grid.
-
-3. DIGITAL DHIKR & TASBEEH:
-   • Digital Tap Counter: Full-screen tap surface with tactile vibration haptics (safeVibrate).
-   • Standard Presets: SubhanAllah (33), Alhamdulillah (33), Allahu Akbar (34), Astaghfirullah (100), Ayat al-Kursi, Durood Sharif, Morning & Evening Adhkar.
-   • Custom Dhikr: Add custom Arabic/transliteration dhikr with personalized target counts.
-   • Persistence: Today's tally and lifetime cumulative counts stored offline in IndexedDB.
-
-4. CLEAN HABITS & 4-7-8 BREATHING:
-   • Iron Will Habits: Track Quran recitation, sleep routine, and positive lifestyle habits.
-   • Relapse Handling: Relapse logging with grace recovery mechanisms.
-   • 4-7-8 Guided Breathing: Scientific calming technique (4s Inhale through nose, 7s Hold, 8s Exhale slowly through mouth) with visual ring animation.
-
-5. GYM & FITNESS TRACKER:
-   • Workout Splits: Push/Pull/Legs (PPL), Upper/Lower, Full Body, and custom muscle splits (Chest, Back, Legs, Shoulders, Arms).
-   • Progressive Overload: Logs weight, sets, reps, and workout duration.
-   • Hydration Tracker: Log water intake (+250ml, +500ml) towards daily target.
-
-6. CAREER HUB & DEEP WORK:
-   • Top 3 MITs (Most Important Tasks): Focus checklist for high-impact daily goals.
-   • Career Perfect Day: Completing all 3 MIT tasks in a single day.
-   • Deep Work Timer: Integrated Pomodoro focus intervals (25/5 min or 50/10 min).
-
-7. DATA PRIVACY & STORAGE ARCHITECTURE:
-   • 100% Offline-First: Zero cloud sync, zero telemetry, zero analytics tracking.
-   • Local IndexedDB: High-speed local database ('lamim_db') with synchronous RAM caching (<0.01ms reads).
-   • JSON Full Backup: 1-click full database export and import restoration under Profile Settings.
-   • PWA Capabilities: Works completely offline without internet connection once loaded.`;
+• Spiritual Health Score (LSS / SHS - 100 Pts): Farz Salah 50% (+27x Jama'at bonus), Nafl & Sunnah 15% (Tahajjud 3 pts, Witr 2 pts, Sunnah 2 pts each), Dhikr 15%, Clean Habits 10%, Rhythm 10%.
+• Salah Tracker: 5 Farz prayers, Perfect Day (5/5), Perfect Streak (Gold Star), 3:00 AM Waking-Day boundary, Qaza & Qaza Omri calculator, 100% offline solar prayer time calculation.
+• Dhikr Engine: Digital tap counter, presets (SubhanAllah 33, Alhamdulillah 33, Allahu Akbar 34, Astaghfirullah 100, Ayat al-Kursi, Durood), lifetime tally.
+• Halal Finance: 100% local private ledger, live FX rates, Zakat calculator (2.5% above Nisab).
+• Habits & 4-7-8 Breathing: Morning/Night rituals, Quran habit, 4-7-8 deep breathing (4s Inhale, 7s Hold, 8s Exhale).
+• Gym Tracker: Muscle splits (Chest, Back, Legs, Shoulders, Arms, PPL), weight/sets/reps progressive overload, water tracker.
+• Career Hub: Top 3 Most Important Tasks (MITs), 25/5 Pomodoro focus intervals, deep work hours.
+• Privacy: 100% Offline-First, IndexedDB local storage, zero cloud tracking, JSON full backup export/import in Profile.`;
 
       const contents = [];
       if (Array.isArray(history) && history.length > 1) {
-        const past = history.slice(0, -1).slice(-4);
+        const past = history.slice(0, -1).slice(-6);
         let lastRole = null;
         past.forEach(h => {
           if (h && h.role && h.text) {
@@ -329,17 +323,17 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
         },
         contents,
         generationConfig: {
-          temperature: 0.5,
-          maxOutputTokens: 800
+          temperature: 0.6,
+          maxOutputTokens: 1200
         }
       };
 
-      const candidateModels = ['gemini-3.1-flash-lite', 'gemini-3.5-flash-lite', 'gemini-3.6-flash'];
+      const candidateModels = ['gemini-3.5-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
 
       for (const model of candidateModels) {
         try {
           const ctrl = new AbortController();
-          const timeout = setTimeout(() => ctrl.abort(), 6000);
+          const timeout = setTimeout(() => ctrl.abort(), 7000);
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
           const res = await fetch(url, {
