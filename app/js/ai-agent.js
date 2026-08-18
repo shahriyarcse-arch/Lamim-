@@ -387,11 +387,8 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
         <div class="lamim-ai-launcher-robot-wrap">
           <div id="lamim-ai-launcher-aura" class="lamim-ai-launcher-aura online"></div>
           <img src="assets/ai-mascot.png" class="lamim-ai-launcher-robot-img" alt="Lamim AI Robot" />
+          <div class="lamim-ai-launcher-robot-shadow"></div>
           <span id="lamim-ai-launcher-dot" class="lamim-ai-robot-pulse-dot"></span>
-        </div>
-        <div class="lamim-ai-launcher-text">
-          <span>AI</span>
-          <span id="lamim-ai-launcher-badge" class="lamim-ai-launcher-badge">Live</span>
         </div>
       `;
       document.body.appendChild(launcher);
@@ -515,15 +512,13 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
         `;
       }
 
-      // 2. Launcher Badge & Aura
+      // 2. Launcher Aura & Live Pulse Dot
       const launcherAura = document.getElementById('lamim-ai-launcher-aura');
       const launcherDot = document.getElementById('lamim-ai-launcher-dot');
-      const launcherBadge = document.getElementById('lamim-ai-launcher-badge');
       if (launcherAura) launcherAura.className = `lamim-ai-launcher-aura ${isOnline ? 'online' : 'offline'}`;
-      if (launcherDot) launcherDot.className = `lamim-ai-robot-pulse-dot ${isOnline ? '' : 'offline'}`;
-      if (launcherBadge) {
-        launcherBadge.className = `lamim-ai-launcher-badge ${isOnline ? '' : 'offline'}`;
-        launcherBadge.textContent = isOnline ? 'Live' : (isBn ? 'অফলাইন' : 'Offline');
+      if (launcherDot) {
+        launcherDot.className = `lamim-ai-robot-pulse-dot ${isOnline ? 'online' : 'offline'}`;
+        launcherDot.title = isOnline ? 'Gemini Live' : (isBn ? 'অফলাইন' : 'Offline');
       }
 
       // 3. Welcome Hero Stage Aura & Status Pill
