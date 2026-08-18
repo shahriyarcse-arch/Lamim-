@@ -810,7 +810,7 @@ const DB = {
   },
 
   // Finance & Zakat
-  getFinance() { return this.get('lamim_finance') || { nisab: 600, cash: 0, gold: 0, silver: 0, business: 0, stocks: 0, debts: [], savings_goals: [] }; },
+  getFinance() { return this.get('lamim_finance') || { nisab: 600, cash: 0, gold: 0, silver: 0, business: 0, stocks: 0, debts: [], savings_goals: [], expenses: [], income: [], savings: [] }; },
   setFinance(d) { return this.set('lamim_finance', d); },
 
   // Migration & Housekeeping
