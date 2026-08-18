@@ -997,7 +997,7 @@ const Salah = {
           </div>
           <div class="footer-brand">
             <div class="footer-left">LAMIM ECOSYSTEM • SECURE REPORT</div>
-            <div class="footer-right">v1.0.0</div>
+            <div class="footer-right">v1.3.5</div>
           </div>
         </div>
       </div>

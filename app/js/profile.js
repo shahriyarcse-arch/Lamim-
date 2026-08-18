@@ -217,7 +217,7 @@ const Profile = {
     if (ab) ab.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.showAppInfo()">
         <div class="settings-item-left"><div class="settings-item-icon ic-slate">${icons.info}</div><div><div class="settings-item-label" data-i18n="App Version">${t('App Version')}</div><div class="settings-item-value" data-i18n="Release notes & build info">${t('Release notes & build info')}</div></div></div>
-        <div class="settings-item-right"><span class="ver-chip">v1.0.0</span><span>›</span></div>
+        <div class="settings-item-right"><span class="ver-chip">v1.3.5</span><span>›</span></div>
       </div>
     `;
   },
@@ -497,11 +497,21 @@ const Profile = {
 
 
   showAppInfo() {
-    const APP_VERSION = '1.0.0';
-    const CODENAME = 'Genesis';
+    const APP_VERSION = '1.3.5';
+    const CODENAME = 'Serene';
     const CHANGELOG = [
       {
-        version: '1.0.0', codename: 'Genesis', date: Utils.todayStr(), tag: 'Initial Launch',
+        version: '1.3.5', codename: 'Serene', date: Utils.todayStr(), tag: 'Production Ready',
+        notes: [
+          'Introduced Hybrid AI Companion with animated 3D Robot mascot and mood-responsive interface.',
+          'Offline Islamic Knowledge Engine for instant answers on Salah, Tahajjud, Witr, Qaza Omri, and Halal Finance.',
+          'Gemini Live streaming intelligence supporting fluent Bengali, English, and Banglish.',
+          'Upgraded Service Worker with query-safe local asset matching (ignoreSearch) and auto cache cleanup.',
+          'Full-Spectrum QA and Production Reliability audit with 100% Playwright test pass rate.'
+        ]
+      },
+      {
+        version: '1.0.0', codename: 'Genesis', date: '2026-08-10', tag: 'Initial Launch',
         notes: [
           'Official public launch of Lamim Living System PWA.',
           'Complete Islamic Lifestyle suite: Salah, Dhikr, Nafl, Habits, Gym, Career, and Halal Finance.',
