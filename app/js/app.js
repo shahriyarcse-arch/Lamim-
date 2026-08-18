@@ -280,24 +280,13 @@ updateSectionTitle() {
     // Ensure setup form is always bound
     if (typeof Auth !== 'undefined') Auth.init();
 
-    // Network status indicators for PWA
-    const offlineBanner = document.createElement('div');
-    offlineBanner.id = 'offline-banner';
-    offlineBanner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:var(--z-overlay,9999);padding:8px 16px;text-align:center;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#f59e0b,#d97706);transform:translateY(-100%);transition:transform 0.3s ease;pointer-events:none;';
-    offlineBanner.textContent = this.lang === 'bn' ? 'অফলাইন — ডাটা লোকালি সেভ হবে' : 'Offline — Data saved locally';
-    document.body.appendChild(offlineBanner);
-
-    const showOfflineBanner = () => { offlineBanner.style.transform = 'translateY(0)'; };
-    const hideOfflineBanner = () => { offlineBanner.style.transform = 'translateY(-100%)'; };
-
+    // Network status transitions for PWA
     window.addEventListener('online', () => {
-      hideOfflineBanner();
       Utils.toast(this.lang === 'bn' ? 'ইন্টারনেট কানেকশন ফিরেছে!' : 'Back Online!', 'success');
     });
     window.addEventListener('offline', () => {
-      showOfflineBanner();
+      Utils.toast(this.lang === 'bn' ? 'অফলাইন মোড — ডাটা লোকালি সেভ হবে' : 'Offline Mode — Data saved locally', 'info');
     });
-    if (!navigator.onLine) showOfflineBanner();
 
     // PWA 1-Click Install Prompt Capture
     window.deferredInstallPrompt = null;
