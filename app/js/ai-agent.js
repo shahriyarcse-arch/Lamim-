@@ -491,13 +491,14 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
 
       window.addEventListener('online', () => this._updateOnlineBadge());
       window.addEventListener('offline', () => this._updateOnlineBadge());
+      this._updateOnlineBadge();
     },
 
     _updateOnlineBadge() {
       const isOnline = navigator.onLine;
       const isBn = this.lang === 'bn';
 
-      // Header Badge
+      // 1. Header Badge
       const badge = document.getElementById('lamim-ai-badge');
       if (badge) {
         badge.className = `lamim-ai-mode-badge ${isOnline ? 'online' : 'offline'}`;
@@ -505,6 +506,21 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
           <span class="lamim-ai-badge-dot ${isOnline ? '' : 'offline'}"></span>
           <span id="lamim-ai-badge-text">${isOnline ? 'Gemini Live' : (isBn ? 'অফলাইন' : 'Offline')}</span>
         `;
+      }
+
+      // 2. Launcher Robot State
+      const launcher = document.getElementById('lamim-ai-launcher');
+      if (launcher) {
+        launcher.classList.toggle('online', isOnline);
+        launcher.classList.toggle('offline', !isOnline);
+        launcher.setAttribute('title', isOnline ? 'Lamim AI (Gemini Live)' : 'Lamim AI (Offline Intelligence)');
+      }
+
+      // 3. Hero Mascot State
+      const heroStage = document.getElementById('lamim-ai-hero-stage');
+      if (heroStage) {
+        heroStage.classList.toggle('online', isOnline);
+        heroStage.classList.toggle('offline', !isOnline);
       }
     },
 
