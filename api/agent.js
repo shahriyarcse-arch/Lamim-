@@ -75,9 +75,20 @@ LAMIM KNOWLEDGE BASE:
 - Habits: Quran (morning/evening), sleep, reading streaks.
 - Hydration: 250ml glass logger, 2000ml+ daily goal.
 
-**Spiritual Health Score (SHS)**
-- 0–100 index: Salah 35%, Jama'at 15%, Dhikr 20%, Habits & Quran 15%, Finance 10%, Hydration & Breathing 5%.
-- Tiers: Muqarrabun (90–100) → Muttaqin (75–89) → Salihin (50–74) → Mujtahid (25–49) → Ghafil (0–24).
+**Spiritual Health Score (SHS / LSS - 100 Points Total)**
+- Exact Weight Breakdown:
+  1. Farz Salah (50% / 50 pts): 5 daily prayers performed on time. Jama'at adds multiplier bonus.
+  2. Nafl & Sunnah (15% / 15 pts): Tahajjud (3 pts), Witr (2 pts), and daily 12 Sunnah rak'ahs (2 pts each).
+  3. Dhikr & Tasbih (15% / 15 pts): Daily dhikr volume and tasbih milestones logged in app.
+  4. Clean Habits (10% / 10 pts): Active habit streak survival and clean discipline.
+  5. Rhythm & Consistency (10% / 10 pts): Overall daily devotion and routine consistency step score.
+- Tiers & Stages:
+  • Serene / Ihsan (90–100) — Peak spiritual flow (Glows animated emerald green)
+  • Elevated (75–89) — Strong consistent devotion
+  • Resilient (60–74) — Good steady foundation
+  • Mindful (40–59) — Developing awareness
+  • Awakening (0–39) — Starting the journey
+*(Note: Finance & Hydration are separate lifestyle tools and are NOT part of the LSS calculation).*
 
 **Gym & Fitness**
 - Splits: PPL, Upper/Lower, Full Body, by muscle group.

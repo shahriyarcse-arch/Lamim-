@@ -85,11 +85,9 @@
       {
         id: 'spiritual-health-score',
         section: 'analysis',
-        keywords: ['shs', 'score', 'spiritual score', 'analysis', 'health score', 'report', 'graph', 'progress', 'স্কোর', 'অ্যানালাইসিস', 'স্পিরিট স্কোর', 'গ্রাফ', 'রিপোর্ট', 'অগ্রগতি', 'প্রগ্রেস'],
-        replyBn: `**স্পিরিচুয়াল হেলথ স্কোর (SHS Engine)**:\n• **০-১০০ স্কেল**: আপনার নামাজ, জিকির, নফল আমল ও অভ্যাসের ধারাবাহিকতার ভিত্তিতে আত্মিক অগ্রগতির স্কোর নির্ণয়।\n• **ট্রেন্ড গ্রাফ**: ৭ দিন ও ৩০ দিনের অ্যানালিটিক্স চার্ট পুরোপুরি অফলাইনে জেনারেট হয়।\n• **৭টি ধাপ**: Awakening থেকে শুরু করে Ihsan (ইহসান) স্তর পর্যন্ত অগ্রগতি ট্র্যাক করা যায়।`,
-        replyEn: `**Spiritual Health Score (SHS)**:\n• **0-100 Synthetic Index**: Synthesizes your Salah regularity, Dhikr, Nafl, and daily habit consistency.
-• **Trend Charts**: 7-day and 30-day analytics charts rendered completely offline.
-• **7 Spiritual Stages**: Progress through ranks from Awakening to peak Ihsan.`,
+        keywords: ['shs', 'lss', 'score', 'spiritual score', 'spirituality score', 'analysis', 'health score', 'argument', 'breakdown', 'weight', 'স্কোর', 'অ্যানালাইসিস', 'স্পিরিট স্কোর', 'এলএসএস', 'আর্গুমেন্ট', 'ওজন', 'হিসাব'],
+        replyBn: `**লামিম স্পিরিচুয়াল স্কোর (LSS / SHS — মোট ১০০ পয়েন্ট)**:\n• **ফরজ সালাত (৫০%)**: ৫ ওয়াক্ত সালাত সময়মতো আদায় ও জামাআত বোনাস।\n• **নফল ও সুন্নাত (১৫%)**: তাহাজ্জুদ (৩ প.), বিতর (২ প.) ও ১২ রাকাত নিয়মিত সুন্নাত।\n• **যিকির ও তাসবীহ (১৫%)**: তাসবীহ কাউন্টারে দৈনিক যিকির লক্ষ্যমাত্রা পূরণ।\n• **ক্লিন হ্যাবিটস (১০%)**: ক্ষতিকর অভ্যাস বর্জন ও রিল্যাপ্স-মুক্ত ধারাবাহিকতা।\n• **ধারাবাহিকতা ও ভারসাম্য (১০%)**: দৈনন্দিন ইবাদতের সার্বিক রিদম স্কোর।\n\n*(উল্লেখ্য: ফিন্যান্স বা হাইড্রেশন এলএসএস স্কোরে যুক্ত নয়, এগুলো আলাদা লাইফস্টাইল ফিচার)*`,
+        replyEn: `**Lamim Spiritual Score (LSS / SHS — 100 Points Total)**:\n• **Farz Salah (50%)**: 5 daily prayers on time with Jama'at multiplier bonus.\n• **Nafl & Sunnah (15%)**: Tahajjud (3 pts), Witr (2 pts), and 12 daily Sunnah rak'ahs.\n• **Dhikr & Tasbih (15%)**: Daily dhikr counts logged in the digital counter.\n• **Clean Habits (10%)**: Habit streak survival and discipline.\n• **Rhythm & Consistency (10%)**: Overall daily routine step score.\n\n*(Note: Finance and Hydration are separate modules and not part of the LSS score)*`,
         actionLabelBn: 'অ্যানালাইসিস হাব খুলুন ➔',
         actionLabelEn: 'Open Analysis Hub ➔'
       },
@@ -282,9 +280,20 @@ LAMIM KNOWLEDGE BASE:
 - Habits: Quran (morning/evening), sleep, reading streaks.
 - Hydration: 250ml glass logger, 2000ml+ daily goal.
 
-**Spiritual Health Score (SHS)**
-- 0–100 index: Salah 35%, Jama'at 15%, Dhikr 20%, Habits & Quran 15%, Finance 10%, Hydration & Breathing 5%.
-- Tiers: Muqarrabun (90–100) → Muttaqin (75–89) → Salihin (50–74) → Mujtahid (25–49) → Ghafil (0–24).
+**Spiritual Health Score (SHS / LSS - 100 Points Total)**
+- Exact Weight Breakdown:
+  1. Farz Salah (50% / 50 pts): 5 daily prayers performed on time. Jama'at adds multiplier bonus.
+  2. Nafl & Sunnah (15% / 15 pts): Tahajjud (3 pts), Witr (2 pts), and daily 12 Sunnah rak'ahs (2 pts each).
+  3. Dhikr & Tasbih (15% / 15 pts): Daily dhikr volume and tasbih milestones logged in app.
+  4. Clean Habits (10% / 10 pts): Active habit streak survival and clean discipline.
+  5. Rhythm & Consistency (10% / 10 pts): Overall daily devotion and routine consistency step score.
+- Tiers & Stages:
+  • Serene / Ihsan (90–100) — Peak spiritual flow (Glows animated emerald green)
+  • Elevated (75–89) — Strong consistent devotion
+  • Resilient (60–74) — Good steady foundation
+  • Mindful (40–59) — Developing awareness
+  • Awakening (0–39) — Starting the journey
+*(Note: Finance & Hydration are separate lifestyle tools and are NOT part of the LSS calculation).*
 
 **Gym & Fitness**
 - Splits: PPL, Upper/Lower, Full Body, by muscle group.
