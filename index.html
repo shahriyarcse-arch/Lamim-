@@ -1812,6 +1812,7 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
 
       function updateHeroPrayer() {
         const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         const textEl = document.getElementById('hero-live-date-text');
         if (textEl) {
           textEl.textContent = dateStr;

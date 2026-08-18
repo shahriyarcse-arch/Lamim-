@@ -103,7 +103,7 @@ self.addEventListener('fetch', (e) => {
           }
           return res;
         })
-        .catch(() => caches.match(e.request).then((cached) => cached || new Response('Offline – resource unavailable', { status: 503, statusText: 'Service Unavailable' })))
+        .catch(() => caches.match(e.request, { ignoreSearch: true }).then((cached) => cached || caches.match(e.request) || new Response('Offline – resource unavailable', { status: 503, statusText: 'Service Unavailable' })))
     );
     return;
   }

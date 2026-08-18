@@ -82,6 +82,15 @@
         actionLabelEn: 'Start 4-7-8 Breathing ➔'
       },
       {
+        id: 'halal-finance',
+        section: 'finance',
+        keywords: ['finance', 'halal finance', 'taka', 'income', 'expense', 'budget', 'হিসাব', 'টাকা', 'ফাইন্যান্স', 'হালাল ফাইন্যান্স', 'আয়', 'ব্যয়', 'খরচ', 'বাজেট', 'টাকার হিসাব'],
+        replyBn: `**হালাল ফাইন্যান্স ও ব্যক্তিগত হিসাব খাতা**:\n• **১০০% লোকাল প্রাইভেসি**: আপনার সমস্ত আয় ও ব্যয়ের তথ্য সম্পূর্ণ এনক্রিপ্টেড হয়ে আপনার ডিভাইসে সংরক্ষিত থাকে।\n• **স্মার্ট ক্যাটাগরি**: বাজার, ট্রান্সপোর্ট, বাসাভাড়া, বিল, সাদাকাহ ও ব্যবসায়িক ব্যয়ের স্বয়ংক্রিয় হিসাব।\n• **যাকাত ও বাজেট অ্যানালিটিক্স**: মাসিক উদ্বৃত্ত এবং প্রদেয় যাকাতের রিয়েলটাইম সামারি।`,
+        replyEn: `**Halal Finance & Private Ledger**:\n• **100% Offline Privacy**: Your cashflow and balance data never leave your browser.\n• **Smart Categorization**: Bazar, commute, rent, utilities, business expenses, and Sadaqah.\n• **Zakat & Budget Analytics**: Realtime income-vs-expense analytics and Zakat assessment.`,
+        actionLabelBn: 'হালাল ফাইন্যান্স খুলুন ➔',
+        actionLabelEn: 'Open Halal Finance ➔'
+      },
+      {
         id: 'zakat-nisab',
         section: 'finance',
         keywords: ['zakat', 'jakat', 'nisab', 'nisob', 'gold', 'silver', '2.5', 'যাকাত', 'জাকাত', 'নিসাব', 'স্বর্ণ', 'রুপা', 'যাকাত হিসাব', 'যাকাতের নিয়ম'],
