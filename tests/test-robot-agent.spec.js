@@ -44,8 +44,8 @@ test('Robot Mascot in PWA with Online & Offline States', async ({ page }) => {
   await page.evaluate(() => window.dispatchEvent(new Event('offline')));
   await page.waitForTimeout(500);
 
-  const offlineStatus = page.locator('#lamim-ai-status-pill');
-  await expect(offlineStatus).toHaveClass(/offline/);
+  const offlineBadge = page.locator('#lamim-ai-badge');
+  await expect(offlineBadge).toHaveClass(/offline/);
 
   // Screenshot Offline Mode Hero Stage
   await page.screenshot({ path: 'test-results/pwa-robot-offline-mode.png' });
