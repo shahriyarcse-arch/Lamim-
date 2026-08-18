@@ -104,7 +104,12 @@
   <link rel="prefetch" href="app/index.html">
   <link rel="prefetch" href="styles.min.css">
   <link rel="prefetch" href="app.js">
-  <script>history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</script>
+  <script>
+    function safeVibrate(ms) {
+      if (navigator.userActivation && !navigator.userActivation.hasBeenActive) return;
+      if (navigator.vibrate) { try { navigator.vibrate(ms); } catch(e) {} }
+    }
+history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -1887,7 +1892,7 @@
           setTimeout(function() { item.style.transform = 'scale(1)'; }, 150);
 
           updateProgress();
-          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+          safeVibrate(14);
         });
       });
 
@@ -1972,7 +1977,7 @@
         barEl.style.width = '0%';
         percentEl.textContent = '0%';
         startTime = null;
-        if (navigator.vibrate) { try { navigator.vibrate(12); } catch(err) {} }
+        safeVibrate(12);
       });
 
       // Start sequential progression when visible on screen or fallback
@@ -2073,7 +2078,7 @@
             cell.style.zIndex = '1';
           }, 1100);
 
-          if (navigator.vibrate) { try { navigator.vibrate(16); } catch(err) {} }
+          safeVibrate(16);
         }
 
         cell.addEventListener('click', handleTileTap);
@@ -2274,7 +2279,7 @@
           if (mode !== currentMode) {
             renderScreen(mode);
           }
-          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+          safeVibrate(14);
         });
       });
 
@@ -2290,7 +2295,7 @@
           if (meterEl) meterEl.style.width = data.meterVals[data.titlesIdx];
           titleEl.style.transform = 'scale(1.06)';
           setTimeout(function() { titleEl.style.transform = 'scale(1)'; }, 160);
-          if (navigator.vibrate) { try { navigator.vibrate(12); } catch(err) {} }
+          safeVibrate(12);
         });
       }
 
@@ -2349,9 +2354,7 @@
         if (labelEl) labelEl.textContent = dhikrPhrases[phraseIdx % dhikrPhrases.length];
         phraseIdx++;
 
-        if (navigator.vibrate) {
-          try { navigator.vibrate(25); } catch(e) {}
-        }
+        safeVibrate(25);
 
         ring.style.transform = 'scale(1.08)';
         setTimeout(function() {
@@ -2629,7 +2632,7 @@
         glass.style.transform = 'scale(0.93)';
         setTimeout(function() { glass.style.transform = 'scale(1)'; }, 160);
         sloshAmp = 14;   /* spike the wave amplitude */
-        if (navigator.vibrate) { try { navigator.vibrate(22); } catch(e) {} }
+        safeVibrate(22);
       }
 
       /* --- click handler --- */
@@ -2714,7 +2717,7 @@
             if (lbl) { lbl.style.color = 'var(--muted)'; lbl.style.fontWeight = '800'; }
           }
         });
-        if (navigator.vibrate) { try { navigator.vibrate(18); } catch(e) {} }
+        safeVibrate(18);
       }
 
       /* Initialize with real current day */
@@ -2732,7 +2735,7 @@
           e.stopPropagation();
           streak.style.transform = 'scale(0.94)';
           setTimeout(function() { streak.style.transform = 'scale(1)'; }, 160);
-          if (navigator.vibrate) { try { navigator.vibrate(12); } catch(err) {} }
+          safeVibrate(12);
         });
       }
     })();
@@ -2835,7 +2838,7 @@
 
         totalVal.style.transform = 'scale(1.08)';
         setTimeout(function() { totalVal.style.transform = 'scale(1)'; }, 180);
-        if (navigator.vibrate) { try { navigator.vibrate(18); } catch(err) {} }
+        safeVibrate(18);
       }
 
       /* Initialize with real current month */
@@ -2871,7 +2874,7 @@
           e.stopPropagation();
           box.style.background = 'rgba(61,122,90,0.08)';
           setTimeout(function() { box.style.background = 'transparent'; }, 200);
-          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+          safeVibrate(14);
         });
       });
     })();
@@ -3001,7 +3004,7 @@
           setTimeout(function() {
             focusVal.style.transform = 'scale(1)';
           }, 180);
-          if (navigator.vibrate) { try { navigator.vibrate(14); } catch(err) {} }
+          safeVibrate(14);
         });
       }
 
@@ -3014,7 +3017,7 @@
             box.style.transform = 'scale(1)';
             box.style.background = 'rgba(61,122,90,0.06)';
           }, 180);
-          if (navigator.vibrate) { try { navigator.vibrate(18); } catch(err) {} }
+          safeVibrate(18);
         });
       });
     })();

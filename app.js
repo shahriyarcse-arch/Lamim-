@@ -1,5 +1,5 @@
-import Lenis from './lib/lenis.mjs';
-import { animate, inView } from "./lib/motion.mjs";
+import Lenis from './lib/lenis.js';
+import { animate, inView } from "./lib/motion.js";
 
 /* ---- LENIS SMOOTH SCROLL (skip if reduced motion) ---- */
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
