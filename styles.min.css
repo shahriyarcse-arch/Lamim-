@@ -52,6 +52,8 @@ body {
 html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
 }
 
