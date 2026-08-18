@@ -202,8 +202,49 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
     .float:hover,.float:active,.float.active{background:var(--dark);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:transparent;box-shadow:0 12px 30px rgba(19,33,27,.35)}
     @media(min-width:1024px){.hero-art{overflow:visible}.hero{min-height:100vh;padding:140px 0 80px;display:grid;align-items:center}.hero-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(40px,5vw,90px);align-items:center}.hero-art{height:620px;max-width:100%}.app{left:8%;right:0;top:8%;bottom:2%;padding:15px;border-radius:30px;transform:rotate(3deg)}.float{right:-3%;bottom:10%;padding:14px 17px}}
     .reveal{opacity:0;transform:translateY(30px)}
-    .btn,.navcta{transition:transform .45s var(--ease),box-shadow .45s var(--ease),background .2s}
     .app-head{display:flex;justify-content:space-between;padding:4px 7px 12px;border-bottom:1px solid var(--line);font-weight:800;font-size:.85rem}
+    .hero-live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    .hero-live-dot-wrap {
+      position: relative;
+      width: 9px;
+      height: 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-live-dot-core {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981, 0 0 3px #10b981;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-live-dot-ping {
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.5);
+      animation: heroLivePing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      z-index: 1;
+    }
+    @keyframes heroLivePing {
+      0% {
+        transform: scale(0.8);
+        opacity: 0.95;
+      }
+      70%, 100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+    }
     .app-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,2vw,13px);margin-top:12px}
     .tile{padding:clamp(10px,2.5vw,16px);border-radius:16px;min-height:110px;background:#edf2eb;display:flex;flex-direction:column;justify-content:space-between}
     .tile.mint{background:var(--mint)}.tile.sky{background:var(--sky)}.tile.dark{background:var(--dark);color:var(--paper)}
@@ -764,7 +805,15 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
           <div class="orbit"></div>
           <div class="app">
             <div class="app-head">
-              <span id="hero-live-date">Tuesday, 21 July <span style="color:var(--teal)">&#9679; </span></span>
+              <span id="hero-live-date" style="display:inline-flex;align-items:center;">
+                <span id="hero-live-date-text">Tuesday, 18 Aug</span>
+                <span class="hero-live-indicator" title="Live Clock & Solar Engine Active">
+                  <span class="hero-live-dot-wrap">
+                    <span class="hero-live-dot-ping"></span>
+                    <span class="hero-live-dot-core"></span>
+                  </span>
+                </span>
+              </span>
               <span>&bull;&bull;&bull;</span>
             </div>
             <div class="app-grid">
@@ -1760,9 +1809,12 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
 
       function updateHeroPrayer() {
         const now = new Date();
-        const options = { weekday: 'long', day: 'numeric', month: 'short' };
-        const dateStr = now.toLocaleDateString('en-US', options);
-        dateEl.innerHTML = dateStr + ' <span style="color:var(--teal)">&#9679;</span>';
+        const textEl = document.getElementById('hero-live-date-text');
+        if (textEl) {
+          textEl.textContent = dateStr;
+        } else {
+          dateEl.innerHTML = `${dateStr} <span class="hero-live-indicator" title="Live Clock & Solar Engine Active"><span class="hero-live-dot-wrap"><span class="hero-live-dot-ping"></span><span class="hero-live-dot-core"></span></span></span>`;
+        }
 
         const year = now.getFullYear();
         const month = now.getMonth();
