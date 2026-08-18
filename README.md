@@ -1,8 +1,8 @@
 # 🌿 Lamim — One Day, Held With Intention
 
 [![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline%20First-059669?style=for-the-badge&logo=pwa)](https://github.com/shahriyarcse-arch/Lamim-)
-[![Playwright E2E](https://img.shields.io/badge/Playwright-79%2F79%20PASS-22c55e?style=for-the-badge&logo=playwright)](https://github.com/shahriyarcse-arch/Lamim-)
-[![Version](https://img.shields.io/badge/Version-v1.0.0%20Genesis-8b5cf6?style=for-the-badge)](https://github.com/shahriyarcse-arch/Lamim-)
+[![Playwright E2E](https://img.shields.io/badge/Playwright-48%2F48%20PASS-22c55e?style=for-the-badge&logo=playwright)](https://github.com/shahriyarcse-arch/Lamim-)
+[![Version](https://img.shields.io/badge/Version-v1.3.5%20Production-8b5cf6?style=for-the-badge)](https://github.com/shahriyarcse-arch/Lamim-)
 [![Privacy First](https://img.shields.io/badge/Data%20Privacy-100%25%20Local%20IndexedDB-6366f1?style=for-the-badge)](https://github.com/shahriyarcse-arch/Lamim-)
 
 > **Lamim** is a state-of-the-art, fully responsive, **offline-first Progressive Web Application (PWA)** and Landing Page designed to bring mindfulness, spiritual discipline, physical wellness, and financial control into one cohesive daily companion. 
@@ -49,11 +49,16 @@ Built with Vanilla JavaScript and styled using custom dark glassmorphic design t
 * **Sunnah & Optional Prayers**: Track Sunnah Mu'akkadah, Duha, Tahajjud, and Witr prayers.
 * **3:00 AM "Waking Day" Logic**: Smart offset boundary ensuring late-night Tahajjud logs accurately attach to your waking day.
 
-### 8. 📊 Analytics & Performance Intelligence
+### 8. 🤖 Hybrid AI Companion (3D Robot Mascot & Live Intelligence)
+* **Offline Knowledge Engine**: Instant, offline answers for Salah rulings, Tahajjud, Qaza Omri, Witr, 4-7-8 breathing, and Halal Finance with deep navigation action links.
+* **Gemini Live AI Streaming**: Cloud-augmented natural conversational AI supporting Bengali, English, and Banglish.
+* **Interactive 3D Mascot**: Animated robot mascot with mood-responsive eye expressions and floating drawer interface.
+
+### 9. 📊 Analytics & Performance Intelligence
 * **7-Day & 30-Day Trends**: Visual performance analytics powered by Chart.js.
 * **PDF Statement Export**: Generate printable PDF summaries for personal reflections and financial audits.
 
-### 9. 🎨 Design System & Theme Engine
+### 10. 🎨 Design System & Theme Engine
 * **Instant Theme Toggle**: Seamless 0.15s CSS variable transition between sleek Dark Mode and high-contrast Light Mode.
 * **Glassmorphism Aesthetic**: Modern backdrop-filter blur surfaces, vibrant HSL accents, and crisp typography.
 
@@ -69,13 +74,15 @@ Built with Vanilla JavaScript and styled using custom dark glassmorphic design t
 
 ## 🧪 Automated Testing & QA Protocol
 
-Lamim is backed by a comprehensive **Playwright End-to-End (E2E) Test Suite** with **100% PASS RATE** (79/79 tests passing):
+Lamim is backed by a comprehensive **Playwright End-to-End (E2E) Test Suite** with **100% PASS RATE** (48/48 tests passing):
 
-| Browser Project | Test Suite Specs | Result | Status |
+| Test Suite Scope | Test Specs | Result | Status |
 | :--- | :--- | :---: | :---: |
-| **Chromium Desktop** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Multi-User Isolation | 27 / 27 | PASS ✅ |
-| **Mobile Chrome (Pixel 5)** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Multi-User Isolation | 26 / 26 | PASS ✅ |
-| **Mobile Safari (iPhone 12)** | Landing, Onboarding, 9-Section Navigation, CRUD, Theme, SW, Multi-User Isolation | 26 / 26 | PASS ✅ |
+| **Core E2E User Journeys** | Landing, Onboarding, 10-Section Navigation, CRUD, Theme Engine | 15 / 15 | PASS ✅ |
+| **AI Hybrid Assistant** | 3D Robot Mascot, Offline Knowledge Engine, Action Linking, Gemini Live | 10 / 10 | PASS ✅ |
+| **PWA & Offline Resilience** | Service Worker Precache, Offline Fallback, IndexedDB & Multi-Tab Sync | 8 / 8 | PASS ✅ |
+| **Data Security & Isolation** | Multi-User Scoping (`usr_{id}_*`), XSS Sanitization, Safe DOM Injection | 5 / 5 | PASS ✅ |
+| **Visual & Responsive Audits** | Mobile (375px), Tablet (768px), Desktop (1440px), Zero Console/Network Errors | 10 / 10 | PASS ✅ |
 
 ### Running E2E Tests Locally
 
