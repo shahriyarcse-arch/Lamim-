@@ -1,38 +1,45 @@
 /* ==========================================================================
-   LAMIM HYBRID AI ASSISTANT — MODERN DESIGN SYSTEM
-   Professional Apple/Linear Grade Conversational Copilot Interface
+   LAMIM HYBRID AI ASSISTANT — 3D ROBOT MASCOT & ULTRA-PREMIUM UI
+   Transparent Glassmorphic Interface with Online / Offline Dynamic Animations
    ========================================================================== */
 
 :root {
-  --ai-launcher-size: 48px;
+  --ai-launcher-size: 52px;
   --ai-accent: #10b981;
   --ai-accent-hover: #059669;
-  --ai-accent-glow: rgba(16, 185, 129, 0.28);
+  --ai-accent-glow: rgba(16, 185, 129, 0.32);
+  --ai-accent-cyan: #06b6d4;
   --ai-bg-glass: rgba(15, 23, 42, 0.88);
   --ai-bg-card: rgba(30, 41, 59, 0.72);
+  --ai-bg-stage: rgba(15, 23, 42, 0.65);
   --ai-border: rgba(255, 255, 255, 0.09);
-  --ai-border-hover: rgba(16, 185, 129, 0.4);
+  --ai-border-hover: rgba(16, 185, 129, 0.45);
   --ai-text-primary: #f8fafc;
   --ai-text-secondary: #cbd5e1;
   --ai-text-muted: #94a3b8;
   --ai-user-bubble: linear-gradient(135deg, #059669 0%, #047857 100%);
+  --ai-robot-glow-online: rgba(16, 185, 129, 0.4);
+  --ai-robot-glow-offline: rgba(245, 158, 11, 0.3);
 }
 
 [data-theme="light"] {
   --ai-bg-glass: rgba(255, 255, 255, 0.94);
-  --ai-bg-card: rgba(241, 245, 249, 0.85);
+  --ai-bg-card: rgba(241, 245, 249, 0.88);
+  --ai-bg-stage: rgba(248, 250, 252, 0.85);
   --ai-border: rgba(15, 23, 42, 0.08);
   --ai-border-hover: rgba(16, 185, 129, 0.45);
   --ai-text-primary: #0f172a;
   --ai-text-secondary: #334155;
   --ai-text-muted: #64748b;
   --ai-accent: #059669;
-  --ai-accent-glow: rgba(5, 150, 105, 0.2);
+  --ai-accent-glow: rgba(5, 150, 105, 0.22);
   --ai-user-bubble: linear-gradient(135deg, #059669 0%, #047857 100%);
+  --ai-robot-glow-online: rgba(5, 150, 105, 0.3);
+  --ai-robot-glow-offline: rgba(217, 119, 6, 0.25);
 }
 
 /* ==========================================================================
-   1. FLOATING LAUNCHER BUTTON (SLEEK PILL DESIGN)
+   1. FLOATING 3D ROBOT LAUNCHER BUTTON
    ========================================================================== */
 
 .lamim-ai-launcher {
@@ -42,16 +49,16 @@
   z-index: 999;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px 6px 8px;
+  gap: 10px;
+  padding: 5px 14px 5px 6px;
   border-radius: 9999px;
   background: var(--ai-bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--ai-border);
-  box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  opacity: 0.85;
+  opacity: 0.92;
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   touch-action: manipulation;
@@ -60,8 +67,8 @@
 .lamim-ai-launcher:hover,
 .lamim-ai-launcher:focus-visible {
   opacity: 1;
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 14px 34px -4px var(--ai-accent-glow), 0 4px 14px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 36px -4px var(--ai-accent-glow), 0 6px 18px rgba(0, 0, 0, 0.25);
   border-color: var(--ai-border-hover);
 }
 
@@ -71,17 +78,59 @@
   border-color: var(--ai-accent);
 }
 
-.lamim-ai-launcher-orb {
+/* Robot Mascot Orb inside Launcher */
+.lamim-ai-launcher-robot-wrap {
   position: relative;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #34d399, #059669);
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 2px 10px var(--ai-accent-glow);
+  flex-shrink: 0;
+}
+
+.lamim-ai-launcher-robot-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+  animation: robotSubtleFloat 3.2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.lamim-ai-launcher-aura {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.lamim-ai-launcher-aura.online {
+  background: radial-gradient(circle, var(--ai-robot-glow-online) 0%, transparent 70%);
+  animation: auraPulseOnline 2.4s ease-in-out infinite;
+}
+
+.lamim-ai-launcher-aura.offline {
+  background: radial-gradient(circle, var(--ai-robot-glow-offline) 0%, transparent 70%);
+  animation: auraPulseOffline 3.5s ease-in-out infinite;
+}
+
+.lamim-ai-robot-pulse-dot {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 1.5px solid #0f172a;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.lamim-ai-robot-pulse-dot.offline {
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
 }
 
 .lamim-ai-launcher-text {
@@ -91,7 +140,7 @@
   color: var(--ai-text-primary);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .lamim-ai-launcher-badge {
@@ -105,23 +154,28 @@
   letter-spacing: 0.04em;
 }
 
+.lamim-ai-launcher-badge.offline {
+  background: rgba(245, 158, 11, 0.16);
+  color: #f59e0b;
+}
+
 /* ==========================================================================
-   2. CHAT DRAWER / MODAL CONTAINER
+   2. CHAT DRAWER / OVERLAY CONTAINER
    ========================================================================== */
 
 .lamim-ai-drawer-overlay {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.24s ease;
+  transition: opacity 0.26s ease;
 }
 
 .lamim-ai-drawer-overlay.open {
@@ -134,18 +188,18 @@
   width: 100%;
   max-width: 440px;
   height: 86vh;
-  max-height: 690px;
+  max-height: 700px;
   margin: 0 18px 20px 0;
-  border-radius: 24px;
+  border-radius: 26px;
   background: var(--ai-bg-glass);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(36px);
+  -webkit-backdrop-filter: blur(36px);
   border: 1px solid var(--ai-border);
-  box-shadow: 0 28px 64px -14px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 32px 72px -16px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.07);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transform: translateY(20px) scale(0.98);
+  transform: translateY(24px) scale(0.97);
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -157,22 +211,22 @@
   .lamim-ai-drawer {
     max-width: 100%;
     margin: 0;
-    height: 90vh;
-    max-height: 90vh;
+    height: 92vh;
+    max-height: 92vh;
     border-radius: 28px 28px 0 0;
     border-bottom: none;
   }
 }
 
 /* ==========================================================================
-   3. CHAT DRAWER HEADER
+   3. CHAT DRAWER HEADER WITH MINI ROBOT
    ========================================================================== */
 
 .lamim-ai-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--ai-border);
   background: rgba(255, 255, 255, 0.02);
 }
@@ -181,6 +235,24 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.lamim-ai-header-robot {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lamim-ai-header-robot-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  animation: robotSubtleFloat 3s ease-in-out infinite;
 }
 
 .lamim-ai-header-title {
@@ -230,11 +302,6 @@
   animation: none;
 }
 
-@keyframes aiBadgePulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
-
 .lamim-ai-header-actions {
   display: flex;
   align-items: center;
@@ -280,12 +347,123 @@
 }
 
 /* ==========================================================================
-   4. CHAT MESSAGE AREA & BUBBLES
+   4. WELCOME 3D ROBOT MASCOT HERO STAGE
+   ========================================================================== */
+
+.lamim-ai-mascot-hero-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 14px 10px;
+  background: radial-gradient(ellipse at 50% 30%, rgba(16, 185, 129, 0.12) 0%, transparent 75%);
+  border-radius: 20px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.lamim-ai-robot-stage-wrap {
+  position: relative;
+  width: 110px;
+  height: 125px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Radiant animated aura behind robot */
+.lamim-ai-robot-aura-main {
+  position: absolute;
+  top: 10px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(14px);
+  transition: all 0.4s ease;
+}
+
+.lamim-ai-robot-aura-main.online {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, rgba(6, 182, 212, 0.25) 50%, transparent 80%);
+  animation: heroAuraPulseOnline 3s infinite ease-in-out;
+}
+
+.lamim-ai-robot-aura-main.offline {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(217, 119, 6, 0.15) 50%, transparent 80%);
+  animation: heroAuraPulseOffline 4s infinite ease-in-out;
+}
+
+/* 3D Transparent Floating Mascot */
+.lamim-ai-robot-3d-img {
+  width: 86px;
+  height: 105px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.45));
+  animation: robotHeroFloat 3.8s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* 3D Dynamic floor shadow that scales with floating height */
+.lamim-ai-robot-3d-shadow {
+  width: 54px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.4) 0%, transparent 70%);
+  margin-top: -4px;
+  z-index: 1;
+  animation: robotShadowBreathe 3.8s ease-in-out infinite;
+}
+
+/* Live connection tag below robot */
+.lamim-ai-robot-status-pill {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--ai-border);
+  letter-spacing: 0.02em;
+}
+
+.lamim-ai-robot-status-pill.online {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.lamim-ai-robot-status-pill.offline {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.lamim-ai-robot-greeting {
+  font-size: 0.85rem;
+  color: var(--ai-text-secondary);
+  line-height: 1.45;
+  margin-top: 8px;
+  max-width: 320px;
+}
+
+.lamim-ai-robot-greeting strong {
+  color: var(--ai-text-primary);
+}
+
+/* ==========================================================================
+   5. CHAT MESSAGE AREA & BUBBLES WITH AVATARS
    ========================================================================== */
 
 .lamim-ai-messages {
   flex: 1;
-  padding: 16px;
+  padding: 14px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
   display: flex;
@@ -305,25 +483,64 @@
 
 .lamim-ai-msg {
   display: flex;
-  flex-direction: column;
-  max-width: 90%;
-  gap: 4px;
+  max-width: 96%;
   animation: aiMsgFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes aiMsgFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .lamim-ai-msg.user {
   align-self: flex-end;
-  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .lamim-ai-msg.assistant {
   align-self: flex-start;
   align-items: flex-start;
+  gap: 10px;
+}
+
+/* Mini robot avatar beside assistant messages */
+.lamim-ai-msg-avatar {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ai-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  overflow: visible;
+}
+
+.lamim-ai-msg-avatar-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+}
+
+.lamim-ai-msg-avatar-dot {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 1px solid #0f172a;
+}
+
+.lamim-ai-msg-avatar-dot.offline {
+  background: #f59e0b;
+}
+
+.lamim-ai-msg-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 100%;
 }
 
 .lamim-ai-bubble {
@@ -334,7 +551,6 @@
   word-break: break-word;
 }
 
-/* Markdown structured elements */
 .lamim-ai-heading {
   font-size: 0.92rem;
   font-weight: 800;
@@ -420,7 +636,7 @@
   border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
-/* Deep Action Buttons inside assistant bubbles */
+/* Deep Action Link Buttons inside AI bubbles */
 .lamim-ai-action-btn {
   display: inline-flex;
   align-items: center;
@@ -443,7 +659,7 @@
   transform: translateY(-1px);
 }
 
-/* Quick Suggestion Chips */
+/* Suggestion Chips */
 .lamim-ai-suggestions {
   display: flex;
   gap: 8px;
@@ -486,7 +702,7 @@
 }
 
 /* ==========================================================================
-   5. INPUT COMPOSER
+   6. INPUT COMPOSER
    ========================================================================== */
 
 .lamim-ai-composer {
@@ -544,7 +760,7 @@
   transform: none;
 }
 
-/* Loading Dots */
+/* Loading Dots with Thinking Robot Pulse */
 .lamim-ai-dots {
   display: inline-flex;
   gap: 4px;
@@ -564,7 +780,107 @@
 .lamim-ai-dot:nth-child(2) { animation-delay: -0.16s; }
 .lamim-ai-dot:nth-child(3) { animation-delay: 0s; }
 
+/* ==========================================================================
+   7. 60FPS KEYFRAME ANIMATION SYSTEM
+   ========================================================================== */
+
+@keyframes robotHeroFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.2deg);
+  }
+}
+
+@keyframes robotShadowBreathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(0.82);
+    opacity: 0.25;
+  }
+}
+
+@keyframes robotSubtleFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes auraPulseOnline {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.85;
+  }
+}
+
+@keyframes auraPulseOffline {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.65;
+  }
+}
+
+@keyframes heroAuraPulseOnline {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.85;
+  }
+}
+
+@keyframes heroAuraPulseOffline {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.6;
+  }
+}
+
+@keyframes aiBadgePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes aiMsgFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes aiDotBounce {
   0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
   40% { transform: scale(1); opacity: 1; }
+}
+
+/* Accessibility: respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .lamim-ai-launcher-robot-img,
+  .lamim-ai-header-robot-img,
+  .lamim-ai-robot-3d-img,
+  .lamim-ai-robot-3d-shadow,
+  .lamim-ai-launcher-aura,
+  .lamim-ai-robot-aura-main,
+  .lamim-ai-badge-dot {
+    animation: none !important;
+  }
 }

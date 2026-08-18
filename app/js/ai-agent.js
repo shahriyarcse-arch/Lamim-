@@ -384,14 +384,14 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
       launcher.setAttribute('aria-label', 'Open Lamim AI Assistant');
       launcher.setAttribute('title', 'Lamim AI Assistant');
       launcher.innerHTML = `
-        <div class="lamim-ai-launcher-orb">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-          </svg>
+        <div class="lamim-ai-launcher-robot-wrap">
+          <div id="lamim-ai-launcher-aura" class="lamim-ai-launcher-aura online"></div>
+          <img src="assets/ai-mascot.png" class="lamim-ai-launcher-robot-img" alt="Lamim AI Robot" />
+          <span id="lamim-ai-launcher-dot" class="lamim-ai-robot-pulse-dot"></span>
         </div>
         <div class="lamim-ai-launcher-text">
           <span>AI</span>
-          <span class="lamim-ai-launcher-badge">Live</span>
+          <span id="lamim-ai-launcher-badge" class="lamim-ai-launcher-badge">Live</span>
         </div>
       `;
       document.body.appendChild(launcher);
@@ -407,11 +407,14 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
         <div class="lamim-ai-drawer" id="lamim-ai-drawer">
           <div class="lamim-ai-header">
             <div class="lamim-ai-header-left">
+              <div class="lamim-ai-header-robot">
+                <img src="assets/ai-mascot.png" class="lamim-ai-header-robot-img" alt="AI Robot" />
+              </div>
               <div class="lamim-ai-header-title">
                 <span>Lamim AI</span>
                 <span id="lamim-ai-badge" class="lamim-ai-mode-badge online">
                   <span class="lamim-ai-badge-dot"></span>
-                  <span>Gemini Live</span>
+                  <span id="lamim-ai-badge-text">Gemini Live</span>
                 </span>
               </div>
             </div>
@@ -472,6 +475,7 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
           if (input) {
             input.placeholder = this.lang === 'bn' ? 'লামিম সম্পর্কে যেকোনো কিছু জিজ্ঞেস করুন...' : 'Ask anything about Lamim...';
           }
+          this._updateOnlineBadge();
           this._renderChips();
         });
       }
@@ -498,30 +502,71 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
     },
 
     _updateOnlineBadge() {
+      const isOnline = navigator.onLine;
+      const isBn = this.lang === 'bn';
+
+      // 1. Header Badge
       const badge = document.getElementById('lamim-ai-badge');
-      if (!badge) return;
-      if (navigator.onLine) {
-        badge.className = 'lamim-ai-mode-badge online';
+      if (badge) {
+        badge.className = `lamim-ai-mode-badge ${isOnline ? 'online' : 'offline'}`;
         badge.innerHTML = `
-          <span class="lamim-ai-badge-dot"></span>
-          <span>Gemini Live</span>
+          <span class="lamim-ai-badge-dot ${isOnline ? '' : 'offline'}"></span>
+          <span id="lamim-ai-badge-text">${isOnline ? 'Gemini Live' : (isBn ? 'অফলাইন' : 'Offline')}</span>
         `;
-      } else {
-        badge.className = 'lamim-ai-mode-badge offline';
-        badge.innerHTML = `
-          <span class="lamim-ai-badge-dot offline"></span>
-          <span>Offline</span>
-        `;
+      }
+
+      // 2. Launcher Badge & Aura
+      const launcherAura = document.getElementById('lamim-ai-launcher-aura');
+      const launcherDot = document.getElementById('lamim-ai-launcher-dot');
+      const launcherBadge = document.getElementById('lamim-ai-launcher-badge');
+      if (launcherAura) launcherAura.className = `lamim-ai-launcher-aura ${isOnline ? 'online' : 'offline'}`;
+      if (launcherDot) launcherDot.className = `lamim-ai-robot-pulse-dot ${isOnline ? '' : 'offline'}`;
+      if (launcherBadge) {
+        launcherBadge.className = `lamim-ai-launcher-badge ${isOnline ? '' : 'offline'}`;
+        launcherBadge.textContent = isOnline ? 'Live' : (isBn ? 'অফলাইন' : 'Offline');
+      }
+
+      // 3. Welcome Hero Stage Aura & Status Pill
+      const heroAura = document.getElementById('lamim-ai-hero-aura');
+      const statusPill = document.getElementById('lamim-ai-status-pill');
+      const statusText = document.getElementById('lamim-ai-status-text');
+      if (heroAura) heroAura.className = `lamim-ai-robot-aura-main ${isOnline ? 'online' : 'offline'}`;
+      if (statusPill) statusPill.className = `lamim-ai-robot-status-pill ${isOnline ? 'online' : 'offline'}`;
+      if (statusText) {
+        statusText.textContent = isOnline
+          ? (isBn ? 'Gemini Live · ক্লাউড এআই যুক্ত' : 'Gemini Live · Connected')
+          : (isBn ? 'অফলাইন ইন্টেলিজেন্স · লোকাল ডেটাবেস' : 'Offline Intelligence · Safe on Device');
       }
     },
 
     _renderWelcome() {
-      const isBn = this.lang === 'bn';
-      const welcomeText = isBn
-        ? `আসসালামু আলাইকুম! আমি **লামিম এআই সহকারী**। লামিম PWA-এর সালাত, জিকির, হালাল ফাইন্যান্স, হ্যাবিটস বা যেকোনো ফিচার নিয়ে প্রশ্ন করতে পারেন।`
-        : `Assalamu Alaikum! I am the **Lamim AI Assistant**. Ask me anything about Salah, Dhikr, Halal Finance, Habits, or any feature.`;
+      const msgContainer = document.getElementById('lamim-ai-messages');
+      if (!msgContainer) return;
+      msgContainer.innerHTML = '';
 
-      this._appendMessage('assistant', welcomeText);
+      const isBn = this.lang === 'bn';
+      const isOnline = navigator.onLine;
+
+      const stage = document.createElement('div');
+      stage.className = 'lamim-ai-mascot-hero-stage';
+      stage.id = 'lamim-ai-hero-stage';
+      stage.innerHTML = `
+        <div class="lamim-ai-robot-stage-wrap">
+          <div id="lamim-ai-hero-aura" class="lamim-ai-robot-aura-main ${isOnline ? 'online' : 'offline'}"></div>
+          <img src="assets/ai-mascot.png" class="lamim-ai-robot-3d-img" alt="Lamim 3D AI Robot" />
+          <div class="lamim-ai-robot-3d-shadow"></div>
+        </div>
+        <div id="lamim-ai-status-pill" class="lamim-ai-robot-status-pill ${isOnline ? 'online' : 'offline'}">
+          <span class="lamim-ai-badge-dot ${isOnline ? '' : 'offline'}"></span>
+          <span id="lamim-ai-status-text">${isOnline ? (isBn ? 'Gemini Live · ক্লাউড এআই যুক্ত' : 'Gemini Live · Connected') : (isBn ? 'অফলাইন ইন্টেলিজেন্স · লোকাল ডেটাবেস' : 'Offline Intelligence · Safe on Device')}</span>
+        </div>
+        <div class="lamim-ai-robot-greeting" id="lamim-ai-greeting-text">
+          ${isBn 
+            ? 'আসসালামু আলাইকুম! আমি <strong>লামিম এআই রোবট সহকারী</strong>। সালাত, জিকির, হালাল ফিন্যান্স বা যেকোনো বিষয়ে সাহায্য করতে প্রস্তুত।' 
+            : 'Assalamu Alaikum! I am the <strong>Lamim AI Robot Companion</strong>. Ready to guide you on Salah, Dhikr, Halal Finance & Lifestyle.'}
+        </div>
+      `;
+      msgContainer.appendChild(stage);
     },
 
     _renderChips() {
@@ -663,11 +708,17 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
       loaderEl.id = id;
       loaderEl.className = 'lamim-ai-msg assistant';
       loaderEl.innerHTML = `
-        <div class="lamim-ai-bubble">
-          <div class="lamim-ai-dots">
-            <div class="lamim-ai-dot"></div>
-            <div class="lamim-ai-dot"></div>
-            <div class="lamim-ai-dot"></div>
+        <div class="lamim-ai-msg-avatar">
+          <img src="assets/ai-mascot.png" class="lamim-ai-msg-avatar-img" alt="Robot" />
+          <span class="lamim-ai-msg-avatar-dot online"></span>
+        </div>
+        <div class="lamim-ai-msg-content">
+          <div class="lamim-ai-bubble">
+            <div class="lamim-ai-dots">
+              <div class="lamim-ai-dot"></div>
+              <div class="lamim-ai-dot"></div>
+              <div class="lamim-ai-dot"></div>
+            </div>
           </div>
         </div>
       `;
@@ -727,8 +778,17 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
       }
 
       let metaHtml = '';
+      let avatarHtml = '';
       if (role === 'assistant') {
-        if (meta.source === 'cloud-ai') {
+        const isCloud = meta.source === 'cloud-ai';
+        avatarHtml = `
+          <div class="lamim-ai-msg-avatar">
+            <img src="assets/ai-mascot.png" class="lamim-ai-msg-avatar-img" alt="Robot" />
+            <span class="lamim-ai-msg-avatar-dot ${isCloud ? 'online' : 'offline'}"></span>
+          </div>
+        `;
+
+        if (isCloud) {
           metaHtml = `
             <span class="lamim-ai-msg-meta online">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -748,15 +808,24 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
             </span>
           `;
         }
-      }
 
-      msgEl.innerHTML = `
-        <div class="lamim-ai-bubble">
-          ${formatted}
-          ${actionBtnHtml}
-        </div>
-        ${metaHtml}
-      `;
+        msgEl.innerHTML = `
+          ${avatarHtml}
+          <div class="lamim-ai-msg-content">
+            <div class="lamim-ai-bubble">
+              ${formatted}
+              ${actionBtnHtml}
+            </div>
+            ${metaHtml}
+          </div>
+        `;
+      } else {
+        msgEl.innerHTML = `
+          <div class="lamim-ai-bubble">
+            ${formatted}
+          </div>
+        `;
+      }
 
       const actionBtn = msgEl.querySelector('.lamim-ai-action-btn');
       if (actionBtn) {
