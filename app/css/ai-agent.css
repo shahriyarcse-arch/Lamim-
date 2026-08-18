@@ -78,52 +78,137 @@
 /* Robot Mascot Wrap inside Launcher */
 .lamim-ai-launcher-robot-wrap {
   position: relative;
-  width: 66px;
-  height: 80px;
+  width: 62px;
+  height: 74px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+.lamim-ai-robot-character-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.lamim-ai-robot-character-box.launcher {
+  width: 58px;
+  height: 70px;
+}
+
+.lamim-ai-robot-character-box.hero {
+  width: 90px;
+  height: 110px;
+}
+
 .lamim-ai-launcher-robot-img {
   width: 58px;
   height: 70px;
   object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.42));
-  animation: robotPhysicalActivity 4.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  transform-origin: center bottom;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
   position: relative;
   z-index: 2;
-  transition: filter 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, filter;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  user-select: none;
+  pointer-events: none;
 }
 
 .lamim-ai-launcher:hover .lamim-ai-launcher-robot-img {
-  animation: robotHoverExcited 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
-  filter: drop-shadow(0 14px 26px var(--ai-accent-glow)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+  transform: scale(1.06);
+  filter: drop-shadow(0 10px 18px var(--ai-accent-glow)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
 }
 
+/* Stable 3D Floor Shadow (No jumping) */
 .lamim-ai-launcher-robot-shadow {
   width: 36px;
-  height: 7px;
+  height: 6px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.42) 0%, transparent 72%);
-  margin-top: -4px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.38) 0%, transparent 72%);
+  margin-top: -3px;
   z-index: 1;
-  animation: robotPhysicalShadow 4.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  transform-origin: center center;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 .lamim-ai-launcher:hover .lamim-ai-launcher-robot-shadow {
-  animation: robotHoverShadow 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+  transform: scale(1.08);
+  opacity: 0.5;
+}
+
+/* --- NATURAL EYE BLINK & SMILE SYSTEM --- */
+.lamim-ai-robot-eyelids {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.lamim-ai-eyelid {
+  position: absolute;
+  background: linear-gradient(180deg, #d8eaee 0%, #c4dbe1 100%);
+  border: 1.5px solid #2d4550;
+  border-bottom: 2.5px solid #1e333d;
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.25);
+  animation: robotEyelidBlink 3.6s ease-in-out infinite;
+  transform-origin: center top;
+}
+
+/* Launcher Eyelid Coordinates */
+.lamim-ai-robot-eyelids.launcher .lamim-ai-eyelid.left {
+  top: 31%;
+  left: 27%;
+  width: 21%;
+  height: 19%;
+}
+
+.lamim-ai-robot-eyelids.launcher .lamim-ai-eyelid.right {
+  top: 31%;
+  left: 54%;
+  width: 21%;
+  height: 19%;
+}
+
+/* Hero Stage Eyelid Coordinates */
+.lamim-ai-robot-eyelids.hero .lamim-ai-eyelid.left {
+  top: 31%;
+  left: 27%;
+  width: 21%;
+  height: 19%;
+}
+
+.lamim-ai-robot-eyelids.hero .lamim-ai-eyelid.right {
+  top: 31%;
+  left: 54%;
+  width: 21%;
+  height: 19%;
+}
+
+@keyframes robotEyelidBlink {
+  0%, 93%, 100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  95%, 97% {
+    transform: scaleY(1);
+    opacity: 0.98;
+  }
+  99% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
 }
 
 .lamim-ai-launcher-aura {
   position: absolute;
   top: 8px;
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   pointer-events: none;
   transition: all 0.35s ease;
@@ -132,12 +217,12 @@
 }
 
 .lamim-ai-launcher-aura.online {
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.6) 0%, rgba(6, 182, 212, 0.3) 50%, transparent 75%);
-  animation: auraPulseOnline 2.4s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, rgba(6, 182, 212, 0.25) 50%, transparent 75%);
+  animation: auraPulseOnline 2.8s ease-in-out infinite;
 }
 
 .lamim-ai-launcher-aura.offline {
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, rgba(217, 119, 6, 0.2) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.4) 0%, rgba(217, 119, 6, 0.15) 50%, transparent 75%);
   animation: auraPulseOffline 3.5s ease-in-out infinite;
 }
 
@@ -145,103 +230,20 @@
   position: absolute;
   top: 1px;
   right: 6px;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: #10b981;
   border: 2px solid #0f172a;
-  box-shadow: 0 0 12px #10b981, 0 0 4px #10b981;
-  z-index: 3;
-  animation: aiBadgePulse 1.8s infinite ease-in-out;
+  box-shadow: 0 0 10px #10b981, 0 0 3px #10b981;
+  z-index: 4;
+  animation: aiBadgePulse 2s infinite ease-in-out;
 }
 
 .lamim-ai-robot-pulse-dot.offline {
   background: #f59e0b;
-  box-shadow: 0 0 10px #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
   animation: none;
-}
-
-/* --- ROBOT PHYSICAL ACTIVITY KEYFRAMES --- */
-@keyframes robotPhysicalActivity {
-  0% {
-    transform: translateY(0px) rotate(0deg) scale(1);
-  }
-  14% {
-    transform: translateY(-8px) rotate(-4deg) scale(1.03);
-  }
-  28% {
-    transform: translateY(-13px) rotate(3.5deg) scale(1.05);
-  }
-  42% {
-    transform: translateY(-6px) rotate(-2deg) scale(1.01);
-  }
-  56% {
-    transform: translateY(-16px) rotate(5deg) scale(1.06);
-  }
-  72% {
-    transform: translateY(-9px) rotate(-3.5deg) scale(1.03);
-  }
-  86% {
-    transform: translateY(-3px) rotate(1.5deg) scale(0.99);
-  }
-  100% {
-    transform: translateY(0px) rotate(0deg) scale(1);
-  }
-}
-
-@keyframes robotPhysicalShadow {
-  0% {
-    transform: scale(1);
-    opacity: 0.45;
-  }
-  14% {
-    transform: scale(0.82);
-    opacity: 0.28;
-  }
-  28% {
-    transform: scale(0.72);
-    opacity: 0.22;
-  }
-  42% {
-    transform: scale(0.88);
-    opacity: 0.35;
-  }
-  56% {
-    transform: scale(0.66);
-    opacity: 0.18;
-  }
-  72% {
-    transform: scale(0.8);
-    opacity: 0.26;
-  }
-  86% {
-    transform: scale(0.94);
-    opacity: 0.4;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.45;
-  }
-}
-
-@keyframes robotHoverExcited {
-  0% {
-    transform: translateY(-8px) rotate(-4deg) scale(1.06);
-  }
-  100% {
-    transform: translateY(-18px) rotate(6deg) scale(1.14);
-  }
-}
-
-@keyframes robotHoverShadow {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(0.55);
-    opacity: 0.15;
-  }
 }
 
 /* ==========================================================================
@@ -479,7 +481,7 @@
   animation: heroAuraPulseOffline 4s infinite ease-in-out;
 }
 
-/* 3D Transparent Floating Mascot */
+/* 3D Transparent Calm & Smiling Mascot */
 .lamim-ai-robot-3d-img {
   width: 90px;
   height: 110px;
@@ -487,12 +489,11 @@
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.48));
-  animation: robotHeroPhysicalActivity 5.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  transform-origin: center bottom;
-  will-change: transform, filter;
+  user-select: none;
+  pointer-events: none;
 }
 
-/* 3D Dynamic floor shadow that scales with floating height */
+/* Stable 3D Dynamic floor shadow */
 .lamim-ai-robot-3d-shadow {
   width: 56px;
   height: 9px;
@@ -500,7 +501,6 @@
   background: radial-gradient(ellipse, rgba(0, 0, 0, 0.45) 0%, transparent 72%);
   margin-top: -4px;
   z-index: 1;
-  animation: robotHeroPhysicalShadow 5.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 /* Live connection tag below robot */
@@ -867,99 +867,8 @@
 .lamim-ai-dot:nth-child(3) { animation-delay: 0s; }
 
 /* ==========================================================================
-   7. 60FPS KEYFRAME ANIMATION SYSTEM
+   7. 60FPS KEYFRAME ANIMATION SYSTEM (AURA & PULSE)
    ========================================================================== */
-
-@keyframes robotHeroPhysicalActivity {
-  0% {
-    transform: translateY(0px) rotate(0deg) scale(1);
-  }
-  16% {
-    transform: translateY(-10px) rotate(-4.5deg) scale(1.04);
-  }
-  32% {
-    transform: translateY(-16px) rotate(4deg) scale(1.07);
-  }
-  48% {
-    transform: translateY(-8px) rotate(-2.5deg) scale(1.02);
-  }
-  64% {
-    transform: translateY(-18px) rotate(5deg) scale(1.08);
-  }
-  80% {
-    transform: translateY(-11px) rotate(-4deg) scale(1.04);
-  }
-  92% {
-    transform: translateY(-4px) rotate(1.8deg) scale(1);
-  }
-  100% {
-    transform: translateY(0px) rotate(0deg) scale(1);
-  }
-}
-
-@keyframes robotHeroPhysicalShadow {
-  0% {
-    transform: scale(1);
-    opacity: 0.45;
-  }
-  16% {
-    transform: scale(0.8);
-    opacity: 0.28;
-  }
-  32% {
-    transform: scale(0.68);
-    opacity: 0.2;
-  }
-  48% {
-    transform: scale(0.85);
-    opacity: 0.33;
-  }
-  64% {
-    transform: scale(0.64);
-    opacity: 0.16;
-  }
-  80% {
-    transform: scale(0.78);
-    opacity: 0.26;
-  }
-  92% {
-    transform: scale(0.92);
-    opacity: 0.38;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.45;
-  }
-}
-
-@keyframes robotHeroFloat {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(1.2deg);
-  }
-}
-
-@keyframes robotShadowBreathe {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.45;
-  }
-  50% {
-    transform: scale(0.82);
-    opacity: 0.25;
-  }
-}
-
-@keyframes robotSubtleFloat {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
 
 @keyframes auraPulseOnline {
   0%, 100% {

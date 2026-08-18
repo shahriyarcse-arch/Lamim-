@@ -386,7 +386,13 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
       launcher.innerHTML = `
         <div class="lamim-ai-launcher-robot-wrap">
           <div id="lamim-ai-launcher-aura" class="lamim-ai-launcher-aura online"></div>
-          <img src="assets/ai-mascot.png" class="lamim-ai-launcher-robot-img" alt="Lamim AI Robot" />
+          <div class="lamim-ai-robot-character-box launcher">
+            <img src="assets/ai-mascot.png" class="lamim-ai-launcher-robot-img" alt="Lamim AI Robot" />
+            <div class="lamim-ai-robot-eyelids launcher">
+              <span class="lamim-ai-eyelid left"></span>
+              <span class="lamim-ai-eyelid right"></span>
+            </div>
+          </div>
           <div class="lamim-ai-launcher-robot-shadow"></div>
           <span id="lamim-ai-launcher-dot" class="lamim-ai-robot-pulse-dot"></span>
         </div>
@@ -548,7 +554,13 @@ LAMIM CORE KNOWLEDGE BASE & EXACT ARCHITECTURE
       stage.innerHTML = `
         <div class="lamim-ai-robot-stage-wrap">
           <div id="lamim-ai-hero-aura" class="lamim-ai-robot-aura-main ${isOnline ? 'online' : 'offline'}"></div>
-          <img src="assets/ai-mascot.png" class="lamim-ai-robot-3d-img" alt="Lamim 3D AI Robot" />
+          <div class="lamim-ai-robot-character-box hero">
+            <img src="assets/ai-mascot.png" class="lamim-ai-robot-3d-img" alt="Lamim 3D AI Robot" />
+            <div class="lamim-ai-robot-eyelids hero">
+              <span class="lamim-ai-eyelid left"></span>
+              <span class="lamim-ai-eyelid right"></span>
+            </div>
+          </div>
           <div class="lamim-ai-robot-3d-shadow"></div>
         </div>
         <div id="lamim-ai-status-pill" class="lamim-ai-robot-status-pill ${isOnline ? 'online' : 'offline'}">
