@@ -78,8 +78,8 @@
 /* Robot Mascot Wrap inside Launcher */
 .lamim-ai-launcher-robot-wrap {
   position: relative;
-  width: 60px;
-  height: 72px;
+  width: 66px;
+  height: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,90 +87,160 @@
 }
 
 .lamim-ai-launcher-robot-img {
-  width: 54px;
-  height: 66px;
+  width: 58px;
+  height: 70px;
   object-fit: contain;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
-  animation: robotLauncherFloat 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.42));
+  animation: robotPhysicalActivity 4.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   transform-origin: center bottom;
   position: relative;
   z-index: 2;
-  transition: filter 0.25s ease;
+  transition: filter 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, filter;
 }
 
 .lamim-ai-launcher:hover .lamim-ai-launcher-robot-img {
-  filter: drop-shadow(0 10px 20px var(--ai-accent-glow)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+  animation: robotHoverExcited 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+  filter: drop-shadow(0 14px 26px var(--ai-accent-glow)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
 }
 
 .lamim-ai-launcher-robot-shadow {
-  width: 34px;
-  height: 6px;
+  width: 36px;
+  height: 7px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.38) 0%, transparent 70%);
-  margin-top: -3px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.42) 0%, transparent 72%);
+  margin-top: -4px;
   z-index: 1;
-  animation: robotLauncherShadow 3.2s ease-in-out infinite;
+  animation: robotPhysicalShadow 4.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  transform-origin: center center;
+}
+
+.lamim-ai-launcher:hover .lamim-ai-launcher-robot-shadow {
+  animation: robotHoverShadow 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
 }
 
 .lamim-ai-launcher-aura {
   position: absolute;
   top: 8px;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   pointer-events: none;
   transition: all 0.35s ease;
-  filter: blur(10px);
+  filter: blur(12px);
   z-index: 1;
 }
 
 .lamim-ai-launcher-aura.online {
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.55) 0%, rgba(6, 182, 212, 0.25) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.6) 0%, rgba(6, 182, 212, 0.3) 50%, transparent 75%);
   animation: auraPulseOnline 2.4s ease-in-out infinite;
 }
 
 .lamim-ai-launcher-aura.offline {
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(217, 119, 6, 0.18) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, rgba(217, 119, 6, 0.2) 50%, transparent 75%);
   animation: auraPulseOffline 3.5s ease-in-out infinite;
 }
 
 .lamim-ai-robot-pulse-dot {
   position: absolute;
-  top: 2px;
-  right: 5px;
-  width: 9px;
-  height: 9px;
+  top: 1px;
+  right: 6px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #10b981;
   border: 2px solid #0f172a;
-  box-shadow: 0 0 10px #10b981, 0 0 4px #10b981;
+  box-shadow: 0 0 12px #10b981, 0 0 4px #10b981;
   z-index: 3;
-  animation: aiBadgePulse 2s infinite ease-in-out;
+  animation: aiBadgePulse 1.8s infinite ease-in-out;
 }
 
 .lamim-ai-robot-pulse-dot.offline {
   background: #f59e0b;
-  box-shadow: 0 0 8px #f59e0b;
+  box-shadow: 0 0 10px #f59e0b;
   animation: none;
 }
 
-@keyframes robotLauncherFloat {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
+/* --- ROBOT PHYSICAL ACTIVITY KEYFRAMES --- */
+@keyframes robotPhysicalActivity {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
   }
-  50% {
-    transform: translateY(-6px) rotate(1.5deg);
+  14% {
+    transform: translateY(-8px) rotate(-4deg) scale(1.03);
+  }
+  28% {
+    transform: translateY(-13px) rotate(3.5deg) scale(1.05);
+  }
+  42% {
+    transform: translateY(-6px) rotate(-2deg) scale(1.01);
+  }
+  56% {
+    transform: translateY(-16px) rotate(5deg) scale(1.06);
+  }
+  72% {
+    transform: translateY(-9px) rotate(-3.5deg) scale(1.03);
+  }
+  86% {
+    transform: translateY(-3px) rotate(1.5deg) scale(0.99);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
   }
 }
 
-@keyframes robotLauncherShadow {
-  0%, 100% {
+@keyframes robotPhysicalShadow {
+  0% {
     transform: scale(1);
+    opacity: 0.45;
+  }
+  14% {
+    transform: scale(0.82);
+    opacity: 0.28;
+  }
+  28% {
+    transform: scale(0.72);
+    opacity: 0.22;
+  }
+  42% {
+    transform: scale(0.88);
+    opacity: 0.35;
+  }
+  56% {
+    transform: scale(0.66);
+    opacity: 0.18;
+  }
+  72% {
+    transform: scale(0.8);
+    opacity: 0.26;
+  }
+  86% {
+    transform: scale(0.94);
     opacity: 0.4;
   }
-  50% {
-    transform: scale(0.78);
-    opacity: 0.2;
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+}
+
+@keyframes robotHoverExcited {
+  0% {
+    transform: translateY(-8px) rotate(-4deg) scale(1.06);
+  }
+  100% {
+    transform: translateY(-18px) rotate(6deg) scale(1.14);
+  }
+}
+
+@keyframes robotHoverShadow {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0.55);
+    opacity: 0.15;
   }
 }
 
@@ -411,25 +481,26 @@
 
 /* 3D Transparent Floating Mascot */
 .lamim-ai-robot-3d-img {
-  width: 86px;
-  height: 105px;
+  width: 90px;
+  height: 110px;
   object-fit: contain;
   position: relative;
   z-index: 2;
-  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.45));
-  animation: robotHeroFloat 3.8s ease-in-out infinite;
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.48));
+  animation: robotHeroPhysicalActivity 5.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   transform-origin: center bottom;
+  will-change: transform, filter;
 }
 
 /* 3D Dynamic floor shadow that scales with floating height */
 .lamim-ai-robot-3d-shadow {
-  width: 54px;
-  height: 8px;
+  width: 56px;
+  height: 9px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.4) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.45) 0%, transparent 72%);
   margin-top: -4px;
   z-index: 1;
-  animation: robotShadowBreathe 3.8s ease-in-out infinite;
+  animation: robotHeroPhysicalShadow 5.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 /* Live connection tag below robot */
@@ -798,6 +869,68 @@
 /* ==========================================================================
    7. 60FPS KEYFRAME ANIMATION SYSTEM
    ========================================================================== */
+
+@keyframes robotHeroPhysicalActivity {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  16% {
+    transform: translateY(-10px) rotate(-4.5deg) scale(1.04);
+  }
+  32% {
+    transform: translateY(-16px) rotate(4deg) scale(1.07);
+  }
+  48% {
+    transform: translateY(-8px) rotate(-2.5deg) scale(1.02);
+  }
+  64% {
+    transform: translateY(-18px) rotate(5deg) scale(1.08);
+  }
+  80% {
+    transform: translateY(-11px) rotate(-4deg) scale(1.04);
+  }
+  92% {
+    transform: translateY(-4px) rotate(1.8deg) scale(1);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes robotHeroPhysicalShadow {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  16% {
+    transform: scale(0.8);
+    opacity: 0.28;
+  }
+  32% {
+    transform: scale(0.68);
+    opacity: 0.2;
+  }
+  48% {
+    transform: scale(0.85);
+    opacity: 0.33;
+  }
+  64% {
+    transform: scale(0.64);
+    opacity: 0.16;
+  }
+  80% {
+    transform: scale(0.78);
+    opacity: 0.26;
+  }
+  92% {
+    transform: scale(0.92);
+    opacity: 0.38;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+}
 
 @keyframes robotHeroFloat {
   0%, 100% {
