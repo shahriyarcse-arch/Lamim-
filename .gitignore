@@ -30,3 +30,6 @@ playwright-report/
 !app/assets/*.png
 !favicon.png
 !apple-touch-icon.png
+*.mp4
+!app/assets/*.mp4
+
