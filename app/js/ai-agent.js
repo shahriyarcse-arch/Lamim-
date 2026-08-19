@@ -247,7 +247,7 @@
       // Strategy 2: Serverless proxy (/api/agent) if deployed on Vercel
       try {
         const ctrl = new AbortController();
-        const timeout = setTimeout(() => ctrl.abort(), 4000);
+        const timeout = setTimeout(() => ctrl.abort(), 12000);
 
         const res = await fetch('/api/agent', {
           method: 'POST',

@@ -168,14 +168,14 @@ ${isBengali ? `CRITICAL LANGUAGE DIRECTIVE: BANGLA (বাংলা)
       contents: contents,
       generationConfig: {
         temperature: 0.6,
-        maxOutputTokens: 800
+        maxOutputTokens: 1200
       }
     };
 
     for (const model of candidateModels) {
       try {
         const ctrl = new AbortController();
-        const to = setTimeout(() => ctrl.abort(), 6000);
+        const to = setTimeout(() => ctrl.abort(), 8000);
         const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
         const apiRes = await fetch(geminiUrl, {
           method: 'POST',
