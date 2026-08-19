@@ -488,9 +488,24 @@ const Utils = {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
   },
 
-  // Toast
-  toast(msg, type = 'info', duration = 3000, action = null) {
-    const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+  // Ultra-Modern Glassmorphic Toast Notification System
+  toast(msg, type = 'info', duration = 3200, action = null) {
+    const icons = {
+      success: '<svg class="toast-svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>',
+      error: '<svg class="toast-svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>',
+      danger: '<svg class="toast-svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>',
+      warning: '<svg class="toast-svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>',
+      info: '<svg class="toast-svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>'
+    };
+
+    // Trigger gentle haptic feedback on devices with vibration support
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try {
+        if (type === 'error' || type === 'danger') navigator.vibrate([20, 35, 20]);
+        else if (type === 'success') navigator.vibrate(15);
+      } catch (_) {}
+    }
+
     let container = document.getElementById('toast_container');
     if (!container) {
       container = document.createElement('div');
@@ -498,30 +513,75 @@ const Utils = {
       container.className = 'toast-container';
       document.body.appendChild(container);
     }
+
+    // Keep maximum 3 toasts visible to prevent visual clutter
+    if (container.children.length >= 3) {
+      const oldest = container.firstElementChild;
+      if (oldest) oldest.remove();
+    }
+
     const el = document.createElement('div');
     el.className = `toast toast-${type}`;
-    const iconSpan = document.createElement('span');
-    iconSpan.className = 'toast-icon';
-    iconSpan.textContent = icons[type] || '';
+    el.style.setProperty('--toast-duration', `${duration}ms`);
+
+    const iconSpan = document.createElement('div');
+    iconSpan.className = 'toast-icon-wrap';
+    iconSpan.innerHTML = icons[type] || icons.info;
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'toast-content';
+
     const msgSpan = document.createElement('span');
+    msgSpan.className = 'toast-msg';
     msgSpan.textContent = msg;
+    contentDiv.appendChild(msgSpan);
+
     el.appendChild(iconSpan);
-    el.appendChild(msgSpan);
-    // Optional action button (e.g. Undo) — renders a safe, click-handled control
+    el.appendChild(contentDiv);
+
+    let dismissed = false;
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      el.classList.add('hiding');
+      setTimeout(() => { if (el.parentNode) el.remove(); }, 300);
+    };
+
+    // Optional action button (e.g. Undo, Retry)
     if (action && action.label && typeof action.onClick === 'function') {
       const btn = document.createElement('button');
       btn.className = 'toast-action';
       btn.type = 'button';
-      btn.textContent = action.label; // textContent → no XSS
-      btn.addEventListener('click', () => {
-        try { action.onClick(); } catch (e) { console.error(e); }
-        el.classList.add('hiding');
-        setTimeout(() => el.remove(), 350);
+      btn.textContent = action.label;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        try { action.onClick(); } catch (err) { console.error(err); }
+        dismiss();
       });
       el.appendChild(btn);
     }
+
+    // Modern close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close-btn';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Close notification');
+    closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismiss();
+    });
+    el.appendChild(closeBtn);
+
+    // Progress bar
+    const progress = document.createElement('div');
+    progress.className = 'toast-progress-bar';
+    el.appendChild(progress);
+
+    el.addEventListener('click', dismiss);
+
     container.appendChild(el);
-    setTimeout(() => { el.classList.add('hiding'); setTimeout(() => el.remove(), 350); }, duration);
+    setTimeout(dismiss, duration);
   },
 
   // Confetti
@@ -755,7 +815,7 @@ const Utils = {
     }));
   },
 
-  // Accurate Confirmation Modal
+  // Accurate Universal Confirmation Modal
   confirm(title, msg, onConfirm, type = 'warning') {
     const modal = document.getElementById('confirm-modal');
     const titleEl = document.getElementById('confirm-title');
@@ -768,10 +828,18 @@ const Utils = {
       return;
     }
 
+    const svgIcons = {
+      danger: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      warning: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+      info: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+      success: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+    };
+
     const types = {
-      danger: { icon: '️', color: 'var(--fin-red)', bg: 'rgba(248, 113, 113, 0.1)', btn: 'var(--fin-red)' },
-      warning: { icon: '️', color: 'var(--fin-orange)', bg: 'rgba(251, 191, 36, 0.1)', btn: 'var(--fin-orange)' },
-      info: { icon: 'ℹ️', color: 'var(--fin-blue)', bg: 'rgba(56, 189, 248, 0.1)', btn: 'var(--fin-blue)' }
+      danger: { icon: svgIcons.danger, color: '#ef4444', bg: 'rgba(239, 68, 68, 0.15)', btn: 'linear-gradient(135deg, #ef4444, #dc2626)', glow: '0 8px 24px -4px rgba(239, 68, 68, 0.45)' },
+      warning: { icon: svgIcons.warning, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)', btn: 'linear-gradient(135deg, #f59e0b, #d97706)', glow: '0 8px 24px -4px rgba(245, 158, 11, 0.45)' },
+      info: { icon: svgIcons.info, color: '#0ea5e9', bg: 'rgba(14, 165, 233, 0.15)', btn: 'linear-gradient(135deg, #0ea5e9, #0284c7)', glow: '0 8px 24px -4px rgba(14, 165, 233, 0.45)' },
+      success: { icon: svgIcons.success, color: '#10b981', bg: 'rgba(16, 185, 129, 0.15)', btn: 'linear-gradient(135deg, #10b981, #059669)', glow: '0 8px 24px -4px rgba(16, 185, 129, 0.45)' }
     };
 
     const config = types[type] || types.warning;
@@ -779,11 +847,13 @@ const Utils = {
     titleEl.textContent = title;
     msgEl.textContent = msg;
     if (iconEl) {
-      iconEl.textContent = config.icon;
+      iconEl.innerHTML = config.icon;
       iconEl.style.color = config.color;
       iconEl.style.background = config.bg;
+      iconEl.style.boxShadow = `0 0 0 6px ${config.color}15, 0 12px 28px ${config.color}25`;
     }
     btn.style.background = config.btn;
+    btn.style.boxShadow = config.glow;
 
     modal.classList.remove('hidden');
 
@@ -828,7 +898,7 @@ const Utils = {
     input.className = 'utils-prompt-input';
     input.value = defaultValue || '';
     input.setAttribute('aria-label', title || 'Input');
-    input.style.cssText = 'width:100%;margin:14px 0 4px;padding:10px 12px;border-radius:10px;border:1px solid var(--color-border);background:var(--color-glass);color:var(--color-text-primary);font-size:15px;outline:none;';
+    input.style.cssText = 'width:100%;margin:14px 0 4px;padding:12px 14px;border-radius:14px;border:1px solid var(--color-border);background:var(--color-glass);color:var(--color-text-primary);font-size:15px;outline:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);';
 
     const errEl = document.createElement('div');
     errEl.style.cssText = 'color:var(--fin-red, #ef4444);font-size:12px;min-height:16px;margin-bottom:8px;';
@@ -897,15 +967,15 @@ const Utils = {
     if (titleEl) titleEl.textContent = opts.title || 'Are you sure?';
     if (msgEl) msgEl.textContent = opts.message || '';
     if (iconEl) {
-      iconEl.innerHTML = opts.icon || '️';
+      iconEl.innerHTML = opts.icon && opts.icon.includes('<svg') ? opts.icon : `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
       iconEl.style.background = color + '1f';
       iconEl.style.color = color;
-      iconEl.style.boxShadow = `0 0 0 6px ${color}12, 0 12px 30px ${color}2e`;
+      iconEl.style.boxShadow = `0 0 0 8px ${color}15, 0 14px 32px ${color}30`;
     }
     if (proceed) {
       proceed.textContent = opts.confirmText || 'Proceed';
       proceed.style.background = `linear-gradient(135deg, ${color}, ${color}cc)`;
-      proceed.style.boxShadow = `0 10px 24px ${color}3d`;
+      proceed.style.boxShadow = `0 10px 24px ${color}40`;
     }
     this._dangerOnConfirm = opts.onConfirm;
     modal.classList.remove('hidden');

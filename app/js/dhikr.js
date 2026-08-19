@@ -159,7 +159,20 @@ const Dhikr = {
     this.renderPresetRow();
   },
 
-  tap() {
+  tap(e) {
+    if (e && e.preventDefault && e.type === 'touchstart') {
+      e.preventDefault();
+    }
+    // Dismiss any lingering input focus & text selection on iOS
+    if (document.activeElement && typeof document.activeElement.blur === 'function' && document.activeElement !== document.body) {
+      document.activeElement.blur();
+    }
+    if (window.getSelection && window.getSelection().empty) {
+      window.getSelection().empty();
+    } else if (window.getSelection && window.getSelection().removeAllRanges) {
+      window.getSelection().removeAllRanges();
+    }
+
     this.count = Math.min(9999999, (this.count || 0) + 1);
     this.saveInstantly();
 

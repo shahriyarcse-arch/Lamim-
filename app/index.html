@@ -162,7 +162,7 @@
   <link rel="stylesheet" href="css/variables.css?v=146">
   <link rel="stylesheet" href="css/base.css?v=6">
   <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/components.css?v=147">
+  <link rel="stylesheet" href="css/components.css?v=148">
   <!-- Modularized Page CSS -->
   <link rel="stylesheet" href="css/splash.css?v=2">
   <link rel="stylesheet" href="css/auth.css?v=147">
@@ -196,7 +196,7 @@
   <link rel="stylesheet" href="css/activity-log.css">
   <link rel="stylesheet" href="css/profile-premium.css?v=144" media="print" onload="this.media='all'">
 
-  <link rel="stylesheet" href="css/habits.css?v=143">
+  <link rel="stylesheet" href="css/habits.css?v=145">
   <link rel="stylesheet" href="css/home.css?v=148">
   <link rel="stylesheet" href="css/manual.css?v=3">
   <link rel="stylesheet" href="css/ui-system.css?v=8">
@@ -2007,19 +2007,18 @@
 
     <!-- HABITS ADD MODAL -->
     <div class="modal-overlay hidden" id="habits-add-modal" onclick="if(event.target===this) Habits.hideAddModal()">
-      <div class="modal anim-scale-up" style="max-width:400px;">
-        <div class="modal-header">
+      <div class="modal anim-scale-up" style="max-width:440px; max-height:88vh; display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <div class="modal-header" style="padding:18px 22px 14px; flex-shrink:0; border-bottom:1px solid var(--color-divider-subtle, rgba(255,255,255,0.06));">
           <h3 class="modal-title">Add Habit to Quit</h3>
           <button class="modal-close" onclick="Habits.hideAddModal()"></button>
         </div>
-        <div class="modal-body" style="padding:20px; max-height:80vh; overflow-y:auto;">
+        <div class="modal-body" style="padding:18px 20px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; flex:1;">
           <!-- STEP 1: SELECT OR TYPE HABIT -->
           <div style="margin-bottom:16px;">
             <input type="text" id="habits-custom-habit-input" class="habits-forge-field"
-              placeholder=" Search or type a habit..." style="margin-bottom:14px; border-width:2px;" />
+              placeholder=" Search or type a habit..." style="margin-bottom:14px; border-width:1.5px;" oninput="Habits.filterHabits(this.value)" />
 
-            <div id="habits-default-habits" class="habits-habits-grid"
-              style="margin-bottom:0; max-height:220px; overflow-y:auto; padding-right:4px;">
+            <div id="habits-default-habits" class="habits-habits-grid" style="margin-bottom:0;">
               <!-- Presets injected here -->
             </div>
           </div>
@@ -2427,7 +2426,7 @@
 
     <!-- Core Engine -->
     <script defer src="js/lang.js?v=222"></script>
-    <script defer src="js/utils.js?v=227"></script>
+    <script defer src="js/utils.js?v=228"></script>
     <script defer src="js/db.js?v=219"></script>
     <script defer src="js/auth.js?v=166"></script>
 
@@ -2439,7 +2438,7 @@
     <script defer src="js/dhikr.js?v=220"></script>
     <script defer src="js/goals.js?v=146"></script>
     <script defer src="js/finance.js?v=282"></script>
-    <script defer src="js/habits.js?v=219"></script>
+    <script defer src="js/habits.js?v=221"></script>
     <script defer src="js/profile.js?v=226"></script>
     <script defer src="js/analysis.js?v=221"></script>
 

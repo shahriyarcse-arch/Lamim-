@@ -83,26 +83,26 @@
   pointer-events: none;
 }
 
-/* Online State: Vivid, crisp, vibrant glow */
+/* Online State: Vivid, crisp, vibrant mascot shadow */
 .lamim-ai-launcher.online .lamim-ai-launcher-robot-img,
 .lamim-ai-launcher:not(.offline) .lamim-ai-launcher-robot-img {
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.16));
   opacity: 1;
 }
 
 .lamim-ai-launcher.online:hover .lamim-ai-launcher-robot-img,
 .lamim-ai-launcher:not(.offline):hover .lamim-ai-launcher-robot-img {
-  filter: drop-shadow(0 10px 20px rgba(16, 185, 129, 0.5)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 6px 14px rgba(16, 185, 129, 0.35)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
 }
 
-/* Offline State: Calm, resting/grayscale tint, amber glow on hover */
+/* Offline State: Calm, resting/grayscale tint */
 .lamim-ai-launcher.offline .lamim-ai-launcher-robot-img {
-  filter: grayscale(0.6) brightness(0.92) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
+  filter: grayscale(0.6) brightness(0.92) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.15));
   opacity: 0.85;
 }
 
 .lamim-ai-launcher.offline:hover .lamim-ai-launcher-robot-img {
-  filter: grayscale(0.25) drop-shadow(0 8px 18px rgba(245, 158, 11, 0.45));
+  filter: grayscale(0.25) drop-shadow(0 6px 12px rgba(245, 158, 11, 0.35));
   opacity: 1;
 }
 
