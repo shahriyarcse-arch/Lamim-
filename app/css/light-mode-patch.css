@@ -115,3 +115,30 @@
   display: none;
 }
 
+
+/* Luxury Deep Contrast & Tactile Card Elevations */
+[data-theme="light"] .card,
+[data-theme="light"] .dash-card,
+[data-theme="light"] .salah-card,
+[data-theme="light"] .finance-card,
+[data-theme="light"] .habit-card,
+[data-theme="light"] .gym-card,
+[data-theme="light"] .career-card,
+[data-theme="light"] .profile-card,
+[data-theme="light"] .analysis-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.085) !important;
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03) !important;
+}
+
+[data-theme="light"] .topbar {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03) !important;
+}
+
+[data-theme="light"] .pill-badge,
+[data-theme="light"] .badge {
+  font-weight: 700 !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
