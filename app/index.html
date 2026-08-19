@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#F1F5F9">
+  <meta name="theme-color" content="#FFFFFF">
   <script>
     /* Prevent iOS/Android accidental pinch zoom and double-tap zoom in PWA */
     document.addEventListener('gesturestart', function (e) { e.preventDefault(); }, { passive: false });
@@ -22,11 +22,7 @@
         var s = JSON.parse(localStorage.getItem('lamim_settings') || '{}');
         var theme = (s && s.theme === 'dark') ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', theme);
-        // Define the base background up-front so the splash (whose background is
-        // var(--color-bg-primary), defined only inside the async styles.min.css)
-        // is never transparent on first paint. Prevents the white flash seen
-        // before the main section on cold start / refresh.
-        var bg = theme === 'dark' ? '#020408' : '#F1F5F9';
+        var bg = theme === 'dark' ? '#020408' : '#FFFFFF';
         document.documentElement.style.setProperty('--color-bg-primary', bg);
         var m = document.querySelector('meta[name="theme-color"]');
         if (m) m.setAttribute('content', bg);
@@ -164,7 +160,7 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/components.css?v=148">
   <!-- Modularized Page CSS -->
-  <link rel="stylesheet" href="css/splash.css?v=2">
+  <link rel="stylesheet" href="css/splash.css?v=3">
   <link rel="stylesheet" href="css/auth.css?v=147">
   <link rel="stylesheet" href="css/salah.css?v=153" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-base.css?v=1" media="print" onload="this.media='all'">
@@ -223,27 +219,6 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap">
 </noscript>
-  <script>
-    (function () {
-      const saved = localStorage.getItem('lamim_settings');
-      let theme = 'light';
-      try {
-        if (saved && saved !== 'undefined') {
-          const parsed = JSON.parse(saved);
-          theme = parsed.theme || 'light';
-        } else {
-          theme = 'light';
-        }
-      } catch (e) {
-        console.warn("Settings parse error, falling back to light theme");
-      }
-      document.documentElement.setAttribute('data-theme', theme);
-      var bg = theme === 'dark' ? '#020408' : '#F1F5F9';
-      document.documentElement.style.setProperty('--color-bg-primary', bg);
-      var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', bg);
-    })();
-  </script>
 </head>
 
 <body>

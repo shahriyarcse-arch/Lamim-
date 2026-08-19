@@ -1816,41 +1816,8 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
     </div>
   </footer>
 
-  <script>
-    window.__motionFallback = setTimeout(function(){
-      document.querySelectorAll('.reveal, .hero-art, .hero-art .tile, .float, .nav').forEach(function(el){
-        el.style.opacity = '1'; el.style.transform = 'none';
-      });
-    },5000);
-    window.__motionReady = function(){ clearTimeout(window.__motionFallback); };
-  </script>
-
   <script type="module" src="app.js?v=20260812_v2"></script>
 
-  <script>
-    (function () {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.addEventListener('message', function (event) {
-          if (event.data && event.data.type === 'LAMIM_ROOT_CLEANED') {
-            window.location.reload();
-          }
-        });
-        var needsReload = false;
-        navigator.serviceWorker.getRegistrations().then(function (regs) {
-          var ops = [];
-          regs.forEach(function (reg) {
-            if (reg.active && reg.active.scriptURL.indexOf('/app/sw.js') === -1) {
-              ops.push(reg.unregister());
-              needsReload = true;
-            }
-          });
-          return Promise.all(ops);
-        }).then(function () {
-          if (needsReload) { window.location.reload(); }
-        }).catch(function () {});
-      }
-    })();
-  </script>
 
   <script>
     (function initHeroLivePrayer() {
