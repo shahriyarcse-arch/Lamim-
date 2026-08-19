@@ -54,7 +54,10 @@ module.exports = async function handler(req, res) {
 
   // Backup spot rate fallback if TradingView scan is temporarily blocked
   try {
-    const backupRes = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const backupCtrl = new AbortController();
+    const backupTo = setTimeout(() => backupCtrl.abort(), 5000);
+    const backupRes = await fetch('https://api.exchangerate-api.com/v4/latest/USD', { signal: backupCtrl.signal });
+    clearTimeout(backupTo);
     const backupData = await backupRes.json();
     if (backupData && backupData.rates && backupData.rates.BDT) {
       return res.status(200).json({

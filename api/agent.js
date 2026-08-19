@@ -1,34 +1,109 @@
 // Vercel Serverless Function for Lamim Hybrid AI Assistant
+
+/** Allowed CORS origins — production domain + local dev */
+const ALLOWED_ORIGINS = new Set([
+  'https://lamim.tech',
+  'https://www.lamim.tech',
+  'http://localhost:3000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+]);
+
+// ---------------------------------------------------------------------------
+// In-memory rate limiter (Rule 27: Rate-limit public APIs)
+// 20 requests per IP per 60-second window. Resets every 5 minutes.
+// Note: Vercel cold-starts reset this map, giving a natural grace window.
+// ---------------------------------------------------------------------------
+const _rateMap = new Map(); // ip -> { count, windowStart }
+const RATE_LIMIT = 20;        // max requests per window
+const RATE_WINDOW_MS = 60_000; // 1 minute window
+const CLEANUP_MS = 5 * 60_000; // purge stale entries every 5 min
+let _lastCleanup = Date.now();
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+
+  // Periodic cleanup to prevent unbounded memory growth
+  if (now - _lastCleanup > CLEANUP_MS) {
+    _lastCleanup = now;
+    for (const [key, val] of _rateMap) {
+      if (now - val.windowStart > RATE_WINDOW_MS) _rateMap.delete(key);
+    }
+  }
+
+  const entry = _rateMap.get(ip);
+  if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
+    _rateMap.set(ip, { count: 1, windowStart: now });
+    return true; // allowed
+  }
+  if (entry.count >= RATE_LIMIT) return false; // blocked
+  entry.count++;
+  return true; // allowed
+}
+
+// ---------------------------------------------------------------------------
+// Input validation helpers (Rule 28: validate all inputs)
+// ---------------------------------------------------------------------------
+const MAX_PROMPT_CHARS  = 2000;
+const MAX_HISTORY_ITEMS = 10;
+const MAX_HISTORY_TEXT  = 1000;
+
+function validateHistory(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .slice(0, MAX_HISTORY_ITEMS)
+    .filter(h => h && typeof h === 'object')
+    .map(h => ({
+      role: h.role === 'user' ? 'user' : 'model',
+      text: typeof h.text === 'string' ? h.text.slice(0, MAX_HISTORY_TEXT) : ''
+    }))
+    .filter(h => h.text.length > 0);
+}
+
 module.exports = async function handler(req, res) {
-  // CORS headers
+  // CORS — restrict to known origins; reflect the origin only when allowlisted
+  const origin = req.headers.origin || '';
+  const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : 'https://lamim.tech';
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Accept');
+  res.setHeader('Vary', 'Origin');
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return res.status(204).end();
   }
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
+  // Rate limiting — 20 req/min per IP (Rule 27)
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+  if (!checkRateLimit(clientIp)) {
+    return res.status(429).json({ error: 'Too many requests. Please wait a moment and try again.' });
+  }
+
   try {
     const { prompt, lang, history } = req.body || {};
+
+    // Prompt validation — required, string, max length (Rule 28)
     if (!prompt || typeof prompt !== 'string') {
       return res.status(400).json({ error: 'Prompt is required' });
     }
+    if (prompt.length > MAX_PROMPT_CHARS) {
+      return res.status(400).json({ error: `Prompt exceeds maximum length of ${MAX_PROMPT_CHARS} characters.` });
+    }
 
-    const defaultKey = Buffer.from('QVEuQWI4Uk42S2xfTG5BMnFoOEwyZ3JuQ3BsVV9fUi1jOEYzTThmTnFzY3lUTGtnNEZoa2c=', 'base64').toString('utf8');
-    const apiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY || req.headers['x-gemini-key'] || (req.body && req.body.apiKey) || defaultKey;
+    // API key — environment variables only; no hardcoded fallbacks
+    const apiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY;
     if (!apiKey) {
-      // Quiet signal to client to use rich built-in offline engine
-      return res.status(200).json({
+      // Signal client to use the built-in offline knowledge engine
+      return res.status(503).json({
         fallback: true,
         source: 'local-knowledge',
-        message: 'No cloud API key configured; use local knowledge engine.'
+        message: 'Cloud AI unavailable; using local knowledge engine.'
       });
     }
 
@@ -247,15 +322,14 @@ LAMIN APP ARCHITECTURE & CORE DOMAIN FORMULAS
 • Privacy: 100% Offline-First, IndexedDB local storage, zero cloud tracking, JSON full backup export/import in Profile.`;
 
     const contents = [];
-    if (Array.isArray(history) && history.length > 0) {
+    // Validate and sanitize history before building the conversation contents
+    const safeHistory = validateHistory(history);
+    if (safeHistory.length > 0) {
       let lastRole = null;
-      history.slice(-4).forEach(h => {
-        if (h && h.role && h.text) {
-          const role = h.role === 'user' ? 'user' : 'model';
-          if (role !== lastRole) {
-            contents.push({ role, parts: [{ text: String(h.text) }] });
-            lastRole = role;
-          }
+      safeHistory.forEach(h => {
+        if (h.role !== lastRole) {
+          contents.push({ role: h.role, parts: [{ text: h.text }] });
+          lastRole = h.role;
         }
       });
     }

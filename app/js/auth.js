@@ -236,7 +236,8 @@ const Auth = {
       const bio = bioInput ? bioInput.value.trim() : '';
 
       const user = {
-        id: 'local_' + Date.now(),
+        // crypto.randomUUID() — cryptographically random, collision-proof (Rule 21)
+        id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : ('local_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9)),
         name: name,
         email: 'local@lamim.offline',
         role: 'user',
@@ -396,10 +397,9 @@ const Auth = {
         if (currentUser) {
           DB.saveProfileVault(currentUser);
         }
+        // DB.remove() atomically clears IndexedDB, _cache, and localStorage
         await DB.remove('lamim_user');
-        try { localStorage.removeItem('lamim_user'); } catch {}
-        if (typeof DB._cache === 'object') delete DB._cache['lamim_user'];
-        
+
         const cleanUrl = window.location.origin + window.location.pathname;
         window.location.href = cleanUrl;
       }

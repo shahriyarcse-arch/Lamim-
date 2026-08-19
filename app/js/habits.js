@@ -1589,16 +1589,18 @@ const Habits = {
 
     const startCountdown = (duration) => {
       if (this.breatheTimerInterval) clearInterval(this.breatheTimerInterval);
-      let count = duration;
-      timer.textContent = count;
+      const startTime = Date.now();
+      timer.textContent = duration;
       
       this.breatheTimerInterval = setInterval(() => {
-        count--;
-        if (count >= 0) {
-          timer.textContent = count;
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const remaining = Math.max(0, duration - elapsed);
+        timer.textContent = remaining;
+        if (remaining === 0) {
+          clearInterval(this.breatheTimerInterval);
+          this.breatheTimerInterval = null;
         }
-        if (count === 0) clearInterval(this.breatheTimerInterval);
-      }, 1000);
+      }, 250);
     };
     
     const prompt = document.getElementById('breathe-prompt');

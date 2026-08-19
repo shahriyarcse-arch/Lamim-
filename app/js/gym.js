@@ -213,8 +213,8 @@ const Gym = {
     }
     const ex = {
       name,
-      sets: Math.max(1, parseInt(setsEl.value, 10) || 3),
-      reps: Math.max(1, parseInt(repsEl.value, 10) || 10),
+      sets: Math.max(1, Math.min(50, parseInt(setsEl.value, 10) || 3)),
+      reps: Math.max(1, Math.min(200, parseInt(repsEl.value, 10) || 10)),
       weight: Math.max(0, Math.min(1000, parseFloat(weightEl.value) || 0))
     };
 
@@ -222,11 +222,12 @@ const Gym = {
     if (!data.exercises) data.exercises = [];
     data.exercises.push(ex);
 
-    // PR tracking
+    // Case-insensitive PR tracking (normalizes key to avoid duplicate PR entries)
     if (ex.weight > 0) {
       const prs = DB.getPRs();
-      if (!prs[name] || prs[name].weight < ex.weight) {
-        prs[name] = { weight: ex.weight, date: this.selectedDate };
+      const existingKey = Object.keys(prs).find(k => k.toLowerCase() === name.toLowerCase()) || name;
+      if (!prs[existingKey] || (Number(prs[existingKey].weight) || 0) < ex.weight) {
+        prs[existingKey] = { weight: ex.weight, date: this.selectedDate };
         DB.setPRs(prs);
       }
     }

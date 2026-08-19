@@ -83,6 +83,17 @@ const DB = {
 
         request.onerror = (e) => {
           const err = e.target ? e.target.error : e;
+
+          // Immediate Fast-Fallback on security/permission block (e.g. Safari Private Browsing)
+          if (err && (err.name === 'SecurityError' || err.name === 'NotAllowedError')) {
+            clearTimeout(timeout);
+            console.warn("[DB] IndexedDB access restricted (SecurityError), instant fallback to localStorage");
+            this._fallbackToLocalStorage();
+            this._setupMultiTabSync();
+            safeResolve();
+            return;
+          }
+
           // Auto-recovery 1: Version mismatch (e.g. VersionError) -> retry without explicit version
           if (!retried && err && err.name === 'VersionError') {
             retried = true;

@@ -160,11 +160,23 @@ const Dhikr = {
   },
 
   tap() {
-    this.count++;
+    this.count = Math.min(9999999, (this.count || 0) + 1);
     this.saveInstantly();
 
-    // Haptic
-    if (navigator.vibrate) navigator.vibrate(25);
+    // Haptic with iOS visual pulse fallback
+    let hapticFired = false;
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try {
+        hapticFired = navigator.vibrate(25);
+      } catch (_) { }
+    }
+    if (!hapticFired) {
+      const btn = document.getElementById('dhikr-tap-btn');
+      if (btn) {
+        btn.style.transform = 'scale(0.97)';
+        setTimeout(() => { btn.style.transform = ''; }, 80);
+      }
+    }
 
     // Animate tap ripple
     const ripple = document.getElementById('tap-ripple');

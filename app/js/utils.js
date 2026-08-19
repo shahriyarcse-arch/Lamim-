@@ -183,31 +183,44 @@ const Utils = {
 
     const latRad = lat * Math.PI / 180;
 
-    // Helper: hour angle for a given sun altitude
+    // Helper: hour angle for a given sun altitude (with high-latitude angle-based fallback)
     const hourAngle = (angle) => {
       const angleRad = angle * Math.PI / 180;
       const cosHA = (Math.sin(angleRad) - Math.sin(latRad) * Math.sin(decl)) /
         (Math.cos(latRad) * Math.cos(decl));
-      if (cosHA > 1 || cosHA < -1) return 0;
+      if (cosHA > 1 || cosHA < -1) return null; // Sun does not reach this altitude
       return Math.acos(cosHA) * 180 / Math.PI / 15; // in hours
     };
 
-    // Fajr: Sun at -18° (Muslim World League)
+    // Sunrise/Sunset hour angle (-0.833° accounting for atmospheric refraction)
+    let sunriseHA = hourAngle(-0.833);
+    if (sunriseHA === null) {
+      // Polar day/night edge-case: clamp effective latitude to 48.5° for safe solar calculations
+      const safeLatRad = Math.sign(lat || 1) * Math.min(Math.abs(latRad), 48.5 * Math.PI / 180);
+      const cosSafe = (Math.sin(-0.833 * Math.PI / 180) - Math.sin(safeLatRad) * Math.sin(decl)) /
+        (Math.cos(safeLatRad) * Math.cos(decl));
+      sunriseHA = Math.acos(Math.max(-1, Math.min(1, cosSafe))) * 180 / Math.PI / 15;
+    }
+
+    // Night duration in hours (used for 1/7th of night high-latitude fallback rule)
+    const nightDuration = Math.max(2, 24 - 2 * sunriseHA);
+
+    // Fajr: Sun at -18° (Muslim World League) with 1/7th night high-latitude fallback
     const fajrHA = hourAngle(-18);
-    const fajr = dhuhr - fajrHA;
+    const fajr = fajrHA !== null ? (dhuhr - fajrHA) : ((dhuhr - sunriseHA) - (nightDuration / 7));
 
     // Asr: Hanafi method (shadow = 2x object + noon shadow)
     const asrAngle = Math.atan(1 / (2 + Math.tan(Math.abs(latRad - decl)))) * 180 / Math.PI;
-    const asrHA = hourAngle(asrAngle);
+    let asrHA = hourAngle(asrAngle);
+    if (asrHA === null) asrHA = sunriseHA * 0.6;
     const asr = dhuhr + asrHA;
 
-    // Maghrib: Sun at -0.833° (accounting for refraction)
-    const maghribHA = hourAngle(-0.833);
-    const maghrib = dhuhr + maghribHA;
+    // Maghrib: Sun at -0.833° (sunset)
+    const maghrib = dhuhr + sunriseHA;
 
-    // Isha: Sun at -17° (MWL)
+    // Isha: Sun at -17° (MWL) with 1/7th night high-latitude fallback
     const ishaHA = hourAngle(-17);
-    const isha = dhuhr + ishaHA;
+    const isha = ishaHA !== null ? (dhuhr + ishaHA) : ((dhuhr + sunriseHA) + (nightDuration / 7));
 
     const makeTime = (hours) => {
       const h = Math.floor(hours);

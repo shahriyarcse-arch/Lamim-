@@ -226,9 +226,6 @@
     }
   };
 
-  // Built-in Gemini key (works 100% out of the box on all devices)
-  const DEFAULT_GEMINI_KEY = atob('QVEuQWI4Uk42S2xfTG5BMnFoOEwyZ3JuQ3BsVV9fUi1jOEYzTThmTnFzY3lUTGtnNEZoa2c=');
-
   // ==========================================================================
   // 2. CLOUD & DIRECT GENERATIVE AI ADAPTER (MULTI-MODEL CASCADE GEMINI ENGINE)
   // ==========================================================================
@@ -238,8 +235,8 @@
         return { fallback: true };
       }
 
-      // Strategy 1: Direct Client Gemini API call (Ultra-fast, zero proxy delay)
-      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key') || DEFAULT_GEMINI_KEY;
+      // Strategy 1: Direct client-side Gemini call (only if user supplied their own key via Settings)
+      const clientKey = localStorage.getItem('lamim_gemini_key') || localStorage.getItem('gemini_api_key');
       if (clientKey) {
         try {
           const directReply = await this.callDirectGemini(prompt, lang, history, clientKey);

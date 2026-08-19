@@ -196,7 +196,7 @@ const Finance = {
   currentMonth: new Date().getMonth(),
   currentYear: new Date().getFullYear(),
   chartView: 'daily',
-  exchangeRate: 118,
+  exchangeRate: 0, // 0 = not yet loaded; populated by fetchExchangeRate()
   showAllActivity: false,
   showAllVaults: false,
   historySearch: '',
@@ -287,24 +287,22 @@ const Finance = {
   },
 
   rateSource: 'TradingView',
-  rateChangePct: 0.72,
-  exchangeRate: 123.4838,
+  rateChangePct: 0,
+  exchangeRate: 0, // 0 = not yet loaded; live refresh populates this on first render
 
   async fetchExchangeRate(isManual = false) {
-    // Instant: apply cached rate and sanitize legacy source names
+    // Instant: apply cached rate, sanitize legacy source names
     try {
       const raw = localStorage.getItem('lamim_fx_rate');
       if (raw) {
         const p = JSON.parse(raw);
         if (p && p.rate) {
-          this.rateSource = 'TradingView';
+          // Sanitize legacy source label
+          this.rateSource = (p.source && p.source !== 'OpenER') ? p.source : 'TradingView';
           if (typeof p.changePct === 'number') this.rateChangePct = p.changePct;
-          if (p.source === 'OpenER' || !p.source || p.rate < 123) {
-            this.exchangeRate = 123.4838;
-            this.rateChangePct = 0.72;
-            try { localStorage.setItem('lamim_fx_rate', JSON.stringify({ ts: Date.now(), rate: 123.4838, source: 'TradingView', changePct: 0.72 })); } catch (_) { }
-          } else {
-            this.exchangeRate = (typeof p.rate === 'number' && isFinite(p.rate) && p.rate > 0 && p.rate <= 100000) ? p.rate : 123.4838;
+          // Accept any valid cached rate — never override with a hardcoded stale value
+          if (typeof p.rate === 'number' && isFinite(p.rate) && p.rate > 0 && p.rate <= 100_000) {
+            this.exchangeRate = p.rate;
           }
           if (document.getElementById('section-finance')?.classList.contains('active')) this.render();
         }
@@ -314,7 +312,9 @@ const Finance = {
     // Background: refresh from network and cache the result
     if (!navigator.onLine) {
       if (isManual && typeof Utils !== 'undefined') {
-        Utils.toast('Device is offline. Using cached rate: 1 USD = ' + this._getFXRate().toFixed(2) + ' BDT', 'info');
+        const cachedRate = this._getFXRate();
+        const rateStr = cachedRate > 0 ? `1 USD = ${cachedRate.toFixed(2)} BDT` : 'no cached rate available';
+        Utils.toast(`Device is offline. ${rateStr}`, 'info');
       }
       return;
     }
@@ -364,10 +364,12 @@ const Finance = {
   getSymbol() { return DB.getSettings().currency === 'BDT' ? '৳' : '$'; },
 
   // Return a sane, finite, positive exchange rate (USD→BDT).
+  // Returns 0 when rate has not yet been loaded (no cache + no network yet).
+  // Callers that display the rate should check for 0 and show a loading state.
   _getFXRate() {
     const r = this.exchangeRate;
-    if (typeof r !== 'number' || !isFinite(r) || r <= 0) return 123.48;
-    if (r > 100000) return 100000;
+    if (typeof r !== 'number' || !isFinite(r) || r <= 0) return 0;
+    if (r > 100_000) return 100_000;
     return r;
   },
 
@@ -788,6 +790,10 @@ const Finance = {
   },
 
   getCategory(id) {
+    if (!this.categoryMap) {
+      this.categoryMap = new Map();
+      this.categories.forEach(cat => this.categoryMap.set(cat.id, cat));
+    }
     return this.categoryMap.get(id) || { name: 'Other', icon: '', color: '#8E8E93' };
   },
 
@@ -1174,7 +1180,14 @@ const Finance = {
     const totalBalance = allIncome - allExpenses;
 
     let amountInBase = a;
-    if (DB.getSettings().currency === 'BDT') amountInBase = a / this._getFXRate();
+    if (DB.getSettings().currency === 'BDT') {
+      const fxRate = this._getFXRate();
+      if (!fxRate) {
+        this._submitting = false;
+        return Utils.toast(isBn ? 'এক্সচেঞ্জ রেট লোড হয়নি। একটু অপেক্ষা করুন।' : 'Exchange rate not loaded yet. Please wait a moment.', 'warning');
+      }
+      amountInBase = a / fxRate;
+    }
 
     // Check if expense exceeds total balance
     if (amountInBase > totalBalance + 0.0001) {
@@ -1287,7 +1300,14 @@ const Finance = {
       this._submitting = false;
       return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields', 'error');
     }
-    if (DB.getSettings().currency === 'BDT') a /= this._getFXRate();
+    if (DB.getSettings().currency === 'BDT') {
+      const fxRate = this._getFXRate();
+      if (!fxRate) {
+        this._submitting = false;
+        return Utils.toast(isBn ? 'এক্সচেঞ্জ রেট লোড হয়নি। একটু অপেক্ষা করুন।' : 'Exchange rate not loaded yet. Please wait a moment.', 'warning');
+      }
+      a /= fxRate;
+    }
 
     // Refresh data directly from DB to prevent concurrent multi-tab overwrites
     const fresh = DB.getFinance();
@@ -1597,7 +1617,11 @@ const Finance = {
     let target = parseFloat(document.getElementById('finance-savings-target')?.value || '');
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     if (!name || isNaN(target) || target <= 0) return Utils.toast(isBn ? 'প্রয়োজনীয় তথ্য পূরণ করুন' : 'Fill valid fields', 'error');
-    if (DB.getSettings().currency === 'BDT') target /= this._getFXRate();
+    if (DB.getSettings().currency === 'BDT') {
+      const fxRate = this._getFXRate();
+      if (!fxRate) return Utils.toast(isBn ? 'এক্সচেঞ্জ রেট লোড হয়নি। একটু অপেক্ষা করুন।' : 'Exchange rate not loaded yet. Please wait a moment.', 'warning');
+      target /= fxRate;
+    }
     this.data.savings.push({ id: Utils.uid(), name, target, saved: 0 });
     this.saveData(); this.closeModal(); this.render();
     if (document.getElementById('finance-vault-overlay')?.classList.contains('show')) {
@@ -1694,7 +1718,14 @@ const Finance = {
     const remainingInBase = goal.target - goal.saved; // USD base
 
     let amountInBase = amount;
-    if (DB.getSettings().currency === 'BDT') amountInBase = amount / this._getFXRate();
+    if (DB.getSettings().currency === 'BDT') {
+      const fxRate = this._getFXRate();
+      if (!fxRate) {
+        this._submitting = false;
+        return Utils.toast(isBn ? 'এক্সচেঞ্জ রেট লোড হয়নি। একটু অপেক্ষা করুন।' : 'Exchange rate not loaded yet. Please wait a moment.', 'warning');
+      }
+      amountInBase = amount / fxRate;
+    }
 
     // Genuine behaviour: cannot deposit more cash than you actually have on hand
     const allIncome = this.data.income.reduce((s, o) => s + o.amount, 0);
@@ -1958,7 +1989,7 @@ const Finance = {
   showToolsModal() {
     const s = DB.getSettings();
     const activeRate = this._getFXRate();
-    const exchangeRateText = `1 USD = ${activeRate.toFixed(4)} BDT`;
+    const exchangeRateText = activeRate > 0 ? `1 USD = ${activeRate.toFixed(4)} BDT` : '1 USD = — BDT (fetching…)';
     const sourceLabel = this.rateSource || 'TradingView';
     const changeBadge = typeof this.rateChangePct === 'number'
       ? `<span style="font-size:12px; font-weight:800; color:${this.rateChangePct >= 0 ? '#10b981' : '#ef4444'}; display:inline-flex; align-items:center; gap:2px;">
@@ -2505,6 +2536,10 @@ const Finance = {
     });
   },
 
+  _roundMoney(n) {
+    return Math.round((Number(n || 0) + Number.EPSILON) * 100) / 100;
+  },
+
   getStats(v = this.currentViewDate || new Date()) {
     if (!this.data) this.loadData();
     const incomeList = (this.data && Array.isArray(this.data.income)) ? this.data.income : [];
@@ -2514,32 +2549,32 @@ const Finance = {
     const endOfViewMonth = new Date(y, m + 1, 0, 23, 59, 59); // Last second of the viewed month
 
     // Monthly View Stats (Specific to this month) — exclude vault transfers so Spending matches the ledger
-    const monthlyIncome = incomeList.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y; }).reduce((s, o) => s + (o.amount || 0), 0);
-    const monthlyExpenses = expensesList.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y && o.category !== 'transfer'; }).reduce((s, o) => s + (o.amount || 0), 0);
+    const monthlyIncome = this._roundMoney(incomeList.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y; }).reduce((s, o) => s + (Number(o.amount) || 0), 0));
+    const monthlyExpenses = this._roundMoney(expensesList.filter(o => { const d = new Date(o.date); return d.getMonth() === m && d.getFullYear() === y && o.category !== 'transfer'; }).reduce((s, o) => s + (Number(o.amount) || 0), 0));
 
     // Previous calendar month stats (for month-over-month comparison)
     const pm = m === 0 ? 11 : m - 1;
     const py = m === 0 ? y - 1 : y;
-    const prevIncome = incomeList.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py; }).reduce((s, o) => s + (o.amount || 0), 0);
-    const prevExpenses = expensesList.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py && o.category !== 'transfer'; }).reduce((s, o) => s + (o.amount || 0), 0);
+    const prevIncome = this._roundMoney(incomeList.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py; }).reduce((s, o) => s + (Number(o.amount) || 0), 0));
+    const prevExpenses = this._roundMoney(expensesList.filter(o => { const d = new Date(o.date); return d.getMonth() === pm && d.getFullYear() === py && o.category !== 'transfer'; }).reduce((s, o) => s + (Number(o.amount) || 0), 0));
 
     // Closing Balance of the viewed month (Cumulative up to the end of the viewed month)
-    const closingIncome = incomeList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
-    const closingExpenses = expensesList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
+    const closingIncome = incomeList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (Number(o.amount) || 0), 0);
+    const closingExpenses = expensesList.filter(o => new Date(o.date) <= endOfViewMonth).reduce((s, o) => s + (Number(o.amount) || 0), 0);
 
     // Opening Balance of the viewed month (Cumulative up to the start of the viewed month)
     const startOfViewMonth = new Date(y, m, 1, 0, 0, 0);
-    const openingIncome = incomeList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
-    const openingExpenses = expensesList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (o.amount || 0), 0);
-    const openingBalance = openingIncome - openingExpenses;
+    const openingIncome = incomeList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (Number(o.amount) || 0), 0);
+    const openingExpenses = expensesList.filter(o => new Date(o.date) < startOfViewMonth).reduce((s, o) => s + (Number(o.amount) || 0), 0);
+    const openingBalance = this._roundMoney(openingIncome - openingExpenses);
 
     return {
       income: monthlyIncome,
       expenses: monthlyExpenses,
       prevIncome: prevIncome,
       prevExpenses: prevExpenses,
-      balance: monthlyIncome - monthlyExpenses,
-      closingBalance: closingIncome - closingExpenses,
+      balance: this._roundMoney(monthlyIncome - monthlyExpenses),
+      closingBalance: this._roundMoney(closingIncome - closingExpenses),
       openingBalance: openingBalance
     };
   },

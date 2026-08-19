@@ -25,7 +25,7 @@ const Profile = {
     el.innerHTML = `
       <div class="profile-avatar-wrap">
         ${user.avatar
-          ? `<img src="${Utils.escapeHTML(user.avatar)}" class="profile-avatar" alt="Avatar" data-fallback="${Utils.escapeHTML(initials)}" onerror="this.outerHTML='<div class=\'profile-avatar\'>'+this.dataset.fallback+'</div>'">`
+          ? `<img src="${Utils.escapeHTML(user.avatar)}" id="profile-avatar-img" class="profile-avatar" alt="Avatar">`
           : `<div class="profile-avatar">${Utils.escapeHTML(initials)}</div>`}
         <label class="avatar-edit-btn" for="avatar-upload" title="Change photo">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
@@ -66,6 +66,20 @@ const Profile = {
     const bioEl = document.getElementById('prof-display-bio');
     if (nameEl) nameEl.textContent = user.name || 'Anonymous';
     if (bioEl) bioEl.textContent = user.bio || '';
+
+    // Avatar fallback — programmatic error handler (CSP-safe, no inline onerror)
+    if (user.avatar) {
+      const avatarImg = document.getElementById('profile-avatar-img');
+      if (avatarImg) {
+        avatarImg.addEventListener('error', function onAvatarError() {
+          avatarImg.removeEventListener('error', onAvatarError);
+          const fallbackDiv = document.createElement('div');
+          fallbackDiv.className = 'profile-avatar';
+          fallbackDiv.textContent = initials;
+          avatarImg.replaceWith(fallbackDiv);
+        });
+      }
+    }
   },
 
   renderSettings() {
@@ -588,9 +602,9 @@ const Profile = {
           const profiles = DB.getProfiles().filter(p => (user.id ? p.id !== user.id : true) && (!user.id ? !(p.name && p.name.toLowerCase() === user.name.toLowerCase()) : true));
           DB.set('lamim_profiles_vault', profiles);
         }
+        // DB.remove() atomically clears IndexedDB, _cache, and localStorage
         await DB.remove('lamim_user');
-        try { localStorage.removeItem('lamim_user'); } catch {}
-        
+
         // Clear current active user's specific data keys (both scoped usr_{id}_ and active cache)
         const userPrefix = user && user.id ? `usr_${user.id}_` : null;
         const allKeys = DB.keys();
@@ -869,6 +883,11 @@ const Profile = {
       if (!rawImport || typeof rawImport !== 'object' || Array.isArray(rawImport)) {
         throw new Error('Invalid JSON format');
       }
+
+      // Security: Strip prototype pollution vectors
+      delete rawImport.__proto__;
+      delete rawImport.constructor;
+      delete rawImport.prototype;
 
       // Support both new envelope ({ _meta, data }) and legacy direct-key JSON formats seamlessly
       const data = rawImport.data && typeof rawImport.data === 'object' && !Array.isArray(rawImport.data)
