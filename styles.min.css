@@ -1,6 +1,6 @@
 :root {
-  --paper: #f1f0e9;
-  --paper-rgb: 241, 240, 233;
+  --paper: #ffffff;
+  --paper-rgb: 255, 255, 255;
   --ink: #13211b;
   --muted: #505c54;
   --dark: #12261e;
@@ -10,7 +10,7 @@
   --sky: #bddcf0;
   --coral: #edb391;
   --gold: #e4ca71;
-  --line: #cbd6ce;
+  --line: #e5e9e6;
   --line-dark: rgba(241, 240, 233, 0.14);
   --ease: cubic-bezier(.16, 1, .3, 1);
   --wrap-max: 1280px;
@@ -541,7 +541,7 @@ p {
   padding: clamp(12px, 3vw, 20px);
   border: 1px solid #13211b2c;
   border-radius: clamp(20px, 4vw, 30px);
-  background: #fafbf6ee;
+  background: #ffffff;
   box-shadow: 0 20px 60px rgba(19, 33, 27, 0.15);
   transform: rotate(1deg);
   -webkit-backface-visibility: hidden;
@@ -2564,7 +2564,7 @@ details p {
 
 /* Finance Ledger */
 .ledger {
-  background: #fafbf6;
+  background: #ffffff;
   color: var(--dark);
   box-shadow: 0 20px 60px rgba(19, 33, 27, 0.12);
   transform: rotate(-1deg);
@@ -2603,7 +2603,7 @@ details p {
 
 /* Analysis Board */
 .analysis-board {
-  background: #fafbf6;
+  background: #ffffff;
   color: var(--dark);
   transform: rotate(1deg);
 }
@@ -2659,7 +2659,7 @@ details p {
 }
 
 .profile-card {
-  background: #fafbf6;
+  background: #ffffff;
   color: var(--dark);
   transform: rotate(-1deg);
 }

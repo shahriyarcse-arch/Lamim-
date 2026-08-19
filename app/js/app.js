@@ -155,7 +155,7 @@ updateSectionTitle() {
     // Apply saved theme
     const settings = DB.getSettings();
     const theme = settings.theme || 'light';
-    const bg = theme === 'dark' ? '#020408' : '#F1F5F9';
+    const bg = theme === 'dark' ? '#020408' : '#FFFFFF';
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.style.setProperty('--color-bg-primary', bg);
     const meta = document.querySelector('meta[name="theme-color"]');
