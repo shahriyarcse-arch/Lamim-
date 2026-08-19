@@ -397,13 +397,13 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
       animation: dhikr-ring-glow 3s ease-in-out infinite;
     }
 
-    /* ---- APP LAUNCH & INSTALL CHOICE MODAL ---- */
+    /* ---- APP LAUNCH & INSTALL CHOICE MODAL (LUXURY MODERN REFINEMENT) ---- */
     .launch-modal-overlay {
       position: fixed; inset: 0; z-index: 10000;
-      background: rgba(12, 22, 17, 0.72);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      background: rgba(10, 20, 15, 0.72);
+      backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
       display: flex; align-items: center; justify-content: center;
-      padding: clamp(14px, 4vw, 28px);
+      padding: clamp(16px, 4vw, 32px);
       opacity: 0; visibility: hidden;
       transition: opacity 0.3s var(--ease), visibility 0.3s ease;
     }
@@ -411,137 +411,151 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
       opacity: 1; visibility: visible;
     }
     .launch-modal-card {
-      width: 100%; max-width: 620px;
+      width: 100%; max-width: 660px;
       background: #ffffff;
-      border: 1px solid rgba(19, 33, 27, 0.12);
+      border: 1px solid rgba(19, 33, 27, 0.08);
       border-radius: clamp(24px, 4vw, 32px);
-      box-shadow: 0 28px 80px rgba(12, 22, 17, 0.38);
-      padding: clamp(22px, 4.5vw, 36px);
+      box-shadow: 0 32px 90px rgba(10, 20, 15, 0.35), 0 0 0 1px rgba(255,255,255,0.8) inset;
+      padding: clamp(24px, 4.5vw, 40px);
       position: relative;
-      transform: scale(0.94) translateY(16px);
-      transition: transform 0.35s var(--ease);
-      max-height: 90vh; overflow-y: auto;
+      transform: scale(0.94) translateY(20px);
+      transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 92vh; overflow-y: auto;
     }
     .launch-modal-overlay.active .launch-modal-card {
       transform: scale(1) translateY(0);
     }
     .launch-modal-close {
       position: absolute; top: 18px; right: 18px;
-      width: 38px; height: 38px; border-radius: 50%;
-      background: rgba(19, 33, 27, 0.06); border: 1px solid rgba(19, 33, 27, 0.1);
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(19, 33, 27, 0.05); border: 1px solid rgba(19, 33, 27, 0.08);
       display: flex; align-items: center; justify-content: center;
       color: var(--ink); font-size: 1.25rem; cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s var(--ease);
     }
     .launch-modal-close:hover {
-      background: rgba(19, 33, 27, 0.14); transform: scale(1.08);
+      background: rgba(19, 33, 27, 0.12); transform: rotate(90deg) scale(1.06);
     }
     .launch-modal-head {
-      text-align: center; margin-bottom: clamp(20px, 3.5vw, 28px);
+      text-align: center; margin-bottom: clamp(24px, 4vw, 32px);
     }
     .launch-modal-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 5px 14px; border-radius: 99px;
-      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
-      background: rgba(61,122,90,0.1); color: var(--teal); border: 1px solid rgba(61,122,90,0.22);
+      padding: 6px 15px; border-radius: 99px;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      background: rgba(61,122,90,0.08); color: var(--teal); border: 1px solid rgba(61,122,90,0.2);
       margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(61,122,90,0.06);
     }
     .launch-modal-title {
       font-family: var(--font-display, serif);
-      font-size: clamp(1.6rem, 3.2vw, 2.2rem); font-weight: 800;
-      color: var(--ink); line-height: 1.15; margin-bottom: 8px;
+      font-size: clamp(1.65rem, 3.4vw, 2.3rem); font-weight: 800;
+      color: var(--ink); line-height: 1.18; margin-bottom: 8px;
       letter-spacing: -0.03em;
     }
     .launch-modal-subtitle {
-      font-size: 0.95rem; color: var(--muted); line-height: 1.5; margin: 0 auto; max-width: 44ch;
+      font-size: 0.94rem; color: var(--muted); line-height: 1.55; margin: 0 auto; max-width: 46ch;
     }
     .launch-options-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    }
+    @media (max-width: 580px) {
+      .launch-options-grid {
+        grid-template-columns: 1fr;
+      }
     }
     .launch-opt-card {
-      background: #fafbf8;
-      border: 1.5px solid rgba(19, 33, 27, 0.1);
-      border-radius: 20px;
-      padding: 22px 18px;
+      background: #fafaf7;
+      border: 1.5px solid rgba(19, 33, 27, 0.09);
+      border-radius: 24px;
+      padding: 24px 20px;
       display: flex; flex-direction: column; justify-content: space-between;
       text-align: left;
       position: relative;
-      transition: all 0.25s var(--ease);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .launch-opt-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 14px 32px rgba(19, 33, 27, 0.08);
+      box-shadow: 0 16px 36px rgba(19, 33, 27, 0.08);
+      border-color: rgba(19, 33, 27, 0.2);
     }
     .launch-opt-card.featured {
       background: linear-gradient(175deg, #f3faee 0%, #e9f6e0 100%);
+      border-color: rgba(61, 122, 90, 0.4);
+      box-shadow: 0 10px 30px rgba(61, 122, 90, 0.1);
+    }
+    .launch-opt-card.featured:hover {
       border-color: var(--teal);
-      box-shadow: 0 10px 28px rgba(61, 122, 90, 0.12);
+      box-shadow: 0 18px 42px rgba(61, 122, 90, 0.16);
     }
     .launch-opt-tag {
-      position: absolute; top: -10px; right: 14px;
-      font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+      position: absolute; top: -11px; right: 16px;
+      font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
       background: var(--teal); color: #ffffff;
-      padding: 3px 10px; border-radius: 99px;
-      box-shadow: 0 4px 10px rgba(61, 122, 90, 0.3);
+      padding: 4px 12px; border-radius: 99px;
+      box-shadow: 0 4px 12px rgba(61, 122, 90, 0.35);
     }
     .launch-opt-icon {
-      width: 46px; height: 46px; border-radius: 14px;
+      width: 48px; height: 48px; border-radius: 16px;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 14px; flex-shrink: 0;
+      margin-bottom: 16px; flex-shrink: 0;
       background: #ffffff; border: 1px solid rgba(19, 33, 27, 0.08);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
     .launch-opt-title {
-      font-size: 1.15rem; font-weight: 800; color: var(--ink);
+      font-size: 1.2rem; font-weight: 800; color: var(--ink);
       margin-bottom: 6px; letter-spacing: -0.02em;
     }
     .launch-opt-desc {
-      font-size: 0.84rem; color: var(--muted); line-height: 1.45;
+      font-size: 0.85rem; color: var(--muted); line-height: 1.5;
       margin-bottom: 18px; flex-grow: 1;
     }
     .launch-opt-perks {
-      display: flex; flex-direction: column; gap: 6px;
-      margin-bottom: 20px; font-size: 0.78rem; font-weight: 600; color: var(--ink);
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 22px; font-size: 0.8rem; font-weight: 600; color: var(--ink);
     }
     .launch-opt-perk-item {
-      display: flex; align-items: center; gap: 6px;
+      display: flex; align-items: center; gap: 8px;
     }
     .launch-opt-perk-item svg {
       color: var(--teal); flex-shrink: 0;
     }
     .launch-action-btn {
-      width: 100%; min-height: 44px; padding: 0 16px;
-      border-radius: 12px; font-weight: 700; font-size: 0.88rem;
+      width: 100%; min-height: 46px; padding: 0 18px;
+      border-radius: 14px; font-weight: 700; font-size: 0.9rem;
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      cursor: pointer; transition: all 0.2s var(--ease); border: none; text-decoration: none;
+      cursor: pointer; transition: all 0.25s var(--ease); border: none; text-decoration: none;
     }
     .launch-action-btn.primary {
       background: var(--dark); color: #ffffff;
-      box-shadow: 0 4px 14px rgba(18, 38, 30, 0.25);
+      box-shadow: 0 6px 18px rgba(18, 38, 30, 0.25);
     }
     .launch-action-btn.primary:hover {
-      background: #0a1711; transform: translateY(-1px);
+      background: #08130e; transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(18, 38, 30, 0.35);
     }
     .launch-action-btn.secondary {
       background: #ffffff; color: var(--ink);
-      border: 1.5px solid rgba(19, 33, 27, 0.16);
+      border: 1.5px solid rgba(19, 33, 27, 0.14);
     }
     .launch-action-btn.secondary:hover {
-      border-color: var(--ink); background: #f6f7f3;
+      border-color: var(--ink); background: #f4f5f0;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(19, 33, 27, 0.06);
     }
     
     /* iOS Visual Guide Box inside Modal */
     .ios-install-guide {
       display: none;
       background: #ffffff; border: 1.5px dashed var(--teal);
-      border-radius: 14px; padding: 12px 14px; margin-top: 10px;
-      font-size: 0.8rem; color: var(--ink); text-align: left;
+      border-radius: 16px; padding: 14px 16px; margin-top: 12px;
+      font-size: 0.82rem; color: var(--ink); text-align: left;
     }
     .ios-install-guide ol {
-      margin: 6px 0 0 0; padding-left: 18px; line-height: 1.5;
+      margin: 8px 0 0 0; padding-left: 20px; line-height: 1.55;
     }
     .ios-install-guide li {
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     /* Play Store Grade Live Installation Progress */
@@ -3351,18 +3365,18 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
     })();
   </script>
 
-  <!-- APP LAUNCH & INSTALL CHOICE MODAL -->
+  <!-- APP LAUNCH & INSTALL CHOICE MODAL (LUXURY MODERN UI) -->
   <div class="launch-modal-overlay" id="app-launch-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="launchModalTitle">
     <div class="launch-modal-card">
       <button class="launch-modal-close" id="launchModalClose" aria-label="Close modal">&times;</button>
       
       <div class="launch-modal-head">
         <div class="launch-modal-badge">
-          <img src="app/assets/logo-mark.png" alt="Lamim" style="width:14px; height:14px; object-fit:contain;">
+          <img src="app/assets/logo-mark.png" alt="Lamim" style="width:13px; height:13px; object-fit:contain;">
           <span>Lamim Living System</span>
         </div>
-        <h2 class="launch-modal-title" id="launchModalTitle">How would you like to use Lamim?</h2>
-        <p class="launch-modal-subtitle">কীভাবে ব্যবহার করতে চান? বেছে নিন আপনার পছন্দের অপশন</p>
+        <h2 class="launch-modal-title" id="launchModalTitle">How would you like to open Lamim?</h2>
+        <p class="launch-modal-subtitle">Choose your preferred experience. Both keep 100% of your data private on this device.</p>
       </div>
 
       <div class="launch-options-grid">
@@ -3376,7 +3390,7 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
             </svg>
           </div>
           <h3 class="launch-opt-title">Install App (অ্যাপ)</h3>
-          <p class="launch-opt-desc">ফোনের হোমস্ক্রিন থেকে ১-ট্যাপে সরাসরি ফুলস্ক্রিনে চালু হবে।</p>
+          <p class="launch-opt-desc">ফোনের হোমস্ক্রিনে ১-ট্যাপে ফুলস্ক্রিন অ্যাপ মোডে ওপেন হবে।</p>
           
           <div class="launch-opt-perks">
             <div class="launch-opt-perk-item">
@@ -3385,17 +3399,17 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
             </div>
             <div class="launch-opt-perk-item">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Azan & Prayer alerts</span>
+              <span>Azan & Prayer reminders</span>
             </div>
             <div class="launch-opt-perk-item">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Instant full-screen mode</span>
+              <span>Distraction-free full screen</span>
             </div>
           </div>
 
           <button type="button" class="launch-action-btn primary" id="launchModalInstallBtn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Install App on Device</span>
+            <span>Install on Device</span>
           </button>
 
           <!-- iOS specific step guide -->
@@ -3407,13 +3421,12 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
             </ol>
           </div>
 
-          <!-- Android specific step guide (if prompt suppressed or already installed) -->
+          <!-- Android specific step guide -->
           <div class="ios-install-guide" id="launchAndroidGuide" style="display:none; border-color:var(--teal); background:#f4fbf1;">
             <strong>Android-এ ইন্সটল করার নিয়ম:</strong>
             <ol>
-              <li>উপরে বা নিচে ব্রাউজারের <strong>৩-ডট মেনু (⋮)</strong>-এ চাপ দিন।</li>
+              <li>ব্রাউজারের <strong>৩-ডট মেনু (⋮)</strong>-এ চাপ দিন।</li>
               <li>তালিকা থেকে <strong>"Install app"</strong> বা <strong>"Add to Home screen"</strong> চাপুন।</li>
-              <li>(যদি অলরেডি ফোনে ইনস্টল থাকে, তবে হোমস্ক্রিন বা অ্যাপ ড্রয়ার থেকে সরাসরি ওপেন করুন।)</li>
             </ol>
           </div>
         </div>
@@ -3428,7 +3441,7 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
             </svg>
           </div>
           <h3 class="launch-opt-title">Continue on Web (ওয়েব)</h3>
-          <p class="launch-opt-desc">কোনো ইনস্টলেশন ছাড়াই আপনার বর্তমান ব্রাউজারে সরাসরি ব্যবহার করুন।</p>
+          <p class="launch-opt-desc">কোনো ইনস্টলেশন ছাড়াই ব্রাউজার ট্যাবে সরাসরি ব্যবহার করুন।</p>
           
           <div class="launch-opt-perks">
             <div class="launch-opt-perk-item">
@@ -3441,12 +3454,12 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
             </div>
             <div class="launch-opt-perk-item">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>No extra space taken</span>
+              <span>No device storage space</span>
             </div>
           </div>
 
           <a href="app/index.html" class="launch-action-btn secondary" id="launchModalWebBtn">
-            <span>Continue on Web ➔</span>
+            <span>Open in Browser ➔</span>
           </a>
         </div>
       </div>
