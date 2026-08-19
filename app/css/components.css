@@ -607,7 +607,7 @@ select.input option:disabled {
   line-height: 1;
 }
 
-/* --- Nav Items: Clean, Synchronized Rhythm (100% Unison) --- */
+/* --- Nav Items: Silky Staggered Cascade (100% In-Sync 1-14) --- */
 .sidebar-nav {
   flex: 1;
   padding: 0 var(--space-3);
@@ -625,13 +625,42 @@ select.input option:disabled {
   padding: 12px 16px;
   border-radius: 14px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-secondary);
   position: relative;
-  opacity: 1;
-  transform: none;
+  opacity: 0;
+  animation: navItemSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered entrance: Top 11 Nav Items */
+.sidebar-nav .nav-item:nth-child(1) { animation-delay: 0.03s; }
+.sidebar-nav .nav-item:nth-child(2) { animation-delay: 0.06s; }
+.sidebar-nav .nav-item:nth-child(3) { animation-delay: 0.09s; }
+.sidebar-nav .nav-item:nth-child(4) { animation-delay: 0.12s; }
+.sidebar-nav .nav-item:nth-child(5) { animation-delay: 0.15s; }
+.sidebar-nav .nav-item:nth-child(6) { animation-delay: 0.18s; }
+.sidebar-nav .nav-item:nth-child(7) { animation-delay: 0.21s; }
+.sidebar-nav .nav-item:nth-child(8) { animation-delay: 0.24s; }
+.sidebar-nav .nav-item:nth-child(9) { animation-delay: 0.27s; }
+.sidebar-nav .nav-item:nth-child(10) { animation-delay: 0.30s; }
+.sidebar-nav .nav-item:nth-child(11) { animation-delay: 0.33s; }
+
+/* Staggered entrance: Footer Items (Continuous Sequence) */
+.sidebar-footer .nav-item:nth-child(1) { animation-delay: 0.36s; }
+.sidebar-footer .nav-item:nth-child(2) { animation-delay: 0.39s; }
+.sidebar-footer .nav-item:nth-child(3) { animation-delay: 0.42s; }
+
+@keyframes navItemSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .nav-item:hover {
