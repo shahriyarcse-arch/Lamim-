@@ -973,110 +973,110 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
       <div class="wrap">
         <div class="ai-island-card reveal" id="aiIslandCard">
           
-          <!-- Header -->
-          <div class="ai-island-header">
-            <div class="ai-island-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-              </svg>
-              <span>AI LIFE COMPANION</span>
-            </div>
-            <h2 class="ai-island-title">An assistant that actually understands your day.</h2>
-            <p class="ai-island-subtitle">
-              Ask naturally in Banglish, Bengali, or English. Instant guidance with complete offline privacy.
-            </p>
-          </div>
-
-          <!-- Bento Grid: Interactive Console + Mascot Video -->
-          <div class="ai-bento-grid">
-            
-            <!-- Column 1: Live Interactive Chat Simulator -->
-            <div class="ai-sim-card" id="aiSimConsole">
-              <div class="ai-sim-header">
-                <div class="ai-sim-brand">
-                  <div class="ai-sim-orb">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
-                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <div class="ai-sim-name">Lamim Companion</div>
-                    <div class="ai-sim-status">Gemini 3.7 Flash &middot; Instant &amp; Offline</div>
-                  </div>
-                </div>
-                <span class="ai-sim-badge">
-                  <span class="ai-sim-dot"></span> Live
-                </span>
+            <!-- Header -->
+            <div class="ai-island-header">
+              <div class="ai-island-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span>THOUGHTFUL COMPANION</span>
               </div>
-
-              <!-- Dialogue Stream -->
-              <div class="ai-sim-body">
-                <div class="ai-sim-bubble user" id="aiSimUserBubble">
-                  ajke fajr miss geche, ki korbo?
-                </div>
-                <div class="ai-sim-bubble ai" id="aiSimAiBubble">
-                  ঘুম বা অনিচ্ছাকৃত কারণে মিস হলে মনে পড়ার সাথে সাথেই কাজা আদায় করে নেওয়া সুন্নত। আজকের বাকি ওয়াক্তগুলো সময়মতো জামাআতে পড়ে দিনটিকে সুন্দর রাখুন।
-                </div>
-              </div>
-
-              <!-- Interactive Quick Queries -->
-              <div class="ai-sim-footer">
-                <div class="ai-sim-chips-label">TRY REAL CONVERSATIONS:</div>
-                <div class="ai-sim-chips">
-                  <button type="button" class="ai-sim-chip active" data-index="0">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                    <span>Fajr miss hole ki korbo?</span>
-                  </button>
-                  <button type="button" class="ai-sim-chip" data-index="1">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path></svg>
-                    <span>Tasbeeh kivabe hisab rakhbo?</span>
-                  </button>
-                  <button type="button" class="ai-sim-chip" data-index="2">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                    <span>Mon shanto korar tip?</span>
-                  </button>
-                </div>
-              </div>
+              <h2 class="ai-island-title">A quiet guide that understands your real routine.</h2>
+              <p class="ai-island-subtitle">
+                Ask in your own words — Bengali, Banglish, or English. Calm, grounded guidance for your daily rhythm, with 100% on-device privacy.
+              </p>
             </div>
 
-            <!-- Column 2: Cinematic 3D Robot HUD Video Showcase -->
-            <div class="ai-video-card">
-              <div class="ai-video-frame">
-                <video 
-                  id="aiCompanionVideoEl"
-                  class="ai-companion-video" 
-                  poster="app/assets/ai-companion-poster.jpg"
-                  autoplay 
-                  loop 
-                  muted 
-                  playsinline 
-                  webkit-playsinline
-                  preload="auto"
-                  aria-label="3D AI Intelligent Mascot interacting with holographic lifestyle analytics HUD">
-                  <source src="app/assets/ai-companion.webm" type="video/webm">
-                  <source src="app/assets/ai-companion.mp4" type="video/mp4">
-                  <img src="app/assets/ai-companion-poster.jpg" alt="3D AI Assistant">
-                </video>
-                <div class="ai-video-hud-overlay">
-                  <span class="ai-video-pill">
-                    <span class="ai-video-dot"></span> Holographic Life Analytics
+            <!-- Bento Grid: Interactive Console + Mascot Video -->
+            <div class="ai-bento-grid">
+              
+              <!-- Column 1: Live Interactive Chat Simulator -->
+              <div class="ai-sim-card" id="aiSimConsole">
+                <div class="ai-sim-header">
+                  <div class="ai-sim-brand">
+                    <div class="ai-sim-orb">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="ai-sim-name">Lamim Companion</div>
+                      <div class="ai-sim-status">Private &amp; On-Device Guidance</div>
+                    </div>
+                  </div>
+                  <span class="ai-sim-badge">
+                    <span class="ai-sim-dot"></span> Live
                   </span>
                 </div>
+
+                <!-- Dialogue Stream -->
+                <div class="ai-sim-body">
+                  <div class="ai-sim-bubble user" id="aiSimUserBubble">
+                    ajke fajr miss geche, ki korbo?
+                  </div>
+                  <div class="ai-sim-bubble ai" id="aiSimAiBubble">
+                    মন খারাপ করবেন না। ঘুম ভেঙে মনে পড়ার সাথে সাথেই অজু করে কাজা পড়ে নিন। আর বাকি ওয়াক্তগুলো জামাআতে পড়ে দিনটিকে সুন্দরভাবে রিকভার করুন!
+                  </div>
+                </div>
+
+                <!-- Interactive Quick Queries -->
+                <div class="ai-sim-footer">
+                  <div class="ai-sim-chips-label">REAL CONVERSATIONS:</div>
+                  <div class="ai-sim-chips">
+                    <button type="button" class="ai-sim-chip active" data-index="0">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                      <span>Fajr miss hole ki korbo?</span>
+                    </button>
+                    <button type="button" class="ai-sim-chip" data-index="1">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path></svg>
+                      <span>Tasbeeh kivabe hisab rakhbo?</span>
+                    </button>
+                    <button type="button" class="ai-sim-chip" data-index="2">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                      <span>Mon shanto korar tip?</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <!-- Clean Video Card Caption -->
-              <div class="ai-video-caption">
-                <div class="ai-video-caption-title">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cfee82" stroke-width="2.6">
-                    <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                  </svg>
-                  <span>Thoughtful Guidance &amp; Analytics</span>
+              <!-- Column 2: Cinematic 3D Robot HUD Video Showcase -->
+              <div class="ai-video-card">
+                <div class="ai-video-frame">
+                  <video 
+                    id="aiCompanionVideoEl"
+                    class="ai-companion-video" 
+                    poster="app/assets/ai-companion-poster.jpg"
+                    autoplay 
+                    loop 
+                    muted 
+                    playsinline 
+                    webkit-playsinline
+                    preload="auto"
+                    aria-label="3D AI Intelligent Mascot interacting with lifestyle analytics HUD">
+                    <source src="app/assets/ai-companion.webm" type="video/webm">
+                    <source src="app/assets/ai-companion.mp4" type="video/mp4">
+                    <img src="app/assets/ai-companion-poster.jpg" alt="3D AI Assistant">
+                  </video>
+                  <div class="ai-video-hud-overlay">
+                    <span class="ai-video-pill">
+                      <span class="ai-video-dot"></span> Daily Rhythm &amp; Analytics
+                    </span>
+                  </div>
                 </div>
-                <p class="ai-video-caption-desc">
-                  আপনার দৈনন্দিন সালাহ, ফোকাস, হালাল ফিন্যান্স ও অভ্যাসের সঠিক ভারসাম্য বজায় রাখতে সার্বক্ষণিক সহযোগী।
-                </p>
+
+                <!-- Clean Video Card Caption -->
+                <div class="ai-video-caption">
+                  <div class="ai-video-caption-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cfee82" stroke-width="2.6">
+                      <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                    </svg>
+                    <span>Clear Insight, Zero Noise</span>
+                  </div>
+                  <p class="ai-video-caption-desc">
+                    সালাত, ফোকাস টাইম, আয়-ব্যয় এবং ব্যক্তিগত ভালো অভ্যাসের মাঝে একটি ভারসাম্যপূর্ণ ছন্দ বজায় রাখুন।
+                  </p>
+                </div>
               </div>
-            </div>
 
           </div>
         </div>
@@ -3501,19 +3501,19 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
         window.addEventListener('click', tryPlay, { once: true, passive: true });
       }
 
-      // 2. Realistic Contextual Dialogues (100% In-App Features)
+      // 2. Realistic Contextual Dialogues (Natural, Human, Supportive)
       const scenarios = [
         {
           user: 'ajke fajr miss geche, ki korbo?',
-          ai: 'ঘুম বা অনিচ্ছাকৃত কারণে মিস হলে মনে পড়ার সাথে সাথেই কাজা আদায় করে নেওয়া সুন্নত। আজকের বাকি ওয়াক্তগুলো সময়মতো জামাআতে পড়ে দিনটিকে সুন্দর রাখুন।'
+          ai: 'মন খারাপ করবেন না। ঘুম ভেঙে মনে পড়ার সাথে সাথেই অজু করে কাজা পড়ে নিন। আর বাকি ওয়াক্তগুলো জামাআতে পড়ে দিনটিকে সুন্দরভাবে রিকভার করুন!'
         },
         {
-          user: 'protidin koto bar tasbeeh porbo?',
-          ai: 'প্রতি সালাতের পর ৩৩ বার সুবহানাল্লাহ, ৩৩ বার আলহামদুলিল্লাহ ও ৩৪ বার আল্লাহু আকবার পাঠ করা উত্তম। অ্যাপের ডিজিটাল তাসবীহ অপশনে ট্যাপ করে সহজে নিজের ১০০x গোল পূরণ করতে পারেন।'
+          user: 'tasbeeh kivabe hisab rakhbo?',
+          ai: 'সালাতের পর ৩৩x সুবহানাল্লাহ, ৩৩x আলহামদুলিল্লাহ ও ৩৪x আল্লাহু আকবার পাঠের সুন্নাহ রয়েছে। অ্যাপের ডিজিটাল তাসবীহ খুলে এক ট্যাপেই ১০০ কাউন্ট সম্পন্ন করতে পারেন।'
         },
         {
-          user: 'mon oshanto lagche, quick kisu bolo',
-          ai: '৪ সেকেন্ড গভীরভাবে শ্বাস নিন, ৭ সেকেন্ড ধরে রাখুন এবং ৮ সেকেন্ডে ধীরে ধীরে ছাড়ুন (৪-৭-৮ রিল্যাক্সেশন)। সাথে মনে মনে "আস্তাগফিরুল্লাহ" পাঠ করুন, মন তৎক্ষণাৎ শান্ত হবে।'
+          user: 'mon oshanto lagche, ki korbo?',
+          ai: 'একটু চোখ বন্ধ করে ৪ সেকেন্ড বুক ভরে শ্বাস নিন, ৭ সেকেন্ড ধরে রাখুন এবং ৮ সেকেন্ডে ধীরে ধীরে ছাড়ুন (৪-৭-৮ ব্রিদিং)। সাথে মনে মনে "আস্তাগফিরুল্লাহ" স্মরণ করুন — মন নিমিষেই হালকা লাগবে।'
         }
       ];
 
