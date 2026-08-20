@@ -652,19 +652,20 @@ const Finance = {
   },
 
   renderQuickAdd() {
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     return `
       <div class="fin-action-grid">
-        <button class="fin-btn fin-btn-primary" onclick="Finance.showIncomeModal()">
-          <div class="fin-btn-icon" style="background:rgba(52, 199, 89, 0.1); color:var(--fin-green)">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        <button class="fin-btn fin-btn-primary" onclick="Finance.showIncomeModal()" aria-label="Deposit or Income">
+          <div class="fin-btn-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
           </div>
-          Deposit
+          <span>${isBn ? 'জমা' : 'Income'}</span>
         </button>
-        <button class="fin-btn fin-btn-secondary" onclick="Finance.showExpenseModal()">
-          <div class="fin-btn-icon" style="background:rgba(0, 122, 255, 0.1); color:var(--fin-blue)">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+        <button class="fin-btn fin-btn-secondary" onclick="Finance.showExpenseModal()" aria-label="Spend or Expense">
+          <div class="fin-btn-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
           </div>
-          Spend
+          <span>${isBn ? 'ব্যয়' : 'Expense'}</span>
         </button>
       </div>
     `;
