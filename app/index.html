@@ -36,7 +36,6 @@
         if (sp && !sp.dataset.hidden) {
           sp.dataset.hidden = '1';
           sp.classList.add('hidden');
-          document.body.classList.add('ui-revealed');
           document.body.classList.remove('lamim-booting');
           setTimeout(function() { sp.style.display = 'none'; }, 300);
           // Ensure at least one page is active so screen is never blank
@@ -161,9 +160,9 @@
   <link rel="stylesheet" href="css/variables.css?v=147">
   <link rel="stylesheet" href="css/base.css?v=8">
   <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/components.css?v=151">
+  <link rel="stylesheet" href="css/components.css?v=152">
   <!-- Modularized Page CSS -->
-  <link rel="stylesheet" href="css/splash.css?v=12">
+  <link rel="stylesheet" href="css/splash.css?v=13">
   <link rel="stylesheet" href="css/auth.css?v=147">
   <link rel="stylesheet" href="css/salah.css?v=153" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-base.css?v=1" media="print" onload="this.media='all'">
@@ -2548,7 +2547,7 @@
     <script defer src="js/prayer-notifier.js?v=2"></script>
     <script defer src="js/manual.js?v=2"></script>
     <script defer src="js/home.js?v=150"></script>
-    <script defer src="js/app.js?v=241"></script>
+    <script defer src="js/app.js?v=242"></script>
     <script defer src="js/ai-agent.js?v=10"></script>
 
   </div>

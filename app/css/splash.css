@@ -50,16 +50,16 @@ body.lamim-booting {
   overflow: hidden;
 }
 
-/* === BASE CONTAINER (Solid opaque overlay covering 100% viewport) === */
+/* === BASE CONTAINER (Oversized 100% solid overlay immune to safe-area gaps) === */
 .splash {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
+  top: -100px;
+  left: -50px;
+  right: -50px;
+  bottom: -100px;
+  width: calc(100vw + 100px);
+  height: calc(100vh + 200px);
+  min-height: calc(100dvh + 200px);
   z-index: var(--z-splash);
   background: var(--splash-bg);
   display: flex;
@@ -70,7 +70,7 @@ body.lamim-booting {
   isolation: isolate;
   will-change: opacity;
   transform: translateZ(0);
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .splash.hidden {
