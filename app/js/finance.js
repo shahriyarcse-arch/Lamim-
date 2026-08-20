@@ -2346,7 +2346,7 @@ const Finance = {
         .catch(err => {
           console.error("Failed to load Chart.js from CDN", err);
           const wrapper = canvas.parentElement;
-          if (wrapper) wrapper.innerHTML = '<div style="text-align:center;padding:32px 16px;"><div style="font-size:32px;margin-bottom:8px;opacity:0.4;"></div><div style="font-size:13px;color:var(--color-text-secondary);font-weight:500;">Chart unavailable offline</div><div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Connect to internet to view charts</div></div>';
+          if (wrapper) wrapper.innerHTML = '<div style="text-align:center;padding:32px 16px;"><div style="font-size:13px;color:var(--color-text-secondary);font-weight:500;">Chart unavailable offline</div><div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Connect to internet to view charts</div></div>';
         });
       return;
     }
@@ -2356,7 +2356,7 @@ const Finance = {
 
     const ctx = canvas.getContext('2d');
     const container = canvas.parentElement;
-    const containerHeight = container ? container.clientHeight : 240;
+    const containerHeight = container ? container.clientHeight : 250;
 
     let labels = [], spend = [], income = [];
     const v = this.currentViewDate;
@@ -2385,31 +2385,32 @@ const Finance = {
     }
 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const sym = this.getSymbol();
     const isDaily = this.chartView === 'daily';
 
-    // Amounts are stored in USD base; formatVal() applies the live exchange rate for BDT display.
-    const spendData = spend;
-    const incomeData = income;
+    // Gradients for luxury area curves
+    const incGradient = ctx.createLinearGradient(0, 0, 0, containerHeight);
+    incGradient.addColorStop(0, isDark ? 'rgba(16, 185, 129, 0.32)' : 'rgba(16, 185, 129, 0.22)');
+    incGradient.addColorStop(0.7, isDark ? 'rgba(16, 185, 129, 0.06)' : 'rgba(16, 185, 129, 0.04)');
+    incGradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
 
-    // Theme-consistent, clearly distinct colors
-    const spendStroke = isDark ? '#16a34a' : '#15803d';
-    const spendFill = ctx.createLinearGradient(0, 0, 0, containerHeight);
-    spendFill.addColorStop(0, isDark ? 'rgba(22, 163, 74, 0.30)' : 'rgba(21, 128, 61, 0.26)');
-    spendFill.addColorStop(0.6, isDark ? 'rgba(22, 163, 74, 0.07)' : 'rgba(21, 128, 61, 0.06)');
-    spendFill.addColorStop(1, 'rgba(22, 163, 74, 0.0)');
+    const expGradient = ctx.createLinearGradient(0, 0, 0, containerHeight);
+    expGradient.addColorStop(0, isDark ? 'rgba(244, 63, 94, 0.28)' : 'rgba(244, 63, 94, 0.18)');
+    expGradient.addColorStop(0.7, isDark ? 'rgba(244, 63, 94, 0.05)' : 'rgba(244, 63, 94, 0.03)');
+    expGradient.addColorStop(1, 'rgba(244, 63, 94, 0.0)');
 
-    const incomeStroke = isDark ? '#f59e0b' : '#D97706';
-    const haloColor = isDark ? 'rgba(10,15,28,0.85)' : 'rgba(255,255,255,0.0)';
+    const tickColor = isDark ? '#94a3b8' : '#64748b';
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.06)';
 
-    const tickColor = isDark ? '#cbd5e1' : '#475569';
-    const gridColor = isDark ? 'rgba(255, 255, 255, 0.07)' : 'rgba(100, 116, 139, 0.14)';
-
-    const pointBase = isDaily ? 3 : 4.5;
+    const pointBase = isDaily ? 3.5 : 4.5;
     const makePoints = (arr) => arr.map(val => val > 0 ? pointBase : 0);
-    const makeHover = (arr) => arr.map(val => val > 0 ? pointBase + 3 : 0);
+    const makeHover = (arr) => arr.map(val => val > 0 ? pointBase + 3.5 : 0);
 
-    // Hover crosshair plugin for an interactive feel
+    const spendLabel = isBn ? 'ব্যয়' : 'Spending';
+    const incomeLabel = isBn ? 'আয়' : 'Income';
+
+    // Crosshair line plugin
     const crosshair = {
       id: 'crosshair',
       afterDraw(chart) {
@@ -2423,68 +2424,52 @@ const Finance = {
         ctx2.moveTo(x, top);
         ctx2.lineTo(x, bottom);
         ctx2.lineWidth = 1.5;
-        ctx2.strokeStyle = isDark ? 'rgba(255,255,255,0.22)' : 'rgba(15,23,42,0.18)';
+        ctx2.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.18)' : 'rgba(15, 23, 42, 0.15)';
         ctx2.setLineDash([4, 4]);
         ctx2.stroke();
         ctx2.restore();
       }
     };
 
-    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    const spendLabel = isBn ? 'ব্যয়' : 'Spending';
-    const incomeLabel = isBn ? 'আয়' : 'Income';
-
     const datasets = [
       {
-        label: spendLabel,
-        data: spendData,
-        borderColor: spendStroke,
-        tension: 0.4,
+        label: incomeLabel,
+        data: income,
+        borderColor: '#10b981',
+        backgroundColor: incGradient,
         fill: true,
-        backgroundColor: spendFill,
-        borderWidth: 3.5,
-        pointRadius: makePoints(spendData),
-        pointHoverRadius: makeHover(spendData),
-        pointHitRadius: 16,
-        pointBackgroundColor: isDark ? '#16a34a' : '#15803d',
-        pointBorderColor: isDark ? '#0a0f1c' : '#ffffff',
+        tension: 0.4,
+        borderWidth: 3,
+        pointRadius: makePoints(income),
+        pointHoverRadius: makeHover(income),
+        pointHitRadius: 18,
+        pointBackgroundColor: '#10b981',
+        pointBorderColor: '#ffffff',
         pointBorderWidth: 2,
+        pointHoverBorderWidth: 3,
+        pointHoverBorderColor: '#ffffff',
         borderCapStyle: 'round',
         borderJoinStyle: 'round',
-        clip: false,
         spanGaps: true,
       },
       {
-        label: incomeLabel,
-        data: incomeData,
-        borderColor: haloColor,
-        borderWidth: 6,
+        label: spendLabel,
+        data: spend,
+        borderColor: '#f43f5e',
+        backgroundColor: expGradient,
+        fill: true,
         tension: 0.4,
-        fill: false,
-        pointRadius: 0,
-        pointHoverRadius: 0,
-        pointHitRadius: 0,
-        borderCapStyle: 'round',
-        borderJoinStyle: 'round',
-        clip: false,
-        isHalo: true,
-      },
-      {
-        label: incomeLabel,
-        data: incomeData,
-        borderColor: incomeStroke,
-        borderWidth: 4,
-        tension: 0.4,
-        fill: false,
-        pointRadius: makePoints(incomeData),
-        pointHoverRadius: makeHover(incomeData),
-        pointHitRadius: 16,
-        pointBackgroundColor: '#f59e0b',
-        pointBorderColor: isDark ? '#0a0f1c' : '#ffffff',
+        borderWidth: 3,
+        pointRadius: makePoints(spend),
+        pointHoverRadius: makeHover(spend),
+        pointHitRadius: 18,
+        pointBackgroundColor: '#f43f5e',
+        pointBorderColor: '#ffffff',
         pointBorderWidth: 2,
+        pointHoverBorderWidth: 3,
+        pointHoverBorderColor: '#ffffff',
         borderCapStyle: 'round',
         borderJoinStyle: 'round',
-        clip: false,
         spanGaps: true,
       }
     ];
@@ -2495,47 +2480,55 @@ const Finance = {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: { padding: { top: 12, bottom: 4, left: 8, right: 8 } },
+        layout: { padding: { top: 8, bottom: 2, left: 4, right: 6 } },
         animation: {
-          y: { type: 'number', easing: 'easeOutQuart', duration: 800, from: (c) => (c.chart.scales.y ? c.chart.scales.y.getPixelForValue(0) : 0) }
+          y: { type: 'number', easing: 'easeOutQuart', duration: 750, from: (c) => (c.chart.scales.y ? c.chart.scales.y.getPixelForValue(0) : 0) }
         },
         interaction: { intersect: false, mode: 'index' },
         onHover: (e, els) => { if (e && e.native) e.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
         plugins: {
           legend: {
             display: true,
+            position: 'top',
             align: 'end',
             labels: {
-              boxWidth: 10, boxHeight: 10, usePointStyle: true, pointStyle: 'circle',
-              color: tickColor, font: { size: 11, weight: '700', family: "'Outfit', system-ui, sans-serif" },
-              padding: 14,
-              filter: (item) => !datasets[item.datasetIndex].isHalo
+              boxWidth: 8,
+              boxHeight: 8,
+              usePointStyle: true,
+              pointStyle: 'circle',
+              color: isDark ? '#e2e8f0' : '#334155',
+              font: { size: 12, weight: '800', family: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif" },
+              padding: 12
             }
           },
           tooltip: {
-            backgroundColor: isDark ? 'rgba(20,20,25,0.96)' : 'rgba(255,255,255,0.98)',
+            backgroundColor: isDark ? 'rgba(15, 23, 42, 0.96)' : 'rgba(255, 255, 255, 0.98)',
             titleColor: isDark ? '#ffffff' : '#0f172a',
             bodyColor: isDark ? '#e2e8f0' : '#334155',
-            borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
-            borderWidth: 1,
-            cornerRadius: 12,
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)',
+            borderWidth: 1.5,
+            cornerRadius: 14,
             padding: 12,
+            boxPadding: 4,
             usePointStyle: true,
-            filter: (item) => !datasets[item.datasetIndex].isHalo,
+            titleFont: { size: 13, weight: '800' },
+            bodyFont: { size: 12.5, weight: '700' },
             callbacks: {
               title: (items) => isDaily ? (isBn ? `দিন ${window.n ? window.n(items[0].label) : items[0].label}` : `Day ${items[0].label}`) : items[0].label,
               label: (item) => ` ${item.dataset.label}: ${sym}${this.formatVal(item.parsed.y)}`,
               footer: (items) => {
-                const sp = items.find(i => i.dataset.label === spendLabel);
                 const inc = items.find(i => i.dataset.label === incomeLabel);
-                if (!sp || !inc) return '';
-                const net = inc.parsed.y - sp.parsed.y;
+                const sp = items.find(i => i.dataset.label === spendLabel);
+                if (!sp && !inc) return '';
+                const incVal = inc ? inc.parsed.y : 0;
+                const spVal = sp ? sp.parsed.y : 0;
+                const net = incVal - spVal;
                 const sign = net >= 0 ? '+' : '-';
-                return `${isBn ? 'নেট' : 'Net'}: ${sign}${sym}${this.formatVal(Math.abs(net))}`;
+                return `${isBn ? 'নেট স্থিতি' : 'Net'}: ${sign}${sym}${this.formatVal(Math.abs(net))}`;
               }
             },
-            footerColor: isDark ? '#a7f3d0' : '#059669',
-            footerFont: { weight: '800', size: 12 }
+            footerColor: isDark ? '#34d399' : '#059669',
+            footerFont: { weight: '800', size: 12.5 }
           }
         },
         scales: {
@@ -2543,12 +2536,12 @@ const Finance = {
             grid: { display: false },
             ticks: {
               color: tickColor,
-              font: { size: 10, weight: '700' },
+              font: { size: 11, weight: '700' },
               maxRotation: 0,
               minRotation: 0,
               autoSkip: true,
               maxTicksLimit: isDaily ? 10 : 12,
-              callback: function (val, index) {
+              callback: function (val) {
                 const label = this.getLabelForValue(val);
                 return (isBn && window.n) ? window.n(label) : label;
               }
@@ -2557,13 +2550,26 @@ const Finance = {
           y: {
             position: 'right',
             beginAtZero: true,
-            grace: '12%',
-            grid: { color: gridColor, drawBorder: false },
+            grace: '15%',
+            grid: {
+              color: gridColor,
+              borderDash: [5, 5],
+              drawBorder: false
+            },
             ticks: {
+              maxTicksLimit: 4,
               color: tickColor,
-              font: { size: 10, weight: '700' },
+              font: { size: 10.5, weight: '700' },
               padding: 6,
-              callback: (val) => val <= 0 ? '' : sym + this.formatVal(val)
+              callback: (val) => {
+                if (val <= 0) return sym + '0';
+                let formatted = '';
+                if (val >= 1000000) formatted = (val / 1000000).toFixed(1).replace('.0', '') + 'M';
+                else if (val >= 1000) formatted = (val / 1000).toFixed(1).replace('.0', '') + 'k';
+                else formatted = Math.round(val);
+                if (isBn && window.n) formatted = window.n(formatted);
+                return sym + formatted;
+              }
             }
           }
         }

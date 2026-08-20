@@ -425,8 +425,23 @@
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
 }
 .fin-chart-container {
-  background: var(--color-surface-card); border: 1px solid var(--color-divider-strong);
-  border-radius: 18px; padding: 16px; height: 250px;
+  position: relative;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 24px !important;
+  padding: 18px 14px 10px;
+  height: 270px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] .fin-chart-container {
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02) !important;
 }
 
 /* ---- Luxury Activity List & Transaction Cards ---- */
