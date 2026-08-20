@@ -268,41 +268,42 @@ updateSectionTitle() {
 
     this._bootComplete = true;
 
-    // Smooth finish: hand the "100" target to the rAF ticker, which glides
-    // from its current % to 100% in ~280ms before the splash fades.
+    // Smooth finish: as soon as boot is ready, hand the compositor-driven bar
+    // over to a short transition to 100%, then fade. Always visually smooth,
+    // regardless of how long or choppy the boot itself was.
     const elapsed = performance.now() - bootT0;
-    const holdTime = Math.max(100, 500 - elapsed);
-
+    const minShow = 700;              // never flash the splash away too fast
+    const wait = Math.max(0, minShow - elapsed);
     setTimeout(() => {
-      this.setSplashProgress(100);
-      setTimeout(() => {
-        this._hideSplash();
-      }, 340);
-    }, holdTime);
+      this._finishSplash();
+    }, wait);
 
-    // Safety fallback - guarantees the splash always finishes its bar before
-    // disappearing, even if the normal completion path is interrupted. The
-    // bar glides to 100% first so the fade is never mid-progress.
-    setTimeout(() => {
+    // Watchdog: guarantees the splash still finishes gracefully even if the
+    // normal path is interrupted — but only AFTER the boot itself completed
+    // (so the page underneath is actually ready), or as a hard 6s cap.
+    const wdT0 = Date.now();
+    const wd = setInterval(() => {
       const sp = document.getElementById('splash');
-      if (sp && !sp.dataset.hidden) {
-        this.setSplashProgress(100);
-        setTimeout(() => {
-          if (!sp.dataset.hidden) {
-            try {
-              if (DB.getUser()) {
-                if (DB.refreshSpiritScore) DB.refreshSpiritScore();
-                this.showDashboard();
-                this.checkBackupReminder();
-              } else {
-                this.showPage('setup');
-              }
-            } catch (e) { }
-            this._hideSplash();
-          }
-        }, 340);
+      if (sp && sp.dataset.hidden) { clearInterval(wd); return; }
+      const ready = this._bootComplete;
+      const over = Date.now() - wdT0 >= 6000;
+      if ((ready && document.readyState === 'complete') || over) {
+        clearInterval(wd);
+        if (!ready || over) {
+          // Recover the active page if the boot stalled or never routed.
+          try {
+            if (DB.getUser()) {
+              if (DB.refreshSpiritScore) DB.refreshSpiritScore();
+              this.showDashboard();
+              this.checkBackupReminder();
+            } else {
+              this.showPage('setup');
+            }
+          } catch (e) { }
+        }
+        this._finishSplash();
       }
-    }, 1400);
+    }, 200);
 
     // Nav bindings
     this.bindNav();
@@ -383,6 +384,22 @@ updateSectionTitle() {
       // Reached the root history entry — let the browser/PWA handle it (close
       // the app) instead of trapping the user in a default section.
     });
+  },
+
+  _finishSplash() {
+    const sp = document.getElementById('splash');
+    if (!sp || sp.dataset.hidden) return;
+    // Glide the bar to 100% (compositor handoff), then fade the splash away
+    // once the handoff transition has completed. On reduced motion the bar
+    // jumps straight to 100% and the fade still runs.
+    if (window.LamimSplash && window.LamimSplash.finish) {
+      window.LamimSplash.finish();
+    } else {
+      this.setSplashProgress(100);
+    }
+    setTimeout(() => {
+      this._hideSplash();
+    }, 420);
   },
 
   _hideSplash() {
