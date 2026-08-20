@@ -93,6 +93,8 @@ const Translations = {
   'Verse of the Day': 'আজকের আয়াত',
   'Monthly Calendar': 'মাসিক ক্যালেন্ডার',
   'Export PDF': 'পিডিএফ এক্সপোর্ট',
+  'All 5': 'সবগুলো',
+  'None': 'একটিও না',
   'Daily Performance': 'দৈনিক পারফরম্যান্স',
   'Prayer Schedule': 'সালাত সূচি',
   'Spiritual Energy Meter': 'আধ্যাত্মিক শক্তি মিটার',
