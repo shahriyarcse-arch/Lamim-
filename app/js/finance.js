@@ -686,8 +686,9 @@ const Finance = {
       });
 
     const totalExp = exps.filter(e => e.category !== 'transfer').reduce((s, e) => s + e.amount, 0);
+    const monthStr = v.toLocaleString(isBn ? 'bn-BD' : 'default', { month: 'long' });
 
-    if (!allActivity.length) return `<div class="fin-section-title">${v.toLocaleString(isBn ? 'bn-BD' : 'default', { month: 'long' })} ${isBn ? 'এর লেনদেন' : 'Activity'}</div><div style="text-align:center;padding:48px 20px;"><div style="font-size:40px;margin-bottom:12px;opacity:0.4;"></div><div style="font-size:14px;color:var(--color-text-secondary);font-weight:500;">${isBn ? 'এই মাসে কোনো লেনদেন নেই' : 'No records for this month'}</div><div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">${isBn ? 'নতুন লেনদেন যোগ করতে + চাপুন' : 'Tap + to add your first transaction'}</div></div>`;
+    if (!allActivity.length) return `<div class="fin-section-title">${monthStr} ${isBn ? 'এর লেনদেন' : 'Activity'}</div><div style="text-align:center;padding:48px 20px;"><div style="font-size:40px;margin-bottom:12px;opacity:0.4;"></div><div style="font-size:14px;color:var(--color-text-secondary);font-weight:500;">${isBn ? 'এই মাসে কোনো লেনদেন নেই' : 'No records for this month'}</div><div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">${isBn ? 'নতুন লেনদেন যোগ করতে + চাপুন' : 'Tap + to add your first transaction'}</div></div>`;
 
     const groups = {};
     allActivity.forEach(e => {
@@ -746,7 +747,7 @@ const Finance = {
     const showMoreBtn = hasMore || allActivity.length > LIMIT ? `
       <div style="text-align:center; margin: 18px 0 8px;">
         <button class="fin-show-more-btn" onclick="Finance.showFullHistory()">
-          <span>View All History</span>
+          <span>${isBn ? 'সম্পূর্ণ হিস্ট্রি দেখুন' : 'View All History'}</span>
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
@@ -755,12 +756,12 @@ const Finance = {
     return `
       <div class="fin-activity-header">
         <div class="fin-activity-title-wrap">
-          <div class="fin-section-title" style="margin-bottom:0;">${v.toLocaleString('default', { month: 'long' })} Activity</div>
-          <span class="fin-activity-count-pill">${allActivity.length}</span>
+          <div class="fin-section-title" style="margin-bottom:0;">${monthStr} ${isBn ? 'এর লেনদেন' : 'Activity'}</div>
+          <span class="fin-activity-count-pill">${window.n ? window.n(allActivity.length) : allActivity.length}</span>
         </div>
         <button class="fin-export-pill-btn" onclick="Finance.exportPDF()" aria-label="Export Statement">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          <span>Export</span>
+          <span>${isBn ? 'এক্সপোর্ট' : 'Export'}</span>
         </button>
       </div>
       <div class="fin-activity-scroll${scrollActivity ? ' has-scroll' : ''}">${listHtml}</div>
@@ -771,8 +772,8 @@ const Finance = {
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <div class="ledger-summary-text">
-            <div class="ledger-total-label">Monthly Spending</div>
-            <div class="ledger-total-sub">${v.toLocaleString('default', { month: 'long' })} Outflow</div>
+            <div class="ledger-total-label">${isBn ? 'মাসিক মোট ব্যয়' : 'Monthly Spending'}</div>
+            <div class="ledger-total-sub">${monthStr} ${isBn ? 'এর মোট খরচ' : 'Outflow'}</div>
           </div>
         </div>
         <div class="ledger-total-value">-${sym}${this.formatVal(totalExp)}</div>
@@ -799,25 +800,30 @@ const Finance = {
   },
 
   renderActivityItem(e, index) {
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const isInc = e.type === 'income';
-    const c = isInc ? { name: 'Deposit', icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`, color: '#10B981' } : this.getCategory(e.category);
+    const c = isInc
+      ? { name: isBn ? 'জমা' : 'Deposit', icon: `<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`, color: '#10B981' }
+      : this.getCategory(e.category);
     const sym = this.getSymbol();
     const resolvedColor = this.getResolvedColor(c.color);
+    const catName = isInc ? (isBn ? 'জমা' : 'Deposit') : (c.name || 'Expense');
+    const sectionName = isInc ? (isBn ? 'আয় / সঞ্চয়' : 'Income / Deposit') : (c.section || (isBn ? 'ব্যয়' : 'Expense'));
 
     return `
       <div class="transaction-item" style="animation-delay: ${index * 0.04}s;">
-        <div class="transaction-icon" style="background:${resolvedColor}18; color:${resolvedColor}; border: 1px solid ${resolvedColor}33;">
-          ${c.icon}
+        <div class="transaction-icon" style="background:${resolvedColor}18; color:${resolvedColor}; border: 1.5px solid ${resolvedColor}35;">
+          ${c.icon || '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'}
         </div>
         <div class="transaction-info">
-          <div class="transaction-name">${Utils.escapeHTML(isInc ? e.description : c.name)}</div>
+          <div class="transaction-name">${Utils.escapeHTML(isInc ? (e.description || (isBn ? 'জমা' : 'Deposit')) : (e.description || catName))}</div>
           <div class="transaction-meta-row">
-            <span class="transaction-meta-badge ${isInc ? 'is-income' : ''}">${isInc ? 'Deposit' : (c.section || 'Expense')}</span>
+            <span class="transaction-meta-badge ${isInc ? 'is-income' : ''}">${sectionName}</span>
           </div>
         </div>
         <div class="transaction-amount-col">
           <div class="transaction-amount ${isInc ? 'positive' : 'negative'}">${isInc ? '+' : '-'}${sym}${this.formatVal(e.amount)}</div>
-          <button class="transaction-trash-btn" onclick="event.stopPropagation(); Finance.${isInc ? 'deleteIncome' : 'deleteExpense'}('${e.id}')" title="Delete" aria-label="Delete transaction">
+          <button class="transaction-trash-btn" onclick="event.stopPropagation(); Finance.${isInc ? 'deleteIncome' : 'deleteExpense'}('${e.id}')" title="${isBn ? 'মুছুন' : 'Delete'}" aria-label="Delete transaction">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
           </button>
         </div>
@@ -863,7 +869,7 @@ const Finance = {
         return displayVaults.map(s => this.renderSavingsItem(s)).join('');
       })() : `
           <div class="vault-empty-state" role="button" tabindex="0" onclick="Finance.showSavingsModal()">
-            <div class="vault-empty-icon">${this.renderIcon('gem', 32)}</div>
+            <div class="vault-empty-icon">${this.renderIcon('vault', 32)}</div>
             <div style="font-weight:700; font-size:14px; color:var(--color-text-muted);">${isBn ? 'ভবিষ্যত সুরক্ষিত করুন' : 'Secure your future'}</div>
             <div style="font-size:12px; color:var(--color-text-muted); opacity:0.6; margin-top:4px;">${isBn ? 'আপনার প্রথম সঞ্চয় লক্ষ্য তৈরি করতে ট্যাপ করুন' : 'Tap to create your first savings goal'}</div>
           </div>
@@ -873,7 +879,7 @@ const Finance = {
       ${hasVaults && this.data.savings.length > 4 ? `
         <div style="text-align:center; margin: 20px 0;">
           <button class="fin-show-more-btn" onclick="Finance.showVaultsOverlay()">
-            Manage Vaults
+            ${isBn ? 'সব ভল্ট দেখুন' : 'Manage Vaults'}
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </button>
         </div>
@@ -882,36 +888,40 @@ const Finance = {
   },
 
   getVaultIcon(name) {
-    const n = name.toLowerCase();
+    const n = (name || '').toLowerCase();
     if (n.includes('iphone') || n.includes('phone') || n.includes('mobile')) return 'phone';
-    if (n.includes('macbook') || n.includes('laptop')) return 'laptop';
-    if (n.includes('watch') || n.includes('iwatch')) return 'watch';
+    if (n.includes('gadget') || n.includes('device') || n.includes('gear') || n.includes('tech') || n.includes('electronic') || n.includes('airpod') || n.includes('headphone') || n.includes('smart') || n.includes('tv')) return 'gadget';
+    if (n.includes('macbook') || n.includes('laptop') || n.includes('pc') || n.includes('computer')) return 'laptop';
+    if (n.includes('watch') || n.includes('iwatch') || n.includes('ghori')) return 'watch';
     if (n.includes('game') || n.includes('ps5') || n.includes('xbox') || n.includes('console') || n.includes('gaming')) return 'game';
     if (n.includes('camera') || n.includes('dslr') || n.includes('lens')) return 'camera';
-    if (n.includes('car') || n.includes('auto')) return 'car';
+    if (n.includes('car') || n.includes('auto') || n.includes('gari')) return 'car';
     if (n.includes('bike') || n.includes('motorcycle')) return 'bike';
     if (n.includes('cycle') || n.includes('bicycle')) return 'bicycle';
     if (n.includes('hajj') || n.includes('umrah') || n.includes('makkah') || n.includes('mosque') || n.includes('madina') || n.includes('islamic')) return 'mosque';
-    if (n.includes('charity') || n.includes('zakat') || n.includes('sadaqah')) return 'charity';
-    if (n.includes('house') || n.includes('home') || n.includes('flat') || n.includes('rent')) return 'home';
-    if (n.includes('wedding') || n.includes('marriage') || n.includes('nikah')) return 'ring';
-    if (n.includes('travel') || n.includes('trip') || n.includes('tour') || n.includes('flight')) return 'plane';
-    if (n.includes('food') || n.includes('bazaar') || n.includes('grocery')) return 'cart';
-    if (n.includes('gift') || n.includes('birthday')) return 'gift';
-    if (n.includes('education') || n.includes('book') || n.includes('course') || n.includes('university')) return 'book';
-    if (n.includes('business') || n.includes('office') || n.includes('startup')) return 'briefcase';
-    if (n.includes('invest') || n.includes('stock') || n.includes('crypto')) return 'trend';
-    if (n.includes('emergency') || n.includes('medical') || n.includes('health')) return 'health';
-    return 'gem';
+    if (n.includes('charity') || n.includes('zakat') || n.includes('sadaqah') || n.includes('dan')) return 'charity';
+    if (n.includes('house') || n.includes('home') || n.includes('flat') || n.includes('rent') || n.includes('bari')) return 'home';
+    if (n.includes('wedding') || n.includes('marriage') || n.includes('nikah') || n.includes('biye')) return 'ring';
+    if (n.includes('travel') || n.includes('trip') || n.includes('tour') || n.includes('flight') || n.includes('ghura')) return 'plane';
+    if (n.includes('food') || n.includes('bazaar') || n.includes('grocery') || n.includes('mudi')) return 'cart';
+    if (n.includes('gift') || n.includes('birthday') || n.includes('upohar')) return 'gift';
+    if (n.includes('education') || n.includes('book') || n.includes('course') || n.includes('university') || n.includes('poralekha')) return 'book';
+    if (n.includes('business') || n.includes('office') || n.includes('startup') || n.includes('bebsha')) return 'briefcase';
+    if (n.includes('invest') || n.includes('stock') || n.includes('crypto') || n.includes('share')) return 'trend';
+    if (n.includes('emergency') || n.includes('medical') || n.includes('health') || n.includes('hospital')) return 'health';
+    if (n.includes('gold') || n.includes('diamond') || n.includes('jewel') || n.includes('sona') || n.includes('shona') || n.includes('gem') || n.includes('ornament')) return 'gem';
+    return 'vault';
   },
 
   renderIcon(key, size) {
     const s = size || 22;
-    const p = Finance.iconPaths[key] || Finance.iconPaths.gem;
+    const p = Finance.iconPaths[key] || Finance.iconPaths.vault || Finance.iconPaths.gem;
     return `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
   },
 
   iconPaths: {
+    vault: '<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5v7M8.5 12h7"/><circle cx="12" cy="12" r="1"/>',
+    gadget: '<rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01M9 6h6"/>',
     phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     laptop: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/>',
     watch: '<circle cx="12" cy="12" r="6"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>',
