@@ -263,16 +263,16 @@ updateSectionTitle() {
 
     this._bootComplete = true;
 
-    // Organic UX pacing: give the human eye ~650ms to see the full smooth loading sequence
+    // Linear organic progression: seamlessly glide from 70% to 100%
     const elapsed = performance.now() - bootT0;
-    const stageDelay = Math.max(0, 600 - elapsed);
+    const holdTime = Math.max(100, 500 - elapsed);
 
     setTimeout(() => {
       this.setSplashProgress(100);
       setTimeout(() => {
         this._hideSplash();
-      }, 250);
-    }, stageDelay);
+      }, 300);
+    }, holdTime);
 
     // Safety fallback - guarantees splash screen disappears within 1400ms under any circumstance
     setTimeout(() => {
