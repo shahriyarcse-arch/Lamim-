@@ -150,6 +150,7 @@ updateSectionTitle() {
   },
 
   async init() {
+    const bootT0 = performance.now();
     this.setSplashProgress(20);
 
     // Wait for IndexedDB cache load and migration
@@ -261,14 +262,19 @@ updateSectionTitle() {
     }
 
     this._bootComplete = true;
-    this.setSplashProgress(100);
 
-    // Smoothly dissolve splash after progress bar completes 100%
+    // Organic UX pacing: give the human eye ~650ms to see the full smooth loading sequence
+    const elapsed = performance.now() - bootT0;
+    const stageDelay = Math.max(0, 600 - elapsed);
+
     setTimeout(() => {
-      this._hideSplash();
-    }, 280);
+      this.setSplashProgress(100);
+      setTimeout(() => {
+        this._hideSplash();
+      }, 250);
+    }, stageDelay);
 
-    // Safety fallback - guarantees splash screen disappears within 1200ms under any circumstance
+    // Safety fallback - guarantees splash screen disappears within 1400ms under any circumstance
     setTimeout(() => {
       const sp = document.getElementById('splash');
       if (sp && !sp.dataset.hidden) {
@@ -281,7 +287,7 @@ updateSectionTitle() {
         }
         this._hideSplash();
       }
-    }, 1200);
+    }, 1400);
 
     // Nav bindings
     this.bindNav();
