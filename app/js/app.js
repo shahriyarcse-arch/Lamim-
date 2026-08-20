@@ -170,7 +170,7 @@ updateSectionTitle() {
     // Apply saved theme
     const settings = DB.getSettings();
     const theme = settings.theme || 'light';
-    const bg = theme === 'dark' ? '#020408' : '#FFFFFF';
+    const bg = theme === 'dark' ? '#020408' : '#F8FAFC';
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.style.setProperty('--color-bg-primary', bg);
     const meta = document.querySelector('meta[name="theme-color"]');
@@ -384,11 +384,8 @@ updateSectionTitle() {
   _finishSplash() {
     const sp = document.getElementById('splash');
     if (!sp || sp.dataset.hidden) return;
-    // Never flash the splash away before it has been visible ~1.5s, so the bar
-    // is always seen filling at a steady linear pace (the CSS animation keeps
-    // running during the wait). Then hand over to 100% and fade once the
-    // handoff transition has completed.
-    const minShown = 1500;
+    // Calibrated natural pacing: ~1200ms so the user comfortably sees the branding and the linear 0-100% progress
+    const minShown = 1200;
     const startTs = (window.LamimSplash && window.LamimSplash.startTs) || performance.now();
     const wait = Math.max(0, minShown - (performance.now() - startTs));
     setTimeout(() => {
@@ -400,7 +397,7 @@ updateSectionTitle() {
         }
         setTimeout(() => {
           this._hideSplash();
-        }, 420);
+        }, 360);
       }
     }, wait);
   },
@@ -410,10 +407,10 @@ updateSectionTitle() {
     if (!s || s.dataset.hidden) return;
     s.dataset.hidden = '1';
     s.classList.add('hidden');
-    // Restore page scroll (it was locked during boot so the nav could never peek behind the splash).
+    // Restore page scroll
     document.body.classList.remove('lamim-booting');
-    // Fully remove from render tree so the heavy blurred blobs stop animating (GPU/CPU).
-    setTimeout(() => { s.style.display = 'none'; }, 650);
+    // Fully remove from render tree after fade completes
+    setTimeout(() => { s.style.display = 'none'; }, 400);
   },
 
   showPage(page) {
