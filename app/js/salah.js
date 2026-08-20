@@ -94,7 +94,7 @@ const Salah = {
     }
 
     const user = DB.getUser();
-    const joinDateStr = (user && user.createdAt) ? user.createdAt.slice(0, 10) : null;
+    const joinDateStr = (user && user.createdAt) ? (typeof user.createdAt === 'string' ? user.createdAt.slice(0, 10) : new Date(user.createdAt).toISOString().slice(0, 10)) : null;
 
     for (let i = 1; i <= daysInMonth; i++) {
       const dayStr = String(i).padStart(2, '0');
@@ -160,7 +160,7 @@ const Salah = {
 
   _updateCalendarCells(cal, year, month, targetDate = null) {
     const user = DB.getUser();
-    const joinDateStr = (user && user.createdAt) ? user.createdAt.slice(0, 10) : null;
+    const joinDateStr = (user && user.createdAt) ? (typeof user.createdAt === 'string' ? user.createdAt.slice(0, 10) : new Date(user.createdAt).toISOString().slice(0, 10)) : null;
 
     const selector = targetDate 
       ? `.salah-cal-cell[data-date="${targetDate}"]`
@@ -997,7 +997,7 @@ const Salah = {
           </div>
           <div class="footer-brand">
             <div class="footer-left">LAMIM ECOSYSTEM • SECURE REPORT</div>
-            <div class="footer-right">v1.3.5</div>
+            <div class="footer-right">v2.0.0</div>
           </div>
         </div>
       </div>

@@ -43,7 +43,7 @@ const Profile = {
         ${(user.gender === 'male' || user.gender === 'female') ? `<span class="profile-chip gender-${Utils.escapeHTML(user.gender)}">${user.gender === 'male'
           ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><line x1="19" y1="5" x2="13.5" y2="10.5"></line><line x1="15" y1="2" x2="22" y2="9"></line><line x1="14" y1="9" x2="21" y2="16"></line></svg> ${isBn ? 'পুরুষ' : 'Male'}`
           : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><line x1="12" y1="14" x2="12" y2="22"></line><line x1="9" y1="19" x2="15" y2="19"></line></svg> ${isBn ? 'নারী' : 'Female'}`}</span>` : ''}
-        ${user.createdAt ? `<span class="profile-chip">${isBn ? 'যোগ দিয়েছেন ' : 'Joined '}${new Date(user.createdAt).toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {month:'short', year:'numeric'})}</span>` : ''}
+        ${(user.createdAt || user.created) && !isNaN(new Date(user.createdAt || user.created).getTime()) ? `<span class="profile-chip">${isBn ? 'যোগ দিয়েছেন ' : 'Joined '}${new Date(user.createdAt || user.created).toLocaleDateString(isBn ? 'bn-BD' : 'en-US', {month:'short', year:'numeric'})}</span>` : ''}
       </div>
 
       <div class="profile-stats">
@@ -85,6 +85,7 @@ const Profile = {
   renderSettings() {
     const settings = DB.getSettings();
     const user = DB.getUser();
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
 
     const icons = {
       user: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>',
@@ -231,7 +232,7 @@ const Profile = {
     if (ab) ab.innerHTML = `
       <div class="settings-item" role="button" tabindex="0" onclick="Profile.showAppInfo()">
         <div class="settings-item-left"><div class="settings-item-icon ic-slate">${icons.info}</div><div><div class="settings-item-label" data-i18n="App Version">${t('App Version')}</div><div class="settings-item-value" data-i18n="Release notes & build info">${t('Release notes & build info')}</div></div></div>
-        <div class="settings-item-right"><span class="ver-chip">v1.3.5</span><span>›</span></div>
+        <div class="settings-item-right"><span class="ver-chip">v2.0.0</span><span>›</span></div>
       </div>
     `;
   },
@@ -511,17 +512,25 @@ const Profile = {
 
 
   showAppInfo() {
-    const APP_VERSION = '1.3.5';
-    const CODENAME = 'Serene';
+    const APP_VERSION = '2.0.0';
+    const CODENAME = 'Lumina';
     const CHANGELOG = [
       {
-        version: '1.3.5', codename: 'Serene', date: Utils.todayStr(), tag: 'Production Ready',
+        version: '2.0.0', codename: 'Lumina', date: Utils.todayStr(), tag: 'Production Stable',
+        notes: [
+          'Apple-Grade Launch Engine: 3-stage staggered rise entrance with self-calibrating linear 0–100% progress engine and zero bottom safe-area blink.',
+          'Hybrid AI Companion & Mascot: Conversational Gemini streaming intelligence with mood-responsive 3D avatar, Bengali/English/Banglish support, and offline spiritual knowledge brain.',
+          'Billion-Dollar Design System: Unified #F8FAFC light mode and #020408 dark mode aesthetics with strict 8px tokens and responsive layout.',
+          'Halal Finance & Wealth Hub: Complete income/expense breakdown, visual cashflow cards, zakat calculation, and Islamic investment logging.',
+          'Zero-Latency Offline Core: 100% IndexedDB local persistence with multi-account private vaults and encrypted JSON backup import/export.'
+        ]
+      },
+      {
+        version: '1.3.5', codename: 'Serene', date: '2026-08-15', tag: 'Milestone',
         notes: [
           'Introduced Hybrid AI Companion with animated 3D Robot mascot and mood-responsive interface.',
           'Offline Islamic Knowledge Engine for instant answers on Salah, Tahajjud, Witr, Qaza Omri, and Halal Finance.',
-          'Gemini Live streaming intelligence supporting fluent Bengali, English, and Banglish.',
-          'Upgraded Service Worker with query-safe local asset matching (ignoreSearch) and auto cache cleanup.',
-          'Full-Spectrum QA and Production Reliability audit with 100% Playwright test pass rate.'
+          'Upgraded Service Worker with query-safe local asset matching (ignoreSearch) and auto cache cleanup.'
         ]
       },
       {
@@ -529,9 +538,7 @@ const Profile = {
         notes: [
           'Official public launch of Lamim Living System PWA.',
           'Complete Islamic Lifestyle suite: Salah, Dhikr, Nafl, Habits, Gym, Career, and Halal Finance.',
-          '100% Offline-First client-side architecture with 0.1ms instant IndexedDB persistence.',
-          'Multi-account private vaults and standardized JSON export/import backup system.',
-          'Smart 1-click install flow for Android/PC and Safari Home Screen guide.'
+          '100% Offline-First client-side architecture with 0.1ms instant IndexedDB persistence.'
         ]
       }
     ];
@@ -571,6 +578,7 @@ const Profile = {
       <div class="ver-device-row"><span>Local Data</span><b>${totalKeys} entries</b></div>
       <div class="ver-device-row"><span>Storage Used</span><b>${storageMB} MB</b></div>
       <div class="ver-device-row"><span>Distribution</span><b>${Utils.escapeHTML(distribution)}</b></div>
+      <div class="ver-device-row"><span>System Status</span><b style="color: var(--color-accent-green, #34d399); font-weight: 600;">● Active • Offline Ready</b></div>
       <div class="ver-device-row"><span>Developer</span><b>Shamim Shahriyar</b></div>
     `;
 
