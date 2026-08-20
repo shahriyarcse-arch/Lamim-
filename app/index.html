@@ -36,6 +36,7 @@
         if (sp && !sp.dataset.hidden) {
           sp.dataset.hidden = '1';
           sp.classList.add('hidden');
+          document.body.classList.remove('lamim-booting');
           setTimeout(function() { sp.style.display = 'none'; }, 300);
           // Ensure at least one page is active so screen is never blank
           if (!document.querySelector('.page.active')) {
@@ -161,7 +162,7 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/components.css?v=149">
   <!-- Modularized Page CSS -->
-  <link rel="stylesheet" href="css/splash.css?v=9">
+  <link rel="stylesheet" href="css/splash.css?v=10">
   <link rel="stylesheet" href="css/auth.css?v=147">
   <link rel="stylesheet" href="css/salah.css?v=153" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-base.css?v=1" media="print" onload="this.media='all'">
@@ -230,6 +231,8 @@
     <div class="splash" id="splash" aria-hidden="true">
       <!-- A single elegant halo -->
       <div class="splash-halo"></div>
+      <!-- Gentle cinematic edge depth -->
+      <div class="splash-vignette"></div>
 
       <div class="splash-content">
         <div class="splash-brand-wrap">
@@ -239,6 +242,7 @@
           <div class="splash-text-mask">
             <div class="splash-wordmark">lamim</div>
           </div>
+          <div class="splash-tagline" id="splash-tagline">Spirituality Companion</div>
         </div>
 
         <div class="splash-loader">
@@ -246,7 +250,7 @@
             <div class="splash-loader-sheen"></div>
             <div class="splash-loader-bar" id="splash-loader-bar"></div>
           </div>
-          <div class="splash-progress-label"><span id="splash-percent">0</span>%</div>
+          <div class="splash-progress-label"><span id="splash-percent">0</span><span class="splash-percent-unit">%</span></div>
         </div>
       </div>
     </div>
@@ -268,6 +272,19 @@
         var T0 = performance.now();
         var reduce = false;
         try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+        // Lock page scroll while booting so overscroll/rubber-band can never
+        // reveal the nav/topbar behind the splash. Released on finish.
+        try { document.body.classList.add('lamim-booting'); } catch (e) {}
+
+        // Localized tagline (read from saved language; bn -> Bengali).
+        var tag = document.getElementById('splash-tagline');
+        if (tag) {
+          var isBn = false;
+          try { isBn = (localStorage.getItem('lamim_lang') || 'en') === 'bn'; } catch (e) {}
+          tag.textContent = isBn ? 'আধ্যাত্মিক সঙ্গী' : 'Spirituality Companion';
+        }
+
         var finished = false;
 
         // Self-learning duration: adapt to the last real boot so the fill is
@@ -2522,7 +2539,7 @@
     <script defer src="js/prayer-notifier.js?v=2"></script>
     <script defer src="js/manual.js?v=2"></script>
     <script defer src="js/home.js?v=150"></script>
-    <script defer src="js/app.js?v=238"></script>
+    <script defer src="js/app.js?v=239"></script>
     <script defer src="js/ai-agent.js?v=10"></script>
 
   </div>

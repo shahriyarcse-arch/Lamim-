@@ -384,11 +384,11 @@ updateSectionTitle() {
   _finishSplash() {
     const sp = document.getElementById('splash');
     if (!sp || sp.dataset.hidden) return;
-    // Never flash the splash away before it has been visible ~1.3s, so the bar
+    // Never flash the splash away before it has been visible ~1.5s, so the bar
     // is always seen filling at a steady linear pace (the CSS animation keeps
     // running during the wait). Then hand over to 100% and fade once the
     // handoff transition has completed.
-    const minShown = 1300;
+    const minShown = 1500;
     const startTs = (window.LamimSplash && window.LamimSplash.startTs) || performance.now();
     const wait = Math.max(0, minShown - (performance.now() - startTs));
     setTimeout(() => {
@@ -410,6 +410,9 @@ updateSectionTitle() {
     if (!s || s.dataset.hidden) return;
     s.dataset.hidden = '1';
     s.classList.add('hidden');
+    // Restore page scroll (it was locked during boot so the nav could never
+    // peek behind the splash).
+    document.body.classList.remove('lamim-booting');
     // Fully remove from render tree so the heavy blurred blobs stop animating (GPU/CPU).
     setTimeout(() => { s.style.display = 'none'; }, 650);
   },

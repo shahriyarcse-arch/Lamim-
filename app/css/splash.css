@@ -16,9 +16,13 @@
                           inset 0 2px 0 rgba(255, 255, 255, 0.08);
   --splash-wordmark-grad: linear-gradient(135deg, #c084fc 0%, #38bdf8 55%, #f472b6 100%);
   --splash-loader-track:  rgba(255, 255, 255, 0.14);
-  --splash-loader-fill:   linear-gradient(90deg, #a855f7 0%, #3b82f6 100%);
+  --splash-loader-fill:   linear-gradient(90deg, #a855f7 0%, #3b82f6 92%, #93c5fd 100%);
   --splash-sheen:         rgba(255, 255, 255, 0.18);
   --splash-progress-text: rgba(255, 255, 255, 0.66);
+  --splash-tagline:       rgba(255, 255, 255, 0.55);
+  --splash-vignette:      rgba(2, 4, 8, 0.32);
+  --splash-ring-a:        rgba(168, 85, 247, 0.55);
+  --splash-ring-b:        rgba(56, 189, 248, 0.55);
 }
 
 [data-theme="light"] .splash {
@@ -31,9 +35,19 @@
                           inset 0 2px 0 rgba(255, 255, 255, 1);
   --splash-wordmark-grad: linear-gradient(135deg, #a855f7 0%, #3b82f6 60%, #ec4899 100%);
   --splash-loader-track:  rgba(99, 102, 241, 0.12);
-  --splash-loader-fill:   linear-gradient(90deg, #a855f7 0%, #3b82f6 100%);
+  --splash-loader-fill:   linear-gradient(90deg, #a855f7 0%, #3b82f6 92%, #93c5fd 100%);
   --splash-sheen:         rgba(255, 255, 255, 0.6);
   --splash-progress-text: #64748B;
+  --splash-tagline:       #94a3b8;
+  --splash-vignette:      rgba(148, 163, 184, 0.16);
+  --splash-ring-a:        rgba(168, 85, 247, 0.45);
+  --splash-ring-b:        rgba(56, 189, 248, 0.45);
+}
+
+/* While booting, lock page scroll so rubber-band/overscroll can never reveal
+   the nav/topbar behind the splash (the "blink" on mobile). */
+body.lamim-booting {
+  overflow: hidden;
 }
 
 /* === BASE CONTAINER (Solid opaque overlay covering 100% viewport) === */
@@ -56,12 +70,21 @@
   isolation: isolate;
   will-change: opacity;
   transform: translateZ(0);
-  transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .splash.hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+/* === CINEMATIC VIGNETTE (gentle edge depth, keeps the focus centered) === */
+.splash-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 42%, var(--splash-vignette) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* === LUXURY HALO (Subtle brand glow) === */
@@ -100,11 +123,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
 }
 
 /* === LOGO BOX === */
 .splash-logo-box {
+  position: relative;
   width: 76px;
   height: 76px;
   display: flex;
@@ -116,8 +140,29 @@
   box-shadow: var(--splash-box-shadow);
   opacity: 0;
   transform: scale(0.90) translateY(10px);
-  animation: logoBoxReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation:
+    logoBoxReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    logoBoxBreath 4.5s ease-in-out 1s infinite alternate;
   will-change: opacity, transform;
+}
+
+/* Thin gradient ring around the tile — stationary, zero cost. */
+.splash-logo-box::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 27px;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    var(--splash-ring-a) 0%,
+    transparent 42%,
+    transparent 60%,
+    var(--splash-ring-b) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  pointer-events: none;
 }
 
 .splash-logo-img {
@@ -130,6 +175,12 @@
 @keyframes logoBoxReveal {
   0% { opacity: 0; transform: scale(0.90) translateY(10px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Very subtle life after reveal — scale only, never opacity. */
+@keyframes logoBoxBreath {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.045); }
 }
 
 /* === WORDMARK (Reliable opacity + slide reveal) === */
@@ -166,6 +217,25 @@
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* === TAGLINE (tiny letterspaced caption, i18n-aware) === */
+.splash-tagline {
+  font-family: var(--font-sans, -apple-system, "Segoe UI", sans-serif);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--splash-tagline);
+  margin-top: 14px;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: taglineReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
+@keyframes taglineReveal {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 /* === MINIMALIST LOADER (Compositor-smooth Linear Progress Bar) ===
    The fill is a transform: scaleX keyframe animation with LINEAR timing, which
    the browser runs on the compositor thread — it stays perfectly smooth even
@@ -178,14 +248,23 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: loaderIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.34s forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes loaderIn {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .splash-loader-track {
-  width: 200px;
-  height: 4px;
+  width: 210px;
+  height: 5px;
   position: relative;
   background: var(--splash-loader-track);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   contain: strict;
 }
@@ -241,12 +320,21 @@
   text-align: center;
 }
 
+.splash-percent-unit {
+  font-size: 9px;
+  opacity: 0.55;
+  margin-left: 1px;
+  font-weight: 500;
+}
+
 /* === ACCESSIBILITY: REDUCED MOTION SUPPORT === */
 @media (prefers-reduced-motion: reduce) {
   .splash,
   .splash-halo,
   .splash-logo-box,
-  .splash-wordmark {
+  .splash-wordmark,
+  .splash-tagline,
+  .splash-loader {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
