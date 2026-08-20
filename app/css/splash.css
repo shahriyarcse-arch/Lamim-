@@ -142,8 +142,8 @@ body.lamim-booting {
   border-radius: 24px;
   box-shadow: var(--splash-box-shadow);
   opacity: 0;
-  transform: scale(0.96);
-  animation: logoBoxFadeIn 0.35s ease-out forwards;
+  transform: scale(0.92) translateY(6px);
+  animation: logoBoxReveal 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: opacity, transform;
 }
 
@@ -173,12 +173,12 @@ body.lamim-booting {
   display: block;
 }
 
-@keyframes logoBoxFadeIn {
-  0%   { opacity: 0; transform: scale(0.96); }
-  100% { opacity: 1; transform: scale(1); }
+@keyframes logoBoxReveal {
+  0%   { opacity: 0; transform: scale(0.92) translateY(6px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* === WORDMARK (Completely stable, pure fade-in — no trembling or font-swap scale jumps) === */
+/* === WORDMARK (Smooth graceful slide-up — intentional staggered reveal) === */
 .splash-text-mask {
   display: flex;
   align-items: center;
@@ -202,13 +202,14 @@ body.lamim-booting {
   margin: 0;
   line-height: 1.1;
   opacity: 0;
-  animation: wordmarkFadeIn 0.38s ease-out 0.04s forwards;
-  will-change: opacity;
+  transform: translateY(10px);
+  animation: wordmarkRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.14s forwards;
+  will-change: opacity, transform;
 }
 
-@keyframes wordmarkFadeIn {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+@keyframes wordmarkRise {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* === TAGLINE (tiny letterspaced caption, i18n-aware) === */
@@ -221,12 +222,14 @@ body.lamim-booting {
   color: var(--splash-tagline);
   margin-top: 10px;
   opacity: 0;
-  animation: taglineFadeIn 0.4s ease-out 0.12s forwards;
+  transform: translateY(6px);
+  animation: taglineRise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards;
+  will-change: opacity, transform;
 }
 
-@keyframes taglineFadeIn {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+@keyframes taglineRise {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* === MINIMALIST LOADER (Compositor-smooth Linear Progress Bar) ===
@@ -242,13 +245,13 @@ body.lamim-booting {
   align-items: center;
   gap: 10px;
   opacity: 0;
-  transform: translateY(10px);
-  animation: loaderIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards;
+  transform: translateY(8px);
+  animation: loaderRise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.30s forwards;
   will-change: opacity, transform;
 }
 
-@keyframes loaderIn {
-  0%   { opacity: 0; transform: translateY(10px); }
+@keyframes loaderRise {
+  0%   { opacity: 0; transform: translateY(8px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
