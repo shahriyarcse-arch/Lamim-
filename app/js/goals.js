@@ -199,7 +199,6 @@ const Goals = {
                    </div>`)
             : `<div class="salah-status-chip salah-status-pending">
                  <span class="salah-pending-dot"></span>
-                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
                  <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                </div>`;
         }
@@ -285,7 +284,6 @@ const Goals = {
                         </div>`)
                  : `<div class="salah-status-chip salah-status-pending">
                       <span class="salah-pending-dot"></span>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
                       <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                     </div>`
                }
@@ -396,7 +394,8 @@ const Goals = {
                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> ${window.t ? window.t('Missed') : 'Missed'}
                  </div>`)
           : `<div class="salah-status-chip salah-status-pending">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${window.t ? window.t('Pending') : 'Pending'}
+               <span class="salah-pending-dot"></span>
+               <span>${window.t ? window.t('Pending') : 'Pending'}</span>
              </div>`;
       }
       const selector = card.querySelector('.salah-status-selector');
@@ -448,7 +447,6 @@ const Goals = {
                      </div>`)
               : `<div class="salah-status-chip salah-status-pending">
                    <span class="salah-pending-dot"></span>
-                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
                    <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                  </div>`
             }
@@ -611,7 +609,6 @@ const Goals = {
                  </div>`)
           : `<div class="salah-status-chip salah-status-pending">
                <span class="salah-pending-dot"></span>
-               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
                <span>${window.t ? window.t('Pending') : 'Pending'}</span>
              </div>`;
       }
@@ -664,7 +661,6 @@ const Goals = {
                      </div>`)
               : `<div class="salah-status-chip salah-status-pending">
                    <span class="salah-pending-dot"></span>
-                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.85;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 15 14"/></svg>
                    <span>${window.t ? window.t('Pending') : 'Pending'}</span>
                  </div>`
             }
