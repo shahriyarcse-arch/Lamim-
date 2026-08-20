@@ -335,7 +335,7 @@ ${isBengali ? `CRITICAL LANGUAGE DIRECTIVE: BANGLA (বাংলা)
         }
       };
 
-      const candidateModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-latest'];
+      const candidateModels = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
 
       for (const model of candidateModels) {
         try {

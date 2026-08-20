@@ -96,14 +96,15 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: `Prompt exceeds maximum length of ${MAX_PROMPT_CHARS} characters.` });
     }
 
-    // API key — environment variables only; no hardcoded fallbacks
-    const apiKey = process.env.GEMINI_API_KEY || process.env.AI_API_KEY;
-    if (!apiKey) {
+    // API keys — support single key or comma-separated keys for quota rotation
+    const rawKeys = process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || process.env.AI_API_KEY || '';
+    const apiKeys = rawKeys.split(',').map(k => k.trim()).filter(Boolean);
+    if (apiKeys.length === 0) {
       // Signal client to use the built-in offline knowledge engine
-      return res.status(503).json({
+      return res.status(200).json({
         fallback: true,
         source: 'local-knowledge',
-        message: 'Cloud AI unavailable; using local knowledge engine.'
+        message: 'Cloud AI key not configured; using local knowledge engine.'
       });
     }
 
@@ -160,7 +161,7 @@ ${isBengali ? `CRITICAL LANGUAGE DIRECTIVE: BANGLA (বাংলা)
       parts: [{ text: prompt }]
     });
 
-    const candidateModels = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-latest'];
+    const candidateModels = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
     const payload = {
       system_instruction: {
         parts: [{ text: systemPrompt }]
@@ -172,32 +173,34 @@ ${isBengali ? `CRITICAL LANGUAGE DIRECTIVE: BANGLA (বাংলা)
       }
     };
 
-    for (const model of candidateModels) {
-      try {
-        const ctrl = new AbortController();
-        const to = setTimeout(() => ctrl.abort(), 8000);
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-        const apiRes = await fetch(geminiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          signal: ctrl.signal
-        });
-        clearTimeout(to);
+    for (const key of apiKeys) {
+      for (const model of candidateModels) {
+        try {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 6500);
+          const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+          const apiRes = await fetch(geminiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: ctrl.signal
+          });
+          clearTimeout(to);
 
-        if (apiRes.ok) {
-          const data = await apiRes.json();
-          const replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (replyText) {
-            return res.status(200).json({
-              reply: replyText.trim(),
-              source: 'cloud-ai',
-              model: model,
-              ts: Date.now()
-            });
+          if (apiRes.ok) {
+            const data = await apiRes.json();
+            const replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (replyText) {
+              return res.status(200).json({
+                reply: replyText.trim(),
+                source: 'cloud-ai',
+                model: model,
+                ts: Date.now()
+              });
+            }
           }
-        }
-      } catch (err) {}
+        } catch (err) {}
+      }
     }
 
     return res.status(200).json({ fallback: true, source: 'local-knowledge' });
