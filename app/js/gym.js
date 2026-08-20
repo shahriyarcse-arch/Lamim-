@@ -376,14 +376,22 @@ const Gym = {
   _formatTime12h(time24) {
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const [hStr, mStr] = time24.split(':');
-    let h = parseInt(hStr, 10);
+    const rawH = parseInt(hStr, 10);
+    let h = rawH;
     const m = mStr;
     let ampm = 'AM';
     if (h >= 12) { ampm = 'PM'; if (h > 12) h -= 12; }
     if (h === 0) h = 12;
     if (isBn) {
       const bnTime = window.n ? window.n(`${h}:${m}`) : `${h}:${m}`;
-      return `${bnTime} ${ampm === 'AM' ? 'সকাল' : 'রাত'}`;
+      let period = 'সকাল';
+      if (rawH >= 4 && rawH < 6) period = 'ভোর';
+      else if (rawH >= 6 && rawH < 12) period = 'সকাল';
+      else if (rawH >= 12 && rawH < 15) period = 'দুপুর';
+      else if (rawH >= 15 && rawH < 18) period = 'বিকাল';
+      else if (rawH >= 18 && rawH < 20) period = 'সন্ধ্যা';
+      else period = 'রাত';
+      return `${bnTime} ${period}`;
     }
     return `${h}:${m} ${ampm}`;
   },

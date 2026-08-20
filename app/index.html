@@ -169,7 +169,7 @@
   <link rel="stylesheet" href="css/dhikr-session.css?v=2" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-cards.css?v=2" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-modal.css?v=2" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/gym.css?v=220" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/gym.css?v=225" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/career.css?v=215" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/mobile-optimizations.css?v=2">
   <link rel="stylesheet" href="css/goals.css?v=150" media="print" onload="this.media='all'">
@@ -207,7 +207,7 @@
   <link rel="stylesheet" href="css/dhikr-session.css?v=2">
   <link rel="stylesheet" href="css/dhikr-cards.css?v=2">
   <link rel="stylesheet" href="css/dhikr-modal.css?v=2">
-  <link rel="stylesheet" href="css/gym.css?v=220">
+  <link rel="stylesheet" href="css/gym.css?v=225">
   <link rel="stylesheet" href="css/career.css?v=215">
   <link rel="stylesheet" href="css/goals.css?v=150">
   <link rel="stylesheet" href="css/analysis.css?v=221">
@@ -1459,24 +1459,20 @@
                 <div class="gh-sleep-time-row">
                   <div class="gh-sleep-time-block">
                     <div class="gh-sleep-time-header-row"
-                      style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                      style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
                       <div class="gh-sleep-time-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                         </svg>
                       </div>
-                      <div style="flex:1;">
-                        <span class="gh-meta-label" style="margin-bottom:2px;">Bedtime</span>
-                        <strong id="gym-sleep-time-label"
-                          style="font-size:18px; font-weight:800; color:var(--gh-text);">11:00 PM</strong>
-                      </div>
+                      <span class="gh-meta-label" data-i18n="Bedtime">Bedtime</span>
                     </div>
+                    <strong id="gym-sleep-time-label" class="gh-sleep-time-val">11:00 PM</strong>
                     <div class="gh-slider-container" style="display:flex; flex-direction:column; gap:6px;">
                       <input type="range" id="gym-sleep-slider" min="0" max="720" step="15" value="300"
                         class="gh-time-slider" oninput="Gym.onSleepSliderInput(this.value)">
-                      <div class="gh-slider-labels"
-                        style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; color:var(--gh-text-muted);">
+                      <div class="gh-slider-labels">
                         <span>6 PM</span>
                         <span>9 PM</span>
                         <span>12 AM</span>
@@ -1485,28 +1481,25 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="gh-sleep-time-block">
                     <div class="gh-sleep-time-header-row"
-                      style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                      style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
                       <div class="gh-sleep-time-icon wake">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                           <circle cx="12" cy="12" r="4" />
                           <path
                             d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
                         </svg>
                       </div>
-                      <div style="flex:1;">
-                        <span class="gh-meta-label" style="margin-bottom:2px;">Wake Up</span>
-                        <strong id="gym-wake-time-label"
-                          style="font-size:18px; font-weight:800; color:var(--gh-text);">07:00 AM</strong>
-                      </div>
+                      <span class="gh-meta-label" data-i18n="Wake Up">Wake Up</span>
                     </div>
+                    <strong id="gym-wake-time-label" class="gh-sleep-time-val">07:00 AM</strong>
                     <div class="gh-slider-container" style="display:flex; flex-direction:column; gap:6px;">
                       <input type="range" id="gym-wake-slider" min="0" max="720" step="15" value="180"
                         class="gh-time-slider" oninput="Gym.onWakeSliderInput(this.value)">
-                      <div class="gh-slider-labels"
-                        style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; color:var(--gh-text-muted);">
+                      <div class="gh-slider-labels">
                         <span>4 AM</span>
                         <span>7 AM</span>
                         <span>10 AM</span>
@@ -1519,26 +1512,27 @@
 
                 <!-- Quality Pills -->
                 <div style="margin: 20px 0;">
-                  <span class="gh-meta-label" style="margin-bottom: 10px; display:block;">Sleep Quality</span>
+                  <span class="gh-meta-label" data-i18n="Sleep Quality" style="margin-bottom: 10px; display:block;">Sleep Quality</span>
                   <div class="gh-quality-pills">
                     <button class="gh-quality-pill" data-quality="restless" onclick="Gym.setQuality('restless')">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.5 17.5 22 22M2 12a10 10 0 0 1 20 0M6 12a6 6 0 0 1 12 0" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                       </svg>
                       <span data-i18n="Restless">Restless</span>
                     </button>
                     <button class="gh-quality-pill" data-quality="light" onclick="Gym.setQuality('light')">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
                       </svg>
                       <span data-i18n="Light Sleep">Light</span>
                     </button>
                     <button class="gh-quality-pill active" data-quality="deep" onclick="Gym.setQuality('deep')">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                        <path d="M19 3v4M21 5h-4" />
                       </svg>
                       <span data-i18n="Deep">Deep</span>
                     </button>
@@ -1559,28 +1553,23 @@
                   <div class="gh-sleep-stat-card">
                     <span class="gh-sleep-stat-icon" style="color:var(--gh-primary, #818cf8);">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                       </svg>
                     </span>
-                    <div>
-                      <span class="gh-meta-label">Duration</span>
-                      <strong id="gym-sleep-duration-val" class="gh-sleep-stat-value">--</strong>
-                    </div>
+                    <span class="gh-meta-label" data-i18n="Duration">Duration</span>
+                    <strong id="gym-sleep-duration-val" class="gh-sleep-stat-value">--</strong>
                   </div>
                   <div class="gh-sleep-stat-card">
-                    <span class="gh-sleep-stat-icon" style="color:var(--gh-primary, #a78bfa);">
+                    <span class="gh-sleep-stat-icon" style="color:#10b981; background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.2);">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                       </svg>
                     </span>
-                    <div>
-                      <span class="gh-meta-label">Recovery</span>
-                      <strong id="gym-recovery-score-val" class="gh-sleep-stat-value"
-                        style="color:var(--gh-primary, #a78bfa);">--</strong>
-                    </div>
+                    <span class="gh-meta-label" data-i18n="Recovery">Recovery</span>
+                    <strong id="gym-recovery-score-val" class="gh-sleep-stat-value">--</strong>
                   </div>
                 </div>
                 <!-- Hidden elements kept for JS compatibility -->
@@ -2556,7 +2545,7 @@
     <!-- App Modules -->
     <script defer src="js/charts.js?v=2"></script>
     <script defer src="js/salah.js?v=240"></script>
-    <script defer src="js/gym.js?v=230"></script>
+    <script defer src="js/gym.js?v=235"></script>
     <script defer src="js/career.js?v=223"></script>
     <script defer src="js/dhikr.js?v=220"></script>
     <script defer src="js/goals.js?v=150"></script>
