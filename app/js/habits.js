@@ -548,6 +548,7 @@ const Habits = {
   },
 
   renderWarriorSpiritScore(skipAnim = false) {
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     let totalDays = 0;
     const breakdown = this.habits.map(h => {
       const stats = this.getHabitStats(h.id);
@@ -557,34 +558,31 @@ const Habits = {
       const pct = this.getProgressPercent(fractional);
       const nextBadge = this.badges.find(b => b.days > stats.currentStreak);
       const nextInfo = nextBadge ? `${stats.currentStreak}/${nextBadge.days}d to ${nextBadge.name}` : 'Max rank reached';
-      return { id: h.id, label: Utils.escapeHTML(h.label), val: stats.currentStreak, color: h.color, pct, nextInfo };
+      const labelText = (isBn && h.labelBn) ? h.labelBn : (h.label || '');
+      return { id: h.id, label: Utils.escapeHTML(labelText), val: stats.currentStreak, color: h.color, pct, nextInfo };
     });
+
+    const displayVal = window.n ? window.n(totalDays) : totalDays;
 
     return `
       <div class="habits-spirit-score-wrap ${skipAnim ? '' : 'anim-scale-up'}">
         <div class="spirit-score-glow"></div>
         <div class="spirit-score-content">
-          <div class="spirit-score-label">WARRIOR SPIRIT POWER</div>
-          <div class="spirit-score-val">${totalDays}</div>
-          <div class="spirit-score-sub">Total Combined Days of Purity</div>
+          <div class="spirit-score-label">${isBn ? 'হ্যাবিট রেজিলিয়েন্স পাওয়ার' : 'WARRIOR SPIRIT POWER'}</div>
+          <div class="spirit-score-val">${displayVal}</div>
+          <div class="spirit-score-sub">${isBn ? 'পবিত্রতার মোট দিন' : 'Total Combined Days of Purity'}</div>
           
           <div class="spirit-breakdown">
             ${breakdown.map(b => {
-              // Smart Short Code Logic
-              let sc = b.label.toUpperCase();
-              if (sc.startsWith('OVER')) sc = sc.replace('OVER', '');
-              if (sc.startsWith('EXCESSIVE ')) sc = sc.replace('EXCESSIVE ', '');
-              if (sc.includes(' ')) sc = sc.split(' ')[0];
-              if (sc.length > 6) sc = sc.substring(0, 5) + '.';
-              
+              const displayPct = window.n ? window.n(b.pct.toFixed(1)) : b.pct.toFixed(1);
               return `
-                <div class="spirit-breakdown-item" data-spirit-item="${b.id}" title="${b.label}: ${b.val} days · ${b.nextInfo}">
+                <div class="spirit-breakdown-item" data-spirit-item="${b.id}" title="${b.label}: ${b.val} ${isBn ? 'দিন' : 'days'} · ${b.nextInfo}">
                   <div class="spirit-bar-head">
-                    <span class="spirit-bar-label">${sc}</span>
-                    <span class="spirit-bar-pct" data-spirit-pct="${b.id}">${b.pct.toFixed(2)}%</span>
+                    <span class="spirit-bar-label">${b.label}</span>
+                    <span class="spirit-bar-pct" data-spirit-pct="${b.id}">${displayPct}%</span>
                   </div>
                   <div class="spirit-bar-wrap">
-                    <div class="spirit-bar-fill" data-spirit-fill="${b.id}" style="width:${b.pct}%; background:${b.color}; box-shadow:0 0 10px ${b.color}40;"></div>
+                    <div class="spirit-bar-fill" data-spirit-fill="${b.id}" style="width:${Math.min(100, b.pct)}%; background:${b.color}; box-shadow:0 0 12px ${b.color}50;"></div>
                   </div>
                 </div>
               `;
@@ -596,15 +594,16 @@ const Habits = {
   },
 
   renderHabitsList(skipAnim = false) {
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     return `
       <div class="habits-habits-container">
         ${this.habits.map(h => this.renderHabitCard(h, skipAnim)).join('')}
         <div class="habits-add-pillar-wrap ${skipAnim ? '' : 'anim-fade-in'}" role="button" tabindex="0" onclick="Habits.showAddModal()">
           <div class="habits-add-pillar">
             <div class="habits-add-pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
             </div>
-            <span class="habits-add-pillar-text">Add Another Habit to Conquer</span>
+            <span class="habits-add-pillar-text">${isBn ? 'জয়ের জন্য নতুন অভ্যাস যোগ করুন' : 'Add Another Habit to Conquer'}</span>
           </div>
         </div>
       </div>

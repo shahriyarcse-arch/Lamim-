@@ -283,15 +283,16 @@ const Analysis = {
                       const isInactive = t.score <= 10;
                       const isSelected = (t.fullDateStr === activeDateStr);
                       const barColor = isInactive ? 'var(--chart-inactive)' : t.color;
-                      const groupStyle = isSelected ? `z-index: 10;` : `opacity: ${isInactive ? '0.3' : '0.5'}`;
-                      const fillGlow = isSelected ? `box-shadow: 0 0 15px ${barColor}; border-top: 2px solid #fff;` : '';
+                      const heightPct = isInactive ? 10 : Math.max(8, t.score);
                       return `
-                        <div class="bar-col" role="button" tabindex="0" data-date="${t.fullDateStr}" data-inactive="${isInactive}" data-color="${t.color}" onclick="Analysis.selectDate('${t.fullDateStr}')" style="cursor:pointer; -webkit-tap-highlight-color: transparent;">
-                          <div class="bar-group" style="height: ${isInactive ? '10%' : t.score + '%'}; ${groupStyle}; transition: all 0.3s ease;">
-                            <div class="bar-score" style="${!isInactive && isSelected ? 'color:' + t.color : 'display:none'}; text-shadow: 0 0 5px ${t.color};">
-                              ${Math.round(t.score)}
+                        <div class="bar-col ${isSelected ? 'selected' : ''}" role="button" tabindex="0" data-date="${t.fullDateStr}" data-inactive="${isInactive}" data-color="${t.color}" onclick="Analysis.selectDate('${t.fullDateStr}')" style="cursor:pointer; -webkit-tap-highlight-color: transparent;">
+                          <div class="bar-track">
+                            <div class="bar-group" style="height: ${heightPct}%; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
+                              <div class="bar-score ${isSelected ? 'visible' : ''}" style="color:${t.color}; text-shadow: 0 0 8px ${t.color}80;">
+                                ${window.n ? window.n(Math.round(t.score)) : Math.round(t.score)}
+                              </div>
+                              <div class="bar-fill ${!isInactive ? 'active' : ''}" style="--bar-color: ${barColor};"></div>
                             </div>
-                            <div class="bar-fill ${!isInactive ? 'active' : ''}" style="--bar-color: ${barColor}; width: 14px; ${fillGlow} transition: box-shadow 0.3s ease;"></div>
                           </div>
                         </div>
                       `;
@@ -306,9 +307,9 @@ const Analysis = {
                     ${trend.map(t => {
                       const isSelected = (t.fullDateStr === activeDateStr);
                       return `
-                      <div class="x-label" data-date="${t.fullDateStr}" style="font-size: 9px; line-height: 1.3; display: flex; flex-direction: column; align-items: center; ${isSelected ? `color: ${t.color}; font-weight: 900;` : ''}">
-                        <span style="opacity: ${isSelected ? '0.8' : '0.5'}; font-size: 8px;">${t.weekday}</span>
-                        <span>${window.n ? window.n(t.dateNum) : t.dateNum}</span>
+                      <div class="x-label ${isSelected ? 'selected' : ''}" data-date="${t.fullDateStr}" style="font-size: 9.5px; line-height: 1.3; display: flex; flex-direction: column; align-items: center; ${isSelected ? `color: ${t.color}; font-weight: 900;` : ''}">
+                        <span style="opacity: ${isSelected ? '0.9' : '0.5'}; font-size: 8.5px;">${t.weekday}</span>
+                        <span style="font-weight:${isSelected ? '900' : '600'}">${window.n ? window.n(t.dateNum) : t.dateNum}</span>
                       </div>
                     `}).join('')}
                   </div>
@@ -320,7 +321,7 @@ const Analysis = {
 
         <!-- Detailed Breakdown (Compact Style) -->
         <div style="width: 100%; text-align: center; margin-top: 25px; margin-bottom: 15px;">
-          <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; opacity: 0.5; color: #34d399;">${isBn ? 'বিশদ বিবরণ' : 'Insight Breakdown'}</span>
+          <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; opacity: 0.6; color: #34d399;">${isBn ? 'বিশদ বিবরণ' : 'Insight Breakdown'}</span>
         </div>
         <div class="shs-grid">
           ${this.renderCard(isBn ? 'ফরয নামাজ' : 'Salah', shs.breakdown.salah, 50, '#f87171', `
@@ -348,14 +349,18 @@ const Analysis = {
   renderCard(label, val, max, color, svg, sub, noAnim = false) {
     const formattedVal = window.n ? window.n(val) : val;
     const formattedMax = window.n ? window.n(max) : max;
+    const pct = max > 0 ? Math.min(100, Math.round((val / max) * 100)) : 0;
     return `
       <div class="shs-card ${noAnim ? '' : 'anim-fade-in'}">
         <div class="shs-card-header">
-          <div class="shs-card-icon" style="background: ${color}15; color: ${color}">${svg}</div>
+          <div class="shs-card-icon" style="background: ${color}18; color: ${color}; border: 1px solid ${color}30;">${svg}</div>
           <div class="shs-card-info">
-            <div class="shs-card-val">${formattedVal}<span class="max-val">/${formattedMax}</span></div>
+            <div class="shs-card-val">${formattedVal}<span class="max-val"> / ${formattedMax}</span></div>
             <div class="shs-card-label">${label} ${sub ? `<span class="sub-label">(${sub})</span>` : ''}</div>
           </div>
+        </div>
+        <div class="shs-card-progress">
+          <div class="shs-card-progress-fill" style="width: ${pct}%; background: ${color}; box-shadow: 0 0 8px ${color}50;"></div>
         </div>
       </div>
     `;
