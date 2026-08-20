@@ -50,19 +50,19 @@
 
   /* Text (Max Contrast) */
   --color-text-primary:   #ffffff;
-  --color-text-secondary: #cbd5e1;
+  --color-text-secondary: #e2e8f0;
   --color-text-muted:    #94a3b8;
   --color-text-inverse:   #020617;
 
   /* Borders */
-  --color-border:         rgba(255,255,255,0.06);
-  --color-border-muted:   rgba(255,255,255,0.03);
+  --color-border:         rgba(255,255,255,0.12);
+  --color-border-muted:   rgba(255,255,255,0.07);
   --color-border-active:  #a78bfa;
 
   /* Glass */
-  --color-glass:          rgba(255, 255, 255, 0.02);
-  --color-glass-hover:    rgba(255, 255, 255, 0.05);
-  --color-glass-active:   rgba(167, 139, 250, 0.08);
+  --color-glass:          rgba(255, 255, 255, 0.03);
+  --color-glass-hover:    rgba(255, 255, 255, 0.07);
+  --color-glass-active:   rgba(167, 139, 250, 0.12);
 
   /* Universal Token Aliases */
   --color-primary:          var(--color-accent-primary);
@@ -209,44 +209,44 @@
 
 /* Light mode overrides - Billion Dollar Company Aesthetic */
 [data-theme="light"] {
-  --home-salam-color: #1E293B; 
-  --home-time-color:  #4F46E5; 
-  --home-name-color:  #7C3AED; 
+  --home-salam-color: #0F172A; 
+  --home-time-color:  #4338CA; 
+  --home-name-color:  #6D28D9; 
   --color-bg-primary:    #F1F5F9;
-  --color-bg-secondary:  #E8EDF4;
-  --color-bg-tertiary:   #DCE2EC;
+  --color-bg-secondary:  #E2E8F0;
+  --color-bg-tertiary:   #CBD5E1;
   --color-bg-elevated:   #FFFFFF; 
   --color-accent-gold:   #B45309;
   --color-accent-gold-light: #D97706; 
   
-  --color-text-primary:  #0B1423;
+  --color-text-primary:  #0A0F1D;
   --color-text-secondary:#1E293B;
   --color-text-muted:    #475569;
   
-  --color-border:        #D4DCE8;
+  --color-border:        #CBD5E1;
   --color-border-muted:  #E2E8F0;
-  --color-border-active: #6366F1;
+  --color-border-active: #4F46E5;
   
-  --color-glass:         rgba(255, 255, 255, 0.75);
-  --color-glass-hover:   rgba(255, 255, 255, 0.92);
-  --color-glass-active:  rgba(99, 102, 241, 0.1);
+  --color-glass:         rgba(255, 255, 255, 0.85);
+  --color-glass-hover:   rgba(255, 255, 255, 0.96);
+  --color-glass-active:  rgba(79, 70, 229, 0.12);
   
-  --gradient-card:       linear-gradient(135deg, #FFFFFF, #F8FBFF);
-  --gradient-hero:       radial-gradient(ellipse at top, rgba(99, 102, 241, 0.06) 0%, #F1F5F9 70%);
-  --gradient-brand-text: linear-gradient(135deg, #6366f1, #8b5cf6);
-  --gradient-stat-text:  linear-gradient(135deg, #312e81, #4f46e5); 
+  --gradient-card:       linear-gradient(135deg, #FFFFFF, #F8FAFC);
+  --gradient-hero:       radial-gradient(ellipse at top, rgba(99, 102, 241, 0.08) 0%, #F1F5F9 70%);
+  --gradient-brand-text: linear-gradient(135deg, #4f46e5, #7c3aed);
+  --gradient-stat-text:  linear-gradient(135deg, #1e1b4b, #4338ca); 
   
-  --color-shadow:        rgba(0, 0, 0, 0.06);
-  --shadow-md:           0 8px 28px -6px rgba(0, 0, 0, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.04);
-  --shadow-lg:           0 24px 48px -12px rgba(0, 0, 0, 0.1);
+  --color-shadow:        rgba(15, 23, 42, 0.08);
+  --shadow-md:           0 6px 20px -3px rgba(15, 23, 42, 0.08), 0 3px 8px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg:           0 20px 40px -10px rgba(15, 23, 42, 0.12);
 
   /* Semantic Tokens Light Mode */
   --color-surface-card:     #FFFFFF; 
   --color-surface-nested:   #F8FAFC;
   --color-surface-hollow:   #EDF2F7;
-  --color-divider-subtle:   rgba(0,0,0,0.05);
-  --color-divider-strong:   rgba(0,0,0,0.1);
-  --shadow-premium:         0 12px 32px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.03);
+  --color-divider-subtle:   rgba(15, 23, 42, 0.06);
+  --color-divider-strong:   rgba(15, 23, 42, 0.12);
+  --shadow-premium:         0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
   --radar-grid-stroke:      rgba(0,0,0,0.06);
   --radar-axis-stroke:      rgba(0,0,0,0.12);
   --color-text-subtitle:    #475569;
