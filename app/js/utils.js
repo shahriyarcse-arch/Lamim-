@@ -250,7 +250,10 @@ const Utils = {
 
   formatUserName(name) {
     if (!name) return '';
-    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    const isBn = (typeof document !== 'undefined' && document.documentElement.getAttribute('lang') === 'bn') ||
+                 (typeof App !== 'undefined' && App.lang === 'bn') ||
+                 (typeof window !== 'undefined' && window.App && window.App.lang === 'bn') ||
+                 (typeof localStorage !== 'undefined' && (localStorage.getItem('lamim_lang') === 'bn' || (localStorage.getItem('lamim_settings') && localStorage.getItem('lamim_settings').includes('"lang":"bn"'))));
     if (isBn) {
       return this.transliterateNameToBn(name);
     }

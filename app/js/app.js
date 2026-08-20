@@ -16,9 +16,9 @@ const App = {
   dict: typeof Translations !== 'undefined' ? Translations : {},
 
   setLang(lang) {
-    if (this.lang === lang) return;
     this.lang = lang;
     DB.rawSet('lamim_lang', this.lang);
+    try { localStorage.setItem('lamim_lang', this.lang); } catch (e) {}
     document.documentElement.setAttribute('lang', this.lang);
     this.applyTranslations();
     Utils.toast(this.lang === 'bn' ? 'বাংলা ভাষা নির্বাচন করা হয়েছে' : 'Language set to English', 'success');
@@ -682,6 +682,8 @@ updateSectionTitle() {
     }
   }
 };
+
+window.App = App;
 
 // Bootstrap with readyState safeguard
 if (document.readyState === 'loading') {
