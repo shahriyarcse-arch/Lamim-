@@ -3631,6 +3631,10 @@ history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</scrip
       startCycle();
     })();
   </script>
+  <script type="module">
+    import { inject } from './lib/vendor/analytics.mjs';
+    inject();
+  </script>
 </body>
 </html>
 
