@@ -138,8 +138,8 @@ updateSectionTitle() {
 
   // Section labels for the topbar
   sectionLabels: {
-    en: { home: 'Home', salah: 'Salah Tracker', dhikr: 'Dhikr Counter', nafl: 'Nafl Salah', habits: 'Habits', finance: 'Islamic Finance', analysis: 'Analysis', gym: 'Gym Tracker', career: 'Career Builder', profile: 'Profile' },
-    bn: { home: 'হোম', salah: 'সালাত ট্র্যাকার', dhikr: 'যিকির কাউন্টার', nafl: 'নফল সালাত', habits: 'হ্যাবিটস', finance: 'ইসলামিক অর্থনীতি', analysis: 'বিশ্লেষণ', gym: 'জিম ট্র্যাকার', career: 'ক্যারিয়ার বিল্ডার', profile: 'প্রোফাইল' }
+    en: { home: 'Home', salah: 'Salah Tracker', dhikr: 'Dhikr Counter', nafl: 'Nafl Salah', habits: 'Habits', finance: 'Finance', analysis: 'Analysis', gym: 'Gym Tracker', career: 'Career Builder', profile: 'Profile' },
+    bn: { home: 'হোম', salah: 'সালাত ট্র্যাকার', dhikr: 'যিকির কাউন্টার', nafl: 'নফল সালাত', habits: 'হ্যাবিটস', finance: 'ফাইন্যান্স', analysis: 'বিশ্লেষণ', gym: 'জিম ট্র্যাকার', career: 'ক্যারিয়ার বিল্ডার', profile: 'প্রোফাইল' }
   },
 
   setSplashProgress(pct) {
@@ -481,7 +481,7 @@ updateSectionTitle() {
       dhikr: 'Dhikr Counter',
       nafl: 'Nafl Salah',
       habits: 'Habits',
-      finance: 'Islamic Finance',
+      finance: 'Finance',
       analysis: 'Analysis',
       profile: 'Profile',
       gym: 'Gym & Diet',

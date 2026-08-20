@@ -123,7 +123,7 @@
     "applicationCategory": "LifestyleApplication",
     "operatingSystem": "All",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "featureList": ["Salah Tracker", "Dhikr Counter", "Nafl Goals", "Spiritual Analysis", "Gym & Diet Tracker", "Career Builder", "Islamic Finance"],
+    "featureList": ["Salah Tracker", "Dhikr Counter", "Nafl Goals", "Spiritual Analysis", "Gym & Diet Tracker", "Career Builder", "Finance"],
     "screenshot": "https://www.lamim.tech/app/assets/icon-512x512.png",
     "softwareVersion": "1.4.4"
   }
@@ -716,7 +716,7 @@
                   stroke-linecap="round" stroke-linejoin="round">
                   <rect x="2" y="5" width="20" height="14" rx="2" />
                   <line x1="2" y1="10" x2="22" y2="10" />
-                </svg></span><span class="nav-label">Islamic Finance</span></div>
+                </svg></span><span class="nav-label" data-i18n="Finance">Finance</span></div>
             <div class="nav-item" data-section="career"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg"
                   width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -2066,7 +2066,7 @@
     <div class="modal-overlay hidden" id="nafl-history-modal" onclick="if(event.target===this) Goals.hideHistory()">
       <div class="modal history-modal-content-container anim-scale-up">
         <div class="modal-header">
-          <h3 class="modal-title">Spiritual Journey</h3>
+          <h3 class="modal-title" id="nafl-history-title">Spiritual Journey</h3>
           <button class="modal-close" onclick="Goals.hideHistory()" title="Close">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
@@ -2076,19 +2076,19 @@
         <div class="history-premium-summary">
           <div class="h-summary-card">
             <span class="h-sum-val" id="h-sum-total">0</span>
-            <span class="h-sum-label">Total Rakat</span>
+            <span class="h-sum-label" id="h-sum-label-total">Total Rakat</span>
           </div>
           <div class="h-summary-card">
             <span class="h-sum-val" id="h-sum-streak">0</span>
-            <span class="h-sum-label">Day Streak</span>
+            <span class="h-sum-label" id="h-sum-label-streak">Day Streak</span>
           </div>
           <div class="h-summary-card">
             <span class="h-sum-val" id="h-sum-avg">0%</span>
-            <span class="h-sum-label">Completion</span>
+            <span class="h-sum-label" id="h-sum-label-avg">Completion</span>
           </div>
         </div>
 
-        <div class="history-list-header">Last 30 Days</div>
+        <div class="history-list-header" id="nafl-last30-label">Last 30 Days</div>
         <div id="nafl-history-list" class="history-list-modern">
           <!-- History items injected by JS -->
         </div>
@@ -2099,7 +2099,7 @@
     <div class="modal-overlay hidden" id="habits-add-modal" onclick="if(event.target===this) Habits.hideAddModal()">
       <div class="modal anim-scale-up" style="max-width:440px; max-height:88vh; display:flex; flex-direction:column; padding:0; overflow:hidden;">
         <div class="modal-header" style="padding:18px 22px 14px; flex-shrink:0; border-bottom:1px solid var(--color-divider-subtle, rgba(255,255,255,0.06));">
-          <h3 class="modal-title">Add Habit to Quit</h3>
+          <h3 class="modal-title" id="habits-add-modal-title">Add Habit to Quit</h3>
           <button class="modal-close" onclick="Habits.hideAddModal()"></button>
         </div>
         <div class="modal-body" style="padding:18px 20px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; flex:1;">
@@ -2120,7 +2120,7 @@
             <details style="margin-bottom:16px;">
               <summary
                 style="cursor:pointer; color:var(--color-text-muted, rgba(255,255,255,0.5)); font-size:11px; text-transform:uppercase; letter-spacing:1px; font-weight:700; outline:none; user-select:none; display:flex; align-items:center; gap:8px;">
-                <span> Customize Visual Theme</span>
+                <span id="habits-customize-theme-label"> Customize Visual Theme</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7;">
                   <polyline points="6 9 12 15 18 9"></polyline>
@@ -2153,10 +2153,10 @@
 
               <!-- Quick Date Buttons + Custom Trigger -->
               <div class="forge-quick-dates" style="justify-content:center; gap:6px;">
-                <button class="quick-date-btn active" onclick="Habits.setForgeQuickDate(0, this)">Right Now</button>
-                <button class="quick-date-btn" onclick="Habits.setForgeQuickDate(1, this)">Yesterday</button>
-                <button class="quick-date-btn" onclick="Habits.setForgeQuickDate(3, this)">3 Days Ago</button>
-                <button class="quick-date-btn" onclick="Habits.setForgeQuickDate(7, this)">1 Week Ago</button>
+                <button class="quick-date-btn active" id="qdate-now" onclick="Habits.setForgeQuickDate(0, this)">Right Now</button>
+                <button class="quick-date-btn" id="qdate-yesterday" onclick="Habits.setForgeQuickDate(1, this)">Yesterday</button>
+                <button class="quick-date-btn" id="qdate-3d" onclick="Habits.setForgeQuickDate(3, this)">3 Days Ago</button>
+                <button class="quick-date-btn" id="qdate-1w" onclick="Habits.setForgeQuickDate(7, this)">1 Week Ago</button>
                 <button class="quick-date-btn" id="habits-custom-trigger"
                   onclick="Habits.toggleCustomDTPicker(this)">Custom...</button>
               </div>
@@ -2170,7 +2170,7 @@
                 <!-- Days Ago Stepper -->
                 <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
                   <div>
-                    <div
+                    <div id="habits-daysago-label"
                       style="font-size:10px; font-weight:800; color:var(--color-text-muted, rgba(255,255,255,0.4)); text-transform:uppercase; letter-spacing:0.5px;">
                       Days Ago</div>
                     <div id="custom-days-display"
@@ -2191,7 +2191,7 @@
                   <div
                     style="display:flex; justify-content:space-between; align-items:center; background:var(--color-bg-tertiary, rgba(0,0,0,0.2)); padding:10px 12px; border-radius:12px; border:1px solid var(--color-divider-subtle, rgba(255,255,255,0.03));">
                     <div>
-                      <div
+                      <div id="habits-hour-label"
                         style="font-size:9px; font-weight:700; color:var(--color-text-muted, rgba(255,255,255,0.3)); text-transform:uppercase; letter-spacing:0.5px;">
                         Hour</div>
                       <div id="custom-hour-display"
@@ -2210,7 +2210,7 @@
                   <div
                     style="display:flex; justify-content:space-between; align-items:center; background:var(--color-bg-tertiary, rgba(0,0,0,0.2)); padding:10px 12px; border-radius:12px; border:1px solid var(--color-divider-subtle, rgba(255,255,255,0.03));">
                     <div>
-                      <div
+                      <div id="habits-minute-label"
                         style="font-size:9px; font-weight:700; color:var(--color-text-muted, rgba(255,255,255,0.3)); text-transform:uppercase; letter-spacing:0.5px;">
                         Minute</div>
                       <div id="custom-minute-display"
@@ -2228,7 +2228,7 @@
 
                 <!-- AM/PM Selector -->
                 <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
-                  <span
+                  <span id="habits-ampm-label"
                     style="font-size:10px; font-weight:800; color:var(--color-text-muted, rgba(255,255,255,0.4)); text-transform:uppercase; letter-spacing:0.5px;">AM
                     / PM Segment</span>
                   <div
@@ -2242,7 +2242,7 @@
               </div>
             </div>
 
-            <button class="forge-action-btn" onclick="Habits.addCustomHabit()" style="padding:14px;">FORGE
+            <button class="forge-action-btn" id="habits-forge-btn" onclick="Habits.addCustomHabit()" style="padding:14px;">FORGE
               TRACKER</button>
           </div>
         </div>
@@ -2260,7 +2260,7 @@
           <button class="modal-close" onclick="Habits.hideStartDateModal()"></button>
         </div>
         <div class="modal-body">
-          <p>When did you start fighting this habit?</p>
+          <p id="habits-startdate-prompt">When did you start fighting this habit?</p>
           <input type="hidden" id="habits-startdate-habit-id" value="">
           <input type="datetime-local" id="habits-startdate-input" class="input">
           <button class="modal-btn-primary" onclick="Habits.saveStartDate()">Save Progress</button>
@@ -2287,7 +2287,7 @@
           <button class="modal-close" onclick="Habits.hideRelapseModal()"></button>
         </div>
         <div class="modal-body">
-          <p class="habits-relapse-sub">A relapse is a lesson, not a failure. Why did it happen?</p>
+          <p class="habits-relapse-sub" id="habits-relapse-prompt">A relapse is a lesson, not a failure. Why did it happen?</p>
           <input type="hidden" id="habits-relapse-habit-id" value="">
           <textarea id="habits-relapse-reason" class="input habits-relapse-textarea" rows="3"
             placeholder="Identify the trigger (e.g. stress, boredom)..." style="resize:vertical;"></textarea>
@@ -2302,7 +2302,7 @@
       onclick="if(event.target===this) Habits.hideHistoryModal()">
       <div class="modal habits-history-modal anim-scale-up" style="max-width:400px;max-height:80vh;overflow-y:auto;">
         <div class="modal-header">
-          <h3 class="modal-title habits-history-title">
+          <h3 class="modal-title habits-history-title" id="habits-history-title">
             <span class="habits-history-title-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2363,8 +2363,8 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
           <div style="flex:1;">
-            <h3 class="modal-title habits-tools-title" style="margin:0;font-family:var(--font-display, 'Fraunces', Georgia, serif);font-size:20px;font-weight:900;font-style:italic;letter-spacing:-0.02em;">Habits Settings</h3>
-            <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px;font-weight:500;">Discipline tools & milestone guide</div>
+            <h3 class="modal-title habits-tools-title" id="habits-tools-title" style="margin:0;font-family:var(--font-display, 'Fraunces', Georgia, serif);font-size:20px;font-weight:900;font-style:italic;letter-spacing:-0.02em;">Habits Settings</h3>
+            <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px;font-weight:500;" id="habits-tools-subtitle">Discipline tools & milestone guide</div>
           </div>
           <button class="modal-close habits-tools-close-btn" onclick="Habits.hideToolsModal()" title="Close"
             style="position:static;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;">
@@ -2376,9 +2376,9 @@
           <!-- Badge Guide -->
           <div style="margin-bottom:8px;">
             <div class="habits-section-label"
-              style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:10px;">
+              style="font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:10px;" id="habits-badge-section-label">
               Badge Milestones</div>
-            <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:16px;line-height:1.6;">
+            <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:16px;line-height:1.6;" id="habits-badge-section-desc">
               Every clean day builds toward the next rank. Earned badges glow on your tracker — keep pushing to unlock them all.
             </p>
             <div id="habits-badge-guide" style="display:flex;flex-direction:column;gap:10px;">

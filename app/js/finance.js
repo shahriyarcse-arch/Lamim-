@@ -1988,8 +1988,10 @@ const Finance = {
   },
   showToolsModal() {
     const s = DB.getSettings();
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
     const activeRate = this._getFXRate();
-    const exchangeRateText = activeRate > 0 ? `1 USD = ${activeRate.toFixed(4)} BDT` : '1 USD = — BDT (fetching…)';
+    const rateNum = isBn && typeof window.n === 'function' ? window.n(activeRate.toFixed(4)) : activeRate.toFixed(4);
+    const exchangeRateText = activeRate > 0 ? `${isBn ? '১' : '1'} USD = ${rateNum} BDT` : (isBn ? '১ USD = — BDT (লোড হচ্ছে…)' : '1 USD = — BDT (fetching…)');
     const sourceLabel = this.rateSource || 'TradingView';
     const changeBadge = typeof this.rateChangePct === 'number'
       ? `<span style="font-size:12px; font-weight:800; color:${this.rateChangePct >= 0 ? '#10b981' : '#ef4444'}; display:inline-flex; align-items:center; gap:2px;">
@@ -1997,13 +1999,26 @@ const Finance = {
          </span>`
       : '';
 
+    const L = {
+      title:        isBn ? 'ফাইন্যান্স সেটিংস'               : 'Finance Settings',
+      forex:        isBn ? 'লাইভ ফরেক্স মার্কেট'              : 'Live Forex Market',
+      liveSpot:     isBn ? 'লাইভ স্পট মার্কেট'                : 'Live Spot Market',
+      liveVia:      isBn ? `লাইভ ${sourceLabel} থেকে (FX_IDC:USDBDT)` : `Live via ${sourceLabel} (FX_IDC:USDBDT)`,
+      spotTicker:   isBn ? 'স্পট টিকার'                       : 'Spot Ticker',
+      danger:       isBn ? 'বিপজ্জনক জোন'                     : 'Danger Zone',
+      clearMonth:   isBn ? 'বর্তমান মাস মুছুন'                : 'Clear Current Month',
+      clearSub:     isBn ? 'শুধুমাত্র এই মাসের সব রেকর্ড মুছুন' : 'Delete all records for this month only',
+      factoryReset: isBn ? 'ফ্যাক্টরি রিসেট (সম্পূর্ণ মুছুন)' : 'Factory Reset (Full Wipe)',
+      factorySub:   isBn ? 'সব ইতিহাস ও ভল্ট মুছুন'           : 'Erase all history and all vaults',
+    };
+
     const html = `
       <div class="finance-modal-content" style="max-width:420px;">
         <div class="fin-modal-header">
           <div class="fin-modal-title">
             <span style="display:inline-flex; align-items:center; gap:8px;">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-              Finance Settings
+              ${L.title}
             </span>
           </div>
           <button class="fin-modal-close" onclick="Finance.closeModal()" aria-label="Close">
@@ -2012,12 +2027,12 @@ const Finance = {
         </div>
 
         <div style="padding: 12px 0 6px;">
-          <div class="fin-settings-section-label">Live Forex Market</div>
+          <div class="fin-settings-section-label">${L.forex}</div>
           <div class="fin-exchange-card">
             <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:8px;">
               <div class="fin-live-badge">
                 <span class="fin-pulse-dot"></span>
-                Live Spot Market
+                ${L.liveSpot}
               </div>
               <div>
                 ${changeBadge}
@@ -2027,21 +2042,21 @@ const Finance = {
             <div style="font-size:11.5px; color:var(--color-text-muted); margin-top:8px; display:flex; align-items:center; justify-content:space-between; width:100%;">
               <span style="display:inline-flex; align-items:center; gap:5px;">
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Live via ${sourceLabel} (FX_IDC:USDBDT)
+                ${L.liveVia}
               </span>
-              <span style="font-size:11px; color:var(--fin-green); font-weight:700;">Spot Ticker</span>
+              <span style="font-size:11px; color:var(--fin-green); font-weight:700;">${L.spotTicker}</span>
             </div>
           </div>
 
-          <div class="fin-settings-section-label" style="color:var(--fin-red); margin-top:22px;">Danger Zone</div>
+          <div class="fin-settings-section-label" style="color:var(--fin-red); margin-top:22px;">${L.danger}</div>
           <div style="display:flex; flex-direction:column; gap:10px;">
             <button class="fin-tool-btn" onclick="Finance.resetCurrentMonth()">
               <div class="fin-tool-icon" style="background:rgba(245,158,11,0.12); color:#f59e0b;">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
               </div>
               <div style="text-align:left;">
-                <div style="font-weight:800; font-size:14px;">Clear Current Month</div>
-                <div style="font-size:12px; color:var(--color-text-muted);">Delete all records for this month only</div>
+                <div style="font-weight:800; font-size:14px;">${L.clearMonth}</div>
+                <div style="font-size:12px; color:var(--color-text-muted);">${L.clearSub}</div>
               </div>
             </button>
 
@@ -2050,8 +2065,8 @@ const Finance = {
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               </div>
               <div style="text-align:left;">
-                <div style="font-weight:800; font-size:14px; color:var(--fin-red);">Factory Reset (Full Wipe)</div>
-                <div style="font-size:12px; color:var(--color-text-muted);">Erase all history and all vaults</div>
+                <div style="font-weight:800; font-size:14px; color:var(--fin-red);">${L.factoryReset}</div>
+                <div style="font-size:12px; color:var(--color-text-muted);">${L.factorySub}</div>
               </div>
             </button>
           </div>
@@ -2060,6 +2075,7 @@ const Finance = {
     `;
     this.showModal(html);
   },
+
 
   resetCurrentMonth() {
     const m = this.currentViewDate.getMonth(), y = this.currentViewDate.getFullYear();

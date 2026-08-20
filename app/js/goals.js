@@ -844,6 +844,14 @@ const Goals = {
     if (el('h-sum-streak')) el('h-sum-streak').textContent = (window.n ? window.n(streak) : streak) + 'd';
     if (el('h-sum-avg')) el('h-sum-avg').textContent = (window.n ? window.n(completion) : completion) + '%';
 
+    // i18n: update static labels
+    const _s = (id, en, bn) => { const e = document.getElementById(id); if (e) e.textContent = isBn ? bn : en; };
+    _s('nafl-history-title',   'Spiritual Journey',   'আধ্যাত্মিক যাত্রা');
+    _s('h-sum-label-total',    'Total Rakat',         'মোট রাকাত');
+    _s('h-sum-label-streak',   'Day Streak',          'দিনের স্ট্রিক');
+    _s('h-sum-label-avg',      'Completion',          'সমাপ্তি');
+    _s('nafl-last30-label',    'Last 30 Days',        'শেষ ৩০ দিন');
+
     list.innerHTML = history.map(day => {
       const isPastDay = day.date !== Utils.todayStr();
       let sunnahDone = [];

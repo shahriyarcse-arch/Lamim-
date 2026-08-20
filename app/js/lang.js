@@ -9,7 +9,7 @@ const Translations = {
   'Nafl': 'নফল',
   'Habits': 'হ্যাবিটস',
   'HABITS': 'হ্যাবিটস',
-  'Islamic Finance': 'ইসলামিক ফাইন্যান্স',
+  'Islamic Finance': 'ফাইন্যান্স',
   'Finance': 'ফাইন্যান্স',
   'Gym': 'জিম',
   'GYM': 'জিম',

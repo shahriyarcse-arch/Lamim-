@@ -475,8 +475,8 @@ const Manual = {
         },
         {
           id: 'finance',
-          title: 'Islamic Finance & Savings Vaults',
-          subtitle: 'Halal cashbook, multi-currency, and target goal vaults',
+          title: 'Finance & Savings Vaults',
+          subtitle: 'Personal cashbook, multi-currency, and target goal vaults',
           summary: 'Manage your income, categorized expenses, and savings goals with complete privacy and multi-currency support.',
           sections: [
             {

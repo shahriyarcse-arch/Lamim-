@@ -38,38 +38,39 @@ const Habits = {
   ],
   
   defaultHabits: [
-    { id: 'porn', label: 'Pornography', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>', color: '#ef4444' },
-    { id: 'masturbation', label: 'Masturbation', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>', color: '#f97316' },
-    { id: 'smoking', label: 'Smoking', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h14"/><path d="M16 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M10 14h4"/><path d="M10 18h4"/><path d="M22 17a2 2 0 0 1-2 2h-2V7h2a2 2 0 0 1 2 2v8z"/></svg>', color: '#6b7280' },
-    { id: 'social_media', label: 'Social Media', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>', color: '#3b82f6' },
-    { id: 'gaming', label: 'Excessive Gaming', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><rect width="20" height="12" x2="2" y2="6" rx="2"/><circle cx="15.5" cy="13" r=".5" fill="currentColor"/><circle cx="17.5" cy="11" r=".5" fill="currentColor"/></svg>', color: '#8b5cf6' },
-    { id: 'overeating', label: 'Overeating', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>', color: '#eab308' },
-    { id: 'backbiting', label: 'Backbiting / Gossip', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>', color: '#ec4899' },
-    { id: 'lying', label: 'Lying', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M8 15s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>', color: '#14b8a6' },
-    { id: 'anger', label: 'Anger Issues', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><path d="M7.5 8 10 9"/><path d="M16.5 8 14 9"/></svg>', color: '#dc2626' },
-    { id: 'laziness', label: 'Laziness', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>', color: '#a78bfa' },
-    { id: 'music', label: 'Music Addiction', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>', color: '#06b6d4' },
-    { id: 'drugs', label: 'Drugs / Alcohol', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8"/></svg>', color: '#be185d' },
-    { id: 'procrastination', label: 'Procrastination', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', color: '#d97706' },
-    { id: 'cursing', label: 'Cursing / Swearing', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m9.2 22 3-7"/><path d="m12.2 22-3-7"/></svg>', color: '#78716c' },
+    { id: 'porn',            label: 'Pornography',         labelBn: 'অশ্লীলতা',             icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>', color: '#ef4444' },
+    { id: 'masturbation',   label: 'Masturbation',         labelBn: 'হস্তমৈথুন',            icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>', color: '#f97316' },
+    { id: 'smoking',        label: 'Smoking',              labelBn: 'ধূমপান',               icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h14"/><path d="M16 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M10 14h4"/><path d="M10 18h4"/><path d="M22 17a2 2 0 0 1-2 2h-2V7h2a2 2 0 0 1 2 2v8z"/></svg>', color: '#6b7280' },
+    { id: 'social_media',  label: 'Social Media',          labelBn: 'সোশ্যাল মিডিয়া',      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>', color: '#3b82f6' },
+    { id: 'gaming',         label: 'Excessive Gaming',     labelBn: 'অতিরিক্ত গেমিং',       icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><rect width="20" height="12" x2="2" y2="6" rx="2"/><circle cx="15.5" cy="13" r=".5" fill="currentColor"/><circle cx="17.5" cy="11" r=".5" fill="currentColor"/></svg>', color: '#8b5cf6' },
+    { id: 'overeating',     label: 'Overeating',           labelBn: 'অতিরিক্ত খাওয়া',      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>', color: '#eab308' },
+    { id: 'backbiting',     label: 'Backbiting / Gossip',  labelBn: 'গীবত / গসিপ',          icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>', color: '#ec4899' },
+    { id: 'lying',          label: 'Lying',                labelBn: 'মিথ্যা বলা',            icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M8 15s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>', color: '#14b8a6' },
+    { id: 'anger',          label: 'Anger Issues',         labelBn: 'রাগের সমস্যা',          icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><path d="M7.5 8 10 9"/><path d="M16.5 8 14 9"/></svg>', color: '#dc2626' },
+    { id: 'laziness',       label: 'Laziness',             labelBn: 'অলসতা',                icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>', color: '#a78bfa' },
+    { id: 'music',          label: 'Music Addiction',      labelBn: 'সঙ্গীত আসক্তি',        icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>', color: '#06b6d4' },
+    { id: 'drugs',          label: 'Drugs / Alcohol',      labelBn: 'মাদক / মদ',             icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8"/></svg>', color: '#be185d' },
+    { id: 'procrastination',label: 'Procrastination',      labelBn: 'গড়িমসি',               icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', color: '#d97706' },
+    { id: 'cursing',        label: 'Cursing / Swearing',   labelBn: 'গালিগালাজ',            icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m9.2 22 3-7"/><path d="m12.2 22-3-7"/></svg>', color: '#78716c' },
   ],
 
   badges: [
-    { days: 0, name: 'The Novice', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>', color: '#94a3b8' },
-    { days: 1, name: 'The Initiate', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>', color: '#6366f1' },
-    { days: 7, name: 'Iron Will', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>', color: '#0ea5e9' },
-    { days: 21, name: 'The Steadfast', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', color: '#a855f7' },
-    { days: 30, name: 'Pathfinder', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"/></svg>', color: '#f59e0b' },
-    { days: 60, name: 'The Guardian', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>', color: '#f43f5e' },
-    { days: 90, name: 'Veteran', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>', color: '#10b981' },
-    { days: 150, name: 'Elite', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>', color: '#f97316' },
-    { days: 240, name: 'Sentinel', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="12" r="3"/></svg>', color: '#06b6d4' },
-    { days: 365, name: 'Ascended', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>', color: '#ec4899' },
-    { days: 500, name: 'Transcendent', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l3 12 3-12-3-6z"/><path d="M2 9h20"/></svg>', color: '#8b5cf6' },
-    { days: 750, name: 'Ethereal', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>', color: '#2dd4bf' },
-    { days: 1000, name: 'The Legend', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>', color: '#eab308' },
-    { days: 3000, name: 'Sovereign', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-7-3.5z"/></svg>', color: '#00f2ff' },
-    { days: 5000, name: 'Master of Time', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>', color: '#FFFFFF' }
+    { days: 0,    name: 'The Novice',       nameBn: 'নবীন',
+ emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>', color: '#94a3b8' },
+    { days: 1,    name: 'The Initiate',     nameBn: 'দীক্ষিত', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>', color: '#6366f1' },
+    { days: 7,    name: 'Iron Will',        nameBn: 'লৌহ মনোবল', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>', color: '#0ea5e9' },
+    { days: 21,   name: 'The Steadfast',    nameBn: 'অটল', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', color: '#a855f7' },
+    { days: 30,   name: 'Pathfinder',       nameBn: 'পথিক', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"/></svg>', color: '#f59e0b' },
+    { days: 60,   name: 'The Guardian',     nameBn: 'রক্ষক', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>', color: '#f43f5e' },
+    { days: 90,   name: 'Veteran',          nameBn: 'অভিজ্ঞ', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>', color: '#10b981' },
+    { days: 150,  name: 'Elite',            nameBn: 'এলিট', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>', color: '#f97316' },
+    { days: 240,  name: 'Sentinel',         nameBn: 'প্রহরী', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="12" r="3"/></svg>', color: '#06b6d4' },
+    { days: 365,  name: 'Ascended',         nameBn: 'উত্থিত', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>', color: '#ec4899' },
+    { days: 500,  name: 'Transcendent',     nameBn: 'অতিন্দ্রিয়', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l3 12 3-12-3-6z"/><path d="M2 9h20"/></svg>', color: '#8b5cf6' },
+    { days: 750,  name: 'Ethereal',         nameBn: 'ঐশ্বরিক', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>', color: '#2dd4bf' },
+    { days: 1000, name: 'The Legend',      nameBn: 'কিংবদন্তি', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>', color: '#eab308' },
+    { days: 3000, name: 'Sovereign',       nameBn: 'সার্বভৌম', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-7-3.5z"/></svg>', color: '#00f2ff' },
+    { days: 5000, name: 'Master of Time',  nameBn: 'সময়ের প্রভু', emoji: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>', color: '#FFFFFF' }
   ],
 
   quotes: [
@@ -1014,9 +1015,10 @@ const Habits = {
     if (customInput) customInput.value = '';
 
     // Reset Custom Date & Time UI
+    const _isBnAdd = typeof App !== 'undefined' && App.lang === 'bn';
     const dtDisplay = document.getElementById('habits-dt-display');
     if (dtDisplay) {
-      dtDisplay.innerText = ' Starting: Right Now';
+      dtDisplay.innerText = _isBnAdd ? ' শুরু: এখনই' : ' Starting: Right Now';
       dtDisplay.style.color = 'var(--color-accent-green)';
     }
     const customControls = document.getElementById('habits-custom-dt-controls');
@@ -1032,15 +1034,34 @@ const Habits = {
     if (defaultQuickBtn) defaultQuickBtn.classList.add('active');
 
     modal.classList.remove('hidden');
+
+    // i18n: patch static labels in Add Habit modal
+    const _isBnSM = typeof App !== 'undefined' && App.lang === 'bn';
+    const _ls = (id, en, bn) => { const el = document.getElementById(id); if (el) el.textContent = _isBnSM ? bn : en; };
+    _ls('habits-add-modal-title',      'Add Habit to Quit',       '\u09a4\u09cd\u09af\u09be\u0997 \u0995\u09b0\u09be\u09b0 \u0985\u09ad\u09cd\u09af\u09be\u09b8 \u09af\u09cb\u0997 \u0995\u09b0\u09c1\u09a8');
+    _ls('habits-customize-theme-label',' Customize Visual Theme', ' \u09a5\u09bf\u09ae \u0995\u09be\u09b8\u09cd\u099f\u09ae\u09be\u0987\u099c \u0995\u09b0\u09c1\u09a8');
+    _ls('qdate-now',                   'Right Now',               '\u098f\u0996\u09a8\u0987');
+    _ls('qdate-yesterday',             'Yesterday',               '\u0997\u09a4\u0995\u09be\u09b2');
+    _ls('qdate-3d',                    '3 Days Ago',              '\u09e9 \u09a6\u09bf\u09a8 \u0986\u0997\u09c7');
+    _ls('qdate-1w',                    '1 Week Ago',              '\u09e7 \u09b8\u09aa\u09cd\u09a4\u09be\u09b9 \u0986\u0997\u09c7');
+    _ls('habits-custom-trigger',       'Custom...',               '\u0995\u09be\u09b8\u09cd\u099f\u09ae...');
+    _ls('habits-daysago-label',        'Days Ago',                '\u09a6\u09bf\u09a8 \u0986\u0997\u09c7');
+    _ls('habits-hour-label',           'Hour',                    '\u0998\u09a3\u09cd\u099f\u09be');
+    _ls('habits-minute-label',         'Minute',                  '\u09ae\u09bf\u09a8\u09bf\u099f');
+    _ls('habits-ampm-label',           'AM / PM Segment',         '\u09aa\u09c2\u09b0\u09cd\u09ac\u09be\u09b9\u09cd\u09a8 / \u0985\u09aa\u09b0\u09be\u09b9\u09cd\u09a8');
+    _ls('habits-forge-btn',            'FORGE TRACKER',           '\u099f\u09cd\u09b0\u09cd\u09af\u09be\u0995\u09be\u09b0 \u09a4\u09c8\u09b0\u09bf \u0995\u09b0\u09c1\u09a8');
+    const _dtD = document.getElementById('habits-dt-display');
+    if (_dtD) _dtD.innerText = _isBnSM ? ' \u09b6\u09c1\u09b0\u09c1: \u098f\u0996\u09a8\u0987' : ' Starting: Right Now';
   },
 
   renderDefaultHabitsList(habitsList) {
     const list = document.getElementById('habits-default-habits');
     if (!list) return;
+    const _isBnH = typeof App !== 'undefined' && App.lang === 'bn';
     if (!habitsList || habitsList.length === 0) {
       list.innerHTML = `
         <div style="grid-column: span 2; text-align:center; padding:12px; font-size:13px; color:var(--color-text-muted);">
-          Tap "Forge Tracker" below to create this custom habit
+          ${_isBnH ? 'নিচে "ট্র্যাকার তৈরি" চাপুন' : 'Tap "Forge Tracker" below to create this custom habit'}
         </div>
       `;
       return;
@@ -1048,7 +1069,7 @@ const Habits = {
     list.innerHTML = habitsList.map(h => `
       <div class="habits-habit-option" role="button" tabindex="0" onclick="Habits.selectDefaultHabit('${h.id}')" style="--habit-color: ${h.color || '#6366f1'};">
         <span class="habits-habit-option-icon">${h.icon}</span>
-        <span class="habits-habit-option-label">${Utils.escapeHTML(h.label)}</span>
+        <span class="habits-habit-option-label">${Utils.escapeHTML(_isBnH && h.labelBn ? h.labelBn : h.label)}</span>
       </div>
     `).join('');
   },
@@ -1497,17 +1518,30 @@ const Habits = {
     if (modal) {
       if (guide) guide.innerHTML = this.renderBadgeGuide();
       modal.classList.remove('hidden');
+      // i18n: patch all static labels
+      const _isBnTM = typeof App !== 'undefined' && App.lang === 'bn';
+      const _lt = (id, en, bn) => { const el = document.getElementById(id); if (el) el.textContent = _isBnTM ? bn : en; };
+      _lt('habits-tools-title',        'Habits Settings',                                   'অভ্যাস সেটিংস');
+      _lt('habits-tools-subtitle',     'Discipline tools & milestone guide',                'শৃঙ্খলা টুলস ও মাইলস্টোন গাইড');
+      _lt('habits-badge-section-label','Badge Milestones',                                  'ব্যাজ মাইলফলক');
+      _lt('habits-badge-section-desc', 'Every clean day builds toward the next rank. Earned badges glow on your tracker — keep pushing to unlock them all.', 'প্রতিটি পরিচ্ছন্ন দিন পরবর্তী র্যাংকের দিকে এগিয়ে নিতে সাহায্য করে।');
     }
   },
 
   renderBadgeGuide() {
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const _isBnBg = typeof App !== 'undefined' && App.lang === 'bn';
     return this.badges.map(b => {
       // Fix white color for Light mode visibility (#FFFFFF -> #0f172a / #6366f1)
       let displayColor = b.color;
       if (b.color.toUpperCase() === '#FFFFFF' || b.color.toUpperCase() === '#FFF') {
         displayColor = isLight ? '#0f172a' : '#f8fafc';
       }
+      const displayName = _isBnBg && b.nameBn ? b.nameBn : b.name;
+      const displayDays = _isBnBg && typeof window.n === 'function' ? window.n(b.days) : b.days;
+      const unlockedLabel = _isBnBg
+        ? `<span style="color:${displayColor};font-weight:800;">${displayDays}</span> দিনে আনলক`
+        : `Unlocked at <span style="color:${displayColor};font-weight:800;">${displayDays}</span> days`;
 
       return `
         <div class="habits-badge-guide-item" style="position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;overflow:hidden;transition:all 0.2s ease;">
@@ -1516,8 +1550,8 @@ const Habits = {
             ${b.emoji.replace('width="24" height="24"', 'width="22" height="22"')}
           </div>
           <div style="flex:1;">
-            <div class="badge-item-name" style="font-size:14px;font-weight:700;letter-spacing:-0.01em;">${b.name}</div>
-            <div class="badge-item-sub" style="font-size:12px;margin-top:2px;">Unlocked at <span style="color:${displayColor};font-weight:800;">${b.days}</span> days</div>
+            <div class="badge-item-name" style="font-size:14px;font-weight:700;letter-spacing:-0.01em;">${displayName}</div>
+            <div class="badge-item-sub" style="font-size:12px;margin-top:2px;">${unlockedLabel}</div>
           </div>
         </div>
       `;
@@ -1703,10 +1737,11 @@ const Habits = {
       const modal = document.getElementById('habits-breathe-pro');
       if (!modal || modal.classList.contains('hidden')) return;
 
+      const _isBnBr = typeof App !== 'undefined' && App.lang === 'bn';
       switch(currentPhase) {
         case 0: // Inhale (8s)
-          text.textContent = 'Breathe In';
-          phase.textContent = '8 Seconds Inhale';
+          text.textContent = _isBnBr ? 'শ্বাস নিন' : 'Breathe In';
+          phase.textContent = _isBnBr ? '৮ সেকেন্ড শ্বাস গ্রহণ' : '8 Seconds Inhale';
           orb.style.transition = 'transform 8s linear';
           orb.style.transform = 'scale(1.5)';
           outer.style.transition = 'transform 8s linear';
@@ -1716,14 +1751,14 @@ const Habits = {
           this.breatheInterval = setTimeout(() => runPhase(1), 8000);
           break;
         case 1: // Hold (16s)
-          text.textContent = 'Hold';
-          phase.textContent = '16 Seconds Stillness';
+          text.textContent = _isBnBr ? 'ধরে রাখুন' : 'Hold';
+          phase.textContent = _isBnBr ? '১৬ সেকেন্ড স্থির থাকুন' : '16 Seconds Stillness';
           startCountdown(16);
           this.breatheInterval = setTimeout(() => runPhase(2), 16000);
           break;
         case 2: // Exhale (20s)
-          text.textContent = 'Breathe Out';
-          phase.textContent = '20 Seconds Release';
+          text.textContent = _isBnBr ? 'শ্বাস ছাড়ুন' : 'Breathe Out';
+          phase.textContent = _isBnBr ? '২০ সেকেন্ড শ্বাস মুক্তি' : '20 Seconds Release';
           orb.style.transition = 'transform 20s linear';
           orb.style.transform = 'scale(1)';
           outer.style.transition = 'transform 20s linear';
