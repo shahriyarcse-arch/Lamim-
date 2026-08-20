@@ -1388,6 +1388,42 @@ select.input option:disabled {
   }
 }
 
+/* === POST-SPLASH CHROME REVEAL ===
+   body.ui-revealed is added the moment the splash starts fading. The fixed
+   chrome (topbar, sidebar, bottom-nav, AI launcher) then glides in together
+   with the fade instead of popping at full contrast the instant the app
+   becomes visible — this is what removes the "blink" at the bottom/edges. */
+body.ui-revealed .topbar,
+body.ui-revealed .sidebar-nav {
+  animation: uiDropIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+body.ui-revealed .bottom-nav,
+body.ui-revealed .lamim-ai-launcher {
+  animation: uiRiseIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes uiDropIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes uiRiseIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.ui-revealed .topbar,
+  body.ui-revealed .sidebar-nav,
+  body.ui-revealed .bottom-nav,
+  body.ui-revealed .lamim-ai-launcher {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --header-height: 48px;

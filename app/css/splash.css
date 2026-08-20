@@ -88,6 +88,9 @@ body.lamim-booting {
 }
 
 /* === LUXURY HALO (Subtle brand glow) === */
+/* Reveal choreography is GATED behind .splash.play so it starts on the first
+   animation frame (added by JS rAF) — you always witness the intro from
+   frame 0, never a mid-reveal "pop" while the boot scripts were parsing. */
 .splash-halo {
   position: absolute;
   width: 50vw;
@@ -98,9 +101,12 @@ body.lamim-booting {
   border-radius: 50%;
   opacity: 0;
   transform: scale(0.92);
-  animation: haloReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: opacity, transform;
   pointer-events: none;
+}
+
+.splash.play .splash-halo {
+  animation: haloReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes haloReveal {
@@ -140,10 +146,13 @@ body.lamim-booting {
   box-shadow: var(--splash-box-shadow);
   opacity: 0;
   transform: scale(0.90) translateY(10px);
-  animation:
-    logoBoxReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-    logoBoxBreath 4.5s ease-in-out 1s infinite alternate;
   will-change: opacity, transform;
+}
+
+.splash.play .splash-logo-box {
+  animation:
+    logoBoxReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    logoBoxBreath 4.5s ease-in-out 1.15s infinite alternate;
 }
 
 /* Thin gradient ring around the tile — stationary, zero cost. */
@@ -208,8 +217,11 @@ body.lamim-booting {
   line-height: 1;
   opacity: 0;
   transform: translateY(12px) scale(0.96);
-  animation: wordmarkReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.06s forwards;
   will-change: opacity, transform;
+}
+
+.splash.play .splash-wordmark {
+  animation: wordmarkReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
 }
 
 @keyframes wordmarkReveal {
@@ -228,7 +240,10 @@ body.lamim-booting {
   margin-top: 14px;
   opacity: 0;
   transform: translateY(6px);
-  animation: taglineReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
+.splash.play .splash-tagline {
+  animation: taglineReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.44s forwards;
 }
 
 @keyframes taglineReveal {
@@ -250,8 +265,11 @@ body.lamim-booting {
   gap: 10px;
   opacity: 0;
   transform: translateY(10px);
-  animation: loaderIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.34s forwards;
   will-change: opacity, transform;
+}
+
+.splash.play .splash-loader {
+  animation: loaderIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.38s forwards;
 }
 
 @keyframes loaderIn {

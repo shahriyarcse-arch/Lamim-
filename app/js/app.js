@@ -411,7 +411,9 @@ updateSectionTitle() {
     s.dataset.hidden = '1';
     s.classList.add('hidden');
     // Restore page scroll (it was locked during boot so the nav could never
-    // peek behind the splash).
+    // peek behind the splash) and start the chrome's staggered entrance so it
+    // glides in with the fade instead of popping at full contrast.
+    document.body.classList.add('ui-revealed');
     document.body.classList.remove('lamim-booting');
     // Fully remove from render tree so the heavy blurred blobs stop animating (GPU/CPU).
     setTimeout(() => { s.style.display = 'none'; }, 650);
