@@ -489,20 +489,16 @@ const Profile = {
     // Invalidate cached render keys and instantly update Salah prayer cards & times (Dhuhr ↔ Jumu'ah)
     if (typeof Salah !== 'undefined') {
       Salah._cardsKey = null;
-      if (typeof Salah.renderAll === 'function') {
-        Salah.renderAll(true);
-      }
+      if (typeof Salah.renderAll === 'function') Salah.renderAll(true);
     }
-
     // Instantly refresh Home section if mounted
     if (typeof Home !== 'undefined') {
       if (typeof Home.updateNextPrayer === 'function') Home.updateNextPrayer();
       if (typeof Home.updateSalahTimeline === 'function') Home.updateSalahTimeline();
     }
-
     window.dispatchEvent(new CustomEvent('lamim:data-updated'));
-    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
-    Utils.toast(isBn ? (s.jumuahMode ? 'জুমআ মোড চালু হয়েছে' : 'জুমআ মোড বন্ধ হয়েছে') : (s.jumuahMode ? "Jumu'ah Mode enabled" : "Jumu'ah Mode disabled"), 'success');
+    const _isBnJ = typeof App !== 'undefined' && App.lang === 'bn';
+    Utils.toast(_isBnJ ? (s.jumuahMode ? 'জুমআ মোড চালু হয়েছে' : 'জুমআ মোড বন্ধ হয়েছে') : (s.jumuahMode ? "Jumu'ah Mode enabled" : "Jumu'ah Mode disabled"), 'success');
   },
 
 
@@ -514,28 +510,44 @@ const Profile = {
   showAppInfo() {
     const APP_VERSION = '2.0.0';
     const CODENAME = 'Lumina';
+    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+
     const CHANGELOG = [
       {
-        version: '2.0.0', codename: 'Lumina', date: Utils.todayStr(), tag: 'Production Stable',
-        notes: [
+        version: '2.0.0', codename: 'Lumina', date: Utils.todayStr(), tag: isBn ? 'প্রোডাকশন স্থিতিশীল' : 'Production Stable',
+        notes: isBn ? [
+          'অ্যাপল-গ্রেড লঞ্চ ইঞ্জিন: ৩-স্তরের স্তম্ভিত উত্থান অ্যানিমেশন এবং নিখুঁত লোডার প্রগতি ০–১০০%।',
+          'হাইব্রিড এআই সঙ্গী: Gemini স্ট্রিমিং ইন্টেলিজেন্স, মেজাজ-সংবেদনশীল ৩ডি অবতার, বাংলা/ইংরেজি/বাংলিশ সমর্থন।',
+          'হালাল ফাইন্যান্স ও ওয়েলথ হাব: আয়/ব্যয় বিশ্লেষণ, যাকাত গণনা এবং ইসলামিক বিনিয়োগ লগ।',
+          'বিলিয়ন-ডলার ডিজাইন সিস্টেম: একীভূত লাইট ও ডার্ক মোড, কঠোর ৮px টোকেন।',
+          'শূন্য-লেটেন্সি অফলাইন কোর: সম্পূর্ণ IndexedDB স্থানীয় স্থায়িত্ব এবং এনক্রিপ্টেড JSON ব্যাকআপ।'
+        ] : [
           'Apple-Grade Launch Engine: 3-stage staggered rise entrance with self-calibrating linear 0–100% progress engine and zero bottom safe-area blink.',
-          'Hybrid AI Companion & Mascot: Conversational Gemini streaming intelligence with mood-responsive 3D avatar, Bengali/English/Banglish support, and offline spiritual knowledge brain.',
-          'Billion-Dollar Design System: Unified #F8FAFC light mode and #020408 dark mode aesthetics with strict 8px tokens and responsive layout.',
-          'Halal Finance & Wealth Hub: Complete income/expense breakdown, visual cashflow cards, zakat calculation, and Islamic investment logging.',
-          'Zero-Latency Offline Core: 100% IndexedDB local persistence with multi-account private vaults and encrypted JSON backup import/export.'
+          'Hybrid AI Companion & Mascot: Conversational Gemini streaming intelligence with mood-responsive 3D avatar, Bengali/English/Banglish support.',
+          'Halal Finance & Wealth Hub: Complete income/expense breakdown, zakat calculation, and Islamic investment logging.',
+          'Billion-Dollar Design System: Unified #F8FAFC light mode and #020408 dark mode aesthetics with strict 8px tokens.',
+          'Zero-Latency Offline Core: 100% IndexedDB local persistence with multi-account private vaults and encrypted JSON backup.'
         ]
       },
       {
-        version: '1.3.5', codename: 'Serene', date: '2026-08-15', tag: 'Milestone',
-        notes: [
+        version: '1.3.5', codename: 'Serene', date: '2026-08-15', tag: isBn ? 'মাইলফলক' : 'Milestone',
+        notes: isBn ? [
+          'হাইব্রিড এআই সঙ্গী চালু: অ্যানিমেটেড ৩ডি রোবট মাসকট এবং মেজাজ-সংবেদনশীল ইন্টারফেস।',
+          'অফলাইন ইসলামিক জ্ঞান ইঞ্জিন: সালাহ, তাহাজ্জুদ, বিতর, কাযা ওমরি এবং হালাল ফাইন্যান্স বিষয়ক তাৎক্ষণিক উত্তর।',
+          'সার্ভিস ওয়ার্কার আপগ্রেড: কোয়েরি-সেফ লোকাল অ্যাসেট ম্যাচিং এবং অটো ক্যাশ ক্লিনআপ।'
+        ] : [
           'Introduced Hybrid AI Companion with animated 3D Robot mascot and mood-responsive interface.',
           'Offline Islamic Knowledge Engine for instant answers on Salah, Tahajjud, Witr, Qaza Omri, and Halal Finance.',
           'Upgraded Service Worker with query-safe local asset matching (ignoreSearch) and auto cache cleanup.'
         ]
       },
       {
-        version: '1.0.0', codename: 'Genesis', date: '2026-08-10', tag: 'Initial Launch',
-        notes: [
+        version: '1.0.0', codename: 'Genesis', date: '2026-08-10', tag: isBn ? 'প্রাথমিক লঞ্চ' : 'Initial Launch',
+        notes: isBn ? [
+          'লামিম লিভিং সিস্টেম PWA-এর অফিসিয়াল পাবলিক লঞ্চ।',
+          'সম্পূর্ণ ইসলামিক লাইফস্টাইল স্যুট: সালাহ, যিকির, নফল, অভ্যাস, জিম, ক্যারিয়ার এবং হালাল ফাইন্যান্স।',
+          '১০০% অফলাইন-ফার্স্ট ক্লায়েন্ট-সাইড আর্কিটেকচার এবং তাৎক্ষণিক IndexedDB স্থায়িত্ব।'
+        ] : [
           'Official public launch of Lamim Living System PWA.',
           'Complete Islamic Lifestyle suite: Salah, Dhikr, Nafl, Habits, Gym, Career, and Halal Finance.',
           '100% Offline-First client-side architecture with 0.1ms instant IndexedDB persistence.'
@@ -543,26 +555,62 @@ const Profile = {
       }
     ];
 
-    const totalKeys = DB.keys().filter(k => k.startsWith('lamim_')).length;
-    let storageBytes = 0;
-    DB.keys().forEach(k => { if (k.startsWith('lamim_')) storageBytes += (DB.rawGet(k)?.length || 0) * 2; });
-    const storageMB = (storageBytes / 1024 / 1024).toFixed(2);
-    const user = DB.getUser();
-    const createdDate = user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Unknown';
-    const isInstalled = navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
-    const distribution = isInstalled ? 'Installed App' : 'Browser PWA';
+    // --- i18n labels ---
+    const L = {
+      tagline:   isBn ? 'দ্বীনি ও জীবন সঙ্গী' : 'Spirituality & Lifestyle Companion',
+      stable:    isBn ? 'স্থিতিশীল' : 'Stable',
+      released:  isBn ? 'রিলিজকৃত' : 'Released',
+      channel:   isBn ? 'চ্যানেল' : 'Channel',
+      platform:  isBn ? 'প্ল্যাটফর্ম' : 'Platform',
+      arch:      isBn ? 'আর্কিটেকচার' : 'Architecture',
+      platform_val: isBn ? 'অফলাইন PWA' : 'Offline PWA',
+      arch_val:     isBn ? 'ভ্যানিলা জেএস' : 'Vanilla JS',
+      whatsNew:  isBn ? 'নতুন কী আছে' : "What's New",
+      device:    isBn ? 'এই ডিভাইস' : 'This Device',
+      acctCreated: isBn ? 'অ্যাকাউন্ট তৈরি' : 'Account Created',
+      localData:   isBn ? 'লোকাল ডাটা' : 'Local Data',
+      entries:     isBn ? 'এন্ট্রি' : 'entries',
+      storage:     isBn ? 'স্টোরেজ ব্যবহৃত' : 'Storage Used',
+      distribution: isBn ? 'বিতরণ' : 'Distribution',
+      installed:   isBn ? 'ইনস্টলড অ্যাপ' : 'Installed App',
+      browser:     isBn ? 'ব্রাউজার PWA' : 'Browser PWA',
+      status:      isBn ? 'সিস্টেম স্ট্যাটাস' : 'System Status',
+      statusVal:   isBn ? '● সক্রিয় • অফলাইন রেডি' : '● Active • Offline Ready',
+      developer:   isBn ? 'ডেভেলপার' : 'Developer',
+      unknown:     isBn ? 'অজানা' : 'Unknown',
+      done:        isBn ? 'সম্পন্ন' : 'Done',
+    };
 
+    // --- Set i18n text for static elements ---
+    const _set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    _set('ver-tagline', L.tagline);
+    _set('ver-channel-label', L.stable);
+    _set('ver-label-released', L.released);
+    _set('ver-label-channel', L.channel);
+    _set('ver-label-platform', L.platform);
+    _set('ver-label-arch', L.arch);
+    _set('ver-channel-val', L.stable);
+    _set('ver-platform-val', L.platform_val);
+    _set('ver-arch-val', L.arch_val);
+    _set('ver-section-whats-new', L.whatsNew);
+    _set('ver-section-device', L.device);
+    _set('ver-done-btn', L.done);
+
+    // --- Pill ---
     const pill = document.getElementById('ver-pill-version');
-    if (pill) pill.innerHTML = `<span class="ver-pill-dot"></span> v${APP_VERSION} <span class="ver-pill-code">“${CODENAME}”</span>`;
+    if (pill) pill.innerHTML = `<span class="ver-pill-dot"></span> v${APP_VERSION} <span class="ver-pill-code">"${CODENAME}"</span>`;
+
+    // --- Released date ---
     const released = document.getElementById('ver-released');
     if (released) released.textContent = CHANGELOG[0].date;
 
+    // --- Changelog ---
     const cl = document.getElementById('ver-changelog');
     if (cl) cl.innerHTML = CHANGELOG.map(r => `
       <div class="ver-log-item">
         <div class="ver-log-head">
           <span class="ver-log-ver">v${Utils.escapeHTML(r.version)}</span>
-          <span class="ver-log-code">“${Utils.escapeHTML(r.codename)}”</span>
+          <span class="ver-log-code">"${Utils.escapeHTML(r.codename)}"</span>
           ${r.tag ? `<span class="ver-log-tag">${Utils.escapeHTML(r.tag)}</span>` : ''}
           <span class="ver-log-date">${Utils.escapeHTML(r.date)}</span>
         </div>
@@ -572,14 +620,37 @@ const Profile = {
       </div>
     `).join('');
 
+    // --- Device / account info ---
+    const totalKeys = DB.keys().filter(k => k.startsWith('lamim_')).length;
+    let storageBytes = 0;
+    DB.keys().forEach(k => { if (k.startsWith('lamim_')) storageBytes += (DB.rawGet(k)?.length || 0) * 2; });
+    const storageMB = (storageBytes / 1024 / 1024).toFixed(2);
+    const user = DB.getUser();
+
+    // Exact creation datetime with locale support
+    let createdDisplay = L.unknown;
+    const rawCreated = user?.createdAt || user?.created;
+    if (rawCreated) {
+      const d = new Date(rawCreated);
+      if (!isNaN(d.getTime())) {
+        createdDisplay = d.toLocaleString(isBn ? 'bn-BD' : 'en-US', {
+          year: 'numeric', month: 'short', day: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+      }
+    }
+
+    const isInstalled = navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+    const distribution = isInstalled ? L.installed : L.browser;
+
     const dev = document.getElementById('ver-device');
     if (dev) dev.innerHTML = `
-      <div class="ver-device-row"><span>Account Created</span><b>${Utils.escapeHTML(createdDate)}</b></div>
-      <div class="ver-device-row"><span>Local Data</span><b>${totalKeys} entries</b></div>
-      <div class="ver-device-row"><span>Storage Used</span><b>${storageMB} MB</b></div>
-      <div class="ver-device-row"><span>Distribution</span><b>${Utils.escapeHTML(distribution)}</b></div>
-      <div class="ver-device-row"><span>System Status</span><b style="color: var(--color-accent-green, #34d399); font-weight: 600;">● Active • Offline Ready</b></div>
-      <div class="ver-device-row"><span>Developer</span><b>Shamim Shahriyar</b></div>
+      <div class="ver-device-row"><span>${L.acctCreated}</span><b>${Utils.escapeHTML(createdDisplay)}</b></div>
+      <div class="ver-device-row"><span>${L.localData}</span><b>${totalKeys} ${L.entries}</b></div>
+      <div class="ver-device-row"><span>${L.storage}</span><b>${storageMB} MB</b></div>
+      <div class="ver-device-row"><span>${L.distribution}</span><b>${Utils.escapeHTML(distribution)}</b></div>
+      <div class="ver-device-row"><span>${L.status}</span><b style="color:var(--color-accent-green,#34d399);font-weight:600;">${L.statusVal}</b></div>
+      <div class="ver-device-row"><span>${L.developer}</span><b>Shamim Shahriyar</b></div>
     `;
 
     const modal = document.getElementById('profile-version-modal');
