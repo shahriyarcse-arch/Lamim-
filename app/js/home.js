@@ -52,7 +52,8 @@ const Home = {
     const user = DB.getUser() || {};
     const greetingEl = document.getElementById('home-greeting');
     if (greetingEl) {
-      greetingEl.textContent = user.name ? `${greeting}, ${user.name}` : greeting;
+      const displayName = Utils.formatUserName(user.name);
+      greetingEl.textContent = displayName ? `${greeting}, ${displayName}` : greeting;
     }
     const manualBtnLabel = document.getElementById('home-manual-btn-label');
     if (manualBtnLabel) {

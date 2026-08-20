@@ -64,7 +64,7 @@ const Profile = {
     // Inject text safely to prevent XSS
     const nameEl = document.getElementById('prof-display-name');
     const bioEl = document.getElementById('prof-display-bio');
-    if (nameEl) nameEl.textContent = user.name || 'Anonymous';
+    if (nameEl) nameEl.textContent = Utils.formatUserName(user.name) || 'Anonymous';
     if (bioEl) bioEl.textContent = user.bio || '';
 
     // Avatar fallback — programmatic error handler (CSP-safe, no inline onerror)

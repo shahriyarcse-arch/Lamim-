@@ -68,6 +68,195 @@ const Utils = {
     }[tag] || tag));
   },
 
+  transliterateNameToBn(name) {
+    if (!name || typeof name !== 'string') return '';
+    if (/[\u0980-\u09FF]/.test(name)) return name;
+
+    const commonNames = {
+      'shahriyar': 'শাহরিয়ার',
+      'shahriar': 'শাহরিয়ার',
+      'shahriar cse': 'শাহরিয়ার',
+      'lamim': 'লামিম',
+      'abdullah': 'আব্দুল্লাহ',
+      'abdullah al': 'আব্দুল্লাহ আল',
+      'muhammad': 'মুহাম্মদ',
+      'mohammad': 'মোহাম্মদ',
+      'mohammed': 'মোহাম্মদ',
+      'ahmed': 'আহমেদ',
+      'ahmad': 'আহমাদ',
+      'ali': 'আলী',
+      'hasan': 'হাসান',
+      'hassan': 'হাসান',
+      'hossain': 'হোসেন',
+      'hussein': 'হুসাইন',
+      'rahman': 'রহমান',
+      'fatima': 'ফাতিমা',
+      'ayesha': 'আয়েশা',
+      'aisha': 'আয়েশা',
+      'tanvir': 'তানভীর',
+      'tanveer': 'তানভীর',
+      'sabbir': 'সাব্বির',
+      'arif': 'আরিফ',
+      'nahid': 'নাহিদ',
+      'shakil': 'শাকিল',
+      'farhan': 'ফারহান',
+      'tahmid': 'তাহমিদ',
+      'siam': 'সিয়াম',
+      'mahmud': 'মাহমুদ',
+      'mahmood': 'মাহমুদ',
+      'omar': 'ওমর',
+      'umar': 'উমর',
+      'usman': 'উসমান',
+      'othman': 'উসমান',
+      'abu': 'আবু',
+      'islam': 'ইসলাম',
+      'khan': 'খান',
+      'chowdhury': 'চৌধুরী',
+      'haque': 'হক',
+      'huda': 'হুদা',
+      'jaman': 'জামান',
+      'tasnim': 'তাসনিম',
+      'mariam': 'মরিয়ম',
+      'maryam': 'মরিয়ম',
+      'khadija': 'খাদিজা',
+      'sumaiya': 'সুমাইয়া',
+      'nusrat': 'নুসরাত',
+      'jannat': 'জান্নাত',
+      'sadia': 'সাদিয়া',
+      'sami': 'সামি',
+      'sakib': 'সাকিব',
+      'shakib': 'শাকিব',
+      'tamim': 'তামিম',
+      'tariq': 'তারিক',
+      'iqbal': 'ইকবাল',
+      'zahed': 'জাহেদ',
+      'jahid': 'জাহিদ',
+      'kamal': 'কামাল',
+      'jamal': 'জামাল',
+      'bilal': 'বিলাল',
+      'hamza': 'হামজা',
+      'khalid': 'খালিদ',
+      'saad': 'সাদ',
+      'salman': 'সালমান',
+      'yusuf': 'ইউসুফ',
+      'ibrahim': 'ইব্রাহিম',
+      'ismail': 'ইসমাইল',
+      'musa': 'মুসা',
+      'isa': 'ঈসা',
+      'harun': 'harun',
+      'dawood': 'দাউদ',
+      'sulaiman': 'সুলাইমান',
+      'zakaria': 'যাকারিয়া',
+      'yahya': 'ইয়াহিয়া',
+      'nuh': 'নূহ',
+      'adam': 'আদম',
+      'asif': 'আসিফ',
+      'fahim': 'ফাহিম',
+      'nabil': 'নাবিল',
+      'sayed': 'সৈয়দ',
+      'syed': 'সৈয়দ',
+      'shahin': 'শাহীন',
+      'mehedi': 'মেহেদী',
+      'monir': 'মনির',
+      'rubel': 'রুবেল',
+      'rakib': 'রাকিব',
+      'rashed': 'রাশেদ',
+      'sohel': 'সোহেল',
+      'anwar': 'আনোয়ার',
+      'ashraf': 'আশরাফ',
+      'akram': 'আকরাম',
+      'masud': 'মাসুদ',
+      'mizan': 'মিজান',
+      'mostafa': 'মোস্তফা',
+      'nur': 'নূর',
+      'noor': 'নূর',
+      'habib': 'হাবিব',
+      'hafiz': 'হাফিজ',
+      'faruk': 'ফারুক',
+      'farooq': 'ফারুক',
+      'majid': 'মাজিদ',
+      'nasir': 'নাসির',
+      'qasim': 'কাসিম',
+      'rashid': 'রশিদ',
+      'saleh': 'সালেহ',
+      'tarique': 'তারিক',
+      'yasir': 'ইয়াসির',
+      'zayd': 'জায়েদ',
+      'zubair': 'জুবায়ের'
+    };
+
+    const lower = name.trim().toLowerCase();
+    if (commonNames[lower]) return commonNames[lower];
+
+    const words = name.trim().split(/\s+/);
+    const convertedWords = words.map(w => {
+      const wLower = w.toLowerCase();
+      if (commonNames[wLower]) return commonNames[wLower];
+      return Utils.phoneticEnToBn(w);
+    });
+
+    return convertedWords.join(' ');
+  },
+
+  phoneticEnToBn(word) {
+    if (!word) return '';
+    let s = word.toLowerCase();
+    const map = [
+      ['kkh', 'ক্ষ'], ['cch', 'চ্ছ'], ['ssh', 'শ্শ'],
+      ['sh', 'শ'], ['ch', 'চ'], ['kh', 'খ'], ['gh', 'ঘ'],
+      ['th', 'থ'], ['dh', 'ধ'], ['ph', 'ফ'], ['bh', 'ভ'],
+      ['ng', 'ঙ'], ['ee', 'ী'], ['oo', 'ু'], ['ou', 'ৌ'],
+      ['oi', 'ৈ'], ['ai', 'াই'], ['ei', 'েই'],
+      ['a', 'া'], ['b', 'ব'], ['c', 'ক'], ['d', 'দ'],
+      ['e', 'ে'], ['f', 'ফ'], ['g', 'গ'], ['h', 'হ'],
+      ['i', 'ি'], ['j', 'জ'], ['k', 'ক'], ['l', 'ল'],
+      ['m', 'ম'], ['n', 'ন'], ['o', 'ো'], ['p', 'প'],
+      ['q', 'ক'], ['r', 'র'], ['s', 'স'], ['t', 'ত'],
+      ['u', 'ু'], ['v', 'ভ'], ['w', 'ও'], ['x', 'ক্স'],
+      ['y', 'য়'], ['z', 'জ']
+    ];
+
+    const initialVowels = {
+      'a': 'আ', 'e': 'এ', 'i': 'ই', 'o': 'ও', 'u': 'উ',
+      'aa': 'আ', 'ee': 'ঈ', 'oo': 'উ', 'ai': 'ঐ', 'ou': 'ঔ'
+    };
+
+    let result = '';
+    let i = 0;
+    if (s.startsWith('aa')) { result += 'আ'; i = 2; }
+    else if (s.startsWith('ee')) { result += 'ঈ'; i = 2; }
+    else if (s.startsWith('oo')) { result += 'উ'; i = 2; }
+    else if (s.startsWith('ai')) { result += 'ঐ'; i = 2; }
+    else if (s.startsWith('ou')) { result += 'ঔ'; i = 2; }
+    else if (initialVowels[s[0]]) { result += initialVowels[s[0]]; i = 1; }
+
+    while (i < s.length) {
+      let matched = false;
+      for (const [en, bn] of map) {
+        if (s.substr(i, en.length) === en) {
+          result += bn;
+          i += en.length;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) {
+        result += s[i];
+        i++;
+      }
+    }
+    return result;
+  },
+
+  formatUserName(name) {
+    if (!name) return '';
+    const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
+    if (isBn) {
+      return this.transliterateNameToBn(name);
+    }
+    return name;
+  },
+
 
   formatDate(date, opts = {}) {
     return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', ...opts });
