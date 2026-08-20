@@ -420,7 +420,7 @@ const Profile = {
   setTheme(theme) {
     if (theme !== 'light' && theme !== 'dark') return;
 
-    const bg = theme === 'dark' ? '#020408' : '#F1F5F9';
+    const bg = theme === 'dark' ? '#020408' : '#FFFFFF';
 
     // 1. Visual change FIRST — user sees instant response
     document.documentElement.classList.add('theme-anim');
