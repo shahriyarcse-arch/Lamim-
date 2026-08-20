@@ -228,18 +228,22 @@ const Goals = {
             <div class="salah-status-selector sunnah-status-selector">
               <div class="sunnah-action-row">
                 <button type="button" class="sunnah-action-btn btn-prayed" onclick="Goals.selectSunnah('${item.id}', 'prayed')">
-                  <span class="sunnah-action-icon">
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  </span>
-                  <span class="sunnah-action-label">Prayed</span>
-                  <span class="sunnah-action-pts">+${pts} pts</span>
+                  <div class="sunnah-btn-content">
+                    <span class="sunnah-action-icon">
+                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                    <span class="sunnah-action-label">${window.t ? window.t('Prayed') : 'Prayed'}</span>
+                  </div>
+                  <span class="sunnah-action-pts">+${window.n ? window.n(pts) : pts} ${window.t ? window.t('pts') : 'pts'}</span>
                 </button>
                 <button type="button" class="sunnah-action-btn btn-missed" onclick="Goals.selectSunnah('${item.id}', 'missed')">
-                  <span class="sunnah-action-icon">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                  </span>
-                  <span class="sunnah-action-label">Missed</span>
-                  <span class="sunnah-action-pts">0 pts</span>
+                  <div class="sunnah-btn-content">
+                    <span class="sunnah-action-icon">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </span>
+                    <span class="sunnah-action-label">${window.t ? window.t('Missed') : 'Missed'}</span>
+                  </div>
+                  <span class="sunnah-action-pts">0 ${window.t ? window.t('pts') : 'pts'}</span>
                 </button>
               </div>
             </div>
@@ -309,17 +313,21 @@ const Goals = {
             : `<div class="salah-status-selector sunnah-status-selector">
                  <div class="sunnah-action-row">
                    <button type="button" class="sunnah-action-btn btn-prayed" onclick="Goals.selectSunnah('${item.id}', 'prayed')">
-                     <span class="sunnah-action-icon">
-                       <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                     </span>
-                     <span class="sunnah-action-label">${window.t ? window.t('Prayed') : 'Prayed'}</span>
+                     <div class="sunnah-btn-content">
+                       <span class="sunnah-action-icon">
+                         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                       </span>
+                       <span class="sunnah-action-label">${window.t ? window.t('Prayed') : 'Prayed'}</span>
+                     </div>
                      <span class="sunnah-action-pts">+${window.n ? window.n(pts) : pts} ${window.t ? window.t('pts') : 'pts'}</span>
                    </button>
                    <button type="button" class="sunnah-action-btn btn-missed" onclick="Goals.selectSunnah('${item.id}', 'missed')">
-                     <span class="sunnah-action-icon">
-                       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                     </span>
-                     <span class="sunnah-action-label">${window.t ? window.t('Missed') : 'Missed'}</span>
+                     <div class="sunnah-btn-content">
+                       <span class="sunnah-action-icon">
+                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                       </span>
+                       <span class="sunnah-action-label">${window.t ? window.t('Missed') : 'Missed'}</span>
+                     </div>
                      <span class="sunnah-action-pts">0 ${window.t ? window.t('pts') : 'pts'}</span>
                    </button>
                  </div>
