@@ -101,12 +101,9 @@ body.lamim-booting {
   border-radius: 50%;
   opacity: 0;
   transform: scale(0.92);
+  animation: haloReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: opacity, transform;
   pointer-events: none;
-}
-
-.splash.play .splash-halo {
-  animation: haloReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes haloReveal {
@@ -146,13 +143,10 @@ body.lamim-booting {
   box-shadow: var(--splash-box-shadow);
   opacity: 0;
   transform: scale(0.90) translateY(10px);
-  will-change: opacity, transform;
-}
-
-.splash.play .splash-logo-box {
   animation:
     logoBoxReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards,
     logoBoxBreath 4.5s ease-in-out 1.15s infinite alternate;
+  will-change: opacity, transform;
 }
 
 /* Thin gradient ring around the tile — stationary, zero cost. */
@@ -217,11 +211,8 @@ body.lamim-booting {
   line-height: 1;
   opacity: 0;
   transform: translateY(12px) scale(0.96);
-  will-change: opacity, transform;
-}
-
-.splash.play .splash-wordmark {
   animation: wordmarkReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
+  will-change: opacity, transform;
 }
 
 @keyframes wordmarkReveal {
@@ -240,10 +231,7 @@ body.lamim-booting {
   margin-top: 14px;
   opacity: 0;
   transform: translateY(6px);
-}
-
-.splash.play .splash-tagline {
-  animation: taglineReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.44s forwards;
+  animation: taglineReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.16s forwards;
 }
 
 @keyframes taglineReveal {
@@ -265,11 +253,8 @@ body.lamim-booting {
   gap: 10px;
   opacity: 0;
   transform: translateY(10px);
+  animation: loaderIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards;
   will-change: opacity, transform;
-}
-
-.splash.play .splash-loader {
-  animation: loaderIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.38s forwards;
 }
 
 @keyframes loaderIn {
