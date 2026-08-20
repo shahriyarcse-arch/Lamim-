@@ -169,12 +169,80 @@ input[type="range"]:focus-visible {
   cursor: progress;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
+/* ---------- GLOBAL HIGH-DEFINITION VISIBILITY ENHANCEMENTS ---------- */
+/* Ensures all cards, sub-panels, habit items, finance widgets, and gym rows have crisp contrast across all 10 sections */
+.salah-card,
+.nafl-card,
+.nafl-prayer-card,
+.prayer-card,
+.dhikr-card,
+.habit-card,
+.habit-row,
+.gym-card,
+.gym-exercise-item,
+.career-card,
+.goal-card,
+.fin-card,
+.fin-transaction-item,
+.analysis-card,
+.settings-card,
+.settings-section,
+.accordion-item,
+.accordion-header,
+.bento-card,
+.stat-card,
+.info-card,
+.modal-content,
+.toast {
+  border: 1px solid var(--color-border);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
+
+[data-theme="light"] .salah-card,
+[data-theme="light"] .nafl-card,
+[data-theme="light"] .nafl-prayer-card,
+[data-theme="light"] .prayer-card,
+[data-theme="light"] .dhikr-card,
+[data-theme="light"] .habit-card,
+[data-theme="light"] .habit-row,
+[data-theme="light"] .gym-card,
+[data-theme="light"] .gym-exercise-item,
+[data-theme="light"] .career-card,
+[data-theme="light"] .goal-card,
+[data-theme="light"] .fin-card,
+[data-theme="light"] .fin-transaction-item,
+[data-theme="light"] .analysis-card,
+[data-theme="light"] .settings-card,
+[data-theme="light"] .settings-section,
+[data-theme="light"] .accordion-item,
+[data-theme="light"] .bento-card,
+[data-theme="light"] .stat-card,
+[data-theme="light"] .info-card {
+  background: var(--color-surface-card);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .salah-card,
+[data-theme="dark"] .nafl-card,
+[data-theme="dark"] .nafl-prayer-card,
+[data-theme="dark"] .prayer-card,
+[data-theme="dark"] .dhikr-card,
+[data-theme="dark"] .habit-card,
+[data-theme="dark"] .habit-row,
+[data-theme="dark"] .gym-card,
+[data-theme="dark"] .gym-exercise-item,
+[data-theme="dark"] .career-card,
+[data-theme="dark"] .goal-card,
+[data-theme="dark"] .fin-card,
+[data-theme="dark"] .fin-transaction-item,
+[data-theme="dark"] .analysis-card,
+[data-theme="dark"] .settings-card,
+[data-theme="dark"] .settings-section,
+[data-theme="dark"] .accordion-item,
+[data-theme="dark"] .bento-card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .info-card {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 
