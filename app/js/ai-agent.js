@@ -159,18 +159,176 @@
         actionLabelBn: 'প্রোফাইল ও ব্যাকআপ খুলুন ➔',
         actionLabelEn: 'Open Profile & Backup ➔'
       },
-      {
+            {
         id: 'pwa-offline',
         section: 'home',
         keywords: ['install', 'pwa', 'offline', 'app', 'apk', 'download', 'ইনস্টল', 'অ্যাপ', 'অফলাইন', 'ইন্টারনেট ছাড়া', 'ডাউনলোড'],
-        replyBn: `**PWA ইনস্টলেশন ও অফলাইন সাপোর্ট**:
-• **১-ক্লিক ইনস্টল**: ব্রাউজার মেনুর "Install App" বা "Add to Home Screen" দিয়ে ইনস্টল করুন।
-• **১০০% অফলাইন**: ইন্টারনেট সংযোগ ছাড়াই নামাজের সময়, জিকির, ফিন্যান্স ও সব ফিচার চলবে।`,
-        replyEn: `**PWA Installation & Offline Support**:
-• **1-Click Install**: Install directly from your browser as a native standalone app.
-• **100% Offline Capability**: Runs seamlessly even with zero internet signal.`,
+        replyBn: `**PWA ইনস্টলেশন ও অফলাইন সাপোর্ট**:\n• **১-ক্লিক ইনস্টল**: ব্রাউজার মেনুর "Install App" বা "Add to Home Screen" দিয়ে ইনস্টল করুন।\n• **১০০% অফলাইন**: ইন্টারনেট সংযোগ ছাড়াই নামাজের সময়, জিকির, ফিন্যান্স ও সব ফিচার চলবে।`,
+        replyEn: `**PWA Installation & Offline Support**:\n• **1-Click Install**: Install directly from your browser as a native standalone app.\n• **100% Offline Capability**: Runs seamlessly even with zero internet signal.`,
         actionLabelBn: 'হোম ড্যাশবোর্ড দেখুন ➔',
         actionLabelEn: 'Go to Home ➔'
+      },
+      {
+        id: 'wudu-tayammum',
+        section: 'salah',
+        keywords: ['wudu', 'oju', 'ojur niyom', 'tayammum', 'wuzu', 'অজু', 'ওজু', 'অজুর নিয়ম', 'তায়াম্মুম', 'তায়াম্মুমের নিয়ম', 'অজু ভঙ্গের কারণ'],
+        replyBn: `**অজু ও তায়াম্মুমের সম্পূর্ণ বিধান**:\n\n• **অজুর ৪টি ফরজ**:\n  ১. সমস্ত মুখমণ্ডল অন্তত একবার ভালো করে ধোয়া।\n  ২. দুই হাতের কনুইসহ অন্তত একবার ধোয়া।\n  ৩. মাথার অন্তত চার ভাগের এক ভাগ মাসেহ করা।\n  ৪. দুই পায়ের টাখনুসহ (গোড়ালি) অন্তত একবার ধোয়া।\n\n• **অজু ভঙ্গের কারণ**:\n  - পায়খানা বা প্রস্রাবের রাস্তা দিয়ে কোনো কিছু বের হওয়া।\n  - মুখ ভরে বমি হওয়া, শরীরের কোনো স্থান থেকে রক্ত বা পুঁজ বের হয়ে গড়িয়ে পড়া।\n  - হেলান দিয়ে বা শুয়ে ঘুমানো, বেহুঁশ বা পাগল হওয়া।\n\n• **তায়াম্মুমের নিয়ম (পানি না পেলে বা অসুস্থ হলে)**:\n  ১. মনে মনে পবিত্রতার নিয়াত করা।\n  ২. পবিত্র মাটিতে হাত মেরে পুরো মুখমণ্ডল মাসেহ করা।\n  ৩. পুনরায় মাটিতে হাত মেরে দুই হাতের কনুই পর্যন্ত মাসেহ করা।`,
+        replyEn: `**Wudu (Ablution) & Tayammum Essentials**:\n\n• **4 Obligatory (Fard) Acts of Wudu**:\n  1. Washing the entire face once.\n  2. Washing both arms up to and including elbows.\n  3. Wiping (Masah) at least 1/4th of the head.\n  4. Washing both feet up to and including ankles.\n\n• **Invalidators of Wudu**:\n  - Any emission from private parts, flowing blood/pus, vomiting a mouthful, deep sleep while leaning/lying down.\n\n• **Tayammum (Dry Ablution)**:\n  - Strike clean earth/stone, wipe face; strike again, wipe arms to elbows with intention.`,
+        actionLabelBn: 'সালাত ট্র্যাকার দেখুন ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'ghusl-rules',
+        section: 'salah',
+        keywords: ['ghusl', 'gosol', 'foroj gosol', 'ghusl er niyom', 'গোসল', 'ফরজ গোসল', 'গোসলের নিয়ম', 'ফরজ গোসলের নিয়ম'],
+        replyBn: `**ফরজ গোসলের সুন্নতি ও সঠিক নিয়ম**:\n\n• **গোসলের ৩টি ফরজ (বাধ্যতামূলক)**:\n  ১. **ভালোভাবে কুলি করা** (মুখের ভেতর পানি পৌঁছানো)।\n  ২. **নাকে পানি দিয়ে নরম অংশ পর্যন্ত পরিষ্কার করা**।\n  ৩. **সমস্ত শরীরে এমনভাবে পানি পৌঁছানো** যাতে একটি পশমের গোড়াও শুকনো না থাকে।\n\n• **সুন্নতি ধারাবাহিক পদ্ধতি**:\n  ১. মনে মনে পবিত্রতার নিয়ত করা ও 'বিসমিল্লাহ' বলা।\n  ২. দুই হাত কব্জি পর্যন্ত ধোয়া ও শরীরের অপবিত্র স্থান পরিষ্কার করা।\n  ৩. নামাজের মতো পূর্ণ অজু করা।\n  ৪. মাথায় তিনবার পানি ঢেলে পুরো শরীরে উপর থেকে নিচে পানি ঢালা (ডান পাশ আগে, তারপর বাম পাশ)।`,
+        replyEn: `**Ghusl (Full Body Ritual Purification) Guide**:\n\n• **3 Mandatory (Fard) Steps**:\n  1. Thoroughly rinsing the mouth with water.\n  2. Inhaling water into the nose to clean it.\n  3. Washing the entire body thoroughly without leaving a single hair dry.\n\n• **Sunnah Procedure**:\n  - Intention → wash hands and impurities → perform full Wudu → pour water over head 3 times → wash right side then left side.`,
+        actionLabelBn: 'সালাত ট্র্যাকার ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'sunnah-muakkadah',
+        section: 'salah',
+        keywords: ['sunnah', 'sunnat', '12 rakat', 'muakkadah', 'সুন্নত', 'সুন্নাত', '১২ রাকাত সুন্নত', 'সুন্নাতে মুয়াক্কাদা', 'সুন্নতের ফজিলত'],
+        replyBn: `**দৈনিক ১২ রাকাত সুন্নতে মুয়াক্কাদা**:\n\nনবীজি (সা.) ইরশাদ করেছেন, *“যে ব্যক্তি দিনে-রাতে ১২ রাকাত সুন্নাত সালাত আদায় করবে, তার জন্য জান্নাতে একটি প্রাসাদ নির্মাণ করা হবে।”* (সহিহ মুসলিম)\n\n• **১২ রাকাতের হিসাব**:\n  - **ফজর**: ফরজের পূর্বে **২ রাকাত** (যা দুনিয়া ও এর মধ্যকার সবকিছু থেকে উত্তম)।\n  - **যোহর**: ফরজের পূর্বে **৪ রাকাত** + ফরজের পরে **২ রাকাত**।\n  - **মাগরিব**: ফরজের পরে **২ রাকাত**।\n  - **এশা**: ফরজের পরে **২ রাকাত**।\n\n• **লামিম অ্যাপে**: সালাত ট্র্যাকার ওপেন করে সুন্নাত সালাতগুলো নিয়মিত টিক দিয়ে স্পিরিচুয়াল স্কোর বৃদ্ধি করুন।`,
+        replyEn: `**12 Daily Sunnah Mu'akkadah Prayers**:\n\nProphet Muhammad (PBUH) said: *"Whoever prays twelve rak'ahs during the night and day, a house will be built for him in Paradise."* (Sahih Muslim)\n\n• **The 12 Units Breakdown**:\n  - **Fajr**: 2 rak'ahs before Fard.\n  - **Dhuhr**: 4 rak'ahs before Fard + 2 rak'ahs after Fard.\n  - **Maghrib**: 2 rak'ahs after Fard.\n  - **Isha**: 2 rak'ahs after Fard.`,
+        actionLabelBn: 'সালাত ট্র্যাকার খুলুন ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'salatul-tasbih',
+        section: 'salah',
+        keywords: ['tasbih namaz', 'salatut tasbih', 'salatul tasbih', 'সালাতুত তাসবীহ', 'তাসবিহ নামাজ', 'সালাতুত তাসবিহ পড়ার নিয়ম'],
+        replyBn: `**সালাতুত তাসবীহ সালাতের নিয়ম (মোট ৪ রাকাত ও ৩০০ বার তাসবীহ)**:\n\n• **মূল তাসবীহ**: *“সুবহানাল্লাহি ওয়াল হামদুলিল্লাহি ওয়া লা-ইলাহা ইল্লাল্লাহু ওয়াল্লাহু আকবার”*\n\n• **প্রতি রাকাতে ৭৫ বার পাঠের স্থান**:\n  ১. সানা ও সূরা পাঠের পর দাঁড়িয়ে: **১৫ বার**\n  ২. রুকুতে তাসবীহ পড়ার পর: **১০ বার**\n  ৩. রুকু থেকে সোজা হয়ে দাঁড়িয়ে: **১০ বার**\n  ৪. ১ম সিজদায় তাসবীহের পর: **১০ বার**\n  ৫. দুই সিজদার মাঝে বসে: **১০ বার**\n  ৬. ২য় সিজদায় তাসবীহের পর: **১০ বার**\n  ৭. ২য় সিজদা থেকে উঠে বসা অবস্থায়: **১০ বার**\n  *(মোট = ৭৫ বার প্রতি রাকাতে; ৪ রাকাতে মোট ৩০০ বার)*`,
+        replyEn: `**Salat-ut-Tasbih (4 Rak'ahs — 300 Tasbihs Total)**:\n\n• **The Tasbih**: *"SubhanAllahi wal-Hamdu Lillahi wa La Ilaha Illallahu Wallahu Akbar"*\n• **75 Times per Rak'ah**:\n  - Standing after recitation: 15 times\n  - In Ruku: 10 times\n  - Standing after Ruku: 10 times\n  - In 1st Sujood: 10 times\n  - Sitting between 2 Sujoods: 10 times\n  - In 2nd Sujood: 10 times\n  - Sitting after 2nd Sujood: 10 times`,
+        actionLabelBn: 'সালাত ট্র্যাকার দেখুন ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'istikhara-prayer',
+        section: 'salah',
+        keywords: ['istikhara', 'istikara', 'istikhara er niyom', 'ইস্তিখারা', 'ইস্তিখারার নিয়ম', 'ইস্তিখারা নামাজ ও দোয়া', 'সিদ্ধান্ত'],
+        replyBn: `**ইস্তিখারা সালাত ও দুআ (সঠিক সিদ্ধান্ত গ্রহণের উপায়)**:\n\n• **উদ্দেশ্য**: ক্যারিয়ার, বিবাহ বা যেকোনো গুরুত্বপূর্ণ বিষয়ে সঠিক দিকনির্দেশনা পাওয়ার জন্য আল্লাহর কাছে সাহায্য চাওয়া।\n• **পদ্ধতি**:\n  ১. সাধারণ নফল নামাজের মতো **২ রাকাত** সালাত আদায় করবেন।\n  ২. সালাম ফেরানোর পর অত্যন্ত বিনম্রতার সাথে আল্লাহর প্রশংসা ও দরূদ পাঠ করে **ইস্তিখারার মাসনুন দুআ** পাঠ করবেন।\n  ৩. দুআর মধ্যে যেখানে আপনার প্রয়োজন রয়েছে সে কথা স্মরণ করবেন।\n• **ফলাফল**: স্বপ্নে কোনো দৃশ্য দেখা জরুরি নয়; বরং মন যে কাজের দিকে সন্তুষ্ট ও শান্ত অনুভব করে এবং যে কাজে কল্যাণ থাকে, আল্লাহ তা সহজ করে দেন।`,
+        replyEn: `**Salat al-Istikhara (Guidance Prayer)**:\n\n• **Purpose**: Seeking divine guidance for career, marriage, or important life decisions.\n• **Method**: Pray 2 rak'ahs of voluntary prayer → praise Allah, send blessings upon the Prophet (PBUH) → recite the authentic Dua of Istikhara with your specific decision in mind.\n• **Outcome**: Dreams are not required; watch for clarity, ease in your heart, and smooth unfolding of matters.`,
+        actionLabelBn: 'সালাত ট্র্যাকার ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'sajdah-sahw',
+        section: 'salah',
+        keywords: ['sahu sajdah', 'sajda sahu', 'sajdah sahw', 'সাহু সিজদা', 'ভুল হলে কি করব', 'নামাজে ভুল', 'সাহু সিজদার নিয়ম'],
+        replyBn: `**সাহু সিজদার বিধান ও সঠিক নিয়ম**:\n\n• **কখন ওয়াজিব হয়**: নামাজের কোনো ওয়াজিব ভুলবশত ছুটে গেলে, কম-বেশি হলে বা কোনো ফরজে বিলম্ব হলে।\n• **নিয়ম**:\n  ১. শেষ বৈঠকে শুধু **তাশাহহুদ (আত্তাহিয়্যাতু)** পড়ে শেষ করবেন।\n  ২. ডান দিকে একবার সালাম ফেরাবেন।\n  ৩. এরপর 'আল্লাহু আকবার' বলে পরপর **২টি সিজদা** করবেন (সিজদার তাসবীহসহ)।\n  ৪. সিজদা থেকে উঠে পুনরায় বসে **তাশাহহুদ, দরূদ শরীফ ও দুআয়ে মাসূরা** পড়ে উভয় দিকে সালাম ফিরিয়ে সালাত সমাপ্ত করবেন।`,
+        replyEn: `**Sajdah Sahw (Prostration of Forgetfulness)**:\n\n• **When required**: When an obligatory (Wajib) element of Salah is unintentionally omitted, delayed, or altered.\n• **Procedure**: In final sitting, recite Tashahhud → turn face to right with 1 Salam → perform 2 standard prostrations → sit again, recite Tashahhud, Durood, and Dua Masura → conclude with both Salams.`,
+        actionLabelBn: 'সালাত ট্র্যাকার ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'jumuah-rules',
+        section: 'salah',
+        keywords: ['juma', 'jummah', 'friday', 'surah kahf', 'jumar amol', 'জুমা', 'জুমার নামাজ', 'জুমার আমল', 'সূরা কাহফ', 'শুক্রবার'],
+        replyBn: `**জুমার দিনের বিশেষ সুন্নাত ও আমলসমূহ**:\n\n১. **গোসল ও পরিচ্ছন্নতা**: মিসওয়াক করা, গোসল করা ও সুগন্ধি ব্যবহার করা।\n২. **আগে মসজিদে যাওয়া**: প্রথম কাতারে বসার চেষ্টা করা এবং মনোযোগ দিয়ে খুতবা শোনা (খুতবার সময় কথা বলা সম্পূর্ণ নিষিদ্ধ)।\n৩. **সূরা কাহফ তিলাওয়াত**: জুমার দিন সূরা কাহফ পাঠ করলে দুই জুমার মধ্যবর্তী সময় নূরে আলোকিত থাকে।\n৪. **বেশি বেশি দরূদ পাঠ**: রাসূলুল্লাহ (সা.)-এর ওপর অধিক পরিমাণে দরূদ শরীফ পাঠ করা।\n৫. **আসরের শেষ সময়ের দুআ**: আসর থেকে মাগরিবের মধ্যবর্তী সময়ে দুআ কবুলের এক বিশেষ মুহূর্ত থাকে।`,
+        replyEn: `**Virtues & Sunnahs of Friday (Jumu'ah)**:\n\n1. Perform Ghusl, use Siwak, wear clean clothes, and apply perfume (Attar).\n2. Arrive early at the Masjid and listen attentively to the Khutbah.\n3. Recite **Surah Al-Kahf** (illuminates light between the two Fridays).\n4. Send abundant Durood/blessings upon Prophet Muhammad (PBUH).\n5. Supplicate (make Dua) in the final hour after Asr before Maghrib.`,
+        actionLabelBn: 'সালাত ট্র্যাকার ➔',
+        actionLabelEn: 'Open Salah Tracker ➔'
+      },
+      {
+        id: 'morning-evening-adhkar',
+        section: 'dhikr',
+        keywords: ['morning adhkar', 'evening adhkar', 'sokal sondhar dua', 'sayyidul istighfar', 'সকাল সন্ধ্যার দোয়া', 'সাইয়েদুল ইস্তিগফার', 'সকালের জিকির', 'সন্ধ্যার জিকির', '৩ কুল'],
+        replyBn: `**সকাল-সন্ধ্যার মাসনুন জিকির ও নিরাপত্তা**:\n\n• **আয়াতুল কুরসি**: সকাল ও সন্ধ্যায় পাঠ করলে সারাদিন ও সারারাত শয়তান ও অনিষ্ট থেকে আল্লাহর হেফাজতে থাকা যায়।\n• **৩ কুল (ইখলাস, ফালাক, নাস)**: ৩ বার করে পড়ে দুই হাতের তালুতে ফুঁ দিয়ে সারা শরীরে মাসেহ করা।\n• **সাইয়্যিদুল ইস্তিগফার (সর্বশ্রেষ্ঠ ক্ষমা প্রার্থনা)**:\n  *“আল্লাহুম্মা আনতা রাব্বী লা ইলাহা ইল্লা আনতা খালাকতানী ওয়া আনা আবদুকা...”*\n  (যে ব্যক্তি দিনে বিশ্বাস সহকারে পড়বে এবং সন্ধ্যায় মারা যাবে, সে জান্নাতবাসী হবে)।\n• **লা হাওলা ওয়ালা কুওয়াতা ইল্লা বিল্লাহ**: ৯৯টি রোগের ওষুধ, যার মধ্যে সর্বনিম্ন হলো দুশ্চিন্তা।`,
+        replyEn: `**Morning & Evening Authentic Adhkar**:\n\n• **Ayat al-Kursi**: Recited in morning & evening provides full divine protection.\n• **The 3 Quls (Ikhlas, Falaq, An-Nas)**: 3 times each, wiping hands over body.\n• **Sayyid al-Istighfar**: The master prayer for forgiveness.\n• **La Hawla wa La Quwwata Illa Billah**: A treasure of Paradise and relief from anxiety.`,
+        actionLabelBn: 'ডিজিটাল তাসবীহ খুলুন ➔',
+        actionLabelEn: 'Open Digital Dhikr ➔'
+      },
+      {
+        id: 'essential-daily-duas',
+        section: 'dhikr',
+        keywords: ['daily dua', 'dua list', 'ghumano dua', 'khabar dua', 'doya', 'দোয়া', 'দুআ', 'ঘুমের দোয়া', 'খাওয়ার দোয়া', 'ঘর থেকে বের হওয়ার দোয়া', 'দৈনন্দিন দোয়া'],
+        replyBn: `**দৈনন্দিন জীবনের অতি প্রয়োজনীয় মাসনুন দুআসমূহ**:\n\n• **ঘুমের পূর্বে**: *“আল্লাহুম্মা বিসমিকা আমূতু ওয়া আহ্ইয়া”* (হে আল্লাহ! আপনার নামে আমি মৃত্যুবরণ করি ও জীবিত হই)।\n• **ঘুম থেকে উঠে**: *“আলহামদু লিল্লাহিল্লাযী আহ্ইয়ানা বা’দা মা আমাতানা ওয়া ইলাইহিন নুশূর”*।\n• **খাওয়ার পূর্বে**: *“বিসমিল্লাহ”* (ভুলে গেলে: *“বিসমিল্লাহি আউওয়ালাহু ওয়া আখিরাহু”*)।\n• **খাওয়ার শেষে**: *“আলহামদু লিল্লাহিল্লাযী আত্’আমানা ওয়া সাক্বানা ওয়া জা’আলানা মিনাল মুসলিমীন”*।\n• **ঘর থেকে বের হতে**: *“বিসমিল্লাহি তাওয়াক্কালতু ‘আলাল্লাহ, লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ”*।`,
+        replyEn: `**Essential Daily Authentic Supplications**:\n\n• **Before Sleep**: *"Allahumma bismika amutu wa ahya"*.\n• **Waking Up**: *"Alhamdu lillahilladhi ahyana ba'da ma amatana wa ilayhin-nushoor"*.\n• **Before Meals**: *"Bismillah"* (if forgotten: *"Bismillahi awwalahu wa akhirahu"*).\n• **After Meals**: *"Alhamdu lillahilladhi at'amana wa saqana wa ja'alana minal-Muslimeen"*.\n• **Leaving Home**: *"Bismillahi tawakkaltu 'alallah, la hawla wa la quwwata illa billah"*.`,
+        actionLabelBn: 'তাসবীহ ও জিকির ➔',
+        actionLabelEn: 'Open Dhikr Hub ➔'
+      },
+      {
+        id: 'sleep-insomnia-sunnah',
+        section: 'habits',
+        keywords: ['sleep', 'insomnia', 'ghoom ashena', 'ghoom', 'sleep tips', 'ঘুম আসে না', 'অনিদ্রা', 'ঘুমের সুন্নত', 'ভালো ঘুমের উপায়', 'রাতে ঘুম'],
+        replyBn: `**দ্রুত ও গভীর ঘুমের সুন্নতি ও বৈজ্ঞানিক গাইডলাইন**:\n\n১. **সুন্নতি প্রস্তুতি**: অজু করে বিছানায় যাওয়া, বিছানা ৩ বার ঝেড়ে নেওয়া এবং ডান কাতে শোয়া।\n২. **৪-৭-৮ শ্বাস-প্রশ্বাস**: নাক দিয়ে ৪ সে. শ্বাস নিন, ৭ সে. ধরে রাখুন এবং মুখ দিয়ে ৮ সে. ছাড়ুন (৪ রাউন্ড)। এটি মস্তিষ্ককে ৩ মিনিটে ঘুমন্ত অবস্থায় নিয়ে যায়।\n৩. **স্ক্রিন টাইম বর্জন**: ঘুমানোর অন্তত ৩০ মিনিট আগে মোবাইল বা ল্যাপটপের ব্লু-লাইট বন্ধ করুন।\n৪. **কুরআনিক প্রশান্তি**: ঘুমানোর আগে ৩ কুল ও আয়াতুল কুরসি পাঠ করে নিজের ওপর দম করা।`,
+        replyEn: `**Deep Sleep & Insomnia Recovery Protocol**:\n\n1. **Sunnah Routine**: Perform Wudu, dust the bed 3 times, lie on your right side.\n2. **4-7-8 Breathing**: 4s inhale, 7s hold, 8s exhale (4 cycles). Downregulates cortisol.\n3. **Screen Detox**: Zero screens 30-45 minutes before sleep.\n4. **Adhkar**: Recite Ayat al-Kursi & 3 Quls.`,
+        actionLabelBn: '৪-৭-৮ ব্রিদিং চালান ➔',
+        actionLabelEn: 'Start 4-7-8 Breathing ➔'
+      },
+      {
+        id: 'halal-nutrition-diet',
+        section: 'gym',
+        keywords: ['nutrition', 'diet', 'food', 'pani', 'water', 'sunnah food', 'খাবার', 'ডায়েট', 'পানি খাওয়ার নিয়ম', 'পুষ্টি', 'সুন্নতি খাবার', 'ওজন কমানো'],
+        replyBn: `**সুন্নতি খাদ্যাভ্যাস ও স্বাস্থ্যসম্মত পুষ্টিবিধি**:\n\n• **১/৩ রুল (পেট ভরার ভারসাম্য)**: খাবারের সময় পেটের এক-তৃতীয়াংশ খাবারের জন্য, এক-তৃতীয়াংশ পানির জন্য এবং এক-তৃতীয়াংশ শ্বাস-প্রশ্বাসের জন্য খালি রাখা।\n• **পানি পানের সুন্নাত**:\n  - বসে ডান হাতে পানি পান করা এবং 'বিসমিল্লাহ' বলা।\n  - এক নিঃশ্বাসে ঢকঢক করে না খেয়ে **৩ শ্বাসে** ধীরে ধীরে পান করা।\n• **প্রোটিন ও শক্তি**: খেজুর, মধু, ডিম, দুধ, বাদাম, মাছ ও জলপাইয়ের মতো পুষ্টিকর প্রাকৃতিক খাবার নিয়মিত ডায়েটে রাখা।\n• **হাইড্রেশন**: লামিম অ্যাপের **Gym & Health** মডিউলে প্রতিদিনের পানি পানের গ্লাস সহজেই ট্র্যাক করতে পারেন।`,
+        replyEn: `**Prophetic Nutrition & Healthy Hydration**:\n\n• **The 1/3rd Principle**: Fill 1/3rd with food, 1/3rd with water, and leave 1/3rd for easy breathing.\n• **Water Sunnah**: Sit down, hold with right hand, drink in 3 calm sips saying Bismillah.\n• **Nutrient-Dense Foods**: Dates, honey, eggs, nuts, olive oil, milk, and lean proteins.`,
+        actionLabelBn: 'জিম ও হেলথ দেখুন ➔',
+        actionLabelEn: 'Open Gym & Health ➔'
+      },
+      {
+        id: 'focus-pomodoro-study',
+        section: 'career',
+        keywords: ['study', 'reading', 'exam', 'focus tips', 'pomodoro technique', 'pora mon thakena', 'পড়ালেখা', 'পড়াশোনা', 'পরীক্ষা', 'পড়ায় মন বসে না', 'মুখস্থ', 'মনোযোগ'],
+        replyBn: `**পড়ালেখায় সর্বোচ্চ মনোযোগ ও কার্যকর স্টাডি মেথড**:\n\n১. **পোমোডোরো টেকনিক (২৫/৫ মিনিট)**: টানা পড়ার বদলে ২৫ মিনিট সম্পূর্ণ মনোযোগ দিয়ে পড়ুন, এরপর ৫ মিনিট বিরতি নিন। ৪টি সেশনের পর একটি বড় বিরতি (১৫-২০ মি.) নিন।\n২. **অ্যাক্টিভ রিকল (Active Recall)**: শুধু রিডিং পড়ার চেয়ে বইটি বন্ধ করে যা পড়েছেন তা নিজে নিজে কাউকে বোঝানোর মতো করে মুখে বলুন বা খাতায় লিখুন।\n৩. **স্পেসড রিপিটেশন**: ১ম দিন যা পড়বেন, তা ৩য় দিন, ৭ম দিন ও ২১তম দিনে একবার করে রিভিশন দিন।\n৪. **ডিস্ট্রাকশন লক**: পড়ার টেবিলে মোবাইল ফোন সাইলেন্ট করে চোখের আড়ালে রাখুন। লামিম **Career Hub**-এ পোমোডোরো টাইমার চালু করে পড়াশোনা ট্র্যাক করতে পারেন।`,
+        replyEn: `**Peak Study Focus & Memory Mastery Protocol**:\n\n1. **Pomodoro Framework**: 25 min deep focus + 5 min cognitive rest.\n2. **Active Recall**: Test yourself from memory rather than passive re-reading.\n3. **Spaced Repetition**: Review on Days 1, 3, 7, and 21 for long-term retention.\n4. **Friction Reduction**: Keep your smartphone in another room while studying.`,
+        actionLabelBn: 'পোমোডোরো টাইমার খুলুন ➔',
+        actionLabelEn: 'Open Pomodoro Hub ➔'
+      },
+      {
+        id: 'progressive-overload-gym',
+        section: 'gym',
+        keywords: ['progressive overload', 'muscle building', 'workout split', 'ppl routine', 'মাসল বিল্ডিং', 'ব্যায়াম রুটিন', 'ওজন বাড়ানো', 'মাসল গেইন'],
+        replyBn: `**মাসল বিল্ডিং ও প্রোগ্রেসিভ ওভারলোড গাইডলাইন**:\n\n• **প্রোগ্রেসিভ ওভারলোড কী**: প্রতি সপ্তাহে আপনার অনুশীলনে ওজন (Weight), সেট সংখ্যা (Sets) অথবা রেপস (Reps) ধীরে ধীরে বৃদ্ধি করা যাতে মাংসপেশিতে নতুন উদ্দীপনা তৈরি হয়।\n• **জনপ্রিয় PPL স্প্লিট**:\n  - **Push Day**: বুক (Chest), কাঁধ (Shoulders) ও ট্রাইসেপস (Triceps)।\n  - **Pull Day**: পিঠ (Back), ট্র্যাপস (Traps) ও বাইসেপস (Biceps)।\n  - **Legs Day**: কোয়াডস (Quads), হ্যামস্ট্রিং (Hamstrings) ও কাফ (Calves)।\n• **ঘুম ও রিকভারি**: মাসল তৈরি হয় জিমের পর ঘুমের সময়ে; তাই প্রতিদিন অন্তত ৭-৮ ঘণ্টা মানসম্মত ঘুম অপরিহার্য।`,
+        replyEn: `**Progressive Overload & Hypertrophy Principles**:\n\n• **Core Concept**: Incrementally increasing weight, reps, or volume over time to stimulate muscular growth.\n• **PPL Structure**:\n  - Push: Chest, Shoulders, Triceps\n  - Pull: Back, Rear Delts, Biceps\n  - Legs: Quads, Hamstrings, Glutes, Calves\n• **Recovery**: Muscle protein synthesis peaks during 7-8 hours of deep restorative sleep.`,
+        actionLabelBn: 'জিম ট্র্যাকার দেখুন ➔',
+        actionLabelEn: 'Open Gym Tracker ➔'
+      },
+      {
+        id: 'eisenhower-time-management',
+        section: 'career',
+        keywords: ['time management', 'eisenhower', 'priorities', 'productivity', 'সময় ব্যবস্থাপনা', 'কাজের অগ্রাধিকার', 'আলসেমি দূর করার উপায়', 'রুটিন'],
+        replyBn: `**সময় ব্যবস্থাপনা ও কাজের অগ্রাধিকার (Eisenhower Matrix)**:\n\n১. **জরুরি ও গুরুত্বপূর্ণ (Do First)**: যা আজই শেষ করতে হবে (যেমন: জরুরি প্রজেক্ট ডেডলাইন)।\n২. **গুরুত্বপূর্ণ কিন্তু জরুরি নয় (Schedule)**: যা আপনার ক্যারিয়ার ও ভবিষ্যতের উন্নতি ঘটায় (যেমন: নিয়মিত পড়াশোনা, কোডিং প্র্যাকটিস, এক্সারসাইজ)।\n৩. **জরুরি কিন্তু গুরুত্বপূর্ণ নয় (Delegate/Automate)**: অপ্রয়োজনীয় নোটিফিকেশন, অপ্রাসঙ্গিক মিটিং।\n৪. **জরুরিও নয়, গুরুত্বপূর্ণও নয় (Eliminate)**: ঘণ্টার পর ঘণ্টা সোশ্যাল মিডিয়া স্ক্রোলিং বর্জন করুন।\n\n• **লামিম ৩ MIT রুল**: প্রতিদিন সকালে উঠে দিনের **শীর্ষ ৩টি কাজ (Top 3 MITs)** ক্যারিয়ার সেকশনে সেট করুন।`,
+        replyEn: `**Eisenhower Matrix & Priority Management**:\n\n1. **Urgent & Important**: High-impact deadlines (Do immediately).\n2. **Not Urgent but Important**: Health, learning, skill building (Schedule daily).\n3. **Urgent but Not Important**: Interruptions & random notifications (Minimize).\n4. **Not Urgent & Not Important**: Mindless social media doomscrolling (Eliminate).`,
+        actionLabelBn: 'ক্যারিয়ার সেকশন ➔',
+        actionLabelEn: 'Open Career Hub ➔'
+      },
+      {
+        id: 'sadaqah-charity',
+        section: 'finance',
+        keywords: ['sadaqah', 'sadakah', 'charity', 'dan', 'দান', 'সাদাকাহ', 'সদকা', 'দানের ফজিলত', 'দান সদকা'],
+        replyBn: `**সাদাকাহ ও দানের ফজিলত ও বরকত**:\n\n• **বিপদ দূরীকরণ**: রাসূলুল্লাহ (সা.) বলেছেন, *“দান বিপদ-আপদ দূর করে এবং অপমৃত্যু রোধ করে।”* (তিরমিজি)\n• **সম্পদের বরকত**: দান করলে সম্পদ কখনো কমে না, বরং আল্লাহ তাতে বহুগুণ বরকত দান করেন।\n• **মুচকি হাসিও সাদাকাহ**: কোনো মুসলমান ভাইয়ের সাথে হাসিমুখে কথা বলা, পথ থেকে কষ্টদায়ক বস্তু সরিয়ে দেওয়াও সাদাকাহ।\n• **লামিম ফাইন্যান্স**: আপনার মাসিক আয় থেকে নিয়মানুযায়ী সাদাকাহর অংশ রেকর্ড রাখতে পারেন।`,
+        replyEn: `**Virtues of Sadaqah (Charity)**:\n\n• **Protection**: Charity extinguishes sins and repels calamities.\n• **Abundance**: Wealth is never diminished by charity; it attracts divine barakah.\n• **Everyday Sadaqah**: A cheerful smile, helping someone with heavy loads, or removing obstacles from a pathway is also charity.`,
+        actionLabelBn: 'হালাল ফাইন্যান্স খুলুন ➔',
+        actionLabelEn: 'Open Halal Finance ➔'
+      },
+      {
+        id: 'mental-health-quran',
+        section: 'habits',
+        keywords: ['depression', 'anxiety', 'mon kharap', 'dukkho', 'peace', 'manoshik shanti', 'মন খারাপ', 'হতাশা', 'বিষণ্ণতা', 'মানসিক শান্তি', 'কষ্ট', 'দুশ্চিন্তা দূর করার দোয়া'],
+        replyBn: `**মানসিক প্রশান্তি ও বিষণ্ণতা দূর করার কুরআনিক উপায়**:\n\n• **কুরআনের ঘোষণা**: *“জেনে রাখো! আল্লাহর জিকির দ্বারাই অন্তরসমূহ শান্তি ও তৃপ্তি পায়।”* (সূরা রা’দ: ২৮)\n• **বিশেষ দুআ**: *“আল্লাহুম্মা ইন্নী আউযু বিকা মিনাল হাম্মি ওয়াল হাযান...”* (হে আল্লাহ! আমি আপনার কাছে দুশ্চিন্তা ও বিষণ্ণতা থেকে আশ্রয় চাই)।\n• **সূরা আদ-দুহা তিলাওয়াত**: মন খারাপ ও একাকিত্বের সময় সূরা দুহা অর্থসহ তিলাওয়াত করলে আত্মবিশ্বাস ও মানসিক শান্তি ফিরে আসে।\n• **শারীরিক রিল্যাক্সেশন**: লামিম অ্যাপের ৪-৭-৮ গাইডেড ব্রিদিং এক্সারসাইজ চালিয়ে গভীর শ্বাস নিন।`,
+        replyEn: `**Quranic & Mindful Relief from Anxiety and Stress**:\n\n• **Divine Reassurance**: *"Unquestionably, by the remembrance of Allah hearts are assured."* (Surah Ar-Ra'd: 28)\n• **Essential Supplication**: *"Allahumma inni a'udhu bika minal-hammi wal-hazan..."* (Seeking refuge from anxiety and sorrow).\n• **Surah Ad-Duha**: Reading Surah Ad-Duha with translation restores hope, warmth, and faith in Allah's timing.`,
+        actionLabelBn: '৪-৭-৮ ব্রিদিং চালান ➔',
+        actionLabelEn: 'Start 4-7-8 Breathing ➔'
+      },
+      {
+        id: 'coding-roadmap',
+        section: 'career',
+        keywords: ['coding', 'programming', 'python', 'javascript', 'web development', 'developer', 'কোডিং', 'প্রোগ্রামিং', 'জাভাস্ক্রিপ্ট', 'পাইথন', 'ওয়েব ডেভেলপমেন্ট', 'কোডিং শিখব কিভাবে'],
+        replyBn: `**প্রোগ্রামিং ও কোডিং শেখার রোডম্যাপ**:\n\n১. **ল্যাঙ্গুয়েজ নির্বাচন**:\n  - বিগিনার ও এআই/ডাটা সায়েন্সের জন্য: **Python**\n  - ওয়েব ও ফুলস্ট্যাক ডেভেলপমেন্টের জন্য: **JavaScript / TypeScript**\n২. **মূল কনসেপ্ট**:\n  - ভ্যারিয়েবল, ডেটা টাইপ, লুপ (For, While), ফাংশন ও কন্ডিশনাল লজিক।\n  - অবজেক্ট ও অ্যারে ম্যানিপুলেশন।\n৩. **প্রজেক্ট ভিত্তিক প্র্যাকটিস**: টিউটোরিয়াল দেখার পাশাপাশি ছোট ছোট প্রজেক্ট তৈরি করুন (যেমন: টু-ডু অ্যাপ, ক্যালকুলেটর, ট্র্যাকার)।\n৪. **গিট ও গিটহাব**: কোড সংরক্ষণ ও ভার্সন কন্ট্রোলে দক্ষ হন।\n\n*(বিস্তারিত কোডিং প্রশ্ন থাকলে অনলাইনে Gemini Live মোডে কোড ডিবাগ ও কোড এক্সপ্লেইন করতে পারবেন)*`,
+        replyEn: `**Modern Programming & Software Engineering Roadmap**:\n\n1. **Language Choice**: Python for AI/Data/Backend; JavaScript/TypeScript for Full-Stack Web.\n2. **Core Fundamentals**: Variables, control flow, functions, loops, Data Structures (Arrays, Maps, Sets), and OOP.\n3. **Hands-On Projects**: Build standalone tools (Calculators, CRUD APIs, Dashboards) to cement learning.\n4. **Git Mastery**: Version control, branching, pull requests, and GitHub collaboration.`,
+        actionLabelBn: 'ক্যারিয়ার হাব ➔',
+        actionLabelEn: 'Open Career Hub ➔'
+      },
+      {
+        id: 'atomic-habits-system',
+        section: 'habits',
+        keywords: ['atomic habits', 'bad habits', 'good habits', 'habit streak', 'অভ্যাস', 'ভালো অভ্যাস', 'খারাপ অভ্যাস দূর করার উপায়', 'অ্যাটোমিক হ্যাবিটস'],
+        replyBn: `**ভালো অভ্যাস গঠন ও খারাপ অভ্যাস বর্জনের বৈজ্ঞানিক কৌশল**:\n\n১. **২ মিনিটের নিয়ম (2-Minute Rule)**: যেকোনো নতুন অভ্যাসকে মাত্র ২ মিনিটের সহজ কাজে রূপান্তর করুন (যেমন: প্রতিদিন ১ পৃষ্ঠা বই পড়া বা ১টি পুশআপ দিয়ে শুরু করা)।\n২. **হ্যাবিট স্ট্যাকিং (Habit Stacking)**: বিদ্যমান কোনো অভ্যাসের সাথে নতুন অভ্যাস জুড়ে দিন (যেমন: "প্রতিদিন মাগরিবের নামাজের পরপরই আমি ১০ মিনিট কুরআন পড়ব")।\n৩. **ভিজ্যুয়াল ট্র্যাকিং (Don't Break the Chain)**: একটানা কতদিন অভ্যাসটি পালন করেছেন তা লামিম অ্যাপের **Habits Tracker**-এ ট্র্যাকিং বজায় রাখুন।`,
+        replyEn: `**Atomic Habits & Behavioral Science Framework**:\n\n1. **The 2-Minute Rule**: Scale any ambitious habit down to a 2-minute starter version.\n2. **Habit Stacking**: Anchor a new desired habit to an established one (e.g., *"After Maghrib prayer, I will recite 1 page of Quran"*).\n3. **Visual Streak Continuity**: Log daily habit execution in Lamim's Habit Tracker to protect your momentum.`,
+        actionLabelBn: 'হ্যাবিটস ট্র্যাকার খুলুন ➔',
+        actionLabelEn: 'Open Habits Tracker ➔'
       }
     ],
 
