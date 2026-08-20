@@ -212,19 +212,19 @@
   --home-salam-color: #1E293B; 
   --home-time-color:  #4F46E5; 
   --home-name-color:  #7C3AED; 
-  --color-bg-primary:    #FFFFFF;
-  --color-bg-secondary:  #F8FAFC;
-  --color-bg-tertiary:   #F1F5F9;
+  --color-bg-primary:    #F1F5F9;
+  --color-bg-secondary:  #E8EDF4;
+  --color-bg-tertiary:   #DCE2EC;
   --color-bg-elevated:   #FFFFFF; 
   --color-accent-gold:   #B45309;
   --color-accent-gold-light: #D97706; 
   
-  --color-text-primary:  #090E1A;
+  --color-text-primary:  #0B1423;
   --color-text-secondary:#1E293B;
-  --color-text-muted:    #334155;
+  --color-text-muted:    #475569;
   
-  --color-border:        rgba(15, 23, 42, 0.09);
-  --color-border-muted:  rgba(15, 23, 42, 0.05);
+  --color-border:        #D4DCE8;
+  --color-border-muted:  #E2E8F0;
   --color-border-active: #6366F1;
   
   --color-glass:         rgba(255, 255, 255, 0.75);
@@ -246,7 +246,7 @@
   --color-surface-hollow:   #EDF2F7;
   --color-divider-subtle:   rgba(0,0,0,0.05);
   --color-divider-strong:   rgba(0,0,0,0.1);
-  --shadow-premium:         0 14px 38px -4px rgba(15, 23, 42, 0.09), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --shadow-premium:         0 12px 32px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.03);
   --radar-grid-stroke:      rgba(0,0,0,0.06);
   --radar-axis-stroke:      rgba(0,0,0,0.12);
   --color-text-subtitle:    #475569;
