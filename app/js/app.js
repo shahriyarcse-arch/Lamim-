@@ -142,9 +142,19 @@ updateSectionTitle() {
     bn: { home: 'হোম', salah: 'সালাত ট্র্যাকার', dhikr: 'যিকির কাউন্টার', nafl: 'নফল সালাত', habits: 'হ্যাবিটস', finance: 'ইসলামিক অর্থনীতি', analysis: 'বিশ্লেষণ', gym: 'জিম ট্র্যাকার', career: 'ক্যারিয়ার বিল্ডার', profile: 'প্রোফাইল' }
   },
 
+  setSplashProgress(pct) {
+    const bar = document.querySelector('.splash-loader-bar');
+    if (bar) {
+      bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    }
+  },
+
   async init() {
+    this.setSplashProgress(20);
+
     // Wait for IndexedDB cache load and migration
     await DB.init();
+    this.setSplashProgress(50);
 
     // 0. AGGRESSIVE RECOVERY & CACHE BUSTING CHECK
     if (DB.rawGet('lamim_needs_reload')) {
@@ -215,6 +225,7 @@ updateSectionTitle() {
 
     // Apply translations immediately to prevent FOUC
     this.applyTranslations();
+    this.setSplashProgress(80);
 
     // Global Midnight Rollover Detector - gracefully updates date state overnight without wiping active form inputs
     let startupDate = Utils.todayStr();
@@ -237,7 +248,7 @@ updateSectionTitle() {
       }
     }, 30000);
 
-    // Splash → route (instant zero-latency boot sequence)
+    // Splash → route (realistic smooth progress finish)
     this._bootComplete = false;
     const user = DB.getUser();
     
@@ -249,13 +260,15 @@ updateSectionTitle() {
       this.showPage('setup');
     }
 
-    // Immediately hide splash in the next frame as dashboard is active
     this._bootComplete = true;
-    requestAnimationFrame(() => {
-      this._hideSplash();
-    });
+    this.setSplashProgress(100);
 
-    // Safety fallback - guarantees splash screen disappears within 800ms under any circumstance
+    // Smoothly dissolve splash after progress bar completes 100%
+    setTimeout(() => {
+      this._hideSplash();
+    }, 280);
+
+    // Safety fallback - guarantees splash screen disappears within 1200ms under any circumstance
     setTimeout(() => {
       const sp = document.getElementById('splash');
       if (sp && !sp.dataset.hidden) {
@@ -268,7 +281,7 @@ updateSectionTitle() {
         }
         this._hideSplash();
       }
-    }, 800);
+    }, 1200);
 
     // Nav bindings
     this.bindNav();
