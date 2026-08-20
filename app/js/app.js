@@ -143,9 +143,14 @@ updateSectionTitle() {
   },
 
   setSplashProgress(pct) {
-    const bar = document.querySelector('.splash-loader-bar');
-    if (bar) {
-      bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    const p = Math.min(100, Math.max(0, pct));
+    // Prefer the realtime rAF ticker booted in index.html; fall back to a
+    // direct write so boot never depends on it being present.
+    if (window.LamimSplash && window.LamimSplash.setTarget) {
+      window.LamimSplash.setTarget(p);
+    } else {
+      const bar = document.querySelector('.splash-loader-bar');
+      if (bar) bar.style.width = p + '%';
     }
   },
 
@@ -263,7 +268,8 @@ updateSectionTitle() {
 
     this._bootComplete = true;
 
-    // Linear organic progression: seamlessly glide from 70% to 100%
+    // Smooth finish: hand the "100" target to the rAF ticker, which glides
+    // from its current % to 100% in ~280ms before the splash fades.
     const elapsed = performance.now() - bootT0;
     const holdTime = Math.max(100, 500 - elapsed);
 
@@ -271,21 +277,30 @@ updateSectionTitle() {
       this.setSplashProgress(100);
       setTimeout(() => {
         this._hideSplash();
-      }, 300);
+      }, 340);
     }, holdTime);
 
-    // Safety fallback - guarantees splash screen disappears within 1400ms under any circumstance
+    // Safety fallback - guarantees the splash always finishes its bar before
+    // disappearing, even if the normal completion path is interrupted. The
+    // bar glides to 100% first so the fade is never mid-progress.
     setTimeout(() => {
       const sp = document.getElementById('splash');
       if (sp && !sp.dataset.hidden) {
-        if (DB.getUser()) {
-          if (DB.refreshSpiritScore) DB.refreshSpiritScore();
-          this.showDashboard();
-          this.checkBackupReminder();
-        } else {
-          this.showPage('setup');
-        }
-        this._hideSplash();
+        this.setSplashProgress(100);
+        setTimeout(() => {
+          if (!sp.dataset.hidden) {
+            try {
+              if (DB.getUser()) {
+                if (DB.refreshSpiritScore) DB.refreshSpiritScore();
+                this.showDashboard();
+                this.checkBackupReminder();
+              } else {
+                this.showPage('setup');
+              }
+            } catch (e) { }
+            this._hideSplash();
+          }
+        }, 340);
       }
     }, 1400);
 

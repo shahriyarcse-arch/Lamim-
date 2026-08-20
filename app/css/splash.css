@@ -182,7 +182,8 @@
   width: 0%;
   background: var(--splash-loader-fill);
   border-radius: 4px;
-  transition: width 0.28s linear;
+  /* width is driven per-frame by the rAF ticker in index.html — no CSS
+     transition here or it fights the JS for smooth linear motion */
   will-change: width;
 }
 

@@ -28,24 +28,33 @@
         if (m) m.setAttribute('content', bg);
       } catch (e) {}
 
-      // Absolute Splash Removal Fail-safe (Guarantees splash is hidden & app page activated)
-      setTimeout(function() {
-        if (window.App && window.App._bootComplete) return;
-        var sp = document.getElementById('splash');
-        if (sp && !sp.dataset.hidden) {
-          sp.dataset.hidden = '1';
-          sp.classList.add('hidden');
-          setTimeout(function() { sp.style.display = 'none'; }, 300);
-        }
-        // Ensure at least one page is active so screen is never blank
-        if (!document.querySelector('.page.active')) {
-          var u = localStorage.getItem('lamim_user');
-          var pageId = u ? 'page-dashboard' : 'page-setup';
-          var page = document.getElementById(pageId);
-          if (page) page.classList.add('active');
-        }
-        window.scrollTo(0, 0);
-      }, 1200);
+      // Smooth Splash Completion Fail-safe: only intervenes if the normal boot
+      // (App.init) never finished the bar + fade, or as a hard 6s cap — so the
+      // splash is never yanked away mid-load with a partial progress bar.
+      (function () {
+        var start = Date.now();
+        var iv = setInterval(function () {
+          var sp = document.getElementById('splash');
+          if (!sp || sp.dataset.hidden) { clearInterval(iv); return; }
+          var bootDone = !!(window.App && window.App._bootComplete);
+          var barFull = !!(window.LamimSplash && window.LamimSplash.getCurrent && window.LamimSplash.getCurrent() >= 99.5);
+          var overCap = Date.now() - start >= 6000;
+          if ((bootDone && barFull && Date.now() - start > 700) || overCap) {
+            clearInterval(iv);
+            sp.dataset.hidden = '1';
+            sp.classList.add('hidden');
+            setTimeout(function () { sp.style.display = 'none'; }, 300);
+            // Ensure at least one page is active so screen is never blank
+            if (!document.querySelector('.page.active')) {
+              var u = localStorage.getItem('lamim_user');
+              var pageId = u ? 'page-dashboard' : 'page-setup';
+              var page = document.getElementById(pageId);
+              if (page) page.classList.add('active');
+            }
+            window.scrollTo(0, 0);
+          }
+        }, 200);
+      })();
     })();
   </script>
 
@@ -160,7 +169,7 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/components.css?v=149">
   <!-- Modularized Page CSS -->
-  <link rel="stylesheet" href="css/splash.css?v=6">
+  <link rel="stylesheet" href="css/splash.css?v=7">
   <link rel="stylesheet" href="css/auth.css?v=147">
   <link rel="stylesheet" href="css/salah.css?v=153" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-base.css?v=1" media="print" onload="this.media='all'">
@@ -241,10 +250,64 @@
         </div>
 
         <div class="splash-loader-track">
-          <div class="splash-loader-bar"></div>
+          <div class="splash-loader-bar" id="splash-loader-bar"></div>
         </div>
       </div>
     </div>
+
+    <script>
+      /* Realtime smooth splash loader.
+         Starts animating the instant the splash is in the DOM — long before the
+         deferred boot scripts run — and runs a single rAF loop that glides the
+         bar toward whatever target App.setSplashProgress() sets at each boot
+         milestone. An ambient "ceiling" creeps upward on its own so the bar
+         keeps moving smoothly even while the IndexedDB layer is still opening,
+         and progress never regresses. */
+      (function () {
+        var bar = document.getElementById('splash-loader-bar');
+        if (!bar) return;
+        var reduce = false;
+        try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+        var current = 0, target = 0;
+        window.LamimSplash = {
+          setTarget: function (p) {
+            p = Math.min(100, Math.max(0, p));
+            target = Math.min(100, Math.max(target, p));
+            if (reduce) {
+              current = target;
+              bar.style.width = current + '%';
+            }
+          },
+          getCurrent: function () { return current; }
+        };
+        if (reduce) return;
+        var t0 = performance.now(), last = t0, prevT = -1, fs = 0, ff = 0;
+        function frame(now) {
+          var dt = Math.min(0.064, (now - last) / 1000);
+          last = now;
+          if (target < 100) {
+            // Ambient ceiling: 8% -> 84% over ~1.8s so a slow boot never looks frozen.
+            var ceiling = Math.min(84, 8 + (now - t0) * (76 / 1800));
+            if (target < ceiling) target = ceiling;
+          }
+          if (target >= 100) {
+            // Fast, smooth finish: glide to 100% in ~280ms.
+            if (prevT !== 100) { prevT = 100; fs = now; ff = current; }
+            var p = Math.min(1, (now - fs) / 280);
+            current = ff + (100 - ff) * (1 - Math.pow(1 - p, 2));
+            if (p >= 1) { bar.style.width = '100%'; return; }
+          } else {
+            prevT = -1;
+            // Asymptotic glide: quick start, gentle settle — reads as linear + alive.
+            current += (target - current) * (1 - Math.exp(-dt * 6));
+            if (100 - current < 0.05 && target > 99) current = 100;
+          }
+          bar.style.width = current + '%';
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      })();
+    </script>
 
 
     <!-- DHIKR HISTORY MODAL -->
@@ -2422,7 +2485,7 @@
     <script defer src="js/prayer-notifier.js?v=2"></script>
     <script defer src="js/manual.js?v=2"></script>
     <script defer src="js/home.js?v=150"></script>
-    <script defer src="js/app.js?v=235"></script>
+    <script defer src="js/app.js?v=236"></script>
     <script defer src="js/ai-agent.js?v=10"></script>
 
   </div>
