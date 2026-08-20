@@ -167,10 +167,12 @@
 }
 
 /* === MINIMALIST LOADER (Compositor-smooth Linear Progress Bar) ===
-   The fill is a transform: scaleX keyframe animation, which the browser runs
-   on the compositor thread — it stays perfectly smooth even while the main
-   thread is busy parsing/executing the app's boot scripts. JS only mirrors a
-   % label and hands the bar over to 100% once boot is actually done. */
+   The fill is a transform: scaleX keyframe animation with LINEAR timing, which
+   the browser runs on the compositor thread — it stays perfectly smooth even
+   while the main thread is busy parsing/executing the app's boot scripts.
+   JS adapts the animation's duration to the real boot time (self-learning, see
+   index.html) so the bar fills at the same rate the app actually boots, then
+   hands the last few % over itself, so 100% coincides with the reveal. */
 .splash-loader {
   display: flex;
   flex-direction: column;
@@ -199,7 +201,7 @@
   transform: scaleX(0);
   transform-origin: left center;
   will-change: transform;
-  animation: splashFill 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: splashFill var(--splash-fill-duration, 5s) linear forwards;
 }
 
 @keyframes splashFill {

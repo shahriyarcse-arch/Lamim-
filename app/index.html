@@ -161,7 +161,7 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/components.css?v=149">
   <!-- Modularized Page CSS -->
-  <link rel="stylesheet" href="css/splash.css?v=8">
+  <link rel="stylesheet" href="css/splash.css?v=9">
   <link rel="stylesheet" href="css/auth.css?v=147">
   <link rel="stylesheet" href="css/salah.css?v=153" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-base.css?v=1" media="print" onload="this.media='all'">
@@ -252,26 +252,41 @@
     </div>
 
     <script>
-      /* Realtime smooth splash loader.
-         The bar itself is a CSS scaleX animation running on the compositor
-         thread, so it keeps gliding smoothly even while the main thread is
-         busy booting the app. This script mirrors that motion into the % label
-         (best-effort) and exposes LamimSplash.finish() — the handoff that
-         glides the bar to 100% once App.init signals boot is complete. */
+      /* Realtime smooth splash loader — self-adaptive linear speed.
+         The bar is a CSS scaleX animation with LINEAR timing running on the
+         compositor thread (immune to main-thread jank). Its duration is chosen
+         from the previous launch's actual boot time, so the fill advances at
+         the same rate the app really boots and reaches 100% just as the app is
+         revealed — the bar is never "stuck then bumped to 100".
+         This script also mirrors the motion into the % label and exposes
+         LamimSplash.finish() for the boot handoff. */
       (function () {
         var bar = document.getElementById('splash-loader-bar');
         var pct = document.getElementById('splash-percent');
         if (!bar) return;
+        var root = bar.closest('.splash');
+        var T0 = performance.now();
         var reduce = false;
         try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
         var finished = false;
+
+        // Self-learning duration: adapt to the last real boot so the fill is
+        // paced to match boot ("realtime sync"), then it just-about catches up
+        // with the reveal. Clamped so it never flashes or crawls forever.
+        var prev = 0;
+        try { prev = parseFloat(localStorage.getItem('lamim_splash_boot')) || 0; } catch (e) {}
+        var durMs = Math.round(Math.min(6000, Math.max(900, (Math.min(5000, Math.max(500, prev || 1500))) * 1.15)));
+        if (root && !reduce) root.style.setProperty('--splash-fill-duration', durMs + 'ms');
+
         var scaleX = function () {
           try {
             var m = new DOMMatrix(getComputedStyle(bar).transform);
             return m ? Math.max(0, Math.min(1, m.a)) : 1;
           } catch (e) { return 0; }
         };
+
         window.LamimSplash = {
+          startTs: T0,
           setTarget: function (p) {
             if (!reduce || finished) return;
             p = Math.min(100, Math.max(0, p));
@@ -287,24 +302,34 @@
               finished = true;
               return;
             }
+            var elapsed = performance.now() - T0;
+            // Learn this boot's duration for the next launch (skip hung boots).
+            if (elapsed >= 400 && elapsed < 5000) {
+              try {
+                var smoothed = prev ? Math.round(0.75 * prev + 0.25 * elapsed) : Math.round(elapsed);
+                localStorage.setItem('lamim_splash_boot', String(Math.round(Math.min(5000, Math.max(400, smoothed)))));
+              } catch (e) {}
+            }
             var s = scaleX();
-            if (s >= 1) {
-              if (pct) pct.textContent = '100';
+            if (pct) pct.textContent = '100';
+            if (s >= 0.97) {
+              bar.style.transform = 'scaleX(1)';
               finished = true;
               return;
             }
             // Frame 1: stop the CSS animation and restore the current fill at
-            // the same value with transitions disabled, so this exact frame is
+            // the same value with transitions disabled, so this frame is
             // painted at scaleX(s) — never a regress to 0.
             bar.style.animation = 'none';
             bar.style.transition = 'none';
             bar.style.transform = 'scaleX(' + s + ')';
             void bar.offsetWidth;
-            // Frame 2 (next paint): glide s -> 100% on a short ease-out.
+            // Frame 2: finish the fill at a pace proportional to how far the
+            // linear crawl still had to go — reads as a natural completion.
+            var glideMs = Math.max(180, Math.min(480, Math.round((1 - s) * 520)));
             requestAnimationFrame(function () {
-              bar.style.transition = 'transform 380ms cubic-bezier(0.16, 1, 0.3, 1)';
+              bar.style.transition = 'transform ' + glideMs + 'ms cubic-bezier(0.16, 1, 0.3, 1)';
               bar.style.transform = 'scaleX(1)';
-              if (pct) pct.textContent = '100';
             });
             finished = true;
           }
@@ -2497,7 +2522,7 @@
     <script defer src="js/prayer-notifier.js?v=2"></script>
     <script defer src="js/manual.js?v=2"></script>
     <script defer src="js/home.js?v=150"></script>
-    <script defer src="js/app.js?v=237"></script>
+    <script defer src="js/app.js?v=238"></script>
     <script defer src="js/ai-agent.js?v=10"></script>
 
   </div>

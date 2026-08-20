@@ -155,7 +155,6 @@ updateSectionTitle() {
   },
 
   async init() {
-    const bootT0 = performance.now();
     this.setSplashProgress(20);
 
     // Wait for IndexedDB cache load and migration
@@ -268,15 +267,11 @@ updateSectionTitle() {
 
     this._bootComplete = true;
 
-    // Smooth finish: as soon as boot is ready, hand the compositor-driven bar
-    // over to a short transition to 100%, then fade. Always visually smooth,
-    // regardless of how long or choppy the boot itself was.
-    const elapsed = performance.now() - bootT0;
-    const minShow = 700;              // never flash the splash away too fast
-    const wait = Math.max(0, minShow - elapsed);
-    setTimeout(() => {
-      this._finishSplash();
-    }, wait);
+    // Finish the splash now that boot is ready. _finishSplash enforces a
+    // minimum display time (measured from the splash's own start) so the bar
+    // is always seen filling up linearly before the app reveals itself, and
+    // 100% ends up coinciding with the reveal.
+    this._finishSplash();
 
     // Watchdog: guarantees the splash still finishes gracefully even if the
     // normal path is interrupted — but only AFTER the boot itself completed
@@ -389,17 +384,25 @@ updateSectionTitle() {
   _finishSplash() {
     const sp = document.getElementById('splash');
     if (!sp || sp.dataset.hidden) return;
-    // Glide the bar to 100% (compositor handoff), then fade the splash away
-    // once the handoff transition has completed. On reduced motion the bar
-    // jumps straight to 100% and the fade still runs.
-    if (window.LamimSplash && window.LamimSplash.finish) {
-      window.LamimSplash.finish();
-    } else {
-      this.setSplashProgress(100);
-    }
+    // Never flash the splash away before it has been visible ~1.3s, so the bar
+    // is always seen filling at a steady linear pace (the CSS animation keeps
+    // running during the wait). Then hand over to 100% and fade once the
+    // handoff transition has completed.
+    const minShown = 1300;
+    const startTs = (window.LamimSplash && window.LamimSplash.startTs) || performance.now();
+    const wait = Math.max(0, minShown - (performance.now() - startTs));
     setTimeout(() => {
-      this._hideSplash();
-    }, 420);
+      if (!sp.dataset.hidden) {
+        if (window.LamimSplash && window.LamimSplash.finish) {
+          window.LamimSplash.finish();
+        } else {
+          this.setSplashProgress(100);
+        }
+        setTimeout(() => {
+          this._hideSplash();
+        }, 420);
+      }
+    }, wait);
   },
 
   _hideSplash() {
