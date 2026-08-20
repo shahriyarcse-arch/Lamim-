@@ -173,7 +173,17 @@ const Career = {
     }
 
     if (list.length === 0) {
-      container.innerHTML = `<div class="cb-empty-state"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>${isBn ? 'এখনো কোনো লক্ষ্য যোগ করা হয়নি' : 'No goals yet — add one above'}</p></div>`;
+      container.innerHTML = `
+        <div class="cb-empty-state">
+          <div class="cb-empty-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <div class="cb-empty-title">${isBn ? 'আজকের কোনো লক্ষ্য নির্ধারিত হয়নি' : 'No goals planned for today'}</div>
+          <p class="cb-empty-desc">${isBn ? 'উপরের বক্সে লিখে "যোগ করুন" এ ট্যাপ করুন' : 'Type a goal above and tap Add to stay focused'}</p>
+        </div>`;
       return;
     }
 
@@ -537,7 +547,7 @@ const Career = {
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const t = (v) => window.n ? window.n(v) : v;
     const dayPct = dayTotal > 0 ? Math.round((dayDone / dayTotal) * 100) : 0;
-    const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(2)) + '/' + t(7) + '' : '—';
+    const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(1)) + '/' + t(7) : '—';
     const heroLabel = isBn ? (isSelectedToday ? 'আজকের লক্ষ্য' : 'দিনের লক্ষ্য') : (isSelectedToday ? 'Today\'s Goals' : 'Day\'s Goals');
     const compText = isBn ? `${t(dayPct)}% সম্পন্ন` : `${dayPct}% completed`;
 
@@ -546,13 +556,15 @@ const Career = {
         <div class="cb-progress-ring-wrap" id="cb-progress-today-ring"></div>
         <div class="cb-progress-hero-info">
           <div class="cb-progress-hero-label">${heroLabel}</div>
-          <div class="cb-progress-hero-val">${t(dayDone)} / ${t(dayTotal)}</div>
+          <div class="cb-progress-hero-val">${t(dayDone)} <span style="font-size:16px;opacity:0.35;font-weight:600;">/</span> ${t(dayTotal)}</div>
           <div class="cb-progress-hero-sub">${compText}</div>
         </div>
       </div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Goal Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'সাপ্তাহিক হার' : 'Week Rate'}</div><div class="cb-month-stat-val">${t(weekPct)}%</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect Days'}</div><div class="cb-month-stat-val">${t(perfectDays)}/7</div></div>`;
+      <div class="cb-progress-metrics-row">
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'সাপ্তাহিক হার' : 'Week Rate'}</div><div class="cb-month-stat-val">${t(weekPct)}%</div></div>
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect'}</div><div class="cb-month-stat-val">${t(perfectDays)}/7</div></div>
+      </div>`;
 
     const ringEl = document.getElementById('cb-progress-today-ring');
     if (ringEl && window.Charts) {
@@ -561,49 +573,64 @@ const Career = {
     }
 
     if (chartEl) {
-      const svgH = 190;
-      const padTop = 24;
-      const padBot = 28;
+      const svgH = 200;
+      const padTop = 26;
+      const padBot = 32;
       const barArea = svgH - padTop - padBot;
       const svgW = 280;
       const cellW = svgW / 7;
+      const barW = Math.min(18, cellW - 12);
       const isFirstRender = !chartEl.querySelector('svg');
 
       let svg = '';
       dayPctList.forEach((d, i) => {
-        const h = d.total > 0 ? Math.max(6, (d.pct / 100) * barArea) : 6;
-        const x = i * cellW + 5;
-        const y = padTop + barArea - h;
-        const w = cellW - 10;
+        const x = i * cellW + (cellW - barW) / 2;
+        const trackY = padTop;
+        const trackH = barArea;
 
-        const gradId = 'bg' + i;
-        const g1 = d.pct === 100 ? '#34d399' : d.pct >= 50 ? '#fbbf24' : '#818cf8';
-        const g2 = d.pct === 100 ? '#10b981' : d.pct >= 50 ? '#f59e0b' : '#6366f1';
+        const fillH = d.total > 0 ? Math.max(8, (d.pct / 100) * barArea) : 0;
+        const fillY = padTop + barArea - fillH;
+
+        const gradId = 'wbg' + i;
+        const g1 = d.pct === 100 ? '#10b981' : d.pct >= 50 ? '#38bdf8' : '#818cf8';
+        const g2 = d.pct === 100 ? '#059669' : d.pct >= 50 ? '#0284c7' : '#6366f1';
 
         svg += `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="${g1}"/><stop offset="100%" stop-color="${g2}"/>
+          <stop offset="0%" stop-color="${g1}"/>
+          <stop offset="100%" stop-color="${g2}"/>
         </linearGradient></defs>`;
 
-        if (isFirstRender) {
-          svg += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="url(#${gradId})" opacity="${d.isToday ? '1' : '0.8'}">
-            <animate attributeName="height" from="0" to="${h}" dur="0.5s" fill="freeze"/>
-            <animate attributeName="y" from="${padTop + barArea}" to="${y}" dur="0.5s" fill="freeze"/>
-          </rect>`;
-        } else {
-          svg += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="url(#${gradId})" opacity="${d.isToday ? '1' : '0.8'}"/>`;
-        }
-
+        // Today column spotlight highlight
         if (d.isToday) {
-          svg += `<rect x="${x - 1}" y="${y - 1}" width="${w + 2}" height="${h + 2}" rx="7" fill="none" stroke="${g1}" stroke-width="1.5" opacity="0.5"/>`;
+          svg += `<rect x="${i * cellW + 2}" y="10" width="${cellW - 4}" height="${svgH - 20}" rx="14" fill="rgba(99, 102, 241, 0.08)" stroke="rgba(99, 102, 241, 0.25)" stroke-width="1"/>`;
         }
 
+        // Full-height background track
+        svg += `<rect x="${x}" y="${trackY}" width="${barW}" height="${trackH}" rx="${barW / 2}" fill="rgba(129, 140, 248, 0.1)"/>`;
+
+        // Active liquid fill
         if (d.total > 0) {
-          svg += `<text x="${x + w/2}" y="${y - 7}" text-anchor="middle" fill="${g1}" font-size="10" font-weight="700">${d.done}/${d.total}</text>`;
+          if (isFirstRender) {
+            svg += `<rect x="${x}" y="${fillY}" width="${barW}" height="${fillH}" rx="${barW / 2}" fill="url(#${gradId})">
+              <animate attributeName="height" from="0" to="${fillH}" dur="0.55s" fill="freeze"/>
+              <animate attributeName="y" from="${padTop + barArea}" to="${fillY}" dur="0.55s" fill="freeze"/>
+            </rect>`;
+          } else {
+            svg += `<rect x="${x}" y="${fillY}" width="${barW}" height="${fillH}" rx="${barW / 2}" fill="url(#${gradId})"/>`;
+          }
+
+          // Top badge
+          const badgeText = `${d.done}/${d.total}`;
+          svg += `<text x="${x + barW / 2}" y="${Math.max(16, fillY - 6)}" text-anchor="middle" fill="${g1}" font-size="10" font-weight="800">${badgeText}</text>`;
+        } else {
+          // Zero goal subtle dot
+          svg += `<circle cx="${x + barW / 2}" cy="${trackY + trackH - barW / 2}" r="3" fill="rgba(129, 140, 248, 0.25)"/>`;
         }
 
-        const labelColor = d.isToday ? 'var(--cb-text)' : 'var(--cb-text-muted)';
-        const fw = d.isToday ? '700' : '500';
-        svg += `<text x="${x + w/2}" y="${svgH - 8}" text-anchor="middle" fill="${labelColor}" font-size="11" font-weight="${fw}">${d.label}</text>`;
+        // Day label
+        const labelColor = d.isToday ? 'var(--cb-primary)' : 'var(--cb-text-muted)';
+        const fw = d.isToday ? '800' : '600';
+        svg += `<text x="${x + barW / 2}" y="${svgH - 12}" text-anchor="middle" fill="${labelColor}" font-size="11" font-weight="${fw}">${d.label}</text>`;
       });
 
       chartEl.innerHTML = `<svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" preserveAspectRatio="xMidYMid meet">${svg}</svg>`;
@@ -660,7 +687,7 @@ const Career = {
 
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const t = (v) => window.n ? window.n(v) : v;
-    const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(2)) + '/' + t(daysInMonth) + '' : '—';
+    const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(1)) + '/' + t(daysInMonth) : '—';
     const compText = isBn ? `${t(monthPct)}% সম্পন্ন` : `${monthPct}% completed`;
 
     statsEl.innerHTML = `
@@ -668,13 +695,15 @@ const Career = {
         <div class="cb-progress-ring-wrap" id="cb-progress-monthly-ring"></div>
         <div class="cb-progress-hero-info">
           <div class="cb-progress-hero-label">${isBn ? 'মাসের লক্ষ্য' : "Month's Goals"}</div>
-          <div class="cb-progress-hero-val">${t(monthGoalsDone)} / ${t(monthGoalsTotal)}</div>
+          <div class="cb-progress-hero-val">${t(monthGoalsDone)} <span style="font-size:16px;opacity:0.35;font-weight:600;">/</span> ${t(monthGoalsTotal)}</div>
           <div class="cb-progress-hero-sub">${compText}</div>
         </div>
       </div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Goal Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'মাসিক হার' : 'Month Rate'}</div><div class="cb-month-stat-val">${t(monthPct)}%</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect Days'}</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(daysInMonth)}</div></div>`;
+      <div class="cb-progress-metrics-row">
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'মাসিক হার' : 'Month Rate'}</div><div class="cb-month-stat-val">${t(monthPct)}%</div></div>
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect'}</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(daysInMonth)}</div></div>
+      </div>`;
 
     const ringEl = document.getElementById('cb-progress-monthly-ring');
     if (ringEl && window.Charts) {
@@ -688,55 +717,58 @@ const Career = {
       const padTop = 24;
       const padBot = 28;
       const barArea = svgH - padTop - padBot;
-      const svgW = Math.max(30, count * 30);
+      const svgW = Math.max(30, count * 28);
       const cellW = svgW / count;
+      const barW = Math.max(6, cellW - 6);
       const isFirstRender = !chartEl.querySelector('svg');
 
       let svg = '';
       dayPctList.forEach((d, i) => {
-        const h = d.isFuture ? 4 : (d.total > 0 ? Math.max(6, (d.pct / 100) * barArea) : 6);
-        const x = i * cellW + 2;
+        const x = i * cellW + (cellW - barW) / 2;
+        const trackY = padTop;
+        const trackH = barArea;
+
+        const h = d.isFuture ? 0 : (d.total > 0 ? Math.max(6, (d.pct / 100) * barArea) : 0);
         const y = padTop + barArea - h;
-        const w = Math.max(4, cellW - 4);
 
         if (d.isFuture) {
-          svg += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>`;
+          svg += `<rect x="${x}" y="${trackY}" width="${barW}" height="${trackH}" rx="${barW / 2}" fill="rgba(255,255,255,0.03)" opacity="0.4"/>`;
         } else {
           const gradId = 'mg' + i;
-          const g1 = d.pct === 100 ? '#34d399' : d.pct >= 50 ? '#fbbf24' : '#818cf8';
-          const g2 = d.pct === 100 ? '#10b981' : d.pct >= 50 ? '#f59e0b' : '#6366f1';
+          const g1 = d.pct === 100 ? '#10b981' : d.pct >= 50 ? '#38bdf8' : '#818cf8';
+          const g2 = d.pct === 100 ? '#059669' : d.pct >= 50 ? '#0284c7' : '#6366f1';
 
           svg += `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${g1}"/><stop offset="100%" stop-color="${g2}"/></linearGradient></defs>`;
 
-          if (isFirstRender) {
-            svg += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="url(#${gradId})" opacity="${d.isToday ? '1' : '0.7'}">
-              <animate attributeName="height" from="0" to="${h}" dur="0.5s" fill="freeze"/>
-              <animate attributeName="y" from="${padTop + barArea}" to="${y}" dur="0.5s" fill="freeze"/>
-            </rect>`;
+          // Track
+          svg += `<rect x="${x}" y="${trackY}" width="${barW}" height="${trackH}" rx="${barW / 2}" fill="rgba(129, 140, 248, 0.1)"/>`;
+
+          if (d.total > 0) {
+            if (isFirstRender) {
+              svg += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="${barW / 2}" fill="url(#${gradId})" opacity="${d.isToday ? '1' : '0.85'}">
+                <animate attributeName="height" from="0" to="${h}" dur="0.5s" fill="freeze"/>
+                <animate attributeName="y" from="${padTop + barArea}" to="${y}" dur="0.5s" fill="freeze"/>
+              </rect>`;
+            } else {
+              svg += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="${barW / 2}" fill="url(#${gradId})" opacity="${d.isToday ? '1' : '0.85'}"/>`;
+            }
+
+            const labelText = `${d.done}/${d.total}`;
+            svg += `<text x="${x + barW / 2}" y="${Math.max(14, y - 5)}" text-anchor="middle" fill="${g1}" font-size="9" font-weight="800">${labelText}</text>`;
           } else {
-            svg += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="url(#${gradId})" opacity="${d.isToday ? '1' : '0.7'}"/>`;
+            svg += `<circle cx="${x + barW / 2}" cy="${trackY + trackH - barW / 2}" r="2" fill="rgba(129, 140, 248, 0.25)"/>`;
           }
 
           if (d.isToday) {
-            svg += `<rect x="${x - 1}" y="${y - 1}" width="${w + 2}" height="${h + 2}" rx="4" fill="none" stroke="${g1}" stroke-width="1.5" opacity="0.5"/>`;
-          }
-
-          if (d.total > 0) {
-            const labelText = d.done + '/' + d.total;
-            const labelW = labelText.length * 7.5 + 10;
-            const labelH = 16;
-            const labelX = x + w / 2;
-            const labelY = y - 6;
-            svg += `<rect x="${labelX - labelW/2}" y="${labelY - labelH + 2}" width="${labelW}" height="${labelH}" rx="8" fill="${g1}" opacity="0.2"/>`;
-            svg += `<text x="${labelX}" y="${labelY}" text-anchor="middle" fill="${g1}" font-size="11" font-weight="800" letter-spacing="0.3">${labelText}</text>`;
+            svg += `<rect x="${x - 1}" y="${trackY - 1}" width="${barW + 2}" height="${trackH + 2}" rx="${(barW + 2) / 2}" fill="none" stroke="${g1}" stroke-width="1.5" opacity="0.6"/>`;
           }
         }
       });
 
       dayPctList.forEach((d, i) => {
         const x = i * cellW + cellW / 2;
-        const labelColor = d.isFuture ? 'rgba(255,255,255,0.15)' : (d.isToday ? 'var(--cb-text)' : 'var(--cb-text-muted)');
-        svg += `<text x="${x}" y="${svgH - 8}" text-anchor="middle" fill="${labelColor}" font-size="10" font-weight="${d.isToday ? '700' : '500'}">${d.label}</text>`;
+        const labelColor = d.isFuture ? 'rgba(255,255,255,0.15)' : (d.isToday ? 'var(--cb-primary)' : 'var(--cb-text-muted)');
+        svg += `<text x="${x}" y="${svgH - 8}" text-anchor="middle" fill="${labelColor}" font-size="10" font-weight="${d.isToday ? '800' : '500'}">${(window.n && isBn) ? window.n(d.label) : d.label}</text>`;
       });
 
       chartEl.innerHTML = `<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none"><svg width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="display:block;min-width:${svgW}px">${svg}</svg></div>`;
@@ -801,7 +833,7 @@ const Career = {
 
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
     const t = (v) => window.n ? window.n(v) : v;
-    const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(2)) + '/' + t(totalDays) + '' : '—';
+    const streakText = streak > 0 ? t(streak % 1 === 0 ? streak : streak.toFixed(1)) + '/' + t(totalDays) : '—';
     const compText = isBn ? `${t(yearPct)}% সম্পন্ন` : `${yearPct}% completed`;
 
     statsEl.innerHTML = `
@@ -809,13 +841,15 @@ const Career = {
         <div class="cb-progress-ring-wrap" id="cb-progress-yearly-ring"></div>
         <div class="cb-progress-hero-info">
           <div class="cb-progress-hero-label">${isBn ? 'বছরের লক্ষ্য' : "Year's Goals"}</div>
-          <div class="cb-progress-hero-val">${t(yearGoalsDone)} / ${t(yearGoalsTotal)}</div>
+          <div class="cb-progress-hero-val">${t(yearGoalsDone)} <span style="font-size:16px;opacity:0.35;font-weight:600;">/</span> ${t(yearGoalsTotal)}</div>
           <div class="cb-progress-hero-sub">${compText}</div>
         </div>
       </div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Goal Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'বার্ষিক হার' : 'Year Rate'}</div><div class="cb-month-stat-val">${t(yearPct)}%</div></div>
-      <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect Days'}</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(totalDays)}</div></div>`;
+      <div class="cb-progress-metrics-row">
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'ধারাবাহিকতা' : 'Streak'}</div><div class="cb-month-stat-val">${streakText}</div></div>
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'বার্ষিক হার' : 'Year Rate'}</div><div class="cb-month-stat-val">${t(yearPct)}%</div></div>
+        <div class="cb-month-stat-card"><div class="cb-month-stat-label">${isBn ? 'পারফেক্ট দিন' : 'Perfect'}</div><div class="cb-month-stat-val">${t(perfectDays)}/${t(totalDays)}</div></div>
+      </div>`;
 
     const ringEl = document.getElementById('cb-progress-yearly-ring');
     if (ringEl && window.Charts) {
@@ -830,53 +864,54 @@ const Career = {
       const barArea = svgH - padTop - padBot;
       const svgW = 280;
       const cellW = svgW / 12;
+      const barW = Math.min(14, cellW - 4);
       const isFirstRender = !chartEl.querySelector('svg');
 
       let svg = '';
       monthData.forEach((d, i) => {
-        const h = d.total > 0 ? Math.max(6, (d.pct / 100) * barArea) : 6;
-        const x = i * cellW + 3;
+        const x = i * cellW + (cellW - barW) / 2;
+        const trackY = padTop;
+        const trackH = barArea;
+
+        const h = d.total > 0 ? Math.max(6, (d.pct / 100) * barArea) : 0;
         const y = padTop + barArea - h;
-        const w = cellW - 6;
 
         const gradId = 'yg' + i;
-        const g1 = d.pct === 100 ? '#34d399' : d.pct >= 50 ? '#fbbf24' : '#818cf8';
-        const g2 = d.pct === 100 ? '#10b981' : d.pct >= 50 ? '#f59e0b' : '#6366f1';
+        const g1 = d.pct === 100 ? '#10b981' : d.pct >= 50 ? '#38bdf8' : '#818cf8';
+        const g2 = d.pct === 100 ? '#059669' : d.pct >= 50 ? '#0284c7' : '#6366f1';
 
         svg += `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${g1}"/><stop offset="100%" stop-color="${g2}"/></linearGradient></defs>`;
 
-        if (isFirstRender) {
-          svg += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="url(#${gradId})" opacity="${d.isCurrent ? '1' : '0.8'}">
-            <animate attributeName="height" from="0" to="${h}" dur="0.5s" fill="freeze"/>
-            <animate attributeName="y" from="${padTop + barArea}" to="${y}" dur="0.5s" fill="freeze"/>
-          </rect>`;
+        // Track
+        svg += `<rect x="${x}" y="${trackY}" width="${barW}" height="${trackH}" rx="${barW / 2}" fill="rgba(129, 140, 248, 0.1)"/>`;
+
+        if (d.total > 0) {
+          if (isFirstRender) {
+            svg += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="${barW / 2}" fill="url(#${gradId})" opacity="${d.isCurrent ? '1' : '0.8'}">
+              <animate attributeName="height" from="0" to="${h}" dur="0.5s" fill="freeze"/>
+              <animate attributeName="y" from="${padTop + barArea}" to="${y}" dur="0.5s" fill="freeze"/>
+            </rect>`;
+          } else {
+            svg += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="${barW / 2}" fill="url(#${gradId})" opacity="${d.isCurrent ? '1' : '0.8'}"/>`;
+          }
+
+          const labelText = `${d.done}/${d.total}`;
+          svg += `<text x="${x + barW / 2}" y="${Math.max(14, y - 5)}" text-anchor="middle" fill="${g1}" font-size="8.5" font-weight="800">${labelText}</text>`;
         } else {
-          svg += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="url(#${gradId})" opacity="${d.isCurrent ? '1' : '0.8'}"/>`;
+          svg += `<circle cx="${x + barW / 2}" cy="${trackY + trackH - barW / 2}" r="2" fill="rgba(129, 140, 248, 0.25)"/>`;
         }
 
         if (d.isCurrent) {
-          svg += `<rect x="${x - 1}" y="${y - 1}" width="${w + 2}" height="${h + 2}" rx="5" fill="none" stroke="${g1}" stroke-width="1.5" opacity="0.5"/>`;
+          svg += `<rect x="${x - 1}" y="${trackY - 1}" width="${barW + 2}" height="${trackH + 2}" rx="${(barW + 2) / 2}" fill="none" stroke="${g1}" stroke-width="1.5" opacity="0.6"/>`;
         }
 
-        if (d.total > 0) {
-          const labelText = d.done + '/' + d.total;
-          const labelW = labelText.length * 7 + 8;
-          const labelH = 14;
-          const labelX = x + w / 2;
-          const labelY = y - 6;
-          svg += `<rect x="${labelX - labelW/2}" y="${labelY - labelH + 2}" width="${labelW}" height="${labelH}" rx="7" fill="${g1}" opacity="0.18"/>`;
-          svg += `<text x="${labelX}" y="${labelY}" text-anchor="middle" fill="${g1}" font-size="10" font-weight="800" letter-spacing="0.2">${labelText}</text>`;
-        }
-
-        const labelColor = d.isCurrent ? 'var(--cb-text)' : 'var(--cb-text-muted)';
-        const fw = d.isCurrent ? '700' : '500';
-        svg += `<text x="${x + w/2}" y="${svgH - 8}" text-anchor="middle" fill="${labelColor}" font-size="9" font-weight="${fw}">${d.label}</text>`;
+        const labelColor = d.isCurrent ? 'var(--cb-primary)' : 'var(--cb-text-muted)';
+        const fw = d.isCurrent ? '800' : '500';
+        svg += `<text x="${x + barW / 2}" y="${svgH - 8}" text-anchor="middle" fill="${labelColor}" font-size="9.5" font-weight="${fw}">${d.label}</text>`;
       });
 
       chartEl.innerHTML = `<svg width="100%" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" preserveAspectRatio="xMidYMid meet">${svg}</svg>`;
     }
-
-    if (extraEl) extraEl.innerHTML = '';
   },
 
   destroy() {

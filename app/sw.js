@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lamim-app-v1.7.9';
+const CACHE_NAME = 'lamim-app-v1.8.0';
 const CORE_ASSETS = [
   './',
   './index.html',
