@@ -169,7 +169,7 @@
   <link rel="stylesheet" href="css/dhikr-session.css?v=2" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-cards.css?v=2" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/dhikr-modal.css?v=2" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/gym.css?v=214" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/gym.css?v=220" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/career.css?v=215" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/mobile-optimizations.css?v=2">
   <link rel="stylesheet" href="css/goals.css?v=150" media="print" onload="this.media='all'">
@@ -207,7 +207,7 @@
   <link rel="stylesheet" href="css/dhikr-session.css?v=2">
   <link rel="stylesheet" href="css/dhikr-cards.css?v=2">
   <link rel="stylesheet" href="css/dhikr-modal.css?v=2">
-  <link rel="stylesheet" href="css/gym.css?v=214">
+  <link rel="stylesheet" href="css/gym.css?v=220">
   <link rel="stylesheet" href="css/career.css?v=215">
   <link rel="stylesheet" href="css/goals.css?v=150">
   <link rel="stylesheet" href="css/analysis.css?v=221">
@@ -1608,22 +1608,42 @@
 
                 <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:24px;">
                   <!-- Premium Animated Water Glass -->
-                  <div class="gh-water-glass">
-                    <div id="gym-water-glass-fill" class="gh-water-wave-fill"
-                      style="position:absolute; bottom:0; left:0; right:0; height:0%;"></div>
+                  <div class="gh-water-glass-wrap">
+                    <div class="gh-water-glass">
+                      <!-- Measurement Ticks -->
+                      <div class="gh-glass-ticks">
+                        <span class="gh-tick" style="bottom: 75%;"><em>75%</em></span>
+                        <span class="gh-tick" style="bottom: 50%;"><em>50%</em></span>
+                        <span class="gh-tick" style="bottom: 25%;"><em>25%</em></span>
+                      </div>
+
+                      <!-- Liquid Fill -->
+                      <div id="gym-water-glass-fill" class="gh-water-wave-fill" style="position:absolute; bottom:0; left:0; right:0; height:0%;">
+                        <div class="gh-water-surface">
+                          <svg class="gh-wave-svg" viewBox="0 0 100 20" preserveAspectRatio="none" style="width:100%;height:100%;display:block;fill:#38bdf8;">
+                            <path d="M0,10 C30,20 70,0 100,10 L100,20 L0,20 Z"></path>
+                          </svg>
+                        </div>
+                        <div class="gh-bubbles">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+
+                      <!-- Glass Glare / Specular Reflection -->
+                      <div class="gh-glass-glare"></div>
+                    </div>
                   </div>
-                  <strong style="font-size:24px; font-weight:800; color:var(--gh-text); margin-top:12px;"
-                    id="gym-water-pct-center">0%</strong>
-                  <strong style="font-size:18px; font-weight:700; color:var(--gh-text);" id="gym-water-amount-center">0
-                    ml</strong>
-                  <span style="font-size:12px; font-weight:700; color:var(--gh-text-muted);">of 3000 ml</span>
+
+                  <strong id="gym-water-pct-center">0%</strong>
+                  <strong id="gym-water-amount-center">0 ml</strong>
+                  <span id="gym-water-goal-sub" data-i18n="of 3000 ml">of 3000 ml</span>
                 </div>
 
                 <div class="gh-water-buttons-grid">
-                  <button class="gh-water-btn" onclick="Gym.addWater(100)">100 ml</button>
-                  <button class="gh-water-btn" onclick="Gym.addWater(250)">250 ml</button>
-                  <button class="gh-water-btn" onclick="Gym.addWater(500)">500 ml</button>
-                  <button class="gh-water-btn subtract" onclick="Gym.addWater(-250)">-250 ml</button>
+                  <button class="gh-water-btn" onclick="Gym.addWater(100)" data-i18n="100 ml">+100 ml</button>
+                  <button class="gh-water-btn" onclick="Gym.addWater(250)" data-i18n="250 ml">+250 ml</button>
+                  <button class="gh-water-btn" onclick="Gym.addWater(500)" data-i18n="500 ml">+500 ml</button>
+                  <button class="gh-water-btn subtract" onclick="Gym.addWater(-250)" data-i18n="-250 ml">-250 ml</button>
                 </div>
               </div>
 
@@ -2536,7 +2556,7 @@
     <!-- App Modules -->
     <script defer src="js/charts.js?v=2"></script>
     <script defer src="js/salah.js?v=240"></script>
-    <script defer src="js/gym.js?v=226"></script>
+    <script defer src="js/gym.js?v=230"></script>
     <script defer src="js/career.js?v=223"></script>
     <script defer src="js/dhikr.js?v=220"></script>
     <script defer src="js/goals.js?v=150"></script>

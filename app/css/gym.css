@@ -963,65 +963,231 @@
   margin-top: 2px;
 }
 
-/* ---------- hydration & water glass ---------- */
+/* ---------- Premium Modern Water Glass ---------- */
+.gh-water-glass-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 6px;
+}
+
 .gh-water-glass {
-  width: 80px;
-  height: 110px;
+  width: 100px;
+  height: 140px;
   position: relative;
   overflow: hidden;
-  border-radius: 4px 4px 28px 28px;
-  background: rgba(15, 23, 42, 0.85);
-  border-left: 3px solid rgba(255, 255, 255, 0.2);
-  border-right: 3px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 5px solid rgba(255, 255, 255, 0.3);
-  border-top: none;
-  box-shadow: inset 0 -6px 12px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-radius: 6px 6px 36px 36px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-left: 3.5px solid rgba(255, 255, 255, 0.35);
+  border-right: 3.5px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 8px solid rgba(255, 255, 255, 0.5);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 -10px 20px rgba(56, 189, 248, 0.15), 0 12px 36px rgba(0, 0, 0, 0.35), 0 0 24px rgba(56, 189, 248, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
+.gh-water-glass:hover {
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: inset 0 -10px 25px rgba(56, 189, 248, 0.25), 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 32px rgba(56, 189, 248, 0.3);
+}
+
 [data-theme="light"] .gh-water-glass {
-  background: #ffffff;
-  border-left: 3px solid rgba(15, 23, 42, 0.15);
-  border-right: 3px solid rgba(15, 23, 42, 0.15);
-  border-bottom: 5px solid rgba(15, 23, 42, 0.22);
-  box-shadow: inset 0 -6px 12px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, rgba(240, 249, 255, 0.6) 0%, rgba(224, 242, 254, 0.35) 100%);
+  border-left: 3.5px solid rgba(14, 165, 233, 0.3);
+  border-right: 3.5px solid rgba(14, 165, 233, 0.3);
+  border-bottom: 8px solid rgba(14, 165, 233, 0.45);
+  border-top: 1.5px solid rgba(14, 165, 233, 0.2);
+  box-shadow: inset 0 -8px 16px rgba(14, 165, 233, 0.1), 0 10px 30px rgba(14, 165, 233, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.9);
 }
 
+[data-theme="light"] .gh-water-glass:hover {
+  box-shadow: inset 0 -10px 20px rgba(14, 165, 233, 0.15), 0 16px 36px rgba(14, 165, 233, 0.18), inset 0 2px 4px #ffffff;
+}
+
+/* Measurement Tick Lines */
+.gh-glass-ticks {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 6px;
+  width: 24px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.gh-tick {
+  position: absolute;
+  right: 0;
+  width: 10px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.gh-tick em {
+  font-style: normal;
+  font-size: 7.5px;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  margin-right: 14px;
+  letter-spacing: -0.2px;
+}
+
+[data-theme="light"] .gh-tick {
+  background: rgba(14, 165, 233, 0.4);
+}
+
+[data-theme="light"] .gh-tick em {
+  color: #0284c7;
+}
+
+/* Glass Glare & Specular Highlights */
+.gh-glass-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 15%, transparent 30%, transparent 85%, rgba(255, 255, 255, 0.15) 100%);
+  border-radius: inherit;
+}
+
+/* Wave Fill & Liquid */
 .gh-water-wave-fill {
-  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-  transition: height 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 45%, #0369a1 100%);
+  transition: height 0.7s cubic-bezier(0.34, 1.3, 0.64, 1);
   min-height: 0;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.4);
 }
 
+.gh-water-surface {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 200%;
+  height: 12px;
+  fill: #38bdf8;
+  opacity: 0.85;
+  animation: waveMotion 3s linear infinite;
+}
+
+@keyframes waveMotion {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Bubbles */
+.gh-bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gh-bubbles span {
+  position: absolute;
+  bottom: -10px;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: bubbleRise 3s infinite ease-in;
+}
+
+.gh-bubbles span:nth-child(1) { left: 25%; animation-duration: 2.5s; animation-delay: 0.2s; width: 5px; height: 5px; }
+.gh-bubbles span:nth-child(2) { left: 55%; animation-duration: 3.2s; animation-delay: 0.8s; width: 7px; height: 7px; }
+.gh-bubbles span:nth-child(3) { left: 75%; animation-duration: 2.8s; animation-delay: 1.4s; width: 4px; height: 4px; }
+
+@keyframes bubbleRise {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translateY(-110px) scale(1.2); opacity: 0; }
+}
+
+/* Hydration Typography */
+#gym-water-pct-center {
+  font-size: 28px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 10px;
+  line-height: 1;
+}
+
+#gym-water-amount-center {
+  font-size: 19px !important;
+  font-weight: 800 !important;
+  color: var(--color-text-primary) !important;
+  letter-spacing: -0.01em;
+}
+
+#gym-water-goal-sub {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-top: 2px;
+}
+
+[data-theme="light"] #gym-water-amount-center {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] #gym-water-goal-sub {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+  color: #0369a1;
+}
+
+/* Water Buttons */
 .gh-water-buttons-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  width: 100%;
 }
 
 .gh-water-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   padding: 12px;
   border-radius: 14px;
   font-weight: 800;
-  font-size: 13px;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  color: var(--gh-water);
+  font-size: 13.5px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(56, 189, 248, 0.03));
+  border: 1.5px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
   cursor: pointer;
-  transition: all var(--gh-transition);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
+  position: relative;
+  overflow: hidden;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .gh-water-btn:hover {
-    background: rgba(56, 189, 248, 0.16);
-    border-color: var(--gh-water);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.2);
-  }
+.gh-water-btn:hover {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(56, 189, 248, 0.08));
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.25);
 }
 
 .gh-water-btn:active {
@@ -1029,29 +1195,39 @@
 }
 
 .gh-water-btn.subtract {
-  background: rgba(248, 113, 113, 0.08);
-  border-color: rgba(248, 113, 113, 0.25);
-  color: var(--gh-poor);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.02));
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #ef4444;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .gh-water-btn.subtract:hover {
-    background: rgba(248, 113, 113, 0.16);
-    border-color: var(--gh-poor);
-    box-shadow: 0 4px 14px rgba(248, 113, 113, 0.2);
-  }
+.gh-water-btn.subtract:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(239, 68, 68, 0.06));
+  border-color: #ef4444;
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.2);
 }
 
 [data-theme="light"] .gh-water-btn {
-  background: rgba(8, 145, 178, 0.06);
-  border-color: rgba(8, 145, 178, 0.2);
-  color: #0891b2;
+  background: #f0f9ff;
+  border-color: #bae6fd;
+  color: #0284c7;
+}
+
+[data-theme="light"] .gh-water-btn:hover {
+  background: #e0f2fe;
+  border-color: #38bdf8;
+  box-shadow: 0 6px 16px rgba(56, 189, 248, 0.2);
 }
 
 [data-theme="light"] .gh-water-btn.subtract {
-  background: rgba(239, 68, 68, 0.06);
-  border-color: rgba(239, 68, 68, 0.2);
+  background: #fef2f2;
+  border-color: #fecaca;
   color: #dc2626;
+}
+
+[data-theme="light"] .gh-water-btn.subtract:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.18);
 }
 
 /* ---------- meal modal ---------- */

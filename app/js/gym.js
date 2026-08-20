@@ -619,10 +619,12 @@ const Gym = {
 
     const valEl = document.getElementById('gym-water-amount-center');
     const pctEl = document.getElementById('gym-water-pct-center');
+    const goalEl = document.getElementById('gym-water-goal-sub');
     const glassFill = document.getElementById('gym-water-glass-fill');
 
     if (valEl) valEl.textContent = isBn ? `${n(water.amount)} মিলি` : `${n(water.amount)} ml`;
     if (pctEl) pctEl.textContent = n(displayPct) + '%';
+    if (goalEl) goalEl.textContent = isBn ? `${n(water.goal || 3000)} মিলির মধ্যে` : `of ${n(water.goal || 3000)} ml`;
     
     // Animate the glass fill height (ensure minimum 6% visual height when amount > 0)
     if (glassFill) {
