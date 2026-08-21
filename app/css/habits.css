@@ -528,12 +528,16 @@
   color: var(--theme-color);
 }
 
-/* Expandable Content Area - 60fps Butter Smooth Pure CSS Grid Engine */
+/* Expandable Content Area — jitter-proof instant accordion.
+   Animated height (grid-template-rows transition) caused visible shaking on
+   several devices: every frame re-clips the content at a fractional height
+   (subpixel shimmer) and can fight browser scroll-anchoring. Since stability
+   beats animation here, expansion is intentionally INSTANT — no layout
+   animation at all. The inner content does a short opacity fade only, which
+   cannot shake because nothing moves or re-clips during it. */
 
-/* Scroll-anchoring guard: while a card expands/collapses, the browser's
-   scroll anchoring would otherwise pick anchors inside this list and adjust
-   scrollTop every frame, fighting the grid transition (visible jitter).
-   Opting the list out keeps the animation purely CSS-driven. */
+/* Scroll-anchoring guard: expanding changes document height; opting this
+   subtree out of anchor selection prevents scroll corrections on expand. */
 .habits-habits-container {
   overflow-anchor: none;
 }
@@ -541,12 +545,9 @@
 .iw-expandable-wrapper {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-  /* Isolate the animated region: internal layout/paint changes during the
-     expand stay inside this subtree instead of invalidating the whole page. */
   contain: layout paint;
 }
 
@@ -564,13 +565,11 @@
   overflow: hidden;
   min-height: 0;
   opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.15s ease;
 }
 
 .iron-will-widget.is-expanded .iw-expandable-content {
   opacity: 1;
-  transform: translateY(0);
 }
 
 /* Limit repaint scope of the heavy badge glow animations */
