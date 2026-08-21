@@ -264,16 +264,22 @@ div#nafl-night-grid .salah-prayer-card {
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02) !important;
 }
 
-.nafl-sunnah-card-modern:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(168, 85, 247, 0.35) !important;
-}
+@media (hover: hover) and (pointer: fine) {
+  .nafl-sunnah-card-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(168, 85, 247, 0.35) !important;
+  }
 
-[data-theme="light"] .nafl-sunnah-card-modern:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
-  border-color: #cbd5e1 !important;
+  [data-theme="light"] .nafl-sunnah-card-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(99, 102, 241, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  .nafl-sunnah-card-modern:hover .salah-prayer-icon-wrap {
+    transform: scale(1.06);
+  }
 }
 
 /* Card Header */
@@ -294,10 +300,6 @@ div#nafl-night-grid .salah-prayer-card {
   flex-shrink: 0;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nafl-sunnah-card-modern:hover .salah-prayer-icon-wrap {
-  transform: scale(1.06);
 }
 
 .nafl-sunnah-card-modern .salah-prayer-info {
