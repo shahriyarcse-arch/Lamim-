@@ -281,7 +281,7 @@ const Auth = {
       if (typeof Utils !== 'undefined' && Utils.toast) Utils.toast('Welcome, ' + name + '!', 'success');
 
       setTimeout(() => {
-        App.showDashboard();
+        App.showDashboard('home');
         this._submitting = false;
         if (finishBtn) { finishBtn.disabled = false; finishBtn.classList.remove('btn-loading'); }
       }, 400);
@@ -393,6 +393,9 @@ const Auth = {
       color: '#8b5cf6',
       confirmText: isBn ? 'লগ আউট' : 'Log Out',
       onConfirm: async () => {
+        if (typeof App !== 'undefined' && typeof App.flushAllPendingSaves === 'function') {
+          App.flushAllPendingSaves();
+        }
         const currentUser = DB.getUser();
         if (currentUser) {
           DB.saveProfileVault(currentUser);

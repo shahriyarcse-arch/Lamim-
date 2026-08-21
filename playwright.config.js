@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'python -m http.server 3901',
-    url: 'http://127.0.0.1:3901/index.html',
+    url: 'http://127.0.0.1:3901/app/index.html',
     reuseExistingServer: true,
     timeout: 10000,
   },

@@ -925,6 +925,10 @@ const Career = {
       cancelAnimationFrame(this._timerRAF);
       this._timerRAF = null;
     }
+  },
+
+  flushSave() {
+    // Career writes synchronously via DB.setCareer; no-op flush hook
   }
 };
 

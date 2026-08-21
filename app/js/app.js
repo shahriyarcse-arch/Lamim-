@@ -413,6 +413,15 @@ updateSectionTitle() {
     setTimeout(() => { s.style.display = 'none'; }, 400);
   },
 
+  flushAllPendingSaves() {
+    try {
+      if (typeof Dhikr !== 'undefined' && typeof Dhikr.flushSave === 'function') Dhikr.flushSave();
+      if (typeof Career !== 'undefined' && typeof Career.flushSave === 'function') Career.flushSave();
+    } catch (e) {
+      console.warn('[App] flushAllPendingSaves warning:', e);
+    }
+  },
+
   showPage(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const el = document.getElementById('page-' + page);
@@ -507,7 +516,7 @@ updateSectionTitle() {
   },
 
   navigateTo(sectionId, isBackNav = false, replaceHistory = false) {
-    if (this.currentSection === sectionId) {
+    if (this.currentSection === sectionId && !replaceHistory) {
       return;
     }
 

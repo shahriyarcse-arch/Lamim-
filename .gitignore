@@ -33,3 +33,5 @@ playwright-report/
 *.mp4
 !app/assets/*.mp4
 
+# Temp & Scratch
+scratch/

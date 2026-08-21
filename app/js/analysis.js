@@ -280,15 +280,15 @@ const Analysis = {
                   <!-- Bars Container -->
                   <div class="bars-container" style="inset: 0;">
                     ${trend.map(t => {
-                      const isInactive = t.score <= 10;
+                      const isInactive = t.score <= 0;
                       const isSelected = (t.fullDateStr === activeDateStr);
                       const barColor = isInactive ? 'var(--chart-inactive)' : t.color;
-                      const heightPct = isInactive ? 10 : Math.max(8, t.score);
+                      const heightPct = isInactive ? 4 : Math.max(8, Math.min(100, t.score));
                       return `
                         <div class="bar-col ${isSelected ? 'selected' : ''}" role="button" tabindex="0" data-date="${t.fullDateStr}" data-inactive="${isInactive}" data-color="${t.color}" onclick="Analysis.selectDate('${t.fullDateStr}')" style="cursor:pointer; -webkit-tap-highlight-color: transparent;">
                           <div class="bar-track">
                             <div class="bar-group" style="height: ${heightPct}%; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
-                              <div class="bar-score ${isSelected ? 'visible' : ''}" style="color:${t.color}; text-shadow: 0 0 8px ${t.color}80;">
+                              <div class="bar-score ${isSelected && !isInactive ? 'visible' : ''}" style="color:${t.color}; text-shadow: 0 0 8px ${t.color}80;">
                                 ${window.n ? window.n(Math.round(t.score)) : Math.round(t.score)}
                               </div>
                               <div class="bar-fill ${!isInactive ? 'active' : ''}" style="--bar-color: ${barColor};"></div>
@@ -441,27 +441,44 @@ const Analysis = {
       const nativeColor = bar.getAttribute('data-color');
       const barColor = isInactive ? 'var(--chart-inactive)' : nativeColor;
       
+      bar.classList.toggle('selected', isSelected);
+
       const group = bar.querySelector('.bar-group');
       if (group) {
         group.style.zIndex = isSelected ? '10' : '1';
-        group.style.opacity = isSelected ? '1' : (isInactive ? '0.3' : '0.5');
+        group.style.opacity = isSelected ? '1' : (isInactive ? '0.35' : '0.65');
       }
       
       const scoreEl = bar.querySelector('.bar-score');
       if (scoreEl) {
-        scoreEl.style.display = (!isInactive && isSelected) ? 'block' : 'none';
+        scoreEl.classList.toggle('visible', isSelected && !isInactive);
         if (isSelected) scoreEl.style.color = nativeColor;
       }
       
       const fillEl = bar.querySelector('.bar-fill');
       if (fillEl) {
-        if (isSelected) {
-          fillEl.style.boxShadow = `0 0 15px ${barColor}`;
-          fillEl.style.borderTop = `2px solid #fff`;
+        if (isSelected && !isInactive) {
+          fillEl.style.boxShadow = `0 0 18px ${barColor}`;
+          fillEl.style.borderTop = `2px solid rgba(255, 255, 255, 0.8)`;
         } else {
-          fillEl.style.boxShadow = '';
+          fillEl.style.boxShadow = isInactive ? '' : `0 0 10px ${barColor}`;
           fillEl.style.borderTop = '';
         }
+      }
+    });
+
+    // 6. Update X-axis selected label
+    const xLabels = document.querySelectorAll('.x-label');
+    xLabels.forEach(lbl => {
+      const lDate = lbl.getAttribute('data-date');
+      const isSelected = (lDate === dateStr);
+      lbl.classList.toggle('selected', isSelected);
+      if (isSelected) {
+        lbl.style.color = rating.color;
+        lbl.style.fontWeight = '900';
+      } else {
+        lbl.style.color = '';
+        lbl.style.fontWeight = '';
       }
     });
   },

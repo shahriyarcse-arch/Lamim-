@@ -67,6 +67,9 @@ const Utils = {
       '"': '&quot;'
     }[tag] || tag));
   },
+  escapeHtml(str) {
+    return this.escapeHTML(str);
+  },
 
   transliterateNameToBn(name) {
     if (!name || typeof name !== 'string') return '';

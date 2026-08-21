@@ -256,10 +256,9 @@ const Dhikr = {
   },
 
   flushSave() {
-    if (this._saveTimer) {
-      clearTimeout(this._saveTimer);
-      this._saveTimer = null;
-    }
+    if (!this._saveTimer) return;
+    clearTimeout(this._saveTimer);
+    this._saveTimer = null;
     const today = Utils.todayStr();
     const dhikr = DB.getDhikr(today);
     dhikr[this.currentId] = this.count;

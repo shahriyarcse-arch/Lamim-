@@ -483,7 +483,7 @@ const DB = {
 
   get(key) {
     const realKey = this._getEffectiveKey(key);
-    const val = this._cache[realKey] || this._cache[key];
+    const val = this._cache[realKey];
     if (!val) return null;
     try {
       return JSON.parse(val);
@@ -505,11 +505,10 @@ const DB = {
         try { localStorage.setItem(realKey, strVal); } catch { }
       }
 
-      this._asyncWrite(realKey, strVal, prevVal);
-      return true;
+      return this._asyncWrite(realKey, strVal, prevVal).then(() => true).catch(() => false);
     } catch (e) {
       console.error(`[DB] Error in set for key: ${key}`, e);
-      return false;
+      return Promise.resolve(false);
     }
   },
 
@@ -526,7 +525,7 @@ const DB = {
 
   rawGet(key) {
     const realKey = this._getEffectiveKey(key);
-    return this._cache[realKey] || this._cache[key] || null;
+    return this._cache[realKey] || null;
   },
 
   rawSet(key, val) {
@@ -573,7 +572,7 @@ const DB = {
   },
 
   saveProfileVault(userObj) {
-    if (!userObj || !userObj.name) return;
+    if (!userObj || !userObj.name) return Promise.resolve(false);
     const profiles = this.getProfiles();
     // Match by id first (exact identity); only fall back to name for legacy profiles with no id.
     let existingIndex = userObj.id ? profiles.findIndex(p => p.id === userObj.id) : -1;
@@ -595,10 +594,13 @@ const DB = {
     } else {
       profiles.push(profileSnapshot);
     }
-    this.set('lamim_profiles_vault', profiles);
+    return this.set('lamim_profiles_vault', profiles);
   },
 
   async switchProfile(profileId) {
+    if (typeof App !== 'undefined' && typeof App.flushAllPendingSaves === 'function') {
+      App.flushAllPendingSaves();
+    }
     const profiles = this.getProfiles();
     const target = profiles.find(p => p.id === profileId);
     if (!target) return false;
@@ -606,11 +608,11 @@ const DB = {
     // Save current active profile metadata
     const current = this.getUser();
     if (current) {
-      this.saveProfileVault(current);
+      await this.saveProfileVault(current);
     }
 
     // Seamless instant switch: update active user identity
-    this.setUser(target.userData);
+    await this.setUser(target.userData);
     this._streakCache = null;
     return true;
   },
