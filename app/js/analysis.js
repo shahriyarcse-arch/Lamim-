@@ -247,11 +247,11 @@ const Analysis = {
         </div>
 
         <!-- NEW: Radar Chart Balance -->
-        <div class="radar-chart-container ${noAnim ? '' : 'anim-fade-in'}" style="margin-top: -15px; margin-bottom: 20px; flex-direction: column;">
+        <div class="radar-chart-container ${noAnim ? '' : 'anim-fade-in'}" style="margin-top: 5px; margin-bottom: 20px; flex-direction: column;">
           <div style="width: 100%; text-align: center; margin-bottom: 5px;">
             <span style="font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; color: #a78bfa;">${isBn ? 'আত্মিক ভারসাম্য' : 'Spiritual Balance'}</span>
           </div>
-          <div class="radar-chart-wrapper">
+          <div class="radar-chart-wrapper" style="padding: 10px 0;">
             ${this.renderRadarChart(shs.breakdown)}
           </div>
         </div>
@@ -543,7 +543,7 @@ const Analysis = {
     }
 
     return `
-      <svg viewBox="0 0 200 200" style="width: 100%; max-width: 280px; margin: 0 auto; display: block; overflow: visible;">
+      <svg viewBox="-12 -12 224 224" style="width: 100%; max-width: 280px; margin: 0 auto; display: block; overflow: visible;">
         <defs>
           <radialGradient id="radar-glow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#818cf8" stop-opacity="0.2" />
