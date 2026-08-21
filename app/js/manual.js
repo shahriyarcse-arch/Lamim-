@@ -22,6 +22,7 @@ const Manual = {
       career: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
       finance: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>`,
       analysis: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>`,
+      ai: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><rect width="18" height="12" x="3" y="8" rx="4"/><circle cx="8" cy="14" r="1.5" fill="currentColor"/><circle cx="16" cy="14" r="1.5" fill="currentColor"/><path d="M9 17h6"/></svg>`,
       profile: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
       tip: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>`,
       warning: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
@@ -272,6 +273,25 @@ const Manual = {
           warning: 'কোনো দিন সালাত মিস হলে স্কোরে বড় প্রভাব পড়ে, তাই নিয়মিত সালাত কায়েম রাখুন।'
         },
         {
+          id: 'ai',
+          title: 'এআই সঙ্গী ও ইসলামিক অ্যাসিস্ট্যান্ট',
+          subtitle: 'স্মার্ট ইসলামিক নলেজ, স্টাডি প্ল্যানার ও ভয়েস চ্যাট',
+          summary: 'লামিমের বিল্ট-ইন হাইব্রিড এআই সঙ্গী আপনাকে যেকোনো ইসলামিক মাসআলা, হাদিসের রেফারেন্স, রুটিন প্ল্যানিং এবং আত্মিক পরামর্শে তাৎক্ষণিক সহায়তা করে।',
+          sections: [
+            {
+              heading: 'এআই কম্প্যানিয়ন ফিচারসমূহ',
+              items: [
+                '<strong>হাইব্রিড ইন্টেলিজেন্স:</strong> ইন্টারনেট থাকলে Gemini ক্লাউড এআই এবং অফলাইনে থাকলে লোকাল নলেজ বেসের মাধ্যমে তাৎক্ষণিক উত্তর।',
+                '<strong>ইন্টারেক্টিভ ৩ডি রোবট অবতার:</strong> অ্যানিমেটেড চোখ ও মেজাজ-সংবেদনশীল রেসপন্স।',
+                '<strong>ভয়েস ও টেক্সট ইনপুট:</strong> বাংলা, ইংরেজি ও বাংলিশে টাইপ করে বা মুখে বলে প্রশ্ন করার সুযোগ।',
+                '<strong>কুইক প্রম্পট পিলস:</strong> সালাতের গুরুত্ব, সকাল-সন্ধ্যার দুআ, স্টাডি স্ট্র্যাটেজি ইত্যাদির রেডিমেড শর্টকাট।'
+              ]
+            }
+          ],
+          tips: 'যেকোনো সময় নিচের ডানদিকের ভাসমান এআই বাটনে ট্যাপ করে এআই অ্যাসিস্ট্যান্ট ওপেন করুন।',
+          warning: 'জটিল ফিকহি মাসআলার ক্ষেত্রে সার্বজনীন সতর্কতার অংশ হিসেবে স্থানীয় বিজ্ঞ আলেমের পরামর্শ নিন।'
+        },
+        {
           id: 'profile',
           title: 'প্রোফাইল, ব্যাকআপ ও একাধিক ইউজার',
           subtitle: 'প্রোফাইল পরিবর্তন, ফুল ডাটাবেজ ব্যাকআপ ও সেটিংস',
@@ -519,6 +539,25 @@ const Manual = {
           ],
           tips: 'Maintain 80+ points by combining on-time prayers with daily morning/evening dhikr and Sunnahs.',
           warning: 'Missed Farz prayers heavily impact the composite score.'
+        },
+        {
+          id: 'ai',
+          title: 'AI Companion & Assistant',
+          subtitle: 'Smart Islamic Knowledge, Routine Planner, and Study Assistant',
+          summary: 'Lamim\'s built-in Hybrid AI Companion offers instant guidance on daily Islamic practices, routine optimization, workout science, and motivation.',
+          sections: [
+            {
+              heading: 'Key Capabilities',
+              items: [
+                '<strong>Hybrid Intelligence Engine:</strong> Online cloud AI powered by Gemini streaming with offline local knowledge fallbacks.',
+                '<strong>Interactive 3D Robot Mascot:</strong> Expressive mood-sensitive animations reflecting conversational context.',
+                '<strong>Voice & Text Support:</strong> Multilingual support across English, Bengali, and Banglish.',
+                '<strong>Curated Quick Prompts:</strong> Fast one-tap shortcuts for prayer benefits, Quranic reflections, and habit science.'
+              ]
+            }
+          ],
+          tips: 'Tap the floating AI Mascot button on the bottom right from any screen to chat instantly.',
+          warning: 'For complex juridical matters, consult qualified scholars alongside app references.'
         },
         {
           id: 'profile',
