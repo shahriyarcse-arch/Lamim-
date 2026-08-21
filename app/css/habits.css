@@ -369,14 +369,14 @@
   margin-bottom: 12px;
   display: flex;
   flex-direction: column;
-  transition: border-radius 0.3s ease, box-shadow 0.3s ease, margin-bottom 0.3s ease, transform 0.25s ease;
-  contain: layout style;
+  transition: border-radius 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .iron-will-widget.is-expanded {
-  border-radius: 28px;
+  border-radius: 24px;
   box-shadow: 0 20px 60px -12px rgba(15, 23, 42, 0.25), 0 0 32px color-mix(in srgb, var(--theme-color) 12%, transparent);
-  margin-bottom: 22px;
 }
 
 /* Compact Accordion Header (Always Visible) */
@@ -519,7 +519,7 @@
 }
 
 .iw-chevron-icon {
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .iron-will-widget.is-expanded .iw-chevron-icon {
@@ -527,24 +527,37 @@
   color: var(--theme-color);
 }
 
-/* Expandable Content Area */
-.iw-expandable-content {
-  max-height: 0;
-  opacity: 0;
+/* Expandable Content Area - 60fps Butter Smooth Grid Expansion Engine */
+.iw-expandable-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
   overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, padding 0.3s ease;
-  padding: 0 20px;
+}
+
+.iron-will-widget.is-expanded .iw-expandable-wrapper {
+  grid-template-rows: 1fr;
+}
+
+.iw-expandable-content {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s ease, padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .iron-will-widget.is-expanded .iw-expandable-content {
-  max-height: 1400px;
   opacity: 1;
-  padding: 20px 20px 24px;
+  visibility: visible;
+  padding: 16px 16px 20px;
 }
 
 /* Limit repaint scope of the heavy badge glow animations */
