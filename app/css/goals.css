@@ -249,7 +249,7 @@ div#nafl-night-grid .salah-prayer-card {
   background: var(--color-glass, rgba(18, 24, 38, 0.75)) !important;
   border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08)) !important;
   border-radius: 20px !important;
-  padding: 16px 20px !important;
+  padding: 14px 16px !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
@@ -280,13 +280,13 @@ div#nafl-night-grid .salah-prayer-card {
 .nafl-sunnah-card-modern .salah-prayer-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .nafl-sunnah-card-modern .salah-prayer-icon-wrap {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -309,7 +309,7 @@ div#nafl-night-grid .salah-prayer-card {
 }
 
 .nafl-sunnah-card-modern .salah-prayer-name {
-  font-size: 16px;
+  font-size: 15.5px;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--color-text-primary);
@@ -358,7 +358,7 @@ div#nafl-night-grid .salah-prayer-card {
 [data-theme="light"] .nafl-sunnah-card-modern .salah-status-chip.salah-status-pending {
   background: #fef3c7;
   border-color: #fde68a;
-  color: #d97706;
+  color: #b45309;
 }
 
 .nafl-sunnah-card-modern .salah-pending-dot {
@@ -378,60 +378,67 @@ div#nafl-night-grid .salah-prayer-card {
 
 /* --- Action Row & Buttons --- */
 .sunnah-status-selector {
-  margin-top: 10px;
+  margin-top: 8px;
   width: 100%;
 }
 
 .sunnah-action-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
 }
 
 .sunnah-action-btn {
-  height: 44px;
+  height: 42px;
+  min-height: 42px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
+  padding: 0 10px;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   position: relative;
-  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .sunnah-btn-content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
 }
 
 .sunnah-action-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .sunnah-action-label {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .sunnah-action-pts {
   font-size: 11px;
   font-weight: 800;
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 999px;
+  flex-shrink: 0;
+  line-height: 1.2;
 }
 
 /* Prayed Button */
@@ -467,19 +474,19 @@ div#nafl-night-grid .salah-prayer-card {
 
 /* Missed Button */
 .sunnah-action-btn.btn-missed {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
   color: var(--color-text-muted);
 }
 
 .sunnah-action-btn.btn-missed .sunnah-action-icon {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-muted);
 }
 
 .sunnah-action-btn.btn-missed .sunnah-action-pts {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--color-text-muted);
 }
 
@@ -505,7 +512,7 @@ div#nafl-night-grid .salah-prayer-card {
 [data-theme="light"] .sunnah-action-btn.btn-prayed {
   background: #f0fdf4;
   border-color: #86efac;
-  color: #059669;
+  color: #047857;
 }
 
 [data-theme="light"] .sunnah-action-btn.btn-prayed:hover {
@@ -516,19 +523,20 @@ div#nafl-night-grid .salah-prayer-card {
 
 [data-theme="light"] .sunnah-action-btn.btn-prayed .sunnah-action-icon {
   background: #dcfce7;
-  color: #059669;
+  color: #047857;
 }
 
 [data-theme="light"] .sunnah-action-btn.btn-prayed .sunnah-action-pts {
   background: #dcfce7;
   border-color: #86efac;
   color: #047857;
+  font-weight: 800;
 }
 
 [data-theme="light"] .sunnah-action-btn.btn-missed {
   background: #f8fafc;
-  border-color: #e2e8f0;
-  color: #64748b;
+  border-color: #cbd5e1;
+  color: #334155;
 }
 
 [data-theme="light"] .sunnah-action-btn.btn-missed:hover {
@@ -539,8 +547,8 @@ div#nafl-night-grid .salah-prayer-card {
 }
 
 [data-theme="light"] .sunnah-action-btn.btn-missed .sunnah-action-icon {
-  background: #f1f5f9;
-  color: #64748b;
+  background: #e2e8f0;
+  color: #475569;
 }
 
 [data-theme="light"] .sunnah-action-btn.btn-missed:hover .sunnah-action-icon {
@@ -549,9 +557,10 @@ div#nafl-night-grid .salah-prayer-card {
 }
 
 [data-theme="light"] .sunnah-action-btn.btn-missed .sunnah-action-pts {
-  background: #f1f5f9;
-  border-color: #e2e8f0;
-  color: #64748b;
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  color: #334155;
+  font-weight: 800;
 }
 
 /* --- Locked Result Row --- */

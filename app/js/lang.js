@@ -171,6 +171,8 @@ const Translations = {
   'Correct': 'সংশোধন',
   'Prayed': 'আদায় করা হয়েছে',
   'Missed': 'মিস হয়েছে',
+  'Pray': 'আদায়',
+  'Miss': 'মিস',
   'On Time': 'সময়মতো',
   'Late': 'দেরিতে',
 
