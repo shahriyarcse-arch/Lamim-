@@ -384,7 +384,9 @@ const Habits = {
       this._debouncedDataUpdate = Utils.debounce(() => {
         if (document.getElementById('section-habits')?.classList.contains('active')) {
           this.loadHabits();
-          this.render();
+          // skipAnim=true: background syncs must never replay entry animations
+          // over the visible list (reads as a blink/jitter mid-interaction).
+          this.render(true);
         }
       }, 200);
     }
@@ -767,11 +769,13 @@ const Habits = {
     const seed = habitId ? habitId.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) : 0;
     
     const qIndex = (intervalIndex + seed) % this.quotes.length;
+    // Only cheap, compositor-friendly effects (no width/letter-spacing
+    // animations that re-layout the card while it is open).
     const effects = [
       'qf-fade', 'qf-glitch', 'qf-neon', 'qf-3d',
-      'qf-typing', 'qf-hologram', 'qf-float',
+      'qf-hologram', 'qf-float',
       'qf-bounce', 'qf-aurora-text',
-      'qf-wave', 'qf-plasma', 'qf-fire', 'qf-ice'
+      'qf-plasma', 'qf-fire', 'qf-ice'
     ];
     const eIndex = (intervalIndex + seed) % effects.length;
     

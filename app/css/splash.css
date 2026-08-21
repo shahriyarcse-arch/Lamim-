@@ -51,15 +51,15 @@ body.lamim-booting {
 }
 
 /* === BASE CONTAINER (Oversized 100% solid overlay immune to safe-area gaps) === */
+/* Size via inset anchors only (no explicit height): stretching between
+   top/bottom keeps the flex-centered content on the TRUE visual center of
+   whatever viewport is visible — immune to 100vh vs dvh URL-bar drift. */
 .splash {
   position: fixed;
   top: -100px;
   left: -50px;
   right: -50px;
   bottom: -100px;
-  width: calc(100vw + 100px);
-  height: calc(100vh + 200px);
-  min-height: calc(100dvh + 200px);
   z-index: var(--z-splash);
   background: var(--splash-bg);
   display: flex;

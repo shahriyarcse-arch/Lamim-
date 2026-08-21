@@ -1,111 +1,33 @@
 /* === RADIANT SOUL ANIMATION ENGINE === */
-@keyframes glow-silver-breathe {
+/* (Infinite glow/pulse keyframes removed — badge visuals are static now,
+   see "Badge glows" note below. Keeping the accordion expand jank-free.) */
 
-  0%,
-  100% {
-    filter: drop-shadow(0 0 5px rgba(148, 163, 184, 0.3));
-  }
+/* Badge glows are intentionally STATIC (no infinite animations): concurrent
+   filter loops on ~14 badges caused paint storms that made the accordion
+   expand stutter on mobile. Static box-shadow keeps the premium look at zero
+   ongoing cost. */
 
-  50% {
-    filter: drop-shadow(0 0 15px rgba(148, 163, 184, 0.6));
-  }
-}
-
-@keyframes glow-indigo-pulse {
-
-  0%,
-  100% {
-    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.4));
-  }
-
-  50% {
-    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.8));
-  }
-}
-
-@keyframes glow-sky-shimmer {
-  0% {
-    filter: drop-shadow(0 0 5px #38bdf8);
-  }
-
-  50% {
-    filter: drop-shadow(0 0 25px #0ea5e9);
-  }
-
-  100% {
-    filter: drop-shadow(0 0 5px #38bdf8);
-  }
-}
-
-@keyframes glow-gold-orbit {
-  0% {
-    filter: drop-shadow(0 0 10px #fbbf24);
-  }
-
-  50% {
-    filter: drop-shadow(0 0 30px #f59e0b);
-  }
-
-  100% {
-    filter: drop-shadow(0 0 10px #fbbf24);
-  }
-}
-
-@keyframes glow-neon-surge {
-
-  0%,
-  100% {
-    filter: drop-shadow(0 0 15px #f43f5e) hue-rotate(0deg);
-  }
-
-  50% {
-    filter: drop-shadow(0 0 35px #e11d48) hue-rotate(15deg);
-  }
-}
-
-.iw-badge-container .iw-mini-badge-icon {
-  animation: glow-silver-breathe 4s infinite ease-in-out;
-}
-
-/* Tiered Animations for Badge Shield */
+/* Tiered static glow for the compact badge shield */
 .iron-will-widget[style*="--theme-color:#94a3b8"] .iw-mini-badge-icon,
 .iron-will-widget:not([class*="is-"]) .iw-mini-badge-icon {
-  animation: glow-silver-breathe 4s infinite ease-in-out;
-}
-
-.iron-will-widget[style*="--theme-color:#38bdf8"] .iw-mini-badge-icon {
-  animation: glow-indigo-pulse 3s infinite ease-in-out;
+  filter: drop-shadow(0 0 4px rgba(148, 163, 184, 0.35));
 }
 
 .iron-will-widget.is-ascended .iw-mini-badge-icon {
-  animation: glow-sky-shimmer 2.5s infinite ease-in-out;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
 }
 
 .iron-will-widget.is-legendary .iw-mini-badge-icon {
-  animation: glow-gold-orbit 3s infinite alternate ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.55));
 }
 
 .iron-will-widget.is-divine .iw-mini-badge-icon {
-  animation: glow-neon-surge 2s infinite ease-in-out;
+  filter: drop-shadow(0 0 12px rgba(244, 63, 94, 0.6));
 }
 
-/* Mini Badges Individual Glows */
+/* Mini Badges: static earned glow (no infinite loops — see note above) */
 .iw-mini-badge.earned {
-  animation: glow-indigo-pulse 4s infinite ease-in-out;
-}
-
-.iw-mini-badge.earned:nth-child(2n) {
-  animation-duration: 3.5s;
-}
-
-.iw-mini-badge.earned:nth-child(3n) {
-  animation-duration: 4.5s;
-  animation-name: glow-silver-breathe;
-}
-
-.iw-mini-badge.earned:nth-child(4n) {
-  animation-duration: 5s;
-  animation-name: glow-sky-shimmer;
+  box-shadow: 0 0 8px -2px currentColor;
 }
 
 .iw-mini-badge.locked {
@@ -674,24 +596,6 @@
 .iw-mini-badge.earned {
   background: rgba(255, 255, 255, 0.12);
   border-color: currentColor;
-  animation: iw-badge-glow 3s infinite ease-in-out;
-}
-
-@keyframes iw-badge-glow {
-  0% {
-    box-shadow: 0 0 5px currentColor;
-    filter: brightness(0.9);
-  }
-
-  50% {
-    box-shadow: 0 0 15px currentColor;
-    filter: brightness(1.2);
-  }
-
-  100% {
-    box-shadow: 0 0 5px currentColor;
-    filter: brightness(0.9);
-  }
 }
 
 .iw-mini-badge.locked {
@@ -712,28 +616,7 @@
 }
 
 .iw-mini-badge.earned .iw-mini-badge-icon svg {
-  animation: iw-symbol-lively 2.5s infinite ease-in-out;
   fill: currentColor;
-}
-
-@keyframes iw-symbol-lively {
-  0% {
-    filter: drop-shadow(0 0 1px currentColor);
-    stroke-width: 2;
-    fill-opacity: 0.1;
-  }
-
-  50% {
-    filter: drop-shadow(0 0 8px currentColor) brightness(1.3);
-    stroke-width: 2.5;
-    fill-opacity: 0.4;
-  }
-
-  100% {
-    filter: drop-shadow(0 0 1px currentColor);
-    stroke-width: 2;
-    fill-opacity: 0.1;
-  }
 }
 
 /* === BATTERY & GPU ACCESSIBILITY OPTIMIZATION (Phase 5) === */

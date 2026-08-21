@@ -529,6 +529,15 @@
 }
 
 /* Expandable Content Area - 60fps Butter Smooth Pure CSS Grid Engine */
+
+/* Scroll-anchoring guard: while a card expands/collapses, the browser's
+   scroll anchoring would otherwise pick anchors inside this list and adjust
+   scrollTop every frame, fighting the grid transition (visible jitter).
+   Opting the list out keeps the animation purely CSS-driven. */
+.habits-habits-container {
+  overflow-anchor: none;
+}
+
 .iw-expandable-wrapper {
   display: grid;
   grid-template-rows: 0fr;
@@ -536,6 +545,9 @@
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  /* Isolate the animated region: internal layout/paint changes during the
+     expand stay inside this subtree instead of invalidating the whole page. */
+  contain: layout paint;
 }
 
 .iron-will-widget.is-expanded .iw-expandable-wrapper {
