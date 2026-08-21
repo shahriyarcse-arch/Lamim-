@@ -11,66 +11,22 @@ const Habits = {
   customMinute: 0,
   customAMPM: 'AM',
   _expandedHabitIds: new Set(),
-  _expandTimers: {},
 
   toggleHabitExpand(habitId) {
     const card = document.getElementById(`habit-${habitId}`);
     if (!card) return;
-    const wrapper = card.querySelector('.iw-expandable-wrapper');
-    const content = card.querySelector('.iw-expandable-content');
-    if (!wrapper || !content) return;
-
-    if (this._expandTimers[habitId]) {
-      clearTimeout(this._expandTimers[habitId]);
-      delete this._expandTimers[habitId];
-    }
     
+    if (!this._expandedHabitIds) this._expandedHabitIds = new Set();
     const isExpanded = this._expandedHabitIds.has(habitId);
+    
     if (isExpanded) {
       this._expandedHabitIds.delete(habitId);
       card.classList.remove('is-expanded');
       card.querySelector('.iw-collapsed-header')?.setAttribute('aria-expanded', 'false');
-      
-      const currentHeight = wrapper.offsetHeight;
-      wrapper.style.height = currentHeight + 'px';
-      wrapper.style.overflow = 'hidden';
-      wrapper.style.transition = 'height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease';
-      
-      void wrapper.offsetHeight;
-      
-      wrapper.style.height = '0px';
-      wrapper.style.opacity = '0';
-      
-      this._expandTimers[habitId] = setTimeout(() => {
-        if (!this._expandedHabitIds.has(habitId)) {
-          wrapper.style.display = 'none';
-        }
-        delete this._expandTimers[habitId];
-      }, 310);
     } else {
       this._expandedHabitIds.add(habitId);
       card.classList.add('is-expanded');
       card.querySelector('.iw-collapsed-header')?.setAttribute('aria-expanded', 'true');
-      
-      wrapper.style.display = 'block';
-      wrapper.style.overflow = 'hidden';
-      wrapper.style.height = '0px';
-      wrapper.style.opacity = '0';
-      
-      const targetHeight = content.scrollHeight;
-      wrapper.style.transition = 'height 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.28s ease';
-      
-      void wrapper.offsetHeight;
-      
-      wrapper.style.height = targetHeight + 'px';
-      wrapper.style.opacity = '1';
-      
-      this._expandTimers[habitId] = setTimeout(() => {
-        if (this._expandedHabitIds.has(habitId)) {
-          wrapper.style.height = 'auto';
-        }
-        delete this._expandTimers[habitId];
-      }, 360);
     }
   },
   
@@ -837,7 +793,7 @@ const Habits = {
         ${isLegendary ? '<div class="iw-particles"></div>' : ''}
         
         <!-- COMPACT ACCORDION HEADER (Always visible) -->
-        <div class="iw-collapsed-header" role="button" tabindex="0" onclick="Habits.toggleHabitExpand('${habit.id}')" aria-expanded="${isExpanded ? 'true' : 'false'}">
+        <div class="iw-collapsed-header" role="button" tabindex="0" onclick="Habits.toggleHabitExpand('${habit.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Habits.toggleHabitExpand('${habit.id}');}" aria-expanded="${isExpanded ? 'true' : 'false'}">
           <div class="iw-compact-left">
             <div class="iw-compact-icon">
               <span class="iw-compact-icon-svg">${currentBadge ? currentBadge.emoji : habit.icon}</span>
@@ -856,16 +812,16 @@ const Habits = {
               <span class="iw-compact-streak-num habits-compact-days" data-habit-days="${habit.id}">${window.n ? window.n(timeStats.days) : timeStats.days}</span>
               <span class="iw-compact-streak-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'দিন' : 'd'}</span>
             </div>
-            <button type="button" class="iw-expand-toggle-btn" aria-label="Toggle habit details">
+            <div class="iw-expand-toggle-btn" aria-hidden="true">
               <svg class="iw-chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
-            </button>
+            </div>
           </div>
         </div>
 
-        <!-- EXPANDABLE FULL DASHBOARD (Expands on click) -->
-        <div class="iw-expandable-wrapper" style="${isExpanded ? 'height:auto; opacity:1; display:block;' : 'height:0px; opacity:0; display:none; overflow:hidden;'}">
+        <!-- EXPANDABLE FULL DASHBOARD (Pure CSS Grid 60fps Animation) -->
+        <div class="iw-expandable-wrapper">
           <div class="iw-expandable-content">
             <div class="iw-header">
               <div class="iw-quote ${quoteData.effectClass}">${quoteHTML}</div>

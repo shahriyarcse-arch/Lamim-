@@ -510,7 +510,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-text-muted);
-  cursor: pointer;
+  pointer-events: none; /* Prevent double-dispatch click bubbling */
   transition: all 0.25s ease;
 }
 
@@ -529,21 +529,37 @@
   color: var(--theme-color);
 }
 
-/* Expandable Content Area - 60fps Butter Smooth Pixel Height Engine */
+/* Expandable Content Area - 60fps Butter Smooth Pure CSS Grid Engine */
 .iw-expandable-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.24s ease;
+  opacity: 0;
   width: 100%;
-  overflow: hidden;
   box-sizing: border-box;
-  will-change: height, opacity;
+  overflow: hidden;
+  will-change: grid-template-rows, opacity;
+}
+
+.iron-will-widget.is-expanded .iw-expandable-wrapper {
+  grid-template-rows: 1fr;
+  opacity: 1;
 }
 
 .iw-expandable-content {
   box-sizing: border-box;
   width: 100%;
-  padding: 16px 16px 20px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+  min-height: 0;
+  transition: padding 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.iron-will-widget.is-expanded .iw-expandable-content {
+  padding: 16px 16px 20px;
 }
 
 /* Limit repaint scope of the heavy badge glow animations */
