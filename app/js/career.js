@@ -313,11 +313,11 @@ const Career = {
     }
   },
 
-  /* ---------- PDF export ---------- */
   exportPDF() {
-    const year = this.selectedDate.slice(0, 4);
-    const month = this.selectedDate.slice(5, 7);
-    const monthName = new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const selDate = this.selectedDate || Utils.todayStr();
+    const year = selDate.slice(0, 4);
+    const month = selDate.slice(5, 7);
+    const monthName = new Date(parseInt(year, 10), parseInt(month, 10) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     const daysInMonth = new Date(parseInt(year, 10), parseInt(month, 10), 0).getDate();
     const todayStr = Utils.todayStr();
 
@@ -348,7 +348,7 @@ const Career = {
     const monthNames = (typeof App !== 'undefined' && App.lang === 'bn')
       ? ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগ', 'সেপ্ট', 'অক্ট', 'নভে', 'ডিসে']
       : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const nowD = Utils.parseDate(this.selectedDate);
+    const nowD = Utils.parseDate(selDate);
     const todayDate = new Date();
     const trend = [];
     for (let i = 5; i >= 0; i--) {
@@ -421,82 +421,130 @@ const Career = {
       </div>`;
     }).join('');
 
+    const user = DB.getUser() || { name: 'Professional' };
     const domainHtml = topicPills ? `
-      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:4px 8px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:7.5px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.5px;">Key Focus Domains:</span>
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:6px 12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:8px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.5px;">Key Focus Domains:</span>
         <div style="display:flex; gap:6px;">${topicPills}</div>
       </div>
     ` : '';
 
     const genDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Career & Study Report — ${monthName}</title>
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Career & Study Report — ${monthName} ${year}</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
       @page { size: A4 portrait; margin: 8mm 10mm; }
-      * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; background: #fff; line-height: 1.25; font-size: 8.5px; }
-      .header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; margin-bottom: 8px; border-radius: 10px; overflow: hidden; background: linear-gradient(120deg, #4f46e5 0%, #6366f1 40%, #0d9488 100%); color: #fff; }
-      .logo { font-size: 16px; font-weight: 900; letter-spacing: 0.15em; line-height: 1; }
-      .subtitle { font-size: 7.5px; color: rgba(255,255,255,0.9); font-weight: 700; letter-spacing: 0.1em; margin-top: 2px; }
-      .meta { text-align: right; font-size: 8px; color: rgba(255,255,255,0.9); }
-      .meta strong { font-size: 11px; color: #fff; font-weight: 800; }
-      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
-      .sum-card { background: #f8fafc; border-radius: 8px; padding: 6px 8px; border: 1px solid #eef0f4; position: relative; overflow: hidden; }
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { color: #1e293b; background: #fff; line-height: 1.3; font-size: 9px; }
+      .page { width: 100%; min-height: 1040px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+      
+      .header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 14px 18px; 
+        margin-bottom: 10px; 
+        border-radius: 12px; 
+        background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 45%, #4f46e5 100%); 
+        color: #fff; 
+      }
+      .logo { font-size: 20px; font-weight: 900; letter-spacing: 0.05em; line-height: 1; color: #fff; }
+      .subtitle { font-size: 8px; color: rgba(255,255,255,0.85); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+      .meta { text-align: right; }
+      .meta strong { font-size: 14px; color: #fff; font-weight: 800; line-height: 1.1; display: block; }
+      .meta span { font-size: 8px; color: #c7d2fe; font-weight: 700; }
+
+      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+      .sum-card { background: #f8fafc; border-radius: 10px; padding: 10px 12px; border: 1px solid #e2e8f0; position: relative; overflow: hidden; }
       .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--c, #6366f1); }
       .sum-card:nth-child(1) { --c: #6366f1; }
       .sum-card:nth-child(2) { --c: #0d9488; }
       .sum-card:nth-child(3) { --c: #f59e0b; }
       .sum-card:nth-child(4) { --c: #ec4899; }
-      .sum-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; }
-      .sum-val { font-size: 15px; font-weight: 900; color: #0f172a; margin-top: 1px; }
-      .trend-panel { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 6px; }
-      .trend-title { font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 3px; }
-      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
-      table { width: 100%; border-collapse: collapse; font-size: 8px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; table-layout: fixed; }
-      th { background: #f1f5f9; color: #475569; padding: 3px 4px; text-align: center; font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
-      th:first-child { text-align: left; padding-left: 6px; width: 18%; }
+      .sum-label { font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; font-weight: 800; }
+      .sum-val { font-size: 19px; font-weight: 900; color: #0f172a; margin-top: 3px; line-height: 1.1; }
+      
+      .productivity-kpi-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
+      .pk-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+      .pk-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+
+      .trend-panel { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 12px; margin-bottom: 10px; }
+      .trend-title { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 6px; }
+      
+      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+      table { width: 100%; border-collapse: collapse; font-size: 8.5px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; table-layout: fixed; background: #fff; }
+      th { background: #f1f5f9; color: #334155; padding: 5px 4px; text-align: center; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+      th:first-child { text-align: left; padding-left: 8px; width: 18%; }
       th:nth-child(2) { width: 20%; }
-      td { padding: 2.5px 4px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
+      td { padding: 4.8px 4px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+      td:first-child { padding-left: 8px; }
       tbody tr:nth-child(even) { background: #fafbfc; }
-      .footer { padding-top: 4px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; }
+
+      .ayah-quote { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #3730a3; font-size: 8px; line-height: 1.35; text-align: center; }
+      .ayah-ref { font-weight: 800; color: #4f46e5; margin-top: 2px; }
+
+      .footer { padding-top: 6px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; font-weight: 600; }
       .footer .brand { font-weight: 800; color: #4f46e5; }
       @media print {
         body { padding: 0; }
         .page { break-inside: avoid; }
       }
     </style></head><body>
-    <div class="header">
+    <div class="page">
       <div>
-        <div class="logo">LAMIM</div>
-        <div class="subtitle">CAREER & STUDY PERFORMANCE AUDIT</div>
+        <div class="header">
+          <div>
+            <div class="logo">LAMIM CAREER & STUDY</div>
+            <div class="subtitle">Execution & Professional Mastery Audit</div>
+          </div>
+          <div class="meta">
+            <strong>${Utils.escapeHTML(user.name || 'Professional')}</strong>
+            <span>${monthName} ${year} • REF: CBR-${year}${month}</span>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="sum-card"><div class="sum-label">Goals Planned</div><div class="sum-val">${totalGoals}</div></div>
+          <div class="sum-card"><div class="sum-label">Tasks Done</div><div class="sum-val">${goalsDone}</div></div>
+          <div class="sum-card"><div class="sum-label">Execution Rate</div><div class="sum-val">${completionPct}%</div></div>
+          <div class="sum-card"><div class="sum-label">Streak Active</div><div class="sum-val">${goalStreak} days</div></div>
+        </div>
+
+        <div class="productivity-kpi-box">
+          <div><div class="pk-lbl">Execution Grade</div><div class="pk-val" style="color:#4f46e5;">${completionPct >= 80 ? 'Mastery (A+)' : (completionPct >= 60 ? 'Consistent (B)' : 'Building (C)')}</div></div>
+          <div><div class="pk-lbl">Milestone Output</div><div class="pk-val" style="color:#0d9488;">${goalsDone} Completed</div></div>
+          <div><div class="pk-lbl">Active Velocity</div><div class="pk-val" style="color:#f59e0b;">${daysInMonth} Days Monitored</div></div>
+          <div><div class="pk-lbl">Audit Status</div><div class="pk-val" style="color:#10b981;">Verified</div></div>
+        </div>
+
+        <div class="trend-panel">
+          <div class="trend-title">6-Month Momentum Trend</div>
+          <div style="display:flex;gap:12px;align-items:flex-end;">${trendBars}</div>
+        </div>
+
+        ${domainHtml}
+
+        <div class="grid-tables">
+          <table>
+            <thead><tr><th>Date</th><th>Done</th><th>Milestone Tasks</th></tr></thead>
+            <tbody>${col1Rows}</tbody>
+          </table>
+          <table>
+            <thead><tr><th>Date</th><th>Done</th><th>Milestone Tasks</th></tr></thead>
+            <tbody>${col2Rows}</tbody>
+          </table>
+        </div>
+
+        <div class="ayah-quote">
+          "And say: 'My Lord, increase me in knowledge.'"
+          <div class="ayah-ref">— Surah Ta-Ha (20:114)</div>
+        </div>
       </div>
-      <div class="meta">
-        <strong>${monthName}</strong> • REF: CBR-${year}${month}
+
+      <div class="footer">
+        <span>LAMIM ECOSYSTEM • SECURE CAREER & STUDY AUDIT</span>
+        <span class="brand">v2.1.0 "Aura" • Page 1 of 1</span>
       </div>
-    </div>
-    <div class="summary">
-      <div class="sum-card"><div class="sum-label">Goals Set</div><div class="sum-val">${totalGoals}</div></div>
-      <div class="sum-card"><div class="sum-label">Goals Done</div><div class="sum-val">${goalsDone}</div></div>
-      <div class="sum-card"><div class="sum-label">Completion</div><div class="sum-val">${completionPct}%</div></div>
-      <div class="sum-card"><div class="sum-label">Streak</div><div class="sum-val">${goalStreak} days</div></div>
-    </div>
-    <div class="trend-panel">
-      <div class="trend-title">6-Month Momentum Trend</div>
-      <div style="display:flex;gap:10px;align-items:flex-end;">${trendBars}</div>
-    </div>
-    <div class="grid-tables">
-      <table>
-        <thead><tr><th>Date</th><th>Done</th><th>Milestone Tasks</th></tr></thead>
-        <tbody>${col1Rows}</tbody>
-      </table>
-      <table>
-        <thead><tr><th>Date</th><th>Done</th><th>Milestone Tasks</th></tr></thead>
-        <tbody>${col2Rows}</tbody>
-      </table>
-    </div>
-    ${domainHtml}
-    <div class="footer">
-      <span>"The secret of getting ahead is getting started." — Mark Twain</span>
-      <span class="brand">LAMIM v2.1.0 • ${genDate}</span>
     </div>
     </body></html>`;
     Utils.exportPDF(html);

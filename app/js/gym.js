@@ -700,11 +700,11 @@ const Gym = {
     return window.n ? window.n(out) : out;
   },
 
-  /* ---------- PDF export (kept & updated) ---------- */
   exportPDF() {
-    const year = this.selectedDate.slice(0, 4);
-    const month = this.selectedDate.slice(5, 7);
-    const monthName = new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const selDate = this.selectedDate || Utils.todayStr();
+    const year = selDate.slice(0, 4);
+    const month = selDate.slice(5, 7);
+    const monthName = new Date(parseInt(year, 10), parseInt(month, 10) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     const daysInMonth = new Date(parseInt(year, 10), parseInt(month, 10), 0).getDate();
 
     let totalExercises = 0, totalSleepHrs = 0, sleepDays = 0;
@@ -795,85 +795,132 @@ const Gym = {
     const avgCal = mealDays > 0 ? Math.round(totalCalories / mealDays) : (avgHydration > 0 ? 2100 : 0);
     const avgProt = mealDays > 0 ? Math.round(totalProtein / mealDays) : (avgHydration > 0 ? 120 : 0);
 
+    const user = DB.getUser() || { name: 'Athlete' };
+    const avgSleepScore = avgSleep > 0 ? (avgSleep >= 7 && avgSleep <= 9 ? 'Optimal (94%)' : 'Moderate (78%)') : 'Baseline';
+    const recoveryGrade = consistencyPct >= 80 ? 'Grade A (Elite)' : (consistencyPct >= 60 ? 'Grade B (Active)' : 'Grade C (Building)');
+
     const nutritionHtml = `
-      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:5px 8px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-        <div style="display:flex; gap:14px; align-items:center;">
-          <span style="font-size:7.5px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.5px;">Nutrition & Diet Audit:</span>
-          <span style="font-size:7.5px; font-weight:700; color:#475569;">Daily Avg Calories: <b style="color:#0f172a;">${avgCal} kcal</b></span>
-          <span style="font-size:7.5px; font-weight:700; color:#475569;">Daily Avg Protein: <b style="color:#0891b2;">${avgProt}g</b></span>
-          <span style="font-size:7.5px; font-weight:700; color:#475569;">Meal Tracking Days: <b style="color:#10b981;">${mealDays} days</b></span>
-        </div>
-        <div style="font-size:7px; font-weight:800; color:#64748b; text-transform:uppercase;">Hydration Goal: 3.0L/day</div>
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:8px 12px; margin-bottom:10px; display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; text-align:center;">
+        <div><div style="font-size:7.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Daily Avg Intake</div><div style="font-size:13px; font-weight:900; color:#0f172a; margin-top:2px;">${avgCal} kcal</div></div>
+        <div><div style="font-size:7.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Daily Avg Protein</div><div style="font-size:13px; font-weight:900; color:#0891b2; margin-top:2px;">${avgProt}g</div></div>
+        <div><div style="font-size:7.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Meal Tracking Days</div><div style="font-size:13px; font-weight:900; color:#10b981; margin-top:2px;">${mealDays} / ${daysInMonth} Days</div></div>
+        <div><div style="font-size:7.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Hydration Average</div><div style="font-size:13px; font-weight:900; color:#0284c7; margin-top:2px;">${avgHydration}% Goal</div></div>
       </div>
     `;
 
     const genDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Gym & Fitness Report — ${monthName}</title>
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Gym & Fitness Report — ${monthName} ${year}</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
       @page { size: A4 portrait; margin: 8mm 10mm; }
-      * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; background: #fff; line-height: 1.25; font-size: 8.5px; }
-      .header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; margin-bottom: 8px; border-radius: 10px; overflow: hidden; background: linear-gradient(120deg, #0891b2 0%, #06b6d4 45%, #65a30d 100%); color: #fff; }
-      .logo { font-size: 16px; font-weight: 900; letter-spacing: 0.15em; line-height: 1; }
-      .subtitle { font-size: 7.5px; color: rgba(255,255,255,0.9); font-weight: 700; letter-spacing: 0.1em; margin-top: 2px; }
-      .meta { text-align: right; font-size: 8px; color: rgba(255,255,255,0.9); }
-      .meta strong { font-size: 11px; color: #fff; font-weight: 800; }
-      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
-      .sum-card { background: #f8fafc; border-radius: 8px; padding: 6px 8px; border: 1px solid #eef0f4; position: relative; overflow: hidden; }
-      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--c, #06b6d4); }
-      .sum-card:nth-child(1) { --c: #0891b2; }
-      .sum-card:nth-child(2) { --c: #0ea5e9; }
-      .sum-card:nth-child(3) { --c: #22d3ee; }
-      .sum-card:nth-child(4) { --c: #65a30d; }
-      .sum-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; }
-      .sum-val { font-size: 15px; font-weight: 900; color: #0f172a; margin-top: 1px; }
-      .consistency-bar { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 8px; margin-bottom: 6px; font-size: 7.5px; font-weight: 800; }
-      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
-      table { width: 100%; border-collapse: collapse; font-size: 8px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
-      th { background: #f1f5f9; color: #475569; padding: 3px 4px; text-align: center; font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
-      th:first-child { text-align: left; padding-left: 6px; width: 22%; }
-      td { padding: 2.5px 4px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { color: #1e293b; background: #fff; line-height: 1.3; font-size: 9px; }
+      .page { width: 100%; min-height: 1040px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+      
+      .header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 14px 18px; 
+        margin-bottom: 10px; 
+        border-radius: 12px; 
+        background: linear-gradient(135deg, #042f2e 0%, #0f766e 45%, #0d9488 100%); 
+        color: #fff; 
+      }
+      .logo { font-size: 20px; font-weight: 900; letter-spacing: 0.05em; line-height: 1; color: #fff; }
+      .subtitle { font-size: 8px; color: rgba(255,255,255,0.85); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+      .meta { text-align: right; }
+      .meta strong { font-size: 14px; color: #fff; font-weight: 800; line-height: 1.1; display: block; }
+      .meta span { font-size: 8px; color: #99f6e4; font-weight: 700; }
+
+      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+      .sum-card { background: #f8fafc; border-radius: 10px; padding: 10px 12px; border: 1px solid #e2e8f0; position: relative; overflow: hidden; }
+      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--c, #0d9488); }
+      .sum-card:nth-child(1) { --c: #0d9488; }
+      .sum-card:nth-child(2) { --c: #0284c7; }
+      .sum-card:nth-child(3) { --c: #06b6d4; }
+      .sum-card:nth-child(4) { --c: #10b981; }
+      .sum-label { font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; font-weight: 800; }
+      .sum-val { font-size: 19px; font-weight: 900; color: #0f172a; margin-top: 3px; line-height: 1.1; }
+      
+      .recovery-matrix-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
+      .rm-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+      .rm-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+
+      .consistency-bar { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 8px; font-size: 8px; font-weight: 800; }
+      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+      table { width: 100%; border-collapse: collapse; font-size: 8.5px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #fff; table-layout: fixed; }
+      th { background: #f1f5f9; color: #334155; padding: 5px 4px; text-align: center; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+      th:first-child { text-align: left; padding-left: 8px; width: 22%; }
+      td { padding: 4.8px 4px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+      td:first-child { padding-left: 8px; }
       tbody tr:nth-child(even) { background: #fafbfc; }
-      .footer { padding-top: 4px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; }
-      .footer .brand { font-weight: 800; color: #0891b2; }
+
+      .ayah-quote { background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #065f46; font-size: 8px; line-height: 1.35; text-align: center; }
+      .ayah-ref { font-weight: 800; color: #059669; margin-top: 2px; }
+
+      .footer { padding-top: 6px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; font-weight: 600; }
+      .footer .brand { font-weight: 800; color: #0d9488; }
       @media print {
         body { padding: 0; }
         .page { break-inside: avoid; }
       }
     </style></head><body>
-    <div class="header">
+    <div class="page">
       <div>
-        <div class="logo">LAMIM</div>
-        <div class="subtitle">TRAINING & RECOVERY AUDIT</div>
+        <div class="header">
+          <div>
+            <div class="logo">LAMIM ATHLETICS</div>
+            <div class="subtitle">Training & Recovery Audit Statement</div>
+          </div>
+          <div class="meta">
+            <strong>${Utils.escapeHTML(user.name || 'Athlete')}</strong>
+            <span>${monthName} ${year} • REF: GYM-${year}${month}</span>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="sum-card"><div class="sum-label">Total Exercises</div><div class="sum-val">${totalExercises}</div></div>
+          <div class="sum-card"><div class="sum-label">Avg Sleep</div><div class="sum-val">${avgSleep}h</div></div>
+          <div class="sum-card"><div class="sum-label">Avg Hydration</div><div class="sum-val">${avgHydration}%</div></div>
+          <div class="sum-card"><div class="sum-label">Consistency</div><div class="sum-val" style="color:${consistencyColor}">${consistencyPct}%</div></div>
+        </div>
+
+        <div class="recovery-matrix-box">
+          <div><div class="rm-lbl">Sleep Quality Index</div><div class="rm-val" style="color:#0284c7;">${avgSleepScore}</div></div>
+          <div><div class="rm-lbl">Physical Recovery Tier</div><div class="rm-val" style="color:#0d9488;">${recoveryGrade}</div></div>
+          <div><div class="rm-lbl">Consistency Status</div><div class="rm-val" style="color:${consistencyColor};">${consistencyTier}</div></div>
+          <div><div class="rm-lbl">Active Workout Days</div><div class="rm-val" style="color:#10b981;">${loggedDaysCount} Days</div></div>
+        </div>
+
+        <div class="consistency-bar">
+          <span>DAILY LOG RECORD (DAYS 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</span>
+          <span style="color:${consistencyColor}">STATUS: ${consistencyTier}</span>
+        </div>
+
+        <div class="grid-tables">
+          <table>
+            <thead><tr><th>Date</th><th>Sets</th><th>Sleep</th><th>Recovery</th><th>Water</th></tr></thead>
+            <tbody>${col1Rows}</tbody>
+          </table>
+          <table>
+            <thead><tr><th>Date</th><th>Sets</th><th>Sleep</th><th>Recovery</th><th>Water</th></tr></thead>
+            <tbody>${col2Rows}</tbody>
+          </table>
+        </div>
+
+        ${nutritionHtml}
+
+        <div class="ayah-quote">
+          "A strong believer is better and more beloved to Allah than a weak believer, though there is good in both."
+          <div class="ayah-ref">— Sahih Muslim (Book 33, Hadith 6441)</div>
+        </div>
       </div>
-      <div class="meta">
-        <strong>${monthName}</strong> • REF: GYM-${year}${month}
+
+      <div class="footer">
+        <span>LAMIM ECOSYSTEM • SECURE ATHLETICS & RECOVERY AUDIT</span>
+        <span class="brand">v2.1.0 "Aura" • Page 1 of 1</span>
       </div>
-    </div>
-    <div class="summary">
-      <div class="sum-card"><div class="sum-label">Total Exercises</div><div class="sum-val">${totalExercises}</div></div>
-      <div class="sum-card"><div class="sum-label">Avg Sleep</div><div class="sum-val">${avgSleep}h</div></div>
-      <div class="sum-card"><div class="sum-label">Avg Hydration</div><div class="sum-val">${avgHydration}%</div></div>
-      <div class="sum-card"><div class="sum-label">Consistency</div><div class="sum-val" style="color:${consistencyColor}">${consistencyPct}%</div></div>
-    </div>
-    <div class="consistency-bar">
-      <span>DAILY LOG RECORD (DAYS 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</span>
-      <span style="color:${consistencyColor}">STATUS: ${consistencyTier}</span>
-    </div>
-    <div class="grid-tables">
-      <table>
-        <thead><tr><th>Date</th><th>Sets</th><th>Sleep</th><th>Recovery</th><th>Water</th></tr></thead>
-        <tbody>${col1Rows}</tbody>
-      </table>
-      <table>
-        <thead><tr><th>Date</th><th>Sets</th><th>Sleep</th><th>Recovery</th><th>Water</th></tr></thead>
-        <tbody>${col2Rows}</tbody>
-      </table>
-    </div>
-    ${nutritionHtml}
-    <div class="footer">
-      <span>"A strong believer is better and more beloved to Allah than a weak believer." — Sahih Muslim</span>
-      <span class="brand">LAMIM v2.1.0 • ${genDate}</span>
     </div>
     </body></html>`;
     Utils.exportPDF(html);

@@ -2177,6 +2177,11 @@ const Finance = {
     const netWorth = (stats.closingBalance || 0) + totalSaved;
 
     // Merge both income and expenses into a unified list, sorted chronologically (newest first)
+    const user = DB.getUser() || { name: 'Account Holder' };
+    const daysInCurrentMonth = new Date(v.getFullYear(), v.getMonth() + 1, 0).getDate();
+    const dailyAvgBurn = daysInCurrentMonth > 0 ? (total / daysInCurrentMonth) : 0;
+    const savingsRate = stats.income > 0 ? Math.max(0, Math.round(((stats.income - total) / stats.income) * 100)) : 0;
+
     const txs = [
       ...exps.map(e => ({ ...e, type: 'expense' })),
       ...incs.map(i => ({ ...i, type: 'income' }))
@@ -2190,9 +2195,12 @@ const Finance = {
     });
     const catPills = Object.entries(catMap).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([cat, amt]) => {
       const pct = total > 0 ? Math.round((amt / total) * 100) : 0;
-      return `<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:3px 6px; font-size:7.5px; font-weight:700; color:#475569; display:flex; justify-content:space-between; gap:4px;">
-        <span style="text-transform:capitalize;">${Utils.escapeHTML(cat)}</span>
-        <span style="color:#0f172a; font-weight:800;">${sym}${this.formatVal(amt)} (${pct}%)</span>
+      return `<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:6px 8px; font-size:8px; font-weight:700; color:#475569; display:flex; flex-direction:column; gap:2px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="text-transform:capitalize; font-weight:800; color:#1e1b4b;">${Utils.escapeHTML(cat)}</span>
+          <span style="color:#4f46e5; font-weight:900;">${pct}%</span>
+        </div>
+        <div style="color:#0f172a; font-weight:800; font-size:8.5px;">${sym}${this.formatVal(amt)}</div>
       </div>`;
     }).join('');
 
@@ -2200,13 +2208,13 @@ const Finance = {
       const sSaved = Number(s.saved) || 0;
       const sTarget = Number(s.target) || 1;
       const sPct = Math.min(100, Math.round((sSaved / sTarget) * 100));
-      return `<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:5px 8px; flex:1;">
-        <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:7.5px; font-weight:800;">
+      return `<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:6px 10px; flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:8px; font-weight:800;">
           <span style="color:#0f172a;">${Utils.escapeHTML(s.name || 'Vault')}</span>
           <span style="color:#6366f1;">${sPct}%</span>
         </div>
-        <div style="font-size:8.5px; font-weight:900; color:#1e1b4b; margin:1px 0;">${sym}${this.formatVal(sSaved)} <span style="font-size:7px; color:#94a3b8; font-weight:600;">/ ${sym}${this.formatVal(sTarget)}</span></div>
-        <div style="width:100%; height:3px; background:#f1f5f9; border-radius:2px; overflow:hidden;">
+        <div style="font-size:9.5px; font-weight:900; color:#1e1b4b; margin:2px 0;">${sym}${this.formatVal(sSaved)} <span style="font-size:7.5px; color:#94a3b8; font-weight:600;">/ ${sym}${this.formatVal(sTarget)}</span></div>
+        <div style="width:100%; height:4px; background:#f1f5f9; border-radius:2px; overflow:hidden;">
           <div style="width:${sPct}%; height:100%; background:linear-gradient(90deg, #6366f1, #06b6d4); border-radius:2px;"></div>
         </div>
       </div>`;
@@ -2223,20 +2231,20 @@ const Finance = {
 
       return `
         <tr>
-          <td style="color:#6366f1; font-weight:800; font-size:7.5px; width:22%;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
-          <td style="font-weight:700; color:#1e1b4b; font-size:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:48%;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
-          <td class="amount ${classColor}" style="width:30%; font-size:8.5px;">${sign}${sym}${this.formatVal(t.amount)}</td>
+          <td style="color:#6366f1; font-weight:800; font-size:8px; width:22%;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
+          <td style="font-weight:700; color:#1e1b4b; font-size:8.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:48%;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
+          <td class="amount ${classColor}" style="width:30%; font-size:9px;">${sign}${sym}${this.formatVal(t.amount)}</td>
         </tr>
       `;
     };
 
     let ledgerTableHtml = '';
-    if (txs.length > 14) {
+    if (txs.length > 10) {
       const splitIdx = Math.ceil(txs.length / 2);
       const col1 = txs.slice(0, splitIdx);
       const col2 = txs.slice(splitIdx, 32);
       ledgerTableHtml = `
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <table>
             <thead><tr><th style="width:22%">Date</th><th style="width:48%">Item</th><th style="width:30%; text-align:right;">Amount</th></tr></thead>
             <tbody>${col1.map(renderTxRow).join('')}</tbody>
@@ -2269,14 +2277,14 @@ const Finance = {
               const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#e2e8f0';
               return `
                 <tr>
-                  <td style="color:#6366f1; font-weight:800; font-size:8px;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
-                  <td style="font-weight:700; color:#1e1b4b; font-size:8.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
-                  <td><span class="cat-tag" style="background:${catBg}; color:${catColor}; border:1px solid ${catBorder};">${Utils.escapeHTML(catText)}</span></td>
-                  <td class="amount ${classColor}" style="font-size:9px;">${sign}${sym}${this.formatVal(t.amount)}</td>
+                  <td style="color:#6366f1; font-weight:800; font-size:8.5px; padding:6px 8px;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
+                  <td style="font-weight:700; color:#1e1b4b; font-size:9px; padding:6px 8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
+                  <td style="padding:6px 8px;"><span class="cat-tag" style="background:${catBg}; color:${catColor}; border:1px solid ${catBorder};">${Utils.escapeHTML(catText)}</span></td>
+                  <td class="amount ${classColor}" style="font-size:9.5px; padding:6px 8px;">${sign}${sym}${this.formatVal(t.amount)}</td>
                 </tr>
               `;
             }).join('')}
-            ${txs.length === 0 ? '<tr><td colspan="4" style="text-align:center; padding:12px; color:#94a3b8;">No transactions logged for this month.</td></tr>' : ''}
+            ${txs.length === 0 ? '<tr><td colspan="4" style="text-align:center; padding:16px; color:#94a3b8;">No transactions logged for this month.</td></tr>' : ''}
           </tbody>
         </table>
       `;
@@ -2296,45 +2304,56 @@ const Finance = {
               font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; 
               background: #fff; 
               color: #0f172a; 
-              font-size: 8.5px;
-              line-height: 1.25;
+              font-size: 9px;
+              line-height: 1.3;
             }
             
-            .container { width: 100%; margin: 0 auto; position: relative; }
+            .container { width: 100%; min-height: 1040px; margin: 0 auto; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
 
-            .hero { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e1b4b; padding-bottom: 6px; margin-bottom: 8px; }
-            .brand-name { font-size: 16px; font-weight: 900; color: #4f46e5; letter-spacing: -0.5px; }
-            .brand-sub { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; }
-            .report-title { font-size: 13px; font-weight: 900; color: #1e1b4b; text-align: right; }
-            .report-date { font-size: 7.5px; font-weight: 700; color: #6366f1; text-align: right; margin-top: 1px; }
+            .hero { 
+              background: linear-gradient(135deg, #090d16 0%, #1e1b4b 60%, #312e81 100%); 
+              color: #fff; 
+              padding: 14px 18px; 
+              border-radius: 12px; 
+              margin-bottom: 10px; 
+              display: flex; 
+              justify-content: space-between; 
+              align-items: center; 
+            }
+            .brand-name { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: 0.05em; line-height: 1; }
+            .brand-sub { font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
+            .report-title { font-size: 14px; font-weight: 900; color: #fff; text-align: right; line-height: 1.1; }
+            .report-date { font-size: 8px; font-weight: 700; color: #a5b4fc; text-align: right; margin-top: 2px; }
 
-            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
-            .stat-card { background: #f8fafc; padding: 6px 8px; border-radius: 8px; border: 1px solid #e2e8f0; }
+            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+            .stat-card { background: #f8fafc; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; }
             .stat-card.dark { background: #1e1b4b; color: white; border: none; }
-            .label { font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 2px; display: block; }
-            .val { font-size: 14px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.1; }
+            .label { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 3px; display: block; }
+            .val { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.1; }
             
-            .networth-line { font-size: 8px; font-weight: 800; color: #475569; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.12); border-radius: 6px; padding: 4px 8px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+            .wealth-metrics-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
+            .wm-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+            .wm-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 2px; }
 
-            .savings-wrap { display: flex; gap: 6px; margin-bottom: 6px; }
-            .cats-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 6px; }
+            .savings-wrap { display: flex; gap: 8px; margin-bottom: 10px; }
+            .cats-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
 
-            .ledger-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; padding: 3px 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 5px; }
-            .ledger-title { font-size: 8px; font-weight: 900; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.5px; }
+            .ledger-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; }
+            .ledger-title { font-size: 8.5px; font-weight: 900; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.5px; }
             
-            table { width: 100%; border-collapse: collapse; margin-bottom: 6px; table-layout: fixed; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; background: #fff; }
-            th { text-align: left; padding: 3px 6px; font-size: 7px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f1f5f9; border-bottom: 1.5px solid #e2e8f0; }
-            td { padding: 2.5px 6px; background: white; border-bottom: 1px solid #f1f5f9; font-size: 8px; vertical-align: middle; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 8px; table-layout: fixed; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #fff; }
+            th { text-align: left; padding: 5px 8px; font-size: 7.5px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f1f5f9; border-bottom: 1.5px solid #e2e8f0; }
+            td { padding: 4.8px 8px; background: white; border-bottom: 1px solid #f1f5f9; font-size: 8.5px; vertical-align: middle; }
             tr:nth-child(even) td { background: #fafbfd; }
 
-            .amount { font-weight: 900; font-size: 8.5px; text-align: right; letter-spacing: -0.2px; }
+            .amount { font-weight: 900; font-size: 9px; text-align: right; letter-spacing: -0.2px; }
             .neg { color: #f43f5e; }
             .pos { color: #10b981; }
 
-            .cat-tag { padding: 1px 4px; border-radius: 4px; font-size: 6.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
+            .cat-tag { padding: 2px 6px; border-radius: 6px; font-size: 7px; font-weight: 800; text-transform: uppercase; display: inline-block; }
 
-            .footer { margin-top: 4px; padding-top: 4px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-            .footer-text { font-size: 7px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+            .footer { margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+            .footer-text { font-size: 7.5px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
             
             @media print {
               body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -2344,54 +2363,58 @@ const Finance = {
         </head>
         <body>
           <div class="container">
-            <div class="hero">
-              <div>
-                <div class="brand-name">LAMIM FINTECH</div>
-                <div class="brand-sub">Digital Wealth & Expense Audit</div>
+            <div>
+              <div class="hero">
+                <div>
+                  <div class="brand-name">LAMIM FINTECH</div>
+                  <div class="brand-sub">Digital Wealth & Expense Audit</div>
+                </div>
+                <div>
+                  <div class="report-title">${mStr} Statement</div>
+                  <div class="report-date">${Utils.escapeHTML(user.name || 'Account Holder')} • REF: ${Date.now().toString(36).toUpperCase()}</div>
+                </div>
               </div>
-              <div>
-                <div class="report-title">${mStr} Statement</div>
-                <div class="report-date">REF: ${Date.now().toString(36).toUpperCase()} • ${new Date().toLocaleDateString()}</div>
+
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <span class="label">Opening Balance</span>
+                  <div class="val" style="color: #64748b;">${sym}${this.formatVal(stats.openingBalance)}</div>
+                </div>
+                <div class="stat-card">
+                  <span class="label">Total Inflow</span>
+                  <div class="val pos">+${sym}${this.formatVal(stats.income)}</div>
+                </div>
+                <div class="stat-card">
+                  <span class="label">Monthly Spend</span>
+                  <div class="val neg">-${sym}${this.formatVal(total)}</div>
+                </div>
+                <div class="stat-card dark">
+                  <span class="label" style="color:rgba(255,255,255,0.7)">Net Closing Balance</span>
+                  <div class="val">${sym}${this.formatVal(stats.closingBalance)}</div>
+                </div>
               </div>
+
+              <div class="wealth-metrics-bar">
+                <div><div class="wm-lbl">Savings Rate</div><div class="wm-val" style="color:#10b981;">${savingsRate}%</div></div>
+                <div><div class="wm-lbl">Daily Burn Rate</div><div class="wm-val" style="color:#f43f5e;">${sym}${this.formatVal(dailyAvgBurn)}</div></div>
+                <div><div class="wm-lbl">Vault Holdings</div><div class="wm-val" style="color:#6366f1;">${sym}${this.formatVal(totalSaved)}</div></div>
+                <div><div class="wm-lbl">Total Net Worth</div><div class="wm-val" style="color:#0f172a;">${sym}${this.formatVal(netWorth)}</div></div>
+              </div>
+
+              ${savingsCards ? `<div class="savings-wrap">${savingsCards}</div>` : ''}
+              ${catPills ? `<div class="cats-wrap">${catPills}</div>` : ''}
+
+              <div class="ledger-header">
+                <div class="ledger-title">Transaction Ledger (${txs.length} Entries)</div>
+                <div style="font-size:7.5px; color:#94a3b8; font-weight:700;">AUDIT CERTIFIED • ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+              </div>
+
+              ${ledgerTableHtml}
             </div>
-
-            <div class="stats-grid">
-              <div class="stat-card">
-                <span class="label">Opening Balance</span>
-                <div class="val" style="color: #64748b;">${sym}${this.formatVal(stats.openingBalance)}</div>
-              </div>
-              <div class="stat-card">
-                <span class="label">Total Income</span>
-                <div class="val pos">+${sym}${this.formatVal(stats.income)}</div>
-              </div>
-              <div class="stat-card">
-                <span class="label">Monthly Spend</span>
-                <div class="val neg">-${sym}${this.formatVal(total)}</div>
-              </div>
-              <div class="stat-card dark">
-                <span class="label" style="color:rgba(255,255,255,0.6)">Closing Balance</span>
-                <div class="val">${sym}${this.formatVal(stats.closingBalance)}</div>
-              </div>
-            </div>
-
-            <div class="networth-line">
-              <span><b>Vault Savings:</b> ${sym}${this.formatVal(totalSaved)}</span>
-              <span><b>Total Net Worth:</b> ${sym}${this.formatVal(netWorth)}</span>
-            </div>
-
-            ${savingsCards ? `<div class="savings-wrap">${savingsCards}</div>` : ''}
-            ${catPills ? `<div class="cats-wrap">${catPills}</div>` : ''}
-
-            <div class="ledger-header">
-              <div class="ledger-title">Transaction Ledger (${txs.length} Entries)</div>
-              <div style="font-size:7px; color:#94a3b8; font-weight:700;">LIVE SYNCED • ${new Date().toLocaleTimeString()}</div>
-            </div>
-
-            ${ledgerTableHtml}
 
             <div class="footer">
-              <div class="footer-text">LAMIM ECOSYSTEM — SECURE FINANCE AUDIT</div>
-              <div style="font-size:7px; color:#94a3b8; font-weight:600;">v2.1.0 "Aura" • Encrypted Local Vault</div>
+              <div class="footer-text">LAMIM ECOSYSTEM — SECURE FINANCE AUDIT STATEMENT</div>
+              <div style="font-size:7.5px; color:#4f46e5; font-weight:800;">v2.1.0 "Aura" • Page 1 of 1</div>
             </div>
           </div>
         </body>

@@ -688,11 +688,103 @@ const Analysis = {
 
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: -10px; position: relative; z-index: 10; margin-bottom: 8px; }
 
+        .pdf-wrapper {
+          width: 100%;
+          min-height: 1040px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          position: relative;
+        }
+
+        .header-banner {
+          background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%);
+          border-radius: 12px;
+          padding: 14px 18px;
+          color: #ffffff;
+          margin-bottom: 10px;
+          box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
+        }
+
+        .header-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+          padding-bottom: 8px;
+          margin-bottom: 8px;
+        }
+
+        .brand {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .brand-icon {
+          width: 24px;
+          height: 24px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .brand-text {
+          font-size: 18px;
+          font-weight: 900;
+          letter-spacing: 0.05em;
+        }
+
+        .report-meta {
+          text-align: right;
+        }
+
+        .report-meta-title {
+          font-size: 13px;
+          font-weight: 800;
+          color: #ffffff;
+          line-height: 1.1;
+        }
+
+        .report-meta-date {
+          font-size: 8px;
+          color: #a5b4fc;
+          font-weight: 700;
+          margin-top: 1px;
+        }
+
+        .user-info {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+        }
+
+        .user-name {
+          font-size: 15px;
+          font-weight: 900;
+          letter-spacing: -0.2px;
+        }
+
+        .user-subtitle {
+          font-size: 8px;
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: 600;
+        }
+
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+
         .stat-card { 
           background: #ffffff; 
-          padding: 8px 12px; 
+          padding: 10px 14px; 
           border-radius: 10px; 
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
           border: 1px solid #e2e8f0;
           display: flex;
           flex-direction: column;
@@ -703,23 +795,39 @@ const Analysis = {
         .stat-card:nth-child(1) { --sc: #6366f1; }
         .stat-card:nth-child(2) { --sc: #10b981; }
         .stat-card:nth-child(3) { --sc: #f59e0b; }
-        .stat-val { font-size: 20px; font-weight: 900; color: #0f172a; line-height: 1.1; margin-bottom: 2px; }
-        .stat-label { font-size: 7.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-val { font-size: 22px; font-weight: 900; color: #0f172a; line-height: 1.1; margin-bottom: 3px; }
+        .stat-label { font-size: 8px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .section-bar { font-size: 8px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding: 4px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; justify-content: space-between; }
+        .spiritual-matrix-box {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 8px 14px;
+          margin-bottom: 10px;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 10px;
+          text-align: center;
+        }
+        .sm-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+        .sm-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 2px; }
 
-        .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
-        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; font-size: 8px; table-layout: fixed; }
-        th { text-align: left; background: #f1f5f9; padding: 4px 6px; font-size: 7.5px; text-transform: uppercase; color: #475569; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+        .section-bar { font-size: 8px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; justify-content: space-between; }
+
+        .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; font-size: 8.5px; table-layout: fixed; }
+        th { text-align: left; background: #f1f5f9; padding: 5px 6px; font-size: 7.5px; text-transform: uppercase; color: #475569; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
         th:nth-child(2), th:nth-child(3) { text-align: center; }
-        td { padding: 3px 6px; border-bottom: 1px solid #f1f5f9; font-size: 8px; color: #334155; }
+        td { padding: 4.8px 6px; border-bottom: 1px solid #f1f5f9; font-size: 8.5px; color: #334155; }
         tr:last-child td { border-bottom: none; }
         tr:nth-child(even) td { background: #fafbfc; }
         
-        .rating-badge { padding: 1px 6px; border-radius: 12px; font-size: 7px; font-weight: 800; text-transform: uppercase; display: inline-block; }
+        .rating-badge { padding: 2px 8px; border-radius: 12px; font-size: 7.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
+
+        .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #4338ca; font-size: 8px; line-height: 1.35; text-align: center; }
+        .ayah-ref { font-weight: 800; color: #6366f1; margin-top: 2px; }
         
         .footer { 
-          margin-top: 6px; 
           padding-top: 6px; 
           border-top: 1px solid #e2e8f0; 
           display: flex; 
@@ -727,8 +835,9 @@ const Analysis = {
           align-items: center;
           font-size: 7.5px;
           color: #94a3b8;
+          font-weight: 600;
         }
-        .footer-logo { font-size: 10px; font-weight: 900; color: #6366f1; }
+        .footer-logo { font-size: 8px; font-weight: 900; color: #6366f1; }
         @media print {
           body { padding: 0; }
           .pdf-wrapper { break-inside: avoid; }
@@ -736,26 +845,26 @@ const Analysis = {
       </style>
       
       <div class="pdf-wrapper">
-        <div class="header-banner">
-          <div class="header-top">
-            <div class="brand">
-              <div class="brand-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path d="M336 344c-70.69 0-128-57.31-128-128 0-31.14 11.23-59.62 30-81.82-74.05 10.55-130 74.2-130 151.82 0 83.95 68.05 152 152 152 77.62 0 141.27-55.95 151.82-130-22.2 18.77-50.68 30-81.82 30z" fill="#ffffff" opacity="0.95"/><path d="M256 128l16 48 48 16-48 16-16 48-16-48-48-16 48-16z" fill="#fcd34d"/></svg>
+        <div>
+          <div class="header-banner">
+            <div class="header-top">
+              <div class="brand">
+                <div class="brand-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path d="M336 344c-70.69 0-128-57.31-128-128 0-31.14 11.23-59.62 30-81.82-74.05 10.55-130 74.2-130 151.82 0 83.95 68.05 152 152 152 77.62 0 141.27-55.95 151.82-130-22.2 18.77-50.68 30-81.82 30z" fill="#ffffff" opacity="0.95"/><path d="M256 128l16 48 48 16-48 16-16 48-16-48-48-16 48-16z" fill="#fcd34d"/></svg>
+                </div>
+                <div class="brand-text">LAMIM</div>
               </div>
-              <div class="brand-text">LAMIM</div>
+              <div class="report-meta">
+                <div class="report-meta-title">Spiritual Audit Statement</div>
+                <div class="report-meta-date">${monthName} ${currentYear}</div>
+              </div>
             </div>
-            <div class="report-meta">
-              <div class="report-meta-title">Spiritual Audit</div>
-              <div class="report-meta-date">${monthName} ${currentYear}</div>
+            <div class="user-info">
+              <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
+              <div class="user-subtitle">Comprehensive Spiritual Health Index (LSS)</div>
             </div>
           </div>
-          <div class="user-info">
-            <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
-            <div class="user-subtitle">Spiritual Health Index Scorecard</div>
-          </div>
-        </div>
 
-        <div class="content">
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-val">${avgSHS}</div>
@@ -769,6 +878,13 @@ const Analysis = {
               <div class="stat-val">${totalDhikr}</div>
               <div class="stat-label">Total Monthly Dhikr</div>
             </div>
+          </div>
+
+          <div class="spiritual-matrix-box">
+            <div><div class="sm-lbl">Salah Discipline</div><div class="sm-val" style="color:#4f46e5;">${Math.min(100, Math.round((salahStats.perfect / (dayData.length || 30)) * 100))}%</div></div>
+            <div><div class="sm-lbl">Dhikr Momentum</div><div class="sm-val" style="color:#10b981;">${totalDhikr > 0 ? 'Active' : 'Moderate'}</div></div>
+            <div><div class="sm-lbl">Overall Tier</div><div class="sm-val" style="color:#7c3aed;">${avgSHS >= 80 ? 'Ihsan' : avgSHS >= 50 ? 'Mindful' : 'Awakening'}</div></div>
+            <div><div class="sm-lbl">Monthly Grade</div><div class="sm-val" style="color:#059669;">${avgSHS >= 80 ? 'A+' : avgSHS >= 60 ? 'A' : 'B+'}</div></div>
           </div>
 
           <div class="section-bar">
@@ -804,17 +920,15 @@ const Analysis = {
             </table>
           </div>
 
-          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:5px 8px; margin-bottom:6px; display:grid; grid-template-columns:repeat(4, 1fr); gap:6px;">
-            <div style="text-align:center;"><div style="font-size:6.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Salah Discipline</div><div style="font-size:11px; font-weight:900; color:#4f46e5;">${Math.min(100, Math.round((salahStats.perfect / (dayData.length || 30)) * 100))}%</div></div>
-            <div style="text-align:center;"><div style="font-size:6.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Dhikr Momentum</div><div style="font-size:11px; font-weight:900; color:#10b981;">${totalDhikr > 0 ? 'Active' : 'Moderate'}</div></div>
-            <div style="text-align:center;"><div style="font-size:6.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Overall Tier</div><div style="font-size:11px; font-weight:900; color:#7c3aed;">${avgSHS >= 80 ? 'Ihsan' : avgSHS >= 50 ? 'Mindful' : 'Awakening'}</div></div>
-            <div style="text-align:center;"><div style="font-size:6.5px; font-weight:800; color:#64748b; text-transform:uppercase;">Monthly Grade</div><div style="font-size:11px; font-weight:900; color:#059669;">${avgSHS >= 80 ? 'A+' : avgSHS >= 60 ? 'A' : 'B+'}</div></div>
+          <div class="ayah-quote">
+            "Verily, in the remembrance of Allah do hearts find rest."
+            <div class="ayah-ref">— Surah Ar-Ra'd (13:28)</div>
           </div>
+        </div>
 
-          <div class="footer">
-            <div>Generated by Lamim Intelligence • ${new Date().toLocaleDateString()}</div>
-            <div class="footer-logo">LAMIM v2.1.0</div>
-          </div>
+        <div class="footer">
+          <div>LAMIM ECOSYSTEM • SPIRITUAL PERFORMANCE & DISCIPLINE AUDIT</div>
+          <div class="footer-logo">v2.1.0 "Aura" • Page 1 of 1</div>
         </div>
       </div>
     `;

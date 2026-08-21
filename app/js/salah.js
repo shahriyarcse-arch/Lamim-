@@ -883,16 +883,21 @@ const Salah = {
     const genDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
     const refCode = 'MT' + Math.floor(Math.random() * 89 + 10) + 'ZLS' + Math.floor(Math.random() * 9 + 1);
 
+    const totalJamaatCount = Object.values(prayerStats).reduce((a, b) => a + b.jamaat, 0);
+    const jamaatRatioPct = totalPrayed > 0 ? Math.round((totalJamaatCount / totalPrayed) * 100) : 0;
+
     const prayerPillsHtml = this.prayers.map(p => {
       const pLabel = this.prayerMeta[p]?.label || p;
       const st = prayerStats[p];
-      return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:3px 6px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-weight:800;color:#0f172a;font-size:7.5px;">${pLabel}</span>
-        <div style="display:flex;gap:3px;font-size:7px;font-weight:700;">
-          <span style="color:#10b981;" title="Jamaat">${st.jamaat}J</span>
-          <span style="color:#0284c7;" title="Alone">${st.alone}A</span>
-          ${st.qaza > 0 ? `<span style="color:#f59e0b;" title="Qaza">${st.qaza}Q</span>` : ''}
-          <span style="color:#475569;margin-left:2px;font-weight:800;">${st.done}/${daysInMonth}</span>
+      const pPct = daysInMonth > 0 ? Math.round((st.done / daysInMonth) * 100) : 0;
+      return `<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:6px 8px; display:flex; flex-direction:column; gap:4px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-weight:900; color:#0f172a; font-size:9px; text-transform:uppercase; letter-spacing:0.5px;">${pLabel}</span>
+          <span style="font-weight:800; color:#4f46e5; font-size:8.5px;">${pPct}%</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:7.5px; font-weight:700; color:#64748b;">
+          <span><b style="color:#10b981;">${st.jamaat}J</b> · <b style="color:#0284c7;">${st.alone}A</b>${st.qaza > 0 ? ` · <b style="color:#f59e0b;">${st.qaza}Q</b>` : ''}</span>
+          <span>${st.done}/${daysInMonth}</span>
         </div>
       </div>`;
     }).join('');
@@ -906,131 +911,142 @@ const Salah = {
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
     @page { size: A4 portrait; margin: 8mm 10mm; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    body { background: #fff; color: #0f172a; font-size: 8.5px; line-height: 1.25; }
-    .page { width: 100%; position: relative; }
+    body { background: #fff; color: #0f172a; font-size: 9px; line-height: 1.3; }
+    .page { width: 100%; min-height: 1040px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
     
-    .header-table { width: 100%; border-bottom: 2px solid #0f172a; padding-bottom: 6px; margin-bottom: 6px; }
-    .brand-title { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #0f172a; line-height: 1; }
-    .brand-subtitle { font-size: 7.5px; font-weight: 800; color: #475569; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+    .header-banner { 
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%); 
+      color: #fff; 
+      padding: 14px 18px; 
+      border-radius: 12px; 
+      margin-bottom: 10px;
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    .brand-title { font-size: 20px; font-weight: 900; letter-spacing: 0.05em; line-height: 1; color: #fff; }
+    .brand-subtitle { font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.8); letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
     .user-info-box { text-align: right; }
-    .user-name { font-size: 12px; font-weight: 800; color: #0f172a; line-height: 1.1; }
-    .report-date { font-size: 10px; font-weight: 800; color: #4f46e5; margin-top: 1px; }
-    .report-ref { font-size: 7px; color: #94a3b8; font-weight: 600; margin-top: 1px; }
+    .user-name { font-size: 14px; font-weight: 800; color: #fff; line-height: 1.1; }
+    .report-date { font-size: 10px; font-weight: 700; color: #a5b4fc; margin-top: 2px; }
+    .report-ref { font-size: 7.5px; color: rgba(255,255,255,0.6); font-weight: 600; margin-top: 1px; }
 
-    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
-    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 5px 8px; position: relative; overflow: hidden; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; position: relative; overflow: hidden; }
     .summary-card.highlight { background: ${statusBg}; border-color: ${statusBorder}; }
     .summary-card.highlight::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: ${statusColor}; }
-    .sum-val { font-size: 15px; font-weight: 900; line-height: 1.1; color: #0f172a; }
+    .sum-val { font-size: 20px; font-weight: 900; line-height: 1.1; color: #0f172a; }
     .sum-val.accent { color: ${statusColor}; }
-    .sum-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-    .badge-pill { display: inline-block; padding: 1px 5px; font-size: 6.5px; font-weight: 800; border-radius: 999px; text-transform: uppercase; margin-top: 1px; }
+    .sum-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+    .badge-pill { display: inline-block; padding: 2px 6px; font-size: 7px; font-weight: 800; border-radius: 999px; text-transform: uppercase; margin-top: 3px; }
 
-    .prayer-breakdown-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 6px; }
+    .prayer-breakdown-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
 
-    .section-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 6px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-    .section-title { font-size: 7.5px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; }
-    .legend-box { display: flex; gap: 8px; font-size: 7.5px; font-weight: 700; color: #475569; }
-    .legend-item { display: flex; align-items: center; gap: 3px; }
-    .legend-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+    .section-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 8px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; }
+    .legend-box { display: flex; gap: 10px; font-size: 8px; font-weight: 700; color: #475569; }
+    .legend-item { display: flex; align-items: center; gap: 4px; }
+    .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
 
-    .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
-    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; table-layout: fixed; }
-    th { background: #f1f5f9; color: #334155; font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 2px; text-align: center; border-bottom: 1.5px solid #e2e8f0; }
-    th:first-child { text-align: left; padding-left: 6px; width: 28%; }
-    td { padding: 2.5px 2px; text-align: center; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-    td.cell-date { text-align: left; padding-left: 6px; font-weight: 700; color: #334155; }
-    .date-day { font-size: 8.5px; font-weight: 800; color: #0f172a; margin-right: 3px; }
-    .date-weekday { font-size: 7px; color: #64748b; font-weight: 600; }
+    .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; table-layout: fixed; }
+    th { background: #f1f5f9; color: #334155; font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 5px 3px; text-align: center; border-bottom: 1.5px solid #e2e8f0; }
+    th:first-child { text-align: left; padding-left: 8px; width: 28%; }
+    td { padding: 4.8px 3px; text-align: center; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    td.cell-date { text-align: left; padding-left: 8px; font-weight: 700; color: #334155; }
+    .date-day { font-size: 9.5px; font-weight: 800; color: #0f172a; margin-right: 4px; }
+    .date-weekday { font-size: 7.5px; color: #64748b; font-weight: 600; }
     .cell-empty { color: #cbd5e1; font-weight: 700; }
     .row-alt { background: #fafbfc; }
-    .status-dot-cell { display: inline-block; width: 6.5px; height: 6.5px; border-radius: 50%; }
+    .status-dot-cell { display: inline-block; width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
-    .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 6px; padding: 4px 8px; margin-bottom: 5px; color: #4338ca; font-size: 7.5px; line-height: 1.3; }
-    .ayah-ref { font-weight: 800; color: #6366f1; margin-top: 1px; }
+    .spiritual-audit-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; margin-bottom: 8px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+    .sab-item-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+    .sab-item-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 1px; }
 
-    .footer { display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; font-weight: 600; padding-top: 4px; border-top: 1px solid #e2e8f0; }
+    .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #4338ca; font-size: 8px; line-height: 1.35; text-align: center; }
+    .ayah-ref { font-weight: 800; color: #6366f1; margin-top: 2px; }
+
+    .footer { display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; font-weight: 600; padding-top: 6px; border-top: 1px solid #e2e8f0; }
     .footer-brand { font-weight: 800; color: #4f46e5; }
   </style>
 </head>
 <body>
   <div class="page">
-    <div class="header-table">
-      <table style="border:none;background:transparent;table-layout:auto;">
-        <tr>
-          <td style="border:none;text-align:left;padding:0;">
-            <div style="display:flex;align-items:center;gap:6px;">
-              <div style="width:24px;height:24px;background:#4f46e5;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px;">L</div>
-              <div>
-                <div class="brand-title">LAMIM</div>
-                <div class="brand-subtitle">Salah Monthly Performance Audit</div>
-              </div>
-            </div>
-          </td>
-          <td style="border:none;text-align:right;padding:0;">
-            <div class="user-info-box">
-              <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
-              <div class="report-date">${monthName} ${year}</div>
-              <div class="report-ref">REF: ${refCode} • ${genDate}</div>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-
-    <div class="summary-grid">
-      <div class="summary-card highlight">
-        <div class="sum-val accent">${monthlyConsistency}%</div>
-        <div class="badge-pill" style="background:${statusBg};color:${statusColor};border:1px solid ${statusBorder};">${statusLabel}</div>
-        <div class="sum-lbl">Monthly Consistency</div>
+    <div>
+      <div class="header-banner">
+        <div>
+          <div class="brand-title">LAMIM</div>
+          <div class="brand-subtitle">Salah Monthly Performance Audit</div>
+        </div>
+        <div class="user-info-box">
+          <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
+          <div class="report-date">${monthName} ${year}</div>
+          <div class="report-ref">REF: ${refCode} • ${genDate}</div>
+        </div>
       </div>
-      <div class="summary-card">
-        <div class="sum-val">${totalPrayed} / ${daysInMonth * 5}</div>
-        <div class="sum-lbl">Prayers Completed</div>
-      </div>
-      <div class="summary-card">
-        <div class="sum-val">${totalPoints}</div>
-        <div class="sum-lbl">Total Deed Points</div>
-      </div>
-      <div class="summary-card">
-        <div class="sum-val">${daysInMonth}</div>
-        <div class="sum-lbl">Days In Month</div>
-      </div>
-    </div>
 
-    <div class="prayer-breakdown-bar">
-      ${prayerPillsHtml}
-    </div>
-
-    <div class="section-bar">
-      <span class="section-title">Daily Prayer Record (Days 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</span>
-      <div class="legend-box">
-        <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Jama'at</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#0284c7"></span>Alone</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Qaza</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>Missed</span>
+      <div class="summary-grid">
+        <div class="summary-card highlight">
+          <div class="sum-val accent">${monthlyConsistency}%</div>
+          <div class="badge-pill" style="background:${statusBg};color:${statusColor};border:1px solid ${statusBorder};">${statusLabel}</div>
+          <div class="sum-lbl">Monthly Consistency</div>
+        </div>
+        <div class="summary-card">
+          <div class="sum-val">${totalPrayed} / ${daysInMonth * 5}</div>
+          <div class="sum-lbl">Prayers Completed</div>
+        </div>
+        <div class="summary-card">
+          <div class="sum-val">${totalPoints}</div>
+          <div class="sum-lbl">Total Deed Points</div>
+        </div>
+        <div class="summary-card">
+          <div class="sum-val">${jamaatRatioPct}%</div>
+          <div class="sum-lbl">Congregation (Jama'at) Rate</div>
+        </div>
       </div>
-    </div>
 
-    <div class="grid-tables">
-      <table>
-        <thead><tr><th>Date</th><th>Faj</th><th>Dhu</th><th>Asr</th><th>Mag</th><th>Ish</th></tr></thead>
-        <tbody>${col1Rows}</tbody>
-      </table>
-      <table>
-        <thead><tr><th>Date</th><th>Faj</th><th>Dhu</th><th>Asr</th><th>Mag</th><th>Ish</th></tr></thead>
-        <tbody>${col2Rows}</tbody>
-      </table>
-    </div>
+      <div class="prayer-breakdown-bar">
+        ${prayerPillsHtml}
+      </div>
 
-    <div class="ayah-quote">
-      "Indeed, prayer prohibits immorality and wrongdoing, and the remembrance of Allah is greater."
-      <div class="ayah-ref">— Surah Al-Ankabut (29:45)</div>
+      <div class="section-bar">
+        <span class="section-title">Daily Prayer Record (Days 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</span>
+        <div class="legend-box">
+          <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Jama'at</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#0284c7"></span>Alone</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Qaza</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>Missed</span>
+        </div>
+      </div>
+
+      <div class="grid-tables">
+        <table>
+          <thead><tr><th>Date</th><th>Faj</th><th>Dhu</th><th>Asr</th><th>Mag</th><th>Ish</th></tr></thead>
+          <tbody>${col1Rows}</tbody>
+        </table>
+        <table>
+          <thead><tr><th>Date</th><th>Faj</th><th>Dhu</th><th>Asr</th><th>Mag</th><th>Ish</th></tr></thead>
+          <tbody>${col2Rows}</tbody>
+        </table>
+      </div>
+
+      <div class="spiritual-audit-box">
+        <div><div class="sab-item-lbl">Farz Completion</div><div class="sab-item-val" style="color:#059669;">${Math.round((totalPrayed / (daysInMonth * 5)) * 100)}%</div></div>
+        <div><div class="sab-item-lbl">Jama'at Count</div><div class="sab-item-val" style="color:#10b981;">${totalJamaatCount}</div></div>
+        <div><div class="sab-item-lbl">Days Tracked</div><div class="sab-item-val" style="color:#4f46e5;">${daysInMonth} Days</div></div>
+        <div><div class="sab-item-lbl">Audit Status</div><div class="sab-item-val" style="color:#7c3aed;">Verified</div></div>
+      </div>
+
+      <div class="ayah-quote">
+        "Indeed, prayer prohibits immorality and wrongdoing, and the remembrance of Allah is greater."
+        <div class="ayah-ref">— Surah Al-Ankabut (29:45)</div>
+      </div>
     </div>
 
     <div class="footer">
       <span>LAMIM ECOSYSTEM • SECURE SPIRITUAL AUDIT STATEMENT</span>
-      <span class="footer-brand">v2.1.0 "Aura"</span>
+      <span class="footer-brand">v2.1.0 "Aura" • Page 1 of 1</span>
     </div>
   </div>
 </body>
