@@ -468,13 +468,9 @@ const Habits = {
                 const quoteEl = card.querySelector('.iw-quote');
                 if (quoteEl) {
                   const quoteData = this.getCurrentMinuteQuote(habitId);
-                  if (this._quoteFadeTimeout) clearTimeout(this._quoteFadeTimeout);
-                  quoteEl.style.opacity = '0';
-                  this._quoteFadeTimeout = setTimeout(() => {
-                    quoteEl.className = 'iw-quote ' + quoteData.effectClass;
-                    quoteEl.innerHTML = quoteData.text;
-                    quoteEl.style.opacity = '1';
-                  }, 400);
+                  quoteEl.className = 'iw-quote ' + quoteData.effectClass;
+                  quoteEl.innerHTML = quoteData.text;
+                  quoteEl.style.opacity = '1';
                 }
               }
             }
@@ -849,12 +845,15 @@ const Habits = {
               </div>
             </div>
 
+            <div class="iw-badge-container">
+              <div class="iw-big-badge" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};" onclick="event.stopPropagation(); Habits.showProgressPulse('${Utils.escapeHTML(habit.id)}')" role="button" tabindex="0" title="${currentBadge ? currentBadge.name : 'The Novice'}">
+                <div class="iw-badge-inner">${currentBadge ? currentBadge.emoji : habit.icon}</div>
+              </div>
+              <div class="iw-rank-pill" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};">${currentBadge ? currentBadge.name : 'The Novice'}</div>
+            </div>
+
             <div class="iw-timer-circle-wrap">
-              <div class="iw-timer-circle habits-live-time" data-habit-id="${habit.id}">
-                <div class="iw-timer-badge-pill" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};" onclick="event.stopPropagation(); Habits.showProgressPulse('${Utils.escapeHTML(habit.id)}')" role="button" tabindex="0">
-                  <span class="iw-timer-badge-emoji">${currentBadge ? currentBadge.emoji : habit.icon}</span>
-                  <span class="iw-timer-badge-name">${currentBadge ? currentBadge.name : 'The Novice'}</span>
-                </div>
+              <div class="iw-timer-circle habits-live-time" data-habit-id="${habit.id}" data-last-interval="${Math.floor(Date.now() / (1000 * 30))}">
                 <div class="iw-timer-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'বিগত সময়' : 'IT HAS BEEN'}</div>
                 <div class="iw-timer-days-row" role="button" tabindex="0" onclick="event.stopPropagation(); Habits.showStartDateModal('${habit.id}')" style="cursor:pointer;" title="Adjust Timer">
                   <div class="iw-timer-days"><span class="habits-time-num">${window.n ? window.n(timeStats.days) : timeStats.days}</span></div>

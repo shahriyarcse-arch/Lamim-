@@ -312,28 +312,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin: 20px 0 16px;
+  gap: 8px;
+  margin: 6px 0 12px;
 }
 
 .iw-big-badge {
-  width: 84px;
-  height: 84px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--theme-color) 12%, rgba(255, 255, 255, 0.04));
+  border: 2px solid color-mix(in srgb, var(--theme-color) 40%, rgba(255, 255, 255, 0.1));
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .iw-big-badge:hover {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .iw-badge-inner {
-  font-size: 34px;
+  font-size: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -341,15 +342,15 @@
 }
 
 .iw-badge-inner svg {
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
 }
 
 .iw-rank-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 16px;
+  padding: 4px 14px;
   border-radius: 100px;
   font-size: 12px;
   font-weight: 800;
@@ -700,21 +701,29 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  align-items: center;
-  margin-bottom: 12px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 12px;
 }
 
 .iw-quote {
   font-size: 13.5px;
   font-weight: 600;
-  max-width: 80%;
+  flex: 1;
   line-height: 1.4;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+  opacity: 0.9;
   text-align: left;
   min-height: auto;
   display: flex;
   align-items: center;
   transition: opacity 0.3s ease;
+}
+
+.iw-top-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 /* === MODERN HABITS FORGE === */
