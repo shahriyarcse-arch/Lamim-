@@ -127,10 +127,12 @@
   transition: all 0.3s ease;
 }
 
-.insight-p-card:hover {
-  transform: translateX(-4px);
-  border-color: var(--color-border-active);
-  background: var(--color-glass-hover);
+@media (hover: hover) and (pointer: fine) {
+  .insight-p-card:hover {
+    transform: translateX(-4px);
+    border-color: var(--color-border-active);
+    background: var(--color-glass-hover);
+  }
 }
 
 .insight-p-icon {

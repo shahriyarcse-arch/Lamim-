@@ -87,7 +87,9 @@
   animation: avatar-spin-in 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.profile-avatar:hover { transform: scale(1.05); }
+@media (hover: hover) and (pointer: fine) {
+  .profile-avatar:hover { transform: scale(1.05); }
+}
 
 [data-theme="light"] .profile-avatar {
   border: none;

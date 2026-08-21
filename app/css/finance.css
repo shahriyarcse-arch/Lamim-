@@ -284,14 +284,16 @@
 }
 
 .fin-stat-card::before { display: none !important; }
-.fin-stat-card:hover {
-  transform: translateY(-3px) !important;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2) !important;
-}
+@media (hover: hover) and (pointer: fine) {
+  .fin-stat-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2) !important;
+  }
 
-[data-theme="light"] .fin-stat-card:hover {
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08) !important;
+  [data-theme="light"] .fin-stat-card:hover {
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08) !important;
+  }
 }
 
 .fin-stat-label {
@@ -555,15 +557,17 @@
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02) !important;
 }
 
-.transaction-item:hover {
-  transform: translateY(-2px);
-  border-color: rgba(16, 185, 129, 0.4) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
-}
+@media (hover: hover) and (pointer: fine) {
+  .transaction-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(16, 185, 129, 0.4) !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
+  }
 
-[data-theme="light"] .transaction-item:hover {
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+  [data-theme="light"] .transaction-item:hover {
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+  }
 }
 
 .transaction-icon {
@@ -910,15 +914,17 @@
   box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.02) !important;
 }
 
-.vault-card:hover {
-  transform: translateY(-3px) !important;
-  border-color: rgba(16, 185, 129, 0.45) !important;
-  box-shadow: 0 14px 34px rgba(16, 185, 129, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
-}
+@media (hover: hover) and (pointer: fine) {
+  .vault-card:hover {
+    transform: translateY(-3px) !important;
+    border-color: rgba(16, 185, 129, 0.45) !important;
+    box-shadow: 0 14px 34px rgba(16, 185, 129, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+  }
 
-[data-theme="light"] .vault-card:hover {
-  border-color: #34d399 !important;
-  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  [data-theme="light"] .vault-card:hover {
+    border-color: #34d399 !important;
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  }
 }
 
 .vault-card.completed {
@@ -1699,7 +1705,9 @@
   border: 1px solid var(--color-divider-strong);
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
 }
-.fin-cat-pill:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--fin-red) 30%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .fin-cat-pill:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--fin-red) 30%, transparent); }
+}
 .fin-cat-pill.active {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(220, 38, 38, 0.2) 100%) !important;
   border-color: #ef4444 !important;
@@ -1726,7 +1734,9 @@
   color: #fff !important; box-shadow: 0 8px 24px rgba(239, 68, 68, 0.32) !important;
   transition: all 0.2s ease !important; font-family: inherit !important; letter-spacing: 0.3px !important;
 }
-.fin-save-btn.expense:hover { filter: brightness(1.08) !important; transform: translateY(-2px) !important; }
+@media (hover: hover) and (pointer: fine) {
+  .fin-save-btn.expense:hover { filter: brightness(1.08) !important; transform: translateY(-2px) !important; }
+}
 .fin-save-btn.expense:active { transform: scale(0.98) !important; }
 
 [data-theme="light"] .fin-cat-pill { background: #F8FAFC !important; border-color: #E2E8F0 !important; }
@@ -1740,7 +1750,9 @@
   border: 1px solid var(--color-divider-strong) !important; color: var(--color-text-muted) !important;
   transition: all 0.2s !important; font-family: inherit !important; display: flex !important; align-items: center !important; justify-content: center !important;
 }
-.fin-cancel-btn:hover { background: var(--color-surface-nested, rgba(255,255,255,0.09)) !important; color: var(--color-text-primary) !important; }
+@media (hover: hover) and (pointer: fine) {
+  .fin-cancel-btn:hover { background: var(--color-surface-nested, rgba(255,255,255,0.09)) !important; color: var(--color-text-primary) !important; }
+}
 
 .fin-save-btn.income {
   flex: 1.4 !important; height: 50px !important; border-radius: 16px !important; border: none !important; cursor: pointer !important; font-weight: 800 !important; font-size: 15px !important;
@@ -1748,7 +1760,9 @@
   color: #ffffff !important; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.32) !important;
   transition: all 0.2s ease !important; font-family: inherit !important; letter-spacing: 0.3px !important; display: flex !important; align-items: center !important; justify-content: center !important;
 }
-.fin-save-btn.income:hover { filter: brightness(1.08) !important; transform: translateY(-2px) !important; box-shadow: 0 12px 28px rgba(16, 185, 129, 0.42) !important; }
+@media (hover: hover) and (pointer: fine) {
+  .fin-save-btn.income:hover { filter: brightness(1.08) !important; transform: translateY(-2px) !important; box-shadow: 0 12px 28px rgba(16, 185, 129, 0.42) !important; }
+}
 .fin-save-btn.income:active { transform: scale(0.98) !important; }
 
 [data-theme="light"] .finance-modal-content { background: #FFFFFF !important; border-color: #E2E8F0 !important; }
@@ -1771,7 +1785,9 @@
   border: 1px solid var(--color-divider-strong); color: var(--color-text-primary);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;
 }
-.fin-tool-btn:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--fin-red) 40%, var(--color-divider-strong)); background: color-mix(in srgb, var(--fin-red) 6%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .fin-tool-btn:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--fin-red) 40%, var(--color-divider-strong)); background: color-mix(in srgb, var(--fin-red) 6%, transparent); }
+}
 .fin-tool-icon { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 [data-theme="light"] .fin-tool-btn { background: #F8FAFC !important; border-color: #E2E8F0 !important; }
 [data-theme="light"] .fin-tool-btn:hover { background: #FFF1F2 !important; border-color: #FECDD3 !important; }

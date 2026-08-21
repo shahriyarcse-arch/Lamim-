@@ -123,7 +123,9 @@
   animation: avatar-spin-in 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.profile-avatar:hover { transform: scale(1.08); }
+@media (hover: hover) and (pointer: fine) {
+  .profile-avatar:hover { transform: scale(1.08); }
+}
 
 [data-theme="light"] .profile-avatar {
   border: none;
@@ -174,17 +176,21 @@
   z-index: 10;
   padding: 0;
 }
-.avatar-remove-btn:hover {
-  transform: scale(1.15);
-  background: #ef4444;
+@media (hover: hover) and (pointer: fine) {
+  .avatar-remove-btn:hover {
+    transform: scale(1.15);
+    background: #ef4444;
+  }
 }
 
 [data-theme="light"] .avatar-edit-btn {
   color: var(--color-bg-primary);
 }
-.avatar-edit-btn:hover {
-  transform: scale(1.15);
-  background: var(--color-accent-gold);
+@media (hover: hover) and (pointer: fine) {
+  .avatar-edit-btn:hover {
+    transform: scale(1.15);
+    background: var(--color-accent-gold);
+  }
 }
 
 /* ---- Profile Text ---- */

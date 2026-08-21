@@ -1091,9 +1091,15 @@
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
-.gh-water-glass:hover {
-  transform: scale(1.04) translateY(-2px);
-  box-shadow: inset 0 -10px 25px rgba(56, 189, 248, 0.25), 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 32px rgba(56, 189, 248, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .gh-water-glass:hover {
+    transform: scale(1.04) translateY(-2px);
+    box-shadow: inset 0 -10px 25px rgba(56, 189, 248, 0.25), 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 32px rgba(56, 189, 248, 0.3);
+  }
+
+  [data-theme="light"] .gh-water-glass:hover {
+    box-shadow: inset 0 -10px 20px rgba(14, 165, 233, 0.15), 0 16px 36px rgba(14, 165, 233, 0.18), inset 0 2px 4px #ffffff;
+  }
 }
 
 [data-theme="light"] .gh-water-glass {
@@ -1103,10 +1109,6 @@
   border-bottom: 8px solid rgba(14, 165, 233, 0.45);
   border-top: 1.5px solid rgba(14, 165, 233, 0.2);
   box-shadow: inset 0 -8px 16px rgba(14, 165, 233, 0.1), 0 10px 30px rgba(14, 165, 233, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.9);
-}
-
-[data-theme="light"] .gh-water-glass:hover {
-  box-shadow: inset 0 -10px 20px rgba(14, 165, 233, 0.15), 0 16px 36px rgba(14, 165, 233, 0.18), inset 0 2px 4px #ffffff;
 }
 
 /* Measurement Tick Lines */
@@ -1285,11 +1287,19 @@
   overflow: hidden;
 }
 
-.gh-water-btn:hover {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(56, 189, 248, 0.08));
-  border-color: #38bdf8;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.25);
+@media (hover: hover) and (pointer: fine) {
+  .gh-water-btn:hover {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(56, 189, 248, 0.08));
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.25);
+  }
+
+  .gh-water-btn.subtract:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(239, 68, 68, 0.06));
+    border-color: #ef4444;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.2);
+  }
 }
 
 .gh-water-btn:active {
@@ -1300,12 +1310,6 @@
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.02));
   border-color: rgba(239, 68, 68, 0.25);
   color: #ef4444;
-}
-
-.gh-water-btn.subtract:hover {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(239, 68, 68, 0.06));
-  border-color: #ef4444;
-  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.2);
 }
 
 [data-theme="light"] .gh-water-btn {

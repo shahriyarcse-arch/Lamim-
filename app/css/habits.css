@@ -432,8 +432,10 @@
   height: 20px;
 }
 
-.iron-will-widget:hover .iw-compact-icon {
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .iron-will-widget:hover .iw-compact-icon {
+    transform: scale(1.05);
+  }
 }
 
 .iw-compact-meta {
@@ -646,9 +648,11 @@
   box-shadow: 0 0 20px color-mix(in srgb, var(--theme-color) 25%, transparent) !important;
 }
 
-.iron-will-widget:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 30px 70px -20px rgba(15, 23, 42, 0.25), 0 0 35px color-mix(in srgb, var(--theme-color) 15%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .iron-will-widget:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 70px -20px rgba(15, 23, 42, 0.25), 0 0 35px color-mix(in srgb, var(--theme-color) 15%, transparent);
+  }
 }
 
 .iw-header {
@@ -728,15 +732,17 @@
   pointer-events: none;
 }
 
-.habits-habit-option:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: color-mix(in srgb, var(--habit-color) 40%, transparent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--habit-color) 15%, transparent);
-}
+@media (hover: hover) and (pointer: fine) {
+  .habits-habit-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: color-mix(in srgb, var(--habit-color) 40%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--habit-color) 15%, transparent);
+  }
 
-.habits-habit-option:hover::before {
-  opacity: 1;
+  .habits-habit-option:hover::before {
+    opacity: 1;
+  }
 }
 
 .habits-habit-option:active {
@@ -1036,10 +1042,12 @@
   transition: all 0.25s ease;
 }
 
-.spirit-breakdown-item:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .spirit-breakdown-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+  }
 }
 
 .spirit-bar-head {
