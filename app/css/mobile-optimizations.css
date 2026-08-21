@@ -12,12 +12,16 @@
   flex-wrap: nowrap;
   padding: 4px 2px;
 }
+
+.dhikr-preset-card {
   scroll-snap-align: start;
   touch-action: manipulation;
   /* Prevent text selection on tap */
   user-select: none;
   -webkit-user-select: none;
 }
+
+.dhikr-preset-count {
   color: var(--color-text-muted);
   margin-top: 2px;
   display: none;
