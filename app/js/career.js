@@ -368,117 +368,112 @@ const Career = {
     }
     const maxTrend = Math.max(...trend.map(t => t.pct), 1);
     const trendBars = trend.map(t => {
-      const h = Math.max(6, (t.pct / maxTrend) * 100);
+      const h = Math.max(8, (t.pct / maxTrend) * 100);
       const g1 = t.pct === 100 ? '#34d399' : t.pct >= 50 ? '#fbbf24' : '#818cf8';
       const g2 = t.pct === 100 ? '#0d9488' : t.pct >= 50 ? '#f59e0b' : '#4f46e5';
-      const ring = t.isCurrent ? `box-shadow:0 0 0 2px #fff,0 0 0 4px ${g2};` : '';
-      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
-        <div style="font-size:13px;font-weight:800;color:${t.isCurrent ? g2 : '#475569'}">${t.pct}%</div>
-        <div style="width:100%;height:110px;display:flex;align-items:flex-end">
-          <div style="width:100%;height:${h}%;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg, ${g1} 0%, ${g2} 100%);${ring}"></div>
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+        <div style="font-size:8px;font-weight:800;color:${t.isCurrent ? g2 : '#475569'}">${t.pct}%</div>
+        <div style="width:100%;height:40px;display:flex;align-items:flex-end">
+          <div style="width:100%;height:${h}%;border-radius:4px 4px 2px 2px;background:linear-gradient(180deg, ${g1} 0%, ${g2} 100%);"></div>
         </div>
-        <div style="font-size:11px;color:${t.isCurrent ? '#0f172a' : '#64748b'};font-weight:${t.isCurrent ? 800 : 600}">${t.label}</div>
-        <div style="font-size:10px;color:#94a3b8">${t.done}/${t.total}</div>
+        <div style="font-size:7.5px;color:${t.isCurrent ? '#0f172a' : '#64748b'};font-weight:${t.isCurrent ? 800 : 600}">${t.label}</div>
       </div>`;
     }).join('');
 
-    const rowHtml = rows.map(r => {
+    let col1Rows = '';
+    let col2Rows = '';
+    const splitIndex = Math.ceil(daysInMonth / 2);
+
+    rows.forEach(r => {
+      let rowHtml = '';
       if (r.isFuture) {
-        return `<tr>
-          <td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:700;color:#94a3b8">${r.day}</td>
-          <td style="padding:8px;border-bottom:1px solid #e2e8f0;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:8px;border-bottom:1px solid #e2e8f0;color:#cbd5e1">—</td>
+        rowHtml = `<tr>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;color:#cbd5e1">—</td>
+        </tr>`;
+      } else {
+        const goalsCell = goalsMap[r.day]
+          ? `<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:flex-start">` + goalsMap[r.day].map(g => `<span style="display:inline-block;font-size:7px;line-height:1.2;padding:1px 5px;border-radius:999px;white-space:nowrap;${g.done ? 'background:#ecfdf5;color:#047857;border:1px solid #a7f3d0' : 'background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0'}">${g.done ? '✓' : '○'} ${Utils.escapeHTML(g.text)}</span>`).join('') + `</div>`
+          : '—';
+        rowHtml = `<tr>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:800;color:#0f172a">${r.day}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-weight:700;color:#4f46e5">${r.goals ? r.done + '/' + r.goals : '—'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9">${goalsCell}</td>
         </tr>`;
       }
-      const goalsCell = goalsMap[r.day]
-        ? `<div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-start">` + goalsMap[r.day].map(g => `<span style="display:inline-block;font-size:10px;line-height:1.3;padding:2px 7px;border-radius:999px;white-space:nowrap;${g.done ? 'background:#ecfdf5;color:#047857;border:1px solid #a7f3d0' : 'background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0'}">${g.done ? '' : '○'} ${Utils.escapeHTML(g.text)}</span>`).join('') + `</div>`
-        : '—';
-      return `<tr>
-        <td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:700;vertical-align:top">${r.day}</td>
-        <td style="padding:8px;border-bottom:1px solid #e2e8f0;text-align:center;vertical-align:top">${r.goals ? r.done + '/' + r.goals : '—'}</td>
-        <td style="padding:8px;border-bottom:1px solid #e2e8f0;vertical-align:top">${goalsCell}</td>
-      </tr>`;
-    }).join('');
+      if (r.day <= splitIndex) col1Rows += rowHtml;
+      else col2Rows += rowHtml;
+    });
 
     const genDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Career Report — ${monthName}</title>
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Career & Study Report — ${monthName}</title>
     <style>
-      @page { size: A4; margin: 16mm; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
       * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif; color: #1e293b; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; line-height: 1.5; }
-      .header { position: relative; display: flex; justify-content: space-between; align-items: flex-end; padding: 26px 28px; margin-bottom: 26px; border-radius: 20px; overflow: hidden; background: linear-gradient(120deg, #4f46e5 0%, #6366f1 40%, #0d9488 100%); color: #fff; box-shadow: 0 14px 38px -16px rgba(79, 70, 229, 0.55); }
-      .header::after { content: ''; position: absolute; top: -40%; right: -10%; width: 240px; height: 240px; background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%); }
-      .logo { font-size: 26px; font-weight: 900; letter-spacing: 0.22em; position: relative; }
-      .subtitle { font-size: 11px; color: rgba(255,255,255,0.82); font-weight: 600; letter-spacing: 0.14em; margin-top: 6px; }
-      .meta { text-align: right; font-size: 12px; color: rgba(255,255,255,0.88); position: relative; }
-      .meta strong { display: block; font-size: 17px; color: #fff; margin-bottom: 3px; font-weight: 800; letter-spacing: 0.02em; }
-      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 22px 0; }
-      .sum-card { background: #fff; border-radius: 16px; padding: 18px 18px 16px; border: 1px solid #eef0f4; box-shadow: 0 6px 18px -10px rgba(15, 23, 42, 0.18); position: relative; overflow: hidden; }
-      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--c, #6366f1); }
+      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; background: #fff; line-height: 1.3; font-size: 9px; }
+      .header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 10px; border-radius: 12px; overflow: hidden; background: linear-gradient(120deg, #4f46e5 0%, #6366f1 40%, #0d9488 100%); color: #fff; }
+      .logo { font-size: 18px; font-weight: 900; letter-spacing: 0.15em; line-height: 1; }
+      .subtitle { font-size: 8px; color: rgba(255,255,255,0.9); font-weight: 700; letter-spacing: 0.1em; margin-top: 2px; }
+      .meta { text-align: right; font-size: 9px; color: rgba(255,255,255,0.9); }
+      .meta strong { font-size: 13px; color: #fff; font-weight: 800; }
+      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+      .sum-card { background: #f8fafc; border-radius: 10px; padding: 8px 10px; border: 1px solid #eef0f4; position: relative; overflow: hidden; }
+      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--c, #6366f1); }
       .sum-card:nth-child(1) { --c: #6366f1; }
       .sum-card:nth-child(2) { --c: #0d9488; }
       .sum-card:nth-child(3) { --c: #f59e0b; }
       .sum-card:nth-child(4) { --c: #ec4899; }
-      .sum-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; font-weight: 700; }
-      .sum-val { font-size: 28px; font-weight: 800; color: #0f172a; margin-top: 8px; letter-spacing: -0.02em; }
-      .panel { background: #fff; border-radius: 16px; padding: 20px 22px; border: 1px solid #eef0f4; box-shadow: 0 6px 18px -12px rgba(15, 23, 42, 0.15); margin: 22px 0; }
-      .panel h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-bottom: 16px; display: flex; align-items: center; gap: 9px; font-weight: 800; }
-      .panel h3::before { content: ''; width: 5px; height: 15px; border-radius: 4px; background: linear-gradient(180deg, #6366f1, #0d9488); }
-      .ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-      .ov-item { background: linear-gradient(180deg, #f8fafc, #fff); border: 1px solid #eef0f4; border-radius: 13px; padding: 16px; }
-      .ov-num { font-size: 24px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; }
-      .ov-lab { font-size: 11px; color: #94a3b8; font-weight: 600; margin-top: 3px; }
-      .comp-bar { height: 12px; background: #eef2f7; border-radius: 999px; overflow: hidden; margin-top: 14px; }
-      .comp-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #34d399, #0d9488); }
-      .comp-cap { font-size: 12px; color: #475569; margin-top: 8px; font-weight: 600; }
-      table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; border: 1px solid #eef0f4; border-radius: 16px; overflow: hidden; }
-      th { background: linear-gradient(180deg, #6366f1, #4f46e5); color: #fff; padding: 13px 14px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; }
-      th:first-child { text-align: left; }
-      td { padding: 10px 14px; border-top: 1px solid #f1f5f9; }
+      .sum-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; }
+      .sum-val { font-size: 18px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+      .trend-panel { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 12px; margin-bottom: 8px; }
+      .trend-title { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 4px; }
+      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+      table { width: 100%; border-collapse: collapse; font-size: 8.5px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; table-layout: fixed; }
+      th { background: #f1f5f9; color: #475569; padding: 4px 4px; text-align: center; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+      th:first-child { text-align: left; padding-left: 6px; width: 18%; }
+      th:nth-child(2) { width: 22%; }
+      td { padding: 3px 4px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
       tbody tr:nth-child(even) { background: #fafbfc; }
-      tbody tr:first-child td { border-top: none; }
-      .footer { margin-top: 30px; padding-top: 18px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #94a3b8; }
-      .footer .quote { font-style: italic; }
-      .footer .brand { font-weight: 800; letter-spacing: 0.12em; color: #6366f1; }
-      .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: #475569; margin: 28px 0 14px; font-weight: 800; display: flex; align-items: center; gap: 9px; }
-      .section-title::before { content: ''; width: 5px; height: 16px; border-radius: 4px; background: linear-gradient(180deg, #6366f1, #0d9488); }
+      .footer { padding-top: 6px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; }
+      .footer .brand { font-weight: 800; color: #4f46e5; }
+      @media print {
+        body { padding: 0; }
+        .page { break-inside: avoid; }
+      }
     </style></head><body>
     <div class="header">
       <div>
         <div class="logo">LAMIM</div>
-        <div class="subtitle">CAREER BUILDER · MONTHLY REPORT</div>
+        <div class="subtitle">CAREER & STUDY PERFORMANCE AUDIT</div>
       </div>
       <div class="meta">
-        <strong>${monthName}</strong>
-        REF: CBR-${year}${month}
+        <strong>${monthName}</strong> • REF: CBR-${year}${month}
       </div>
     </div>
     <div class="summary">
       <div class="sum-card"><div class="sum-label">Goals Set</div><div class="sum-val">${totalGoals}</div></div>
       <div class="sum-card"><div class="sum-label">Goals Done</div><div class="sum-val">${goalsDone}</div></div>
       <div class="sum-card"><div class="sum-label">Completion</div><div class="sum-val">${completionPct}%</div></div>
-      <div class="sum-card"><div class="sum-label">Goal Streak</div><div class="sum-val">${goalStreak} days</div></div>
+      <div class="sum-card"><div class="sum-label">Streak</div><div class="sum-val">${goalStreak} days</div></div>
     </div>
-    <div class="panel"><h3>Monthly Overview</h3>
-      <div class="comp-bar"><div class="comp-fill" style="width:${completionPct}%"></div></div>
-      <div class="comp-cap">Overall goal completion — ${completionPct}%</div>
-      <div class="ov-grid" style="margin-top:18px">
-        <div class="ov-item"><div class="ov-num">${daysWithGoals}</div><div class="ov-lab">Days with goals</div></div>
-        <div class="ov-item"><div class="ov-num">${perfectDays}</div><div class="ov-lab">Perfect days (all done)</div></div>
-      </div>
+    <div class="trend-panel">
+      <div class="trend-title">6-Month Momentum Trend</div>
+      <div style="display:flex;gap:10px;align-items:flex-end;">${trendBars}</div>
     </div>
-    <div class="panel"><h3>6-Month Goal Trend</h3>
-      <div style="display:flex;gap:14px;align-items:flex-end;padding:8px 2px 0">${trendBars}</div>
-      <div style="font-size:11px;color:#94a3b8;margin-top:16px;border-top:1px solid #f1f5f9;padding-top:12px">Monthly completion rate — goals done vs set · current month highlighted</div>
+    <div class="grid-tables">
+      <table>
+        <thead><tr><th>Date</th><th>Done</th><th>Milestone Tasks</th></tr></thead>
+        <tbody>${col1Rows}</tbody>
+      </table>
+      <table>
+        <thead><tr><th>Date</th><th>Done</th><th>Milestone Tasks</th></tr></thead>
+        <tbody>${col2Rows}</tbody>
+      </table>
     </div>
-    <div class="section-title">Daily Goals Log</div>
-    <table>
-      <thead><tr><th>Date</th><th>Done / Total</th><th>Goals</th></tr></thead>
-      <tbody>${rowHtml}</tbody>
-    </table>
     <div class="footer">
-      <span class="quote">"The secret of getting ahead is getting started." — Mark Twain</span>
-      <span class="brand">LAMIM · ${genDate}</span>
+      <span>"The secret of getting ahead is getting started." — Mark Twain</span>
+      <span class="brand">LAMIM v2.1.0 • ${genDate}</span>
     </div>
     </body></html>`;
     Utils.exportPDF(html);

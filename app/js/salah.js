@@ -802,7 +802,9 @@ const Salah = {
 
     let totalPrayed = 0;
     let totalPoints = 0;
-    let tableRows = '';
+    let col1Rows = '';
+    let col2Rows = '';
+    const splitIndex = Math.ceil(daysInMonth / 2);
 
     for (let d = 1; d <= daysInMonth; d++) {
       const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
@@ -821,12 +823,17 @@ const Salah = {
           rowCells += '<td class="cell-empty">&mdash;</td>';
         } else {
           const meta = safeStatusMeta(s);
-          rowCells += '<td><span class="status-dot-cell" style="background:' + meta.color + '; color:' + meta.color + '"></span></td>';
+          rowCells += '<td><span class="status-dot-cell" style="background:' + meta.color + '"></span></td>';
         }
       });
 
       const rowClass = (d % 2 === 0) ? 'row-alt' : '';
-      tableRows += '<tr class="' + rowClass + '">' + rowCells + '</tr>';
+      const renderedRow = '<tr class="' + rowClass + '">' + rowCells + '</tr>';
+      if (d <= splitIndex) {
+        col1Rows += renderedRow;
+      } else {
+        col2Rows += renderedRow;
+      }
     }
 
     const monthlyConsistency = parseFloat(((totalPrayed / (daysInMonth * 5)) * 100).toFixed(1));
@@ -847,81 +854,75 @@ const Salah = {
       statusBg = '#ecfeff';
       statusBorder = '#a5f3fc';
     } else if (monthlyConsistency >= 50) {
-      statusLabel = 'NEEDS IMPROVEMENT';
+      statusLabel = 'NEEDS WORK';
       statusColor = '#d97706';
       statusBg = '#fffbeb';
       statusBorder = '#fde68a';
     }
 
-    const generatedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const generatedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
     const css = `
-      @page { size: A4; margin: 0; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
       * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #ffffff; color: #0f172a; font-size: 10px; line-height: 1.4; }
-      .page { max-width: 210mm; margin: 0 auto; padding: 28px 32px; }
+      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #ffffff; color: #0f172a; font-size: 9px; line-height: 1.3; }
+      .page { max-width: 100%; margin: 0 auto; }
 
       /* Header */
-      .report-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 2px solid #e2e8f0; margin-bottom: 22px; }
-      .brand-section { display: flex; align-items: center; gap: 14px; }
-      .brand-logo { width: 42px; height: 42px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 17px; font-weight: 900; letter-spacing: -1px; }
-      .brand-text h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: #0f172a; line-height: 1.1; }
-      .brand-text p { font-size: 9px; color: #64748b; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px; }
+      .report-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; margin-bottom: 12px; }
+      .brand-section { display: flex; align-items: center; gap: 10px; }
+      .brand-logo { width: 34px; height: 34px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; font-weight: 900; }
+      .brand-text h1 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #0f172a; line-height: 1; }
+      .brand-text p { font-size: 8px; color: #64748b; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; }
       .report-meta { text-align: right; }
-      .report-meta .user-name { font-size: 14px; font-weight: 700; color: #0f172a; }
-      .report-meta .report-period { font-size: 11px; color: #6366f1; font-weight: 700; margin-top: 2px; }
-      .report-meta .report-ref { font-size: 8px; color: #94a3b8; margin-top: 5px; font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 0.5px; }
-      .report-meta .report-date { font-size: 8px; color: #94a3b8; margin-top: 2px; }
+      .report-meta .user-name { font-size: 12px; font-weight: 800; color: #0f172a; }
+      .report-meta .report-period { font-size: 10px; color: #6366f1; font-weight: 700; margin-top: 1px; }
+      .report-meta .report-ref { font-size: 7.5px; color: #94a3b8; margin-top: 2px; font-family: monospace; }
 
       /* Summary Cards */
-      .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
-      .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 10px; text-align: center; }
+      .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+      .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 6px; text-align: center; }
       .summary-card.primary { background: ${statusBg}; border-color: ${statusBorder}; }
-      .summary-card .card-value { font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1; }
+      .summary-card .card-value { font-size: 19px; font-weight: 900; color: #0f172a; line-height: 1; }
       .summary-card.primary .card-value { color: ${statusColor}; }
-      .summary-card .card-badge { display: inline-block; font-size: 7px; font-weight: 800; letter-spacing: 1.2px; padding: 3px 8px; border-radius: 6px; margin-top: 6px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; }
-      .summary-card .card-title { font-size: 8px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 8px; }
-
-      /* Section Title */
-      .section-title { font-size: 10px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
+      .summary-card .card-badge { display: inline-block; font-size: 6.5px; font-weight: 800; letter-spacing: 1px; padding: 2px 6px; border-radius: 4px; margin-top: 3px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; }
+      .summary-card .card-title { font-size: 7px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
       /* Legend */
-      .legend { display: flex; gap: 16px; margin-bottom: 14px; padding: 8px 14px; background: #f1f5f9; border-radius: 8px; border: 1px solid #e2e8f0; }
-      .legend-item { display: flex; align-items: center; gap: 5px; font-size: 8px; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
-      .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+      .legend-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 5px 10px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
+      .legend-title { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #475569; }
+      .legend-items { display: flex; gap: 12px; }
+      .legend-item { display: flex; align-items: center; gap: 4px; font-size: 7.5px; font-weight: 700; color: #475569; }
+      .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
 
-      /* Table */
-      .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; }
-      .data-table thead th { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #475569; padding: 10px 6px; border-bottom: 2px solid #0f172a; text-align: center; background: #f8fafc; }
-      .data-table thead th:first-child { text-align: left; padding-left: 12px; width: 14%; }
-      .data-table tbody tr { border-bottom: 1px solid #f1f5f9; }
+      /* 2-Column Tables */
+      .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+      .data-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+      .data-table thead th { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; padding: 5px 3px; border-bottom: 1.5px solid #0f172a; text-align: center; background: #f1f5f9; }
+      .data-table thead th:first-child { text-align: left; padding-left: 6px; width: 22%; }
+      .data-table tbody tr { border-bottom: 1px solid #f1f5f9; height: 21px; }
       .data-table tbody tr.row-alt { background: #fafbfd; }
-      .data-table tbody td { padding: 8px 6px; text-align: center; vertical-align: middle; font-size: 10px; }
-      .data-table tbody td:first-child { text-align: left; padding-left: 12px; }
+      .data-table tbody td { padding: 3px 2px; text-align: center; vertical-align: middle; font-size: 8.5px; }
+      .data-table tbody td:first-child { text-align: left; padding-left: 6px; }
 
-      .cell-date { display: flex; align-items: baseline; gap: 5px; }
-      .date-day { font-size: 12px; font-weight: 700; color: #0f172a; }
-      .date-weekday { font-size: 8px; color: #94a3b8; font-weight: 600; }
-
-      .status-dot-cell { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-
-      .cell-empty { color: #cbd5e1; font-size: 10px; }
+      .cell-date { display: flex; align-items: baseline; gap: 3px; }
+      .date-day { font-size: 9.5px; font-weight: 800; color: #0f172a; }
+      .date-weekday { font-size: 7px; color: #94a3b8; font-weight: 600; }
+      .status-dot-cell { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+      .cell-empty { color: #cbd5e1; font-size: 8px; }
 
       /* Footer */
-      .report-footer { padding-top: 16px; border-top: 1px solid #e2e8f0; }
-      .ayah-box { background: linear-gradient(135deg, #f5f3ff, #eef2ff); border-left: 3px solid #6366f1; padding: 12px 16px; border-radius: 0 10px 10px 0; margin-bottom: 14px; }
-      .ayah-text { font-size: 10px; color: #475569; font-style: italic; line-height: 1.6; }
-      .ayah-ref { font-size: 9px; color: #6366f1; font-weight: 600; margin-top: 4px; font-style: normal; }
-      .footer-brand { display: flex; justify-content: space-between; align-items: center; }
-      .footer-left { font-size: 8px; color: #94a3b8; letter-spacing: 0.5px; }
-      .footer-right { font-size: 8px; color: #94a3b8; font-weight: 600; }
+      .report-footer { padding-top: 8px; border-top: 1px solid #e2e8f0; }
+      .ayah-box { background: linear-gradient(135deg, #f5f3ff, #eef2ff); border-left: 3px solid #6366f1; padding: 6px 10px; border-radius: 0 6px 6px 0; margin-bottom: 8px; }
+      .ayah-text { font-size: 8px; color: #475569; font-style: italic; line-height: 1.3; }
+      .ayah-ref { font-size: 7.5px; color: #6366f1; font-weight: 700; margin-top: 2px; font-style: normal; }
+      .footer-brand { display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; }
+      .footer-brand b { color: #6366f1; font-weight: 800; }
 
       @media print {
         body { padding: 0; }
-        .page { padding: 20mm 18mm; }
-        .summary-card { break-inside: avoid; }
-        .data-table thead { display: table-row-group; }
-        .data-table tbody tr { break-inside: avoid; }
+        .page { page-break-inside: avoid; }
+        .summary-card, .data-table tbody tr { break-inside: avoid; }
       }
     `;
 
@@ -932,14 +933,13 @@ const Salah = {
             <div class="brand-logo">L</div>
             <div class="brand-text">
               <h1>LAMIM</h1>
-              <p>Salah Performance Report</p>
+              <p>Salah Monthly Performance Audit</p>
             </div>
           </div>
           <div class="report-meta">
-            <div class="user-name">${Utils.escapeHTML(user.name || 'Warrior')}</div>
+            <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
             <div class="report-period">${monthName} ${year}</div>
-            <div class="report-ref">REF: ${Date.now().toString(36).toUpperCase()}</div>
-            <div class="report-date">Generated: ${generatedDate}</div>
+            <div class="report-ref">REF: ${Date.now().toString(36).toUpperCase()} • ${generatedDate}</div>
           </div>
         </div>
 
@@ -947,7 +947,7 @@ const Salah = {
           <div class="summary-card primary">
             <div class="card-value">${monthlyConsistency}%</div>
             <div class="card-badge">${statusLabel}</div>
-            <div class="card-title">Consistency</div>
+            <div class="card-title">Monthly Consistency</div>
           </div>
           <div class="summary-card">
             <div class="card-value">${totalPrayed}</div>
@@ -955,38 +955,57 @@ const Salah = {
           </div>
           <div class="summary-card">
             <div class="card-value">${totalPoints}</div>
-            <div class="card-title">Deed Points</div>
+            <div class="card-title">Total Deed Points</div>
           </div>
           <div class="summary-card">
             <div class="card-value">${daysInMonth}</div>
-            <div class="card-title">Days in Month</div>
+            <div class="card-title">Days In Month</div>
           </div>
         </div>
 
-        <div class="section-title">Daily Prayer Record</div>
-
-        <div class="legend">
-          <div class="legend-item"><span class="legend-dot" style="background:#3fb950"></span>Jama'at</div>
-          <div class="legend-item"><span class="legend-dot" style="background:#58a6ff"></span>Alone</div>
-          <div class="legend-item"><span class="legend-dot" style="background:#d29922"></span>Qaza</div>
-          <div class="legend-item"><span class="legend-dot" style="background:#f85149"></span>Missed</div>
+        <div class="legend-bar">
+          <div class="legend-title">Daily Prayer Record (Days 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</div>
+          <div class="legend-items">
+            <div class="legend-item"><span class="legend-dot" style="background:#3fb950"></span>Jama'at</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#58a6ff"></span>Alone</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#d29922"></span>Qaza</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#f85149"></span>Missed</div>
+          </div>
         </div>
 
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th style="width:15%">Date</th>
-              <th style="width:17%">Fajr</th>
-              <th style="width:17%">Dhuhr</th>
-              <th style="width:17%">Asr</th>
-              <th style="width:17%">Maghrib</th>
-              <th style="width:17%">Isha</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${tableRows}
-          </tbody>
-        </table>
+        <div class="tables-grid">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:25%">Date</th>
+                <th>Faj</th>
+                <th>Dhu</th>
+                <th>Asr</th>
+                <th>Mag</th>
+                <th>Ish</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${col1Rows}
+            </tbody>
+          </table>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:25%">Date</th>
+                <th>Faj</th>
+                <th>Dhu</th>
+                <th>Asr</th>
+                <th>Mag</th>
+                <th>Ish</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${col2Rows}
+            </tbody>
+          </table>
+        </div>
 
         <div class="report-footer">
           <div class="ayah-box">
@@ -994,8 +1013,8 @@ const Salah = {
             <div class="ayah-ref">— Al-Quran, Surah Al-Ankabut (29:45)</div>
           </div>
           <div class="footer-brand">
-            <div class="footer-left">LAMIM ECOSYSTEM • SECURE REPORT</div>
-            <div class="footer-right">v2.0.0</div>
+            <div>LAMIM ECOSYSTEM • SECURE AUDIT STATEMENT</div>
+            <div><b>v2.1.0</b> "Aura"</div>
           </div>
         </div>
       </div>

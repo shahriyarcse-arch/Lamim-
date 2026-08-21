@@ -392,7 +392,7 @@ const Finance = {
 
   formatVal(val) {
     const converted = DB.getSettings().currency === 'BDT' ? val * this._getFXRate() : val;
-    const isBn = typeof App !== 'undefined' && App.lang === 'bn';
+    const isBn = (typeof window !== 'undefined' && window.App && window.App.lang === 'bn') || (typeof localStorage !== 'undefined' && localStorage.getItem('lamim_lang') === 'bn');
     const numStr = converted.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return (isBn && window.n) ? window.n(numStr) : numStr;
   },
@@ -2165,14 +2165,16 @@ const Finance = {
     overlay.innerHTML = '<div style="text-align:center;color:#fff;"><div style="width:32px;height:32px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px;"></div><div style="font-size:14px;font-weight:600;">Generating PDF...</div></div>';
     document.body.appendChild(overlay);
 
-    const v = this.currentViewDate, sym = this.getSymbol();
+    const v = this.currentViewDate || new Date();
+    const sym = typeof this.getSymbol === 'function' ? this.getSymbol() : '৳';
+    if (!this.data) this.data = DB.getFinance() || { expenses: [], income: [], savings: [] };
     const mStr = v.toLocaleString('default', { month: 'long', year: 'numeric' });
-    const exps = this.data.expenses.filter(e => { const d = new Date(e.date); return d.getMonth() === v.getMonth() && d.getFullYear() === v.getFullYear() && e.category !== 'transfer'; });
-    const incs = this.data.income.filter(i => { const d = new Date(i.date); return d.getMonth() === v.getMonth() && d.getFullYear() === v.getFullYear(); });
+    const exps = (this.data.expenses || []).filter(e => { const d = new Date(e.date); return d.getMonth() === v.getMonth() && d.getFullYear() === v.getFullYear() && e.category !== 'transfer'; });
+    const incs = (this.data.income || []).filter(i => { const d = new Date(i.date); return d.getMonth() === v.getMonth() && d.getFullYear() === v.getFullYear(); });
     const total = exps.reduce((s, e) => s + e.amount, 0);
-    const stats = this.getStats(v);
-    const totalSaved = this.data.savings.reduce((sum, g) => sum + (Number(g.saved) || 0), 0);
-    const netWorth = stats.closingBalance + totalSaved;
+    const stats = typeof this.getStats === 'function' ? this.getStats(v) : { openingBalance: 0, income: 0, expense: 0, closingBalance: 0 };
+    const totalSaved = (this.data.savings || []).reduce((sum, g) => sum + (Number(g.saved) || 0), 0);
+    const netWorth = (stats.closingBalance || 0) + totalSaved;
 
     // Merge both income and expenses into a unified list, sorted chronologically (newest first)
     const txs = [
@@ -2181,169 +2183,171 @@ const Finance = {
     ].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const winHtml = `
+      <!DOCTYPE html>
       <html>
         <head>
-          <title>LAMIM - Digital Statement</title>
+          <meta charset="utf-8">
+          <title>LAMIM - Digital Statement (${mStr})</title>
           <style>
-            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap');
             
-            @page { margin: 0; }
+            @page { size: A4 portrait; margin: 8mm 10mm; }
+            * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             body { 
-              font-family: 'Outfit', sans-serif; 
-              padding: 0; margin: 0; 
-              background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 50%, #f5f3ff 100%);
+              font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; 
+              background: #f8fafc; 
               color: #0f172a; 
-              min-height: 100vh;
-              -webkit-print-color-adjust: exact !important;
-              print-color-adjust: exact !important;
+              font-size: 10px;
+              line-height: 1.3;
             }
             
             .container { 
-              width: 800px; margin: 0 auto; padding: 60px; position: relative; 
-              background: rgba(255, 255, 255, 0.7);
-              backdrop-filter: blur(10px);
-              min-height: 100vh;
-              box-sizing: border-box;
+              width: 100%; max-width: 100%; margin: 0 auto; padding: 10px 14px; position: relative; 
+              background: #ffffff;
+              border-radius: 12px;
             }
 
             .cyber-seal {
-              position: absolute; top: 40px; right: 60px;
-              width: 85px; height: 85px;
-              border: 2px dashed #6366f1; border-radius: 50%;
+              position: absolute; top: 12px; right: 16px;
+              width: 55px; height: 55px;
+              border: 1.5px dashed #6366f1; border-radius: 50%;
               display: flex; align-items: center; justify-content: center;
-              font-size: 10px; font-weight: 900; color: #6366f1;
-              text-align: center; transform: rotate(15deg);
-              opacity: 0.4;
+              font-size: 7px; font-weight: 900; color: #6366f1;
+              text-align: center; transform: rotate(12deg);
+              opacity: 0.6;
             }
 
-            .hero { margin-bottom: 50px; }
-            .brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-            .brand-logo { width: 32px; height: 32px; background: linear-gradient(45deg, #4f46e5, #06b6d4); border-radius: 10px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
-            .brand-name { font-size: 20px; font-weight: 900; color: #4f46e5; letter-spacing: -1px; }
+            .hero { margin-bottom: 12px; }
+            .brand-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+            .brand-logo { width: 22px; height: 22px; background: linear-gradient(45deg, #4f46e5, #06b6d4); border-radius: 6px; }
+            .brand-name { font-size: 13px; font-weight: 900; color: #4f46e5; letter-spacing: -0.5px; }
             
-            .report-title { font-size: 52px; font-weight: 900; letter-spacing: -3px; margin: 0; color: #1e1b4b; line-height: 1; }
-            .report-date { font-size: 16px; font-weight: 600; color: #6366f1; margin-top: 10px; opacity: 0.8; }
+            .report-title { font-size: 24px; font-weight: 900; letter-spacing: -1px; margin: 0; color: #1e1b4b; line-height: 1.1; }
+            .report-date { font-size: 9px; font-weight: 700; color: #6366f1; margin-top: 2px; }
 
-            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 18px; }
-            .networth-line { text-align: center; font-size: 13px; font-weight: 800; color: #475569; background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 14px; padding: 12px; }
+            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
             .stat-card { 
-              background: white; padding: 24px; border-radius: 28px; 
-              box-shadow: 0 10px 25px rgba(0,0,0,0.03);
-              border: 1px solid rgba(255,255,255,0.8);
+              background: #f8fafc; padding: 8px 10px; border-radius: 10px; 
+              border: 1px solid #e2e8f0;
             }
-            .stat-card.dark { background: #1e1b4b; color: white; border: none; box-shadow: 0 20px 40px rgba(30, 27, 75, 0.2); }
-            .label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #94a3b8; margin-bottom: 10px; display: block; }
-            .val { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+            .stat-card.dark { background: #1e1b4b; color: white; border: none; }
+            .label { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #94a3b8; margin-bottom: 3px; display: block; }
+            .val { font-size: 16px; font-weight: 900; letter-spacing: -0.5px; }
             
-            .ledger-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; padding: 0 10px; }
-            .ledger-title { font-size: 20px; font-weight: 800; color: #1e1b4b; letter-spacing: -0.5px; }
-            
-            table { width: 100%; border-collapse: separate; border-spacing: 0 12px; margin-top: -12px; }
-            th { text-align: left; padding: 10px 20px; font-size: 10px; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; }
-            td { 
-              padding: 18px 20px; background: white; 
-              border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;
-              font-size: 14px;
-            }
-            td:first-child { border-left: 1px solid #f1f5f9; border-radius: 20px 0 0 20px; }
-            td:last-child { border-right: 1px solid #f1f5f9; border-radius: 0 20px 20px 0; }
+            .networth-line { text-align: center; font-size: 9.5px; font-weight: 800; color: #475569; background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px; padding: 6px 10px; margin-bottom: 10px; }
 
-            .amount { font-weight: 900; font-size: 17px; text-align: right; letter-spacing: -0.5px; }
+            .ledger-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding: 0 4px; }
+            .ledger-title { font-size: 12px; font-weight: 900; color: #1e1b4b; }
+            
+            table { width: 100%; border-collapse: collapse; margin-bottom: 8px; table-layout: fixed; }
+            th { text-align: left; padding: 5px 8px; font-size: 7.5px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; background: #f1f5f9; border-bottom: 1.5px solid #e2e8f0; }
+            td { 
+              padding: 5px 8px; background: white; 
+              border-bottom: 1px solid #f1f5f9;
+              font-size: 9.5px;
+              vertical-align: middle;
+            }
+            tr:nth-child(even) td { background: #fafbfd; }
+
+            .amount { font-weight: 900; font-size: 10.5px; text-align: right; letter-spacing: -0.3px; }
             .neg { color: #f43f5e; }
             .pos { color: #10b981; }
 
             .cat-tag { 
-              padding: 6px 12px; border-radius: 10px; font-size: 10px; font-weight: 800; 
-              background: #f8fafc; color: #64748b; border: 1px solid #f1f5f9; text-transform: uppercase;
+              padding: 2px 6px; border-radius: 5px; font-size: 7.5px; font-weight: 800; 
+              background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; text-transform: uppercase;
+              display: inline-block;
             }
 
             .footer { 
-              margin-top: 80px; text-align: center; padding: 50px 0; 
-              border-top: 1px solid rgba(0,0,0,0.05);
+              margin-top: 8px; text-align: center; padding: 6px 0; 
+              border-top: 1px solid #e2e8f0;
+              display: flex; justify-content: space-between; align-items: center;
             }
-            .footer-text { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 3px; }
+            .footer-text { font-size: 8px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
             
             @media print {
               body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-              .container { width: 100%; box-shadow: none; background: transparent; padding: 40px; }
-              .stat-card { border: 1px solid #f1f5f9; }
+              .container { width: 100%; box-shadow: none; padding: 0; }
+              .stat-card, tr { break-inside: avoid; }
             }
           </style>
         </head>
         <body>
           <div class="container">
-            <div class="cyber-seal">CERTIFIED<br>LAMIM<br>LEDGER</div>
+            <div class="cyber-seal">CERTIFIED<br>LAMIM<br>AUDIT</div>
             
             <div class="hero">
               <div class="brand-row">
                 <div class="brand-logo"></div>
                 <div class="brand-name">LAMIM FINTECH</div>
               </div>
-              <h1 class="report-title">${mStr}</h1>
-              <div class="report-date">Automated Financial Asset Report • ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
+              <h1 class="report-title">${mStr} Statement</h1>
+              <div class="report-date">Automated Financial Asset Report • ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()} • ${new Date().toLocaleDateString()}</div>
             </div>
 
-              <div class="stats-grid">
-                <div class="stat-card">
-                  <span class="label">Opening Balance</span>
-                  <div class="val" style="color: #64748b;">${sym}${this.formatVal(stats.openingBalance)}</div>
-                </div>
-                <div class="stat-card">
-                  <span class="label">Total Income</span>
-                  <div class="val pos">+${sym}${this.formatVal(stats.income)}</div>
-                </div>
-                <div class="stat-card">
-                  <span class="label">Monthly Spend</span>
-                  <div class="val neg">-${sym}${this.formatVal(total)}</div>
-                </div>
-                <div class="stat-card dark">
-                  <span class="label" style="color:rgba(255,255,255,0.4)">Closing Balance</span>
-                  <div class="val">${sym}${this.formatVal(stats.closingBalance)}</div>
-                </div>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <span class="label">Opening Balance</span>
+                <div class="val" style="color: #64748b;">${sym}${this.formatVal(stats.openingBalance)}</div>
               </div>
-              <div class="networth-line">Vault Savings: ${sym}${this.formatVal(totalSaved)} &nbsp;•&nbsp; Net Worth: ${sym}${this.formatVal(netWorth)}</div>
+              <div class="stat-card">
+                <span class="label">Total Income</span>
+                <div class="val pos">+${sym}${this.formatVal(stats.income)}</div>
+              </div>
+              <div class="stat-card">
+                <span class="label">Monthly Spend</span>
+                <div class="val neg">-${sym}${this.formatVal(total)}</div>
+              </div>
+              <div class="stat-card dark">
+                <span class="label" style="color:rgba(255,255,255,0.6)">Closing Balance</span>
+                <div class="val">${sym}${this.formatVal(stats.closingBalance)}</div>
+              </div>
+            </div>
+            <div class="networth-line">Vault Savings: ${sym}${this.formatVal(totalSaved)} &nbsp;•&nbsp; Net Worth: ${sym}${this.formatVal(netWorth)}</div>
 
             <div class="ledger-header">
-              <div class="ledger-title">Transaction Ledger</div>
-              <div style="font-size:11px; color:#94a3b8; font-weight:800;">DATA SYNCED: ${new Date().toLocaleTimeString()}</div>
+              <div class="ledger-title">Transaction Ledger (${txs.length} Entries)</div>
+              <div style="font-size:8px; color:#94a3b8; font-weight:800;">DATA SYNCED: ${new Date().toLocaleTimeString()}</div>
             </div>
 
             <table>
               <thead>
                 <tr>
-                  <th>Timeframe</th>
-                  <th>Description</th>
-                  <th>Category</th>
-                  <th style="text-align:right;">Impact</th>
+                  <th style="width:18%">Date</th>
+                  <th style="width:42%">Description</th>
+                  <th style="width:20%">Category</th>
+                  <th style="width:20%; text-align:right;">Impact</th>
                 </tr>
               </thead>
               <tbody>
-                ${txs.map(t => {
-      const isInc = t.type === 'income';
-      const sign = isInc ? '+' : '-';
-      const classColor = isInc ? 'pos' : 'neg';
-      const catText = isInc ? 'INCOME' : t.category;
-      const catBg = isInc ? 'rgba(16, 185, 129, 0.08)' : '#f8fafc';
-      const catColor = isInc ? '#10b981' : '#64748b';
-      const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#f1f5f9';
+                ${txs.slice(0, 16).map(t => {
+                  const isInc = t.type === 'income';
+                  const sign = isInc ? '+' : '-';
+                  const classColor = isInc ? 'pos' : 'neg';
+                  const catText = isInc ? 'INCOME' : t.category;
+                  const catBg = isInc ? 'rgba(16, 185, 129, 0.08)' : '#f8fafc';
+                  const catColor = isInc ? '#10b981' : '#64748b';
+                  const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#e2e8f0';
 
-      return `
+                  return `
                     <tr>
-                      <td style="color:#6366f1; font-weight:800; font-size:13px;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
-                      <td style="font-weight:700; color:#1e1b4b; font-size:15px;">${Utils.escapeHTML(t.description)}</td>
-                      <td><span class="cat-tag" style="background:${catBg}; color:${catColor}; border:1px solid ${catBorder};">${catText}</span></td>
+                      <td style="color:#6366f1; font-weight:800; font-size:9px;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
+                      <td style="font-weight:700; color:#1e1b4b; font-size:9.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
+                      <td><span class="cat-tag" style="background:${catBg}; color:${catColor}; border:1px solid ${catBorder};">${Utils.escapeHTML(catText)}</span></td>
                       <td class="amount ${classColor}">${sign}${sym}${this.formatVal(t.amount)}</td>
                     </tr>
                   `;
-    }).join('')}
+                }).join('')}
+                ${txs.length === 0 ? '<tr><td colspan="4" style="text-align:center; padding:16px; color:#94a3b8;">No transactions logged for this month yet.</td></tr>' : ''}
               </tbody>
             </table>
 
             <div class="footer">
               <div class="footer-text">LAMIM ECOSYSTEM — SECURE FINANCE</div>
-              <div style="font-size:10px; color:#cbd5e1; margin-top:12px; font-weight:600;">© 2026 LAMIM. All Financial Data Encrypted Locally.</div>
+              <div style="font-size:7.5px; color:#94a3b8; font-weight:600;">v2.1.0 "Aura" • Encrypted Local Vault</div>
+            </div>
           </div>
-          <script>window.onload = function(){setTimeout(function(){window.print();window.close()},800)}</script>
         </body>
       </html>
     `;

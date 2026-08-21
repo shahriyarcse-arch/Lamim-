@@ -753,84 +753,99 @@ const Gym = {
     if (consistencyPct >= 80) { consistencyTier = 'EXCELLENT'; consistencyColor = '#34d399'; }
     else if (consistencyPct >= 50) { consistencyTier = 'GOOD'; consistencyColor = '#22d3ee'; }
 
-    const rowHtml = rows.map(r => {
+    let col1Rows = '';
+    let col2Rows = '';
+    const splitIndex = Math.ceil(daysInMonth / 2);
+
+    rows.forEach(r => {
+      let rowHtml = '';
       if (r.isFuture) {
-        return `<tr>
-          <td style="padding:10px;border-bottom:1px solid #e2e8f0;font-weight:700;color:#94a3b8">${r.day}</td>
-          <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:left;color:#cbd5e1">—</td>
+        rowHtml = `<tr>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
+        </tr>`;
+      } else {
+        rowHtml = `<tr>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:800;color:#0f172a">${r.day}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-weight:700;color:#0891b2">${r.exCount || '—'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center">${r.dur ? r.dur.toFixed(1) + 'h' : '—'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:8px">${r.recovery || '—'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#0284c7">${r.water ? r.water + 'ml' : '—'}</td>
         </tr>`;
       }
-      return `<tr>
-        <td style="padding:10px;border-bottom:1px solid #e2e8f0;font-weight:700">${r.day}</td>
-        <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center">${r.exCount}</td>
-        <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center">${r.dur ? r.dur.toFixed(1) + 'h' : '—'}</td>
-        <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center">${r.recovery || '—'}</td>
-        <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:center">${r.water} ml</td>
-        <td style="padding:10px;border-bottom:1px solid #e2e8f0;text-align:left;max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${Utils.escapeHTML(r.foodIntake)}">${Utils.escapeHTML(r.foodIntake)}</td>
-      </tr>`;
-    }).join('');
+      if (r.day <= splitIndex) col1Rows += rowHtml;
+      else col2Rows += rowHtml;
+    });
 
     const genDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Gym & Diet Report — ${monthName}</title>
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Gym & Fitness Report — ${monthName}</title>
     <style>
-      @page { size: A4; margin: 16mm; }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
       * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif; color: #1e293b; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; line-height: 1.5; }
-      .header { position: relative; display: flex; justify-content: space-between; align-items: flex-end; padding: 26px 28px; margin-bottom: 26px; border-radius: 20px; overflow: hidden; background: linear-gradient(120deg, #0891b2 0%, #06b6d4 45%, #65a30d 100%); color: #fff; box-shadow: 0 14px 38px -16px rgba(8, 145, 178, 0.55); }
-      .header::after { content: ''; position: absolute; top: -40%; right: -10%; width: 240px; height: 240px; background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%); }
-      .logo { font-size: 26px; font-weight: 900; letter-spacing: 0.22em; position: relative; }
-      .subtitle { font-size: 11px; color: rgba(255,255,255,0.82); font-weight: 600; letter-spacing: 0.14em; margin-top: 6px; }
-      .meta { text-align: right; font-size: 12px; color: rgba(255,255,255,0.88); position: relative; }
-      .meta strong { display: block; font-size: 17px; color: #fff; margin-bottom: 3px; font-weight: 800; letter-spacing: 0.02em; }
-      .consistency { display: inline-block; padding: 5px 14px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.07em; background: ${consistencyColor}22; color: ${consistencyColor}; margin-bottom: 18px; border: 1px solid ${consistencyColor}55; }
-      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 22px 0; }
-      .sum-card { background: #fff; border-radius: 16px; padding: 18px 18px 16px; border: 1px solid #eef0f4; box-shadow: 0 6px 18px -10px rgba(15, 23, 42, 0.18); position: relative; overflow: hidden; }
-      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--c, #06b6d4); }
+      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; background: #fff; line-height: 1.3; font-size: 9px; }
+      .header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 10px; border-radius: 12px; overflow: hidden; background: linear-gradient(120deg, #0891b2 0%, #06b6d4 45%, #65a30d 100%); color: #fff; }
+      .logo { font-size: 18px; font-weight: 900; letter-spacing: 0.15em; line-height: 1; }
+      .subtitle { font-size: 8px; color: rgba(255,255,255,0.9); font-weight: 700; letter-spacing: 0.1em; margin-top: 2px; }
+      .meta { text-align: right; font-size: 9px; color: rgba(255,255,255,0.9); }
+      .meta strong { font-size: 13px; color: #fff; font-weight: 800; }
+      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+      .sum-card { background: #f8fafc; border-radius: 10px; padding: 8px 10px; border: 1px solid #eef0f4; position: relative; overflow: hidden; }
+      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--c, #06b6d4); }
       .sum-card:nth-child(1) { --c: #0891b2; }
       .sum-card:nth-child(2) { --c: #0ea5e9; }
       .sum-card:nth-child(3) { --c: #22d3ee; }
       .sum-card:nth-child(4) { --c: #65a30d; }
-      .sum-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; font-weight: 700; }
-      .sum-val { font-size: 28px; font-weight: 800; color: #0f172a; margin-top: 8px; letter-spacing: -0.02em; }
-      table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; border: 1px solid #eef0f4; border-radius: 16px; overflow: hidden; }
-      th { background: linear-gradient(180deg, #06b6d4, #0891b2); color: #fff; padding: 13px 14px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; }
-      th:first-child { text-align: left; }
-      th:last-child { text-align: left; }
-      td { padding: 10px 14px; border-top: 1px solid #f1f5f9; }
+      .sum-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; }
+      .sum-val { font-size: 18px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+      .consistency-bar { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 10px; margin-bottom: 8px; font-size: 8px; font-weight: 800; }
+      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+      table { width: 100%; border-collapse: collapse; font-size: 8.5px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+      th { background: #f1f5f9; color: #475569; padding: 5px 4px; text-align: center; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+      th:first-child { text-align: left; padding-left: 6px; width: 22%; }
+      td { padding: 3px 4px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
       tbody tr:nth-child(even) { background: #fafbfc; }
-      tbody tr:first-child td { border-top: none; }
-      .footer { margin-top: 30px; padding-top: 18px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #94a3b8; }
-      .footer .quote { font-style: italic; }
-      .footer .brand { font-weight: 800; letter-spacing: 0.12em; color: #0891b2; }
+      .footer { padding-top: 6px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; }
+      .footer .brand { font-weight: 800; color: #0891b2; }
+      @media print {
+        body { padding: 0; }
+        .page { break-inside: avoid; }
+      }
     </style></head><body>
     <div class="header">
       <div>
         <div class="logo">LAMIM</div>
-        <div class="subtitle">TRAINING & RECOVERY · MONTHLY REPORT</div>
+        <div class="subtitle">TRAINING & RECOVERY AUDIT</div>
       </div>
       <div class="meta">
-        <strong>${monthName}</strong>
-        REF: GYM-${year}${month}
+        <strong>${monthName}</strong> • REF: GYM-${year}${month}
       </div>
     </div>
-    <div class="consistency">${consistencyTier} · ${consistencyPct}% CONSISTENCY</div>
     <div class="summary">
       <div class="sum-card"><div class="sum-label">Total Exercises</div><div class="sum-val">${totalExercises}</div></div>
       <div class="sum-card"><div class="sum-label">Avg Sleep</div><div class="sum-val">${avgSleep}h</div></div>
       <div class="sum-card"><div class="sum-label">Avg Hydration</div><div class="sum-val">${avgHydration}%</div></div>
-      <div class="sum-card"><div class="sum-label">Logged Days</div><div class="sum-val">${loggedDaysCount}</div></div>
+      <div class="sum-card"><div class="sum-label">Consistency</div><div class="sum-val" style="color:${consistencyColor}">${consistencyPct}%</div></div>
     </div>
-    <table>
-      <thead><tr><th>Date</th><th>Exercises</th><th>Sleep</th><th>Recovery</th><th>Water</th><th>Logged Food Intake</th></tr></thead>
-      <tbody>${rowHtml}</tbody>
-    </table>
+    <div class="consistency-bar">
+      <span>DAILY LOG RECORD (DAYS 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</span>
+      <span style="color:${consistencyColor}">STATUS: ${consistencyTier}</span>
+    </div>
+    <div class="grid-tables">
+      <table>
+        <thead><tr><th>Date</th><th>Sets</th><th>Sleep</th><th>Recovery</th><th>Water</th></tr></thead>
+        <tbody>${col1Rows}</tbody>
+      </table>
+      <table>
+        <thead><tr><th>Date</th><th>Sets</th><th>Sleep</th><th>Recovery</th><th>Water</th></tr></thead>
+        <tbody>${col2Rows}</tbody>
+      </table>
+    </div>
     <div class="footer">
-      <span class="quote">"Take care of your body. It's the only place you have to live." — Jim Rohn</span>
-      <span class="brand">LAMIM · ${genDate}</span>
+      <span>"A strong believer is better and more beloved to Allah than a weak believer." — Sahih Muslim</span>
+      <span class="brand">LAMIM v2.1.0 • ${genDate}</span>
     </div>
     </body></html>`;
     Utils.exportPDF(html);

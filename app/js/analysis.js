@@ -639,198 +639,180 @@ const Analysis = {
       return 'background: rgba(239, 68, 68, 0.15); color: #991b1b; border: 1px solid rgba(239, 68, 68, 0.3);';
     };
 
+    let col1Rows = '';
+    let col2Rows = '';
+    const splitIndex = Math.ceil(dayData.length / 2);
+
+    dayData.forEach((d, idx) => {
+      const renderedRow = `
+        <tr>
+          <td style="color: #64748b; font-weight: 700; padding: 3px 6px;">${String(d.day).padStart(2, '0')}</td>
+          <td style="text-align: center; font-weight: 800; color: #0f172a; padding: 3px 6px;">${d.score}</td>
+          <td style="text-align: center; padding: 3px 4px;"><span class="rating-badge" style="${getBadgeStyle(d.rating)}">${d.rating}</span></td>
+        </tr>
+      `;
+      if (idx < splitIndex) col1Rows += renderedRow;
+      else col2Rows += renderedRow;
+    });
+
     const innerHTML = `
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #f8fafc; }
-        .pdf-wrapper { background: #f8fafc; width: 100%; min-height: 1122px; position: relative; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        @page { size: A4 portrait; margin: 8mm 10mm; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; padding: 0; }
+        body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #fff; font-size: 9px; line-height: 1.3; }
+        .pdf-wrapper { width: 100%; position: relative; }
         
         .header-banner { 
           background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); 
           color: white; 
-          padding: 50px 40px; 
+          padding: 14px 18px 22px; 
+          border-radius: 12px;
           position: relative;
           overflow: hidden;
-          box-shadow: 0 14px 38px -16px rgba(124, 58, 237, 0.55);
         }
-        .header-bg-shape {
-          position: absolute; right: -50px; top: -50px; width: 300px; height: 300px;
-          background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
-          border-radius: 50%;
-        }
-        .header-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
-        .brand { display: flex; align-items: center; gap: 12px; }
-        .brand-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .brand-text { font-size: 24px; font-weight: 800; letter-spacing: 1px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
+        .brand { display: flex; align-items: center; gap: 8px; }
+        .brand-icon { width: 26px; height: 26px; background: rgba(255,255,255,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .brand-text { font-size: 16px; font-weight: 900; letter-spacing: 1px; }
         
         .report-meta { text-align: right; }
-        .report-meta-title { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.7); font-weight: 700; margin-bottom: 4px; }
-        .report-meta-date { font-size: 18px; font-weight: 600; }
+        .report-meta-title { font-size: 7.5px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8); font-weight: 700; }
+        .report-meta-date { font-size: 11px; font-weight: 800; }
         
-        .user-info { margin-top: 40px; position: relative; z-index: 2; }
-        .user-name { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; }
-        .user-subtitle { font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; }
+        .user-info { margin-top: 8px; position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: baseline; }
+        .user-name { font-size: 16px; font-weight: 900; }
+        .user-subtitle { font-size: 8px; color: rgba(255,255,255,0.85); font-weight: 600; }
 
-        .content { padding: 40px; }
+        .content { padding: 0 4px; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: -70px; position: relative; z-index: 10; padding-bottom: 10px; }
-
-        .radar-chart-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: rgba(255,255,255,0.03);
-          border-radius: 24px;
-          padding: 20px;
-          border: 1px solid rgba(255,255,255,0.05);
-          backdrop-filter: blur(10px);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .radar-chart-container::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at 50% 50%, rgba(129, 140, 248, 0.05) 0%, transparent 70%);
-          pointer-events: none;
-        }
-
-        .radar-chart-wrapper {
-          width: 100%;
-          max-width: 280px;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: -10px; position: relative; z-index: 10; margin-bottom: 8px; }
 
         .stat-card { 
           background: #ffffff; 
-          padding: 24px; 
-          border-radius: 16px; 
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-          border: 1px solid rgba(226, 232, 240, 0.8);
+          padding: 8px 12px; 
+          border-radius: 10px; 
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e2e8f0;
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
           position: relative;
           overflow: hidden;
         }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--sc, #6366f1); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--sc, #6366f1); }
         .stat-card:nth-child(1) { --sc: #6366f1; }
         .stat-card:nth-child(2) { --sc: #10b981; }
         .stat-card:nth-child(3) { --sc: #f59e0b; }
-        .stat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-        .stat-val { font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1.1; margin-bottom: 4px; }
-        .stat-label { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-val { font-size: 20px; font-weight: 900; color: #0f172a; line-height: 1.1; margin-bottom: 2px; }
+        .stat-label { font-size: 7.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .section-title { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-        .section-title::before { content: ''; display: block; width: 4px; height: 18px; background: #6366f1; border-radius: 2px; }
+        .section-bar { font-size: 8px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding: 4px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; justify-content: space-between; }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; }
-        th { text-align: left; background: linear-gradient(180deg, #7c3aed, #6d28d9); padding: 14px 16px; font-size: 11px; text-transform: uppercase; color: #fff; font-weight: 700; border-bottom: 1px solid #e2e8f0; letter-spacing: 0.5px; }
-        td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; font-weight: 500; }
+        .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; font-size: 8px; table-layout: fixed; }
+        th { text-align: left; background: #f1f5f9; padding: 4px 6px; font-size: 7.5px; text-transform: uppercase; color: #475569; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+        th:nth-child(2), th:nth-child(3) { text-align: center; }
+        td { padding: 3px 6px; border-bottom: 1px solid #f1f5f9; font-size: 8px; color: #334155; }
         tr:last-child td { border-bottom: none; }
         tr:nth-child(even) td { background: #fafbfc; }
         
-        .score-highlight { font-weight: 700; color: #0f172a; }
-        .rating-badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
+        .rating-badge { padding: 1px 6px; border-radius: 12px; font-size: 7px; font-weight: 800; text-transform: uppercase; display: inline-block; }
         
         .footer { 
-          margin-top: 40px; 
-          padding-top: 20px; 
+          margin-top: 6px; 
+          padding-top: 6px; 
           border-top: 1px solid #e2e8f0; 
           display: flex; 
           justify-content: space-between; 
           align-items: center;
+          font-size: 7.5px;
+          color: #94a3b8;
         }
-        .footer-text { font-size: 11px; color: #94a3b8; font-weight: 500; }
-        .footer-logo { font-size: 14px; font-weight: 800; color: #6366f1; letter-spacing: 1px; }
+        .footer-logo { font-size: 10px; font-weight: 900; color: #6366f1; }
+        @media print {
+          body { padding: 0; }
+          .pdf-wrapper { break-inside: avoid; }
+        }
       </style>
       
       <div class="pdf-wrapper">
         <div class="header-banner">
-          <div class="header-bg-shape"></div>
           <div class="header-top">
             <div class="brand">
               <div class="brand-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 512 512"><path d="M336 344c-70.69 0-128-57.31-128-128 0-31.14 11.23-59.62 30-81.82-74.05 10.55-130 74.2-130 151.82 0 83.95 68.05 152 152 152 77.62 0 141.27-55.95 151.82-130-22.2 18.77-50.68 30-81.82 30z" fill="#ffffff" opacity="0.95"/><path d="M256 128l16 48 48 16-48 16-16 48-16-48-48-16 48-16z" fill="#fcd34d"/><path d="M368 180l10 30 30 10-30 10-10 30-10-30-30-10 30-10z" fill="#fde68a" opacity="0.8"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path d="M336 344c-70.69 0-128-57.31-128-128 0-31.14 11.23-59.62 30-81.82-74.05 10.55-130 74.2-130 151.82 0 83.95 68.05 152 152 152 77.62 0 141.27-55.95 151.82-130-22.2 18.77-50.68 30-81.82 30z" fill="#ffffff" opacity="0.95"/><path d="M256 128l16 48 48 16-48 16-16 48-16-48-48-16 48-16z" fill="#fcd34d"/></svg>
               </div>
               <div class="brand-text">LAMIM</div>
             </div>
             <div class="report-meta">
-              <div class="report-meta-title">Performance Audit</div>
+              <div class="report-meta-title">Spiritual Audit</div>
               <div class="report-meta-date">${monthName} ${currentYear}</div>
             </div>
           </div>
           <div class="user-info">
-            <div class="user-name">${Utils.escapeHTML(user.name || 'Anonymous Warrior')}</div>
-            <div class="user-subtitle">Spiritual Score Report</div>
+            <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
+            <div class="user-subtitle">Spiritual Health Index Scorecard</div>
           </div>
         </div>
 
         <div class="content">
           <div class="stats-grid">
             <div class="stat-card">
-              <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              </div>
               <div class="stat-val">${avgSHS}</div>
-              <div class="stat-label">Average LSS</div>
+              <div class="stat-label">Average LSS Score</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              </div>
               <div class="stat-val">${salahStats.perfect}</div>
               <div class="stat-label">Perfect Salah Days</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </div>
               <div class="stat-val">${totalDhikr}</div>
-              <div class="stat-label">Total Dhikr Count</div>
+              <div class="stat-label">Total Monthly Dhikr</div>
             </div>
           </div>
 
-          <div class="section-title">Daily Performance Log</div>
+          <div class="section-bar">
+            <span>Daily Spiritual Performance Log (Days 1–${splitIndex} & ${splitIndex + 1}–${dayData.length})</span>
+            <span>Composite 100-Point Metric</span>
+          </div>
           
-          <table>
-            <thead>
-              <tr>
-                <th style="width: 15%">Day</th>
-                <th style="width: 35%">Date</th>
-                <th style="width: 20%; text-align: center;">LSS Score</th>
-                <th style="width: 30%; text-align: center;">Spiritual Rating</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${dayData.map(d => `
+          <div class="grid-tables">
+            <table>
+              <thead>
                 <tr>
-                  <td style="color: #64748b; font-weight: 600;">${String(d.day).padStart(2, '0')}</td>
-                  <td>${monthName} ${d.day}, ${currentYear}</td>
-                  <td style="text-align: center;" class="score-highlight">${d.score}</td>
-                  <td style="text-align: center;"><span class="rating-badge" style="${getBadgeStyle(d.rating)}">${d.rating}</span></td>
+                  <th style="width: 25%">Day</th>
+                  <th style="width: 25%; text-align: center;">LSS</th>
+                  <th style="width: 50%; text-align: center;">Spiritual Tier</th>
                 </tr>
-              `).join('')}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                ${col1Rows}
+              </tbody>
+            </table>
+
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 25%">Day</th>
+                  <th style="width: 25%; text-align: center;">LSS</th>
+                  <th style="width: 50%; text-align: center;">Spiritual Tier</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${col2Rows}
+              </tbody>
+            </table>
+          </div>
 
           <div class="footer">
-            <div class="footer-text">
-              Generated securely by Lamim Intelligence • ${new Date().toLocaleDateString()}<br>
-              &copy; ${currentYear} Lamim. All rights reserved.
-            </div>
-            <div class="footer-logo">LAMIM</div>
+            <div>Generated by Lamim Intelligence • ${new Date().toLocaleDateString()}</div>
+            <div class="footer-logo">LAMIM v2.1.0</div>
           </div>
         </div>
       </div>
     `;
 
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lamim Spiritual Report — ${monthName} ${currentYear}</title>
-      <style>
-        @page { size: A4; margin: 16mm; }
-        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      </style></head><body>${innerHTML}</body></html>`;
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lamim Spiritual Report — ${monthName} ${currentYear}</title></head><body>${innerHTML}</body></html>`;
     Utils.exportPDF(html);
   },
   destroy() {
