@@ -2182,108 +2182,177 @@ const Finance = {
       ...incs.map(i => ({ ...i, type: 'income' }))
     ].sort((a, b) => new Date(b.date) - new Date(a.date));
 
+    // Category spending aggregation
+    const catMap = {};
+    exps.forEach(e => {
+      const c = e.category || 'other';
+      catMap[c] = (catMap[c] || 0) + (e.amount || 0);
+    });
+    const catPills = Object.entries(catMap).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([cat, amt]) => {
+      const pct = total > 0 ? Math.round((amt / total) * 100) : 0;
+      return `<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:3px 6px; font-size:7.5px; font-weight:700; color:#475569; display:flex; justify-content:space-between; gap:4px;">
+        <span style="text-transform:capitalize;">${Utils.escapeHTML(cat)}</span>
+        <span style="color:#0f172a; font-weight:800;">${sym}${this.formatVal(amt)} (${pct}%)</span>
+      </div>`;
+    }).join('');
+
+    const savingsCards = (this.data.savings || []).slice(0, 3).map(s => {
+      const sSaved = Number(s.saved) || 0;
+      const sTarget = Number(s.target) || 1;
+      const sPct = Math.min(100, Math.round((sSaved / sTarget) * 100));
+      return `<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:5px 8px; flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; font-size:7.5px; font-weight:800;">
+          <span style="color:#0f172a;">${Utils.escapeHTML(s.name || 'Vault')}</span>
+          <span style="color:#6366f1;">${sPct}%</span>
+        </div>
+        <div style="font-size:8.5px; font-weight:900; color:#1e1b4b; margin:1px 0;">${sym}${this.formatVal(sSaved)} <span style="font-size:7px; color:#94a3b8; font-weight:600;">/ ${sym}${this.formatVal(sTarget)}</span></div>
+        <div style="width:100%; height:3px; background:#f1f5f9; border-radius:2px; overflow:hidden;">
+          <div style="width:${sPct}%; height:100%; background:linear-gradient(90deg, #6366f1, #06b6d4); border-radius:2px;"></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const renderTxRow = (t) => {
+      const isInc = t.type === 'income';
+      const sign = isInc ? '+' : '-';
+      const classColor = isInc ? 'pos' : 'neg';
+      const catText = isInc ? 'INCOME' : t.category;
+      const catBg = isInc ? 'rgba(16, 185, 129, 0.08)' : '#f8fafc';
+      const catColor = isInc ? '#10b981' : '#64748b';
+      const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#e2e8f0';
+
+      return `
+        <tr>
+          <td style="color:#6366f1; font-weight:800; font-size:7.5px; width:22%;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
+          <td style="font-weight:700; color:#1e1b4b; font-size:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:48%;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
+          <td class="amount ${classColor}" style="width:30%; font-size:8.5px;">${sign}${sym}${this.formatVal(t.amount)}</td>
+        </tr>
+      `;
+    };
+
+    let ledgerTableHtml = '';
+    if (txs.length > 14) {
+      const splitIdx = Math.ceil(txs.length / 2);
+      const col1 = txs.slice(0, splitIdx);
+      const col2 = txs.slice(splitIdx, 32);
+      ledgerTableHtml = `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <table>
+            <thead><tr><th style="width:22%">Date</th><th style="width:48%">Item</th><th style="width:30%; text-align:right;">Amount</th></tr></thead>
+            <tbody>${col1.map(renderTxRow).join('')}</tbody>
+          </table>
+          <table>
+            <thead><tr><th style="width:22%">Date</th><th style="width:48%">Item</th><th style="width:30%; text-align:right;">Amount</th></tr></thead>
+            <tbody>${col2.map(renderTxRow).join('')}</tbody>
+          </table>
+        </div>
+      `;
+    } else {
+      ledgerTableHtml = `
+        <table>
+          <thead>
+            <tr>
+              <th style="width:16%">Date</th>
+              <th style="width:46%">Description</th>
+              <th style="width:20%">Category</th>
+              <th style="width:18%; text-align:right;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${txs.map(t => {
+              const isInc = t.type === 'income';
+              const sign = isInc ? '+' : '-';
+              const classColor = isInc ? 'pos' : 'neg';
+              const catText = isInc ? 'INCOME' : t.category;
+              const catBg = isInc ? 'rgba(16, 185, 129, 0.08)' : '#f8fafc';
+              const catColor = isInc ? '#10b981' : '#64748b';
+              const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#e2e8f0';
+              return `
+                <tr>
+                  <td style="color:#6366f1; font-weight:800; font-size:8px;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
+                  <td style="font-weight:700; color:#1e1b4b; font-size:8.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
+                  <td><span class="cat-tag" style="background:${catBg}; color:${catColor}; border:1px solid ${catBorder};">${Utils.escapeHTML(catText)}</span></td>
+                  <td class="amount ${classColor}" style="font-size:9px;">${sign}${sym}${this.formatVal(t.amount)}</td>
+                </tr>
+              `;
+            }).join('')}
+            ${txs.length === 0 ? '<tr><td colspan="4" style="text-align:center; padding:12px; color:#94a3b8;">No transactions logged for this month.</td></tr>' : ''}
+          </tbody>
+        </table>
+      `;
+    }
+
     const winHtml = `
       <!DOCTYPE html>
       <html>
         <head>
           <meta charset="utf-8">
-          <title>LAMIM - Digital Statement (${mStr})</title>
+          <title>LAMIM - Financial Audit (${mStr})</title>
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap');
-            
             @page { size: A4 portrait; margin: 8mm 10mm; }
             * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             body { 
               font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; 
-              background: #f8fafc; 
+              background: #fff; 
               color: #0f172a; 
-              font-size: 10px;
-              line-height: 1.3;
+              font-size: 8.5px;
+              line-height: 1.25;
             }
             
-            .container { 
-              width: 100%; max-width: 100%; margin: 0 auto; padding: 10px 14px; position: relative; 
-              background: #ffffff;
-              border-radius: 12px;
-            }
+            .container { width: 100%; margin: 0 auto; position: relative; }
 
-            .cyber-seal {
-              position: absolute; top: 12px; right: 16px;
-              width: 55px; height: 55px;
-              border: 1.5px dashed #6366f1; border-radius: 50%;
-              display: flex; align-items: center; justify-content: center;
-              font-size: 7px; font-weight: 900; color: #6366f1;
-              text-align: center; transform: rotate(12deg);
-              opacity: 0.6;
-            }
+            .hero { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e1b4b; padding-bottom: 6px; margin-bottom: 8px; }
+            .brand-name { font-size: 16px; font-weight: 900; color: #4f46e5; letter-spacing: -0.5px; }
+            .brand-sub { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; }
+            .report-title { font-size: 13px; font-weight: 900; color: #1e1b4b; text-align: right; }
+            .report-date { font-size: 7.5px; font-weight: 700; color: #6366f1; text-align: right; margin-top: 1px; }
 
-            .hero { margin-bottom: 12px; }
-            .brand-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-            .brand-logo { width: 22px; height: 22px; background: linear-gradient(45deg, #4f46e5, #06b6d4); border-radius: 6px; }
-            .brand-name { font-size: 13px; font-weight: 900; color: #4f46e5; letter-spacing: -0.5px; }
-            
-            .report-title { font-size: 24px; font-weight: 900; letter-spacing: -1px; margin: 0; color: #1e1b4b; line-height: 1.1; }
-            .report-date { font-size: 9px; font-weight: 700; color: #6366f1; margin-top: 2px; }
-
-            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
-            .stat-card { 
-              background: #f8fafc; padding: 8px 10px; border-radius: 10px; 
-              border: 1px solid #e2e8f0;
-            }
+            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
+            .stat-card { background: #f8fafc; padding: 6px 8px; border-radius: 8px; border: 1px solid #e2e8f0; }
             .stat-card.dark { background: #1e1b4b; color: white; border: none; }
-            .label { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #94a3b8; margin-bottom: 3px; display: block; }
-            .val { font-size: 16px; font-weight: 900; letter-spacing: -0.5px; }
+            .label { font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 2px; display: block; }
+            .val { font-size: 14px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.1; }
             
-            .networth-line { text-align: center; font-size: 9.5px; font-weight: 800; color: #475569; background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px; padding: 6px 10px; margin-bottom: 10px; }
+            .networth-line { font-size: 8px; font-weight: 800; color: #475569; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.12); border-radius: 6px; padding: 4px 8px; margin-bottom: 6px; display: flex; justify-content: space-between; }
 
-            .ledger-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding: 0 4px; }
-            .ledger-title { font-size: 12px; font-weight: 900; color: #1e1b4b; }
+            .savings-wrap { display: flex; gap: 6px; margin-bottom: 6px; }
+            .cats-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 6px; }
+
+            .ledger-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; padding: 3px 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 5px; }
+            .ledger-title { font-size: 8px; font-weight: 900; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.5px; }
             
-            table { width: 100%; border-collapse: collapse; margin-bottom: 8px; table-layout: fixed; }
-            th { text-align: left; padding: 5px 8px; font-size: 7.5px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; background: #f1f5f9; border-bottom: 1.5px solid #e2e8f0; }
-            td { 
-              padding: 5px 8px; background: white; 
-              border-bottom: 1px solid #f1f5f9;
-              font-size: 9.5px;
-              vertical-align: middle;
-            }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 6px; table-layout: fixed; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; background: #fff; }
+            th { text-align: left; padding: 3px 6px; font-size: 7px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f1f5f9; border-bottom: 1.5px solid #e2e8f0; }
+            td { padding: 2.5px 6px; background: white; border-bottom: 1px solid #f1f5f9; font-size: 8px; vertical-align: middle; }
             tr:nth-child(even) td { background: #fafbfd; }
 
-            .amount { font-weight: 900; font-size: 10.5px; text-align: right; letter-spacing: -0.3px; }
+            .amount { font-weight: 900; font-size: 8.5px; text-align: right; letter-spacing: -0.2px; }
             .neg { color: #f43f5e; }
             .pos { color: #10b981; }
 
-            .cat-tag { 
-              padding: 2px 6px; border-radius: 5px; font-size: 7.5px; font-weight: 800; 
-              background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; text-transform: uppercase;
-              display: inline-block;
-            }
+            .cat-tag { padding: 1px 4px; border-radius: 4px; font-size: 6.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
 
-            .footer { 
-              margin-top: 8px; text-align: center; padding: 6px 0; 
-              border-top: 1px solid #e2e8f0;
-              display: flex; justify-content: space-between; align-items: center;
-            }
-            .footer-text { font-size: 8px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+            .footer { margin-top: 4px; padding-top: 4px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+            .footer-text { font-size: 7px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
             
             @media print {
               body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-              .container { width: 100%; box-shadow: none; padding: 0; }
-              .stat-card, tr { break-inside: avoid; }
+              .container { width: 100%; padding: 0; }
             }
           </style>
         </head>
         <body>
           <div class="container">
-            <div class="cyber-seal">CERTIFIED<br>LAMIM<br>AUDIT</div>
-            
             <div class="hero">
-              <div class="brand-row">
-                <div class="brand-logo"></div>
+              <div>
                 <div class="brand-name">LAMIM FINTECH</div>
+                <div class="brand-sub">Digital Wealth & Expense Audit</div>
               </div>
-              <h1 class="report-title">${mStr} Statement</h1>
-              <div class="report-date">Automated Financial Asset Report • ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()} • ${new Date().toLocaleDateString()}</div>
+              <div>
+                <div class="report-title">${mStr} Statement</div>
+                <div class="report-date">REF: ${Date.now().toString(36).toUpperCase()} • ${new Date().toLocaleDateString()}</div>
+              </div>
             </div>
 
             <div class="stats-grid">
@@ -2304,53 +2373,31 @@ const Finance = {
                 <div class="val">${sym}${this.formatVal(stats.closingBalance)}</div>
               </div>
             </div>
-            <div class="networth-line">Vault Savings: ${sym}${this.formatVal(totalSaved)} &nbsp;•&nbsp; Net Worth: ${sym}${this.formatVal(netWorth)}</div>
+
+            <div class="networth-line">
+              <span><b>Vault Savings:</b> ${sym}${this.formatVal(totalSaved)}</span>
+              <span><b>Total Net Worth:</b> ${sym}${this.formatVal(netWorth)}</span>
+            </div>
+
+            ${savingsCards ? `<div class="savings-wrap">${savingsCards}</div>` : ''}
+            ${catPills ? `<div class="cats-wrap">${catPills}</div>` : ''}
 
             <div class="ledger-header">
               <div class="ledger-title">Transaction Ledger (${txs.length} Entries)</div>
-              <div style="font-size:8px; color:#94a3b8; font-weight:800;">DATA SYNCED: ${new Date().toLocaleTimeString()}</div>
+              <div style="font-size:7px; color:#94a3b8; font-weight:700;">LIVE SYNCED • ${new Date().toLocaleTimeString()}</div>
             </div>
 
-            <table>
-              <thead>
-                <tr>
-                  <th style="width:18%">Date</th>
-                  <th style="width:42%">Description</th>
-                  <th style="width:20%">Category</th>
-                  <th style="width:20%; text-align:right;">Impact</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${txs.slice(0, 16).map(t => {
-                  const isInc = t.type === 'income';
-                  const sign = isInc ? '+' : '-';
-                  const classColor = isInc ? 'pos' : 'neg';
-                  const catText = isInc ? 'INCOME' : t.category;
-                  const catBg = isInc ? 'rgba(16, 185, 129, 0.08)' : '#f8fafc';
-                  const catColor = isInc ? '#10b981' : '#64748b';
-                  const catBorder = isInc ? 'rgba(16, 185, 129, 0.15)' : '#e2e8f0';
-
-                  return `
-                    <tr>
-                      <td style="color:#6366f1; font-weight:800; font-size:9px;">${new Date(t.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</td>
-                      <td style="font-weight:700; color:#1e1b4b; font-size:9.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${Utils.escapeHTML(t.description || 'Transaction')}</td>
-                      <td><span class="cat-tag" style="background:${catBg}; color:${catColor}; border:1px solid ${catBorder};">${Utils.escapeHTML(catText)}</span></td>
-                      <td class="amount ${classColor}">${sign}${sym}${this.formatVal(t.amount)}</td>
-                    </tr>
-                  `;
-                }).join('')}
-                ${txs.length === 0 ? '<tr><td colspan="4" style="text-align:center; padding:16px; color:#94a3b8;">No transactions logged for this month yet.</td></tr>' : ''}
-              </tbody>
-            </table>
+            ${ledgerTableHtml}
 
             <div class="footer">
-              <div class="footer-text">LAMIM ECOSYSTEM — SECURE FINANCE</div>
-              <div style="font-size:7.5px; color:#94a3b8; font-weight:600;">v2.1.0 "Aura" • Encrypted Local Vault</div>
+              <div class="footer-text">LAMIM ECOSYSTEM — SECURE FINANCE AUDIT</div>
+              <div style="font-size:7px; color:#94a3b8; font-weight:600;">v2.1.0 "Aura" • Encrypted Local Vault</div>
             </div>
           </div>
         </body>
       </html>
     `;
+
     overlay.remove();
     Utils.exportPDF(winHtml);
   },

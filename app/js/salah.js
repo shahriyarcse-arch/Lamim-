@@ -791,10 +791,16 @@ const Salah = {
   /* ---- Export PDF (Billion Dollar Company Style) ---- */
   exportPDF() {
     const safeStatusMeta = (status) => {
-      return this.statusMeta[status] || { color: '#999', label: 'Unknown', points: 0 };
+      const norm = status === 'jamaah' ? 'jamaat' : status;
+      if (norm === 'jamaat') return { color: '#10b981', label: "Jama'at", points: 10 };
+      if (norm === 'alone') return { color: '#0284c7', label: 'Alone', points: 7 };
+      if (norm === 'qaza') return { color: '#f59e0b', label: 'Qaza', points: 3 };
+      if (norm === 'missed') return { color: '#ef4444', label: 'Missed', points: 0 };
+      return this.statusMeta[norm] || { color: '#94a3b8', label: 'Unknown', points: 0 };
     };
 
-    const [yearStr, monthStr] = this.selectedDate.split('-');
+    const selDate = this.selectedDate || Utils.todayStr();
+    const [yearStr, monthStr] = selDate.split('-');
     const year = parseInt(yearStr, 10);
     const month = parseInt(monthStr, 10) - 1;
     const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
@@ -806,6 +812,14 @@ const Salah = {
     let col2Rows = '';
     const splitIndex = Math.ceil(daysInMonth / 2);
 
+    const prayerStats = {
+      fajr: { jamaat: 0, alone: 0, qaza: 0, missed: 0, done: 0 },
+      dhuhr: { jamaat: 0, alone: 0, qaza: 0, missed: 0, done: 0 },
+      asr: { jamaat: 0, alone: 0, qaza: 0, missed: 0, done: 0 },
+      maghrib: { jamaat: 0, alone: 0, qaza: 0, missed: 0, done: 0 },
+      isha: { jamaat: 0, alone: 0, qaza: 0, missed: 0, done: 0 }
+    };
+
     for (let d = 1; d <= daysInMonth; d++) {
       const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
       const data = DB.getSalah(dateStr);
@@ -815,20 +829,26 @@ const Salah = {
 
       const dayOfWeek = new Date(year, month, d).toLocaleDateString('en-US', { weekday: 'short' });
 
-      let rowCells = '<td class="cell-date"><span class="date-day">' + d + '</span><span class="date-weekday">' + dayOfWeek + '</span></td>';
+      let rowCells = `<td class="cell-date"><span class="date-day">${d}</span><span class="date-weekday">${dayOfWeek}</span></td>`;
 
       this.prayers.forEach(p => {
         const s = data[p];
         if (!s) {
-          rowCells += '<td class="cell-empty">&mdash;</td>';
+          rowCells += '<td class="cell-empty">—</td>';
         } else {
+          const norm = s === 'jamaah' ? 'jamaat' : s;
+          if (norm === 'jamaat') { prayerStats[p].jamaat++; prayerStats[p].done++; }
+          else if (norm === 'alone') { prayerStats[p].alone++; prayerStats[p].done++; }
+          else if (norm === 'qaza') { prayerStats[p].qaza++; }
+          else if (norm === 'missed') { prayerStats[p].missed++; }
+
           const meta = safeStatusMeta(s);
-          rowCells += '<td><span class="status-dot-cell" style="background:' + meta.color + '"></span></td>';
+          rowCells += `<td><span class="status-dot-cell" style="background:${meta.color}"></span></td>`;
         }
       });
 
       const rowClass = (d % 2 === 0) ? 'row-alt' : '';
-      const renderedRow = '<tr class="' + rowClass + '">' + rowCells + '</tr>';
+      const renderedRow = `<tr class="${rowClass}">${rowCells}</tr>`;
       if (d <= splitIndex) {
         col1Rows += renderedRow;
       } else {
@@ -860,169 +880,163 @@ const Salah = {
       statusBorder = '#fde68a';
     }
 
-    const generatedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const genDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+    const refCode = 'MT' + Math.floor(Math.random() * 89 + 10) + 'ZLS' + Math.floor(Math.random() * 9 + 1);
 
-    const css = `
-      @page { size: A4 portrait; margin: 8mm 10mm; }
-      * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #ffffff; color: #0f172a; font-size: 9px; line-height: 1.3; }
-      .page { max-width: 100%; margin: 0 auto; }
+    const prayerPillsHtml = this.prayers.map(p => {
+      const pLabel = this.prayerMeta[p]?.label || p;
+      const st = prayerStats[p];
+      return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:3px 6px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-weight:800;color:#0f172a;font-size:7.5px;">${pLabel}</span>
+        <div style="display:flex;gap:3px;font-size:7px;font-weight:700;">
+          <span style="color:#10b981;" title="Jamaat">${st.jamaat}J</span>
+          <span style="color:#0284c7;" title="Alone">${st.alone}A</span>
+          ${st.qaza > 0 ? `<span style="color:#f59e0b;" title="Qaza">${st.qaza}Q</span>` : ''}
+          <span style="color:#475569;margin-left:2px;font-weight:800;">${st.done}/${daysInMonth}</span>
+        </div>
+      </div>`;
+    }).join('');
 
-      /* Header */
-      .report-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; margin-bottom: 12px; }
-      .brand-section { display: flex; align-items: center; gap: 10px; }
-      .brand-logo { width: 34px; height: 34px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; font-weight: 900; }
-      .brand-text h1 { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #0f172a; line-height: 1; }
-      .brand-text p { font-size: 8px; color: #64748b; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; }
-      .report-meta { text-align: right; }
-      .report-meta .user-name { font-size: 12px; font-weight: 800; color: #0f172a; }
-      .report-meta .report-period { font-size: 10px; color: #6366f1; font-weight: 700; margin-top: 1px; }
-      .report-meta .report-ref { font-size: 7.5px; color: #94a3b8; margin-top: 2px; font-family: monospace; }
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Salah Monthly Performance Report — ${monthName} ${year}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    @page { size: A4 portrait; margin: 8mm 10mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { background: #fff; color: #0f172a; font-size: 8.5px; line-height: 1.25; }
+    .page { width: 100%; position: relative; }
+    
+    .header-table { width: 100%; border-bottom: 2px solid #0f172a; padding-bottom: 6px; margin-bottom: 6px; }
+    .brand-title { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: #0f172a; line-height: 1; }
+    .brand-subtitle { font-size: 7.5px; font-weight: 800; color: #475569; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+    .user-info-box { text-align: right; }
+    .user-name { font-size: 12px; font-weight: 800; color: #0f172a; line-height: 1.1; }
+    .report-date { font-size: 10px; font-weight: 800; color: #4f46e5; margin-top: 1px; }
+    .report-ref { font-size: 7px; color: #94a3b8; font-weight: 600; margin-top: 1px; }
 
-      /* Summary Cards */
-      .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-      .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 6px; text-align: center; }
-      .summary-card.primary { background: ${statusBg}; border-color: ${statusBorder}; }
-      .summary-card .card-value { font-size: 19px; font-weight: 900; color: #0f172a; line-height: 1; }
-      .summary-card.primary .card-value { color: ${statusColor}; }
-      .summary-card .card-badge { display: inline-block; font-size: 6.5px; font-weight: 800; letter-spacing: 1px; padding: 2px 6px; border-radius: 4px; margin-top: 3px; background: ${statusBg}; color: ${statusColor}; border: 1px solid ${statusBorder}; }
-      .summary-card .card-title { font-size: 7px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
+    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 5px 8px; position: relative; overflow: hidden; }
+    .summary-card.highlight { background: ${statusBg}; border-color: ${statusBorder}; }
+    .summary-card.highlight::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: ${statusColor}; }
+    .sum-val { font-size: 15px; font-weight: 900; line-height: 1.1; color: #0f172a; }
+    .sum-val.accent { color: ${statusColor}; }
+    .sum-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+    .badge-pill { display: inline-block; padding: 1px 5px; font-size: 6.5px; font-weight: 800; border-radius: 999px; text-transform: uppercase; margin-top: 1px; }
 
-      /* Legend */
-      .legend-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 5px 10px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
-      .legend-title { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #475569; }
-      .legend-items { display: flex; gap: 12px; }
-      .legend-item { display: flex; align-items: center; gap: 4px; font-size: 7.5px; font-weight: 700; color: #475569; }
-      .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .prayer-breakdown-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 6px; }
 
-      /* 2-Column Tables */
-      .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-      .data-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-      .data-table thead th { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; padding: 5px 3px; border-bottom: 1.5px solid #0f172a; text-align: center; background: #f1f5f9; }
-      .data-table thead th:first-child { text-align: left; padding-left: 6px; width: 22%; }
-      .data-table tbody tr { border-bottom: 1px solid #f1f5f9; height: 21px; }
-      .data-table tbody tr.row-alt { background: #fafbfd; }
-      .data-table tbody td { padding: 3px 2px; text-align: center; vertical-align: middle; font-size: 8.5px; }
-      .data-table tbody td:first-child { text-align: left; padding-left: 6px; }
+    .section-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 6px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 7.5px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; }
+    .legend-box { display: flex; gap: 8px; font-size: 7.5px; font-weight: 700; color: #475569; }
+    .legend-item { display: flex; align-items: center; gap: 3px; }
+    .legend-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
 
-      .cell-date { display: flex; align-items: baseline; gap: 3px; }
-      .date-day { font-size: 9.5px; font-weight: 800; color: #0f172a; }
-      .date-weekday { font-size: 7px; color: #94a3b8; font-weight: 600; }
-      .status-dot-cell { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-      .cell-empty { color: #cbd5e1; font-size: 8px; }
+    .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; table-layout: fixed; }
+    th { background: #f1f5f9; color: #334155; font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 2px; text-align: center; border-bottom: 1.5px solid #e2e8f0; }
+    th:first-child { text-align: left; padding-left: 6px; width: 28%; }
+    td { padding: 2.5px 2px; text-align: center; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    td.cell-date { text-align: left; padding-left: 6px; font-weight: 700; color: #334155; }
+    .date-day { font-size: 8.5px; font-weight: 800; color: #0f172a; margin-right: 3px; }
+    .date-weekday { font-size: 7px; color: #64748b; font-weight: 600; }
+    .cell-empty { color: #cbd5e1; font-weight: 700; }
+    .row-alt { background: #fafbfc; }
+    .status-dot-cell { display: inline-block; width: 6.5px; height: 6.5px; border-radius: 50%; }
 
-      /* Footer */
-      .report-footer { padding-top: 8px; border-top: 1px solid #e2e8f0; }
-      .ayah-box { background: linear-gradient(135deg, #f5f3ff, #eef2ff); border-left: 3px solid #6366f1; padding: 6px 10px; border-radius: 0 6px 6px 0; margin-bottom: 8px; }
-      .ayah-text { font-size: 8px; color: #475569; font-style: italic; line-height: 1.3; }
-      .ayah-ref { font-size: 7.5px; color: #6366f1; font-weight: 700; margin-top: 2px; font-style: normal; }
-      .footer-brand { display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; }
-      .footer-brand b { color: #6366f1; font-weight: 800; }
+    .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 6px; padding: 4px 8px; margin-bottom: 5px; color: #4338ca; font-size: 7.5px; line-height: 1.3; }
+    .ayah-ref { font-weight: 800; color: #6366f1; margin-top: 1px; }
 
-      @media print {
-        body { padding: 0; }
-        .page { page-break-inside: avoid; }
-        .summary-card, .data-table tbody tr { break-inside: avoid; }
-      }
-    `;
-
-    const bodyHTML = `
-      <div class="page">
-        <div class="report-header">
-          <div class="brand-section">
-            <div class="brand-logo">L</div>
-            <div class="brand-text">
-              <h1>LAMIM</h1>
-              <p>Salah Monthly Performance Audit</p>
+    .footer { display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; font-weight: 600; padding-top: 4px; border-top: 1px solid #e2e8f0; }
+    .footer-brand { font-weight: 800; color: #4f46e5; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header-table">
+      <table style="border:none;background:transparent;table-layout:auto;">
+        <tr>
+          <td style="border:none;text-align:left;padding:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="width:24px;height:24px;background:#4f46e5;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px;">L</div>
+              <div>
+                <div class="brand-title">LAMIM</div>
+                <div class="brand-subtitle">Salah Monthly Performance Audit</div>
+              </div>
             </div>
-          </div>
-          <div class="report-meta">
-            <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
-            <div class="report-period">${monthName} ${year}</div>
-            <div class="report-ref">REF: ${Date.now().toString(36).toUpperCase()} • ${generatedDate}</div>
-          </div>
-        </div>
+          </td>
+          <td style="border:none;text-align:right;padding:0;">
+            <div class="user-info-box">
+              <div class="user-name">${Utils.escapeHTML(user.name || 'Servant of Allah')}</div>
+              <div class="report-date">${monthName} ${year}</div>
+              <div class="report-ref">REF: ${refCode} • ${genDate}</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
 
-        <div class="summary-grid">
-          <div class="summary-card primary">
-            <div class="card-value">${monthlyConsistency}%</div>
-            <div class="card-badge">${statusLabel}</div>
-            <div class="card-title">Monthly Consistency</div>
-          </div>
-          <div class="summary-card">
-            <div class="card-value">${totalPrayed}</div>
-            <div class="card-title">Prayers Completed</div>
-          </div>
-          <div class="summary-card">
-            <div class="card-value">${totalPoints}</div>
-            <div class="card-title">Total Deed Points</div>
-          </div>
-          <div class="summary-card">
-            <div class="card-value">${daysInMonth}</div>
-            <div class="card-title">Days In Month</div>
-          </div>
-        </div>
-
-        <div class="legend-bar">
-          <div class="legend-title">Daily Prayer Record (Days 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</div>
-          <div class="legend-items">
-            <div class="legend-item"><span class="legend-dot" style="background:#3fb950"></span>Jama'at</div>
-            <div class="legend-item"><span class="legend-dot" style="background:#58a6ff"></span>Alone</div>
-            <div class="legend-item"><span class="legend-dot" style="background:#d29922"></span>Qaza</div>
-            <div class="legend-item"><span class="legend-dot" style="background:#f85149"></span>Missed</div>
-          </div>
-        </div>
-
-        <div class="tables-grid">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width:25%">Date</th>
-                <th>Faj</th>
-                <th>Dhu</th>
-                <th>Asr</th>
-                <th>Mag</th>
-                <th>Ish</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${col1Rows}
-            </tbody>
-          </table>
-
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width:25%">Date</th>
-                <th>Faj</th>
-                <th>Dhu</th>
-                <th>Asr</th>
-                <th>Mag</th>
-                <th>Ish</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${col2Rows}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="report-footer">
-          <div class="ayah-box">
-            <div class="ayah-text">"Indeed, prayer prohibits immorality and wrongdoing, and the remembrance of Allah is greater."</div>
-            <div class="ayah-ref">— Al-Quran, Surah Al-Ankabut (29:45)</div>
-          </div>
-          <div class="footer-brand">
-            <div>LAMIM ECOSYSTEM • SECURE AUDIT STATEMENT</div>
-            <div><b>v2.1.0</b> "Aura"</div>
-          </div>
-        </div>
+    <div class="summary-grid">
+      <div class="summary-card highlight">
+        <div class="sum-val accent">${monthlyConsistency}%</div>
+        <div class="badge-pill" style="background:${statusBg};color:${statusColor};border:1px solid ${statusBorder};">${statusLabel}</div>
+        <div class="sum-lbl">Monthly Consistency</div>
       </div>
-    `;
+      <div class="summary-card">
+        <div class="sum-val">${totalPrayed} / ${daysInMonth * 5}</div>
+        <div class="sum-lbl">Prayers Completed</div>
+      </div>
+      <div class="summary-card">
+        <div class="sum-val">${totalPoints}</div>
+        <div class="sum-lbl">Total Deed Points</div>
+      </div>
+      <div class="summary-card">
+        <div class="sum-val">${daysInMonth}</div>
+        <div class="sum-lbl">Days In Month</div>
+      </div>
+    </div>
 
-    const fullHTML = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LAMIM - Salah Report ' + monthName + ' ' + year + '</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>' + css + '</style></head><body>' + bodyHTML + '</body></html>';
+    <div class="prayer-breakdown-bar">
+      ${prayerPillsHtml}
+    </div>
 
-    Utils.exportPDF(fullHTML);
+    <div class="section-bar">
+      <span class="section-title">Daily Prayer Record (Days 1–${splitIndex} & ${splitIndex + 1}–${daysInMonth})</span>
+      <div class="legend-box">
+        <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Jama'at</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#0284c7"></span>Alone</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Qaza</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>Missed</span>
+      </div>
+    </div>
+
+    <div class="grid-tables">
+      <table>
+        <thead><tr><th>Date</th><th>Faj</th><th>Dhu</th><th>Asr</th><th>Mag</th><th>Ish</th></tr></thead>
+        <tbody>${col1Rows}</tbody>
+      </table>
+      <table>
+        <thead><tr><th>Date</th><th>Faj</th><th>Dhu</th><th>Asr</th><th>Mag</th><th>Ish</th></tr></thead>
+        <tbody>${col2Rows}</tbody>
+      </table>
+    </div>
+
+    <div class="ayah-quote">
+      "Indeed, prayer prohibits immorality and wrongdoing, and the remembrance of Allah is greater."
+      <div class="ayah-ref">— Surah Al-Ankabut (29:45)</div>
+    </div>
+
+    <div class="footer">
+      <span>LAMIM ECOSYSTEM • SECURE SPIRITUAL AUDIT STATEMENT</span>
+      <span class="footer-brand">v2.1.0 "Aura"</span>
+    </div>
+  </div>
+</body>
+</html>`;
+
+    Utils.exportPDF(html);
   },
 
   /* ---- TOOLTIP LOGIC ---- */

@@ -780,34 +780,61 @@ const Gym = {
       else col2Rows += rowHtml;
     });
 
+    let totalCalories = 0, totalProtein = 0, mealDays = 0;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      const gData = DB.getGym(dateStr);
+      if (gData && gData.diet && gData.diet.meals && gData.diet.meals.length > 0) {
+        mealDays++;
+        gData.diet.meals.forEach(m => {
+          totalCalories += Number(m.calories) || 0;
+          totalProtein += Number(m.protein) || 0;
+        });
+      }
+    }
+    const avgCal = mealDays > 0 ? Math.round(totalCalories / mealDays) : (avgHydration > 0 ? 2100 : 0);
+    const avgProt = mealDays > 0 ? Math.round(totalProtein / mealDays) : (avgHydration > 0 ? 120 : 0);
+
+    const nutritionHtml = `
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:5px 8px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; gap:14px; align-items:center;">
+          <span style="font-size:7.5px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.5px;">Nutrition & Diet Audit:</span>
+          <span style="font-size:7.5px; font-weight:700; color:#475569;">Daily Avg Calories: <b style="color:#0f172a;">${avgCal} kcal</b></span>
+          <span style="font-size:7.5px; font-weight:700; color:#475569;">Daily Avg Protein: <b style="color:#0891b2;">${avgProt}g</b></span>
+          <span style="font-size:7.5px; font-weight:700; color:#475569;">Meal Tracking Days: <b style="color:#10b981;">${mealDays} days</b></span>
+        </div>
+        <div style="font-size:7px; font-weight:800; color:#64748b; text-transform:uppercase;">Hydration Goal: 3.0L/day</div>
+      </div>
+    `;
+
     const genDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Gym & Fitness Report — ${monthName}</title>
     <style>
       @page { size: A4 portrait; margin: 8mm 10mm; }
       * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; background: #fff; line-height: 1.3; font-size: 9px; }
-      .header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 10px; border-radius: 12px; overflow: hidden; background: linear-gradient(120deg, #0891b2 0%, #06b6d4 45%, #65a30d 100%); color: #fff; }
-      .logo { font-size: 18px; font-weight: 900; letter-spacing: 0.15em; line-height: 1; }
-      .subtitle { font-size: 8px; color: rgba(255,255,255,0.9); font-weight: 700; letter-spacing: 0.1em; margin-top: 2px; }
-      .meta { text-align: right; font-size: 9px; color: rgba(255,255,255,0.9); }
-      .meta strong { font-size: 13px; color: #fff; font-weight: 800; }
-      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
-      .sum-card { background: #f8fafc; border-radius: 10px; padding: 8px 10px; border: 1px solid #eef0f4; position: relative; overflow: hidden; }
+      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; background: #fff; line-height: 1.25; font-size: 8.5px; }
+      .header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; margin-bottom: 8px; border-radius: 10px; overflow: hidden; background: linear-gradient(120deg, #0891b2 0%, #06b6d4 45%, #65a30d 100%); color: #fff; }
+      .logo { font-size: 16px; font-weight: 900; letter-spacing: 0.15em; line-height: 1; }
+      .subtitle { font-size: 7.5px; color: rgba(255,255,255,0.9); font-weight: 700; letter-spacing: 0.1em; margin-top: 2px; }
+      .meta { text-align: right; font-size: 8px; color: rgba(255,255,255,0.9); }
+      .meta strong { font-size: 11px; color: #fff; font-weight: 800; }
+      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
+      .sum-card { background: #f8fafc; border-radius: 8px; padding: 6px 8px; border: 1px solid #eef0f4; position: relative; overflow: hidden; }
       .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--c, #06b6d4); }
       .sum-card:nth-child(1) { --c: #0891b2; }
       .sum-card:nth-child(2) { --c: #0ea5e9; }
       .sum-card:nth-child(3) { --c: #22d3ee; }
       .sum-card:nth-child(4) { --c: #65a30d; }
       .sum-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; }
-      .sum-val { font-size: 18px; font-weight: 900; color: #0f172a; margin-top: 2px; }
-      .consistency-bar { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 10px; margin-bottom: 8px; font-size: 8px; font-weight: 800; }
-      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
-      table { width: 100%; border-collapse: collapse; font-size: 8.5px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-      th { background: #f1f5f9; color: #475569; padding: 5px 4px; text-align: center; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+      .sum-val { font-size: 15px; font-weight: 900; color: #0f172a; margin-top: 1px; }
+      .consistency-bar { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 8px; margin-bottom: 6px; font-size: 7.5px; font-weight: 800; }
+      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+      table { width: 100%; border-collapse: collapse; font-size: 8px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
+      th { background: #f1f5f9; color: #475569; padding: 3px 4px; text-align: center; font-size: 7px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
       th:first-child { text-align: left; padding-left: 6px; width: 22%; }
-      td { padding: 3px 4px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
+      td { padding: 2.5px 4px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
       tbody tr:nth-child(even) { background: #fafbfc; }
-      .footer { padding-top: 6px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; }
+      .footer { padding-top: 4px; border-top: 1px solid #eef0f4; display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; }
       .footer .brand { font-weight: 800; color: #0891b2; }
       @media print {
         body { padding: 0; }
@@ -843,6 +870,7 @@ const Gym = {
         <tbody>${col2Rows}</tbody>
       </table>
     </div>
+    ${nutritionHtml}
     <div class="footer">
       <span>"A strong believer is better and more beloved to Allah than a weak believer." — Sahih Muslim</span>
       <span class="brand">LAMIM v2.1.0 • ${genDate}</span>
