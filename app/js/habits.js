@@ -768,11 +768,10 @@ const Habits = {
     
     const qIndex = (intervalIndex + seed) % this.quotes.length;
     const effects = [
-      'qf-fade', 'qf-mask', 'qf-glitch', 'qf-neon', 'qf-3d', 
-      'qf-typing', 'qf-blur-in', 'qf-gold-shimmer', 'qf-hologram', 
-      'qf-float', 'qf-zoom', 'qf-skew', 'qf-bounce', 'qf-letter-space', 
-      'qf-perspective', 'qf-pulse-glow', 'qf-aurora-text', 'qf-stretch', 
-      'qf-vibrate', 'qf-wave', 'qf-plasma', 'qf-fire', 'qf-ice'
+      'qf-fade', 'qf-glitch', 'qf-neon', 'qf-3d',
+      'qf-typing', 'qf-hologram', 'qf-float',
+      'qf-bounce', 'qf-aurora-text',
+      'qf-wave', 'qf-plasma', 'qf-fire', 'qf-ice'
     ];
     const eIndex = (intervalIndex + seed) % effects.length;
     
