@@ -575,6 +575,10 @@ const Analysis = {
     `;
   },
 
+  exportPDF(monthStr) {
+    return this.exportMonthlyReport(monthStr);
+  },
+
   exportMonthlyReport(monthStr) {
     const todayOffset = Utils.getOffsetDate();
     let targetDate = todayOffset;
