@@ -508,13 +508,25 @@ const Profile = {
 
 
   showAppInfo() {
-    const APP_VERSION = '2.0.0';
-    const CODENAME = 'Lumina';
+    const APP_VERSION = '2.1.0';
+    const CODENAME = 'Aura';
     const isBn = typeof App !== 'undefined' && App.lang === 'bn';
 
     const CHANGELOG = [
       {
-        version: '2.0.0', codename: 'Lumina', date: Utils.todayStr(), tag: isBn ? 'প্রোডাকশন স্থিতিশীল' : 'Production Stable',
+        version: '2.1.0', codename: 'Aura', date: Utils.todayStr(), tag: isBn ? 'সর্বশেষ প্রোডাকশন' : 'Latest Production',
+        notes: isBn ? [
+          'হ্যাবিট এক্সপ্যানশন ইঞ্জিন: পিক্সেল-এক্সেক্ট ডাইনামিক হাইট সহ ৬০fps বাটার-স্মুথ অ্যাকর্ডিয়ন।',
+          'ফাইন্যান্স চার্ট অপ্টিমাইজেশন: শূন্য-ব্লিংক ইন-প্লেস চার্ট আপডেট ও মেমোরি পারসিস্টেন্স।',
+          'সার্ভিস ওয়ার্কার v2.1.0: সম্পূর্ণ স্বয়ংক্রিয় ক্যাশ ইনভ্যালিডেশন এবং ইনস্ট্যান্ট সিঙ্ক।'
+        ] : [
+          'Habits Expansion Engine: Pixel-exact dynamic scrollHeight accordion with 60fps butter-smooth animations.',
+          'Finance Chart Optimization: Zero-blink in-place chart data updates with live canvas persistence.',
+          'Service Worker v2.1.0: Automated stale cache invalidation and instant PWA state sync.'
+        ]
+      },
+      {
+        version: '2.0.0', codename: 'Lumina', date: '2026-08-20', tag: isBn ? 'মাইলফলক' : 'Milestone',
         notes: isBn ? [
           'অ্যাপল-গ্রেড লঞ্চ ইঞ্জিন: ৩-স্তরের স্তম্ভিত উত্থান অ্যানিমেশন এবং নিখুঁত লোডার প্রগতি ০–১০০%।',
           'হাইব্রিড এআই সঙ্গী: Gemini স্ট্রিমিং ইন্টেলিজেন্স, মেজাজ-সংবেদনশীল ৩ডি অবতার, বাংলা/ইংরেজি/বাংলিশ সমর্থন।',
