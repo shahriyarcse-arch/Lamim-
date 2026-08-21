@@ -215,26 +215,22 @@
   border-radius: var(--radius-lg);
   padding: var(--space-2) var(--space-3);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.salah-stat-card:hover {
-  border-color: var(--color-border-active);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
+@media (hover: hover) and (pointer: fine) {
+  .salah-stat-card:hover {
+    border-color: var(--color-border-active);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
 
-.salah-stat-ring {
-  flex-shrink: 0;
-}
-
-.salah-stat-icon {
-  font-size: 1.4rem;
-  flex-shrink: 0;
-  transition: transform 0.3s ease;
-}
-
-.salah-stat-card:hover .salah-stat-icon {
-  transform: scale(1.1) rotate(5deg);
+  .salah-stat-card:hover .salah-stat-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
 }
 
 .salah-stat-info {

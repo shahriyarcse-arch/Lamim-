@@ -396,13 +396,18 @@
   align-items: center;
   text-align: center;
   gap: var(--space-2);
-  transition: 0.3s ease;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.salah-stat-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-accent-purple);
-  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
+@media (hover: hover) and (pointer: fine) {
+  .salah-stat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent-purple);
+    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
+  }
 }
 
 .salah-stat-icon {
