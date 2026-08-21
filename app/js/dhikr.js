@@ -200,11 +200,15 @@ const Dhikr = {
       ripple.classList.add('animate-ripple');
     }
 
-    // Animate number softly
+    // Animate number softly with robust timer management
     const countEl = document.getElementById('dhikr-tap-count');
     if (countEl) {
-      countEl.style.transform = 'scale(1.1)';
-      setTimeout(() => countEl.style.transform = 'scale(1)', 150);
+      if (this._countPopTimer) clearTimeout(this._countPopTimer);
+      countEl.style.transform = 'scale(1.08)';
+      this._countPopTimer = setTimeout(() => {
+        countEl.style.transform = '';
+        this._countPopTimer = null;
+      }, 120);
     }
 
     // Update UI

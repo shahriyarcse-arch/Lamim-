@@ -462,11 +462,13 @@
   color: #1e293b !important;
 }
 
-.dhikr-preset-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--dc, #14b8a6);
-  background: rgba(20, 184, 166, 0.08);
-  box-shadow: 0 6px 18px rgba(20, 184, 166, 0.15);
+@media (hover: hover) and (pointer: fine) {
+  .dhikr-preset-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--dc, #14b8a6);
+    background: rgba(20, 184, 166, 0.08);
+    box-shadow: 0 6px 18px rgba(20, 184, 166, 0.15);
+  }
 }
 
 .dhikr-preset-card.active {

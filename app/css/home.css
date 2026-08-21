@@ -212,9 +212,11 @@ body:not(.home-active) .home-aurora-bg .aurora-blob {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.home-spirit-orb-container:hover {
-  transform: scale(1.06);
-  box-shadow: 0 10px 28px rgba(168, 85, 247, 0.28);
+@media (hover: hover) and (pointer: fine) {
+  .home-spirit-orb-container:hover {
+    transform: scale(1.06);
+    box-shadow: 0 10px 28px rgba(168, 85, 247, 0.28);
+  }
 }
 
 [data-theme="dark"] .home-spirit-orb-container {
@@ -394,9 +396,15 @@ body:not(.home-active) .home-aurora-bg .aurora-blob {
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.insight-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+@media (hover: hover) and (pointer: fine) {
+  .insight-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+  }
+
+  .insight-card:hover .insight-icon {
+    transform: scale(1.08);
+  }
 }
 
 .insight-box-modern {
@@ -419,10 +427,6 @@ body:not(.home-active) .home-aurora-bg .aurora-blob {
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   transition: transform 0.25s ease;
-}
-
-.insight-card:hover .insight-icon {
-  transform: scale(1.08);
 }
 
 [data-theme="light"] .insight-icon {
@@ -597,10 +601,12 @@ body:not(.home-active) .home-aurora-bg .aurora-blob {
   border-color: rgba(255, 255, 255, 0.07);
 }
 
-.timeline-node:hover .timeline-dot {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-  border-color: var(--color-accent-purple);
+@media (hover: hover) and (pointer: fine) {
+  .timeline-node:hover .timeline-dot {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    border-color: var(--color-accent-purple);
+  }
 }
 
 /* ── Liquid Fill Layer (rises from bottom) ── */
