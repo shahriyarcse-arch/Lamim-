@@ -460,6 +460,22 @@ const Finance = {
       ? (isBn ? this.currentViewDate.toLocaleString('bn-BD', { month: 'long', year: 'numeric' }) + ' এর দৈনিক হিসাব' : this.currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' }) + ' breakdown')
       : (isBn ? (window.n ? window.n(this.currentViewDate.getFullYear()) : this.currentViewDate.getFullYear()) + ' সালের মাসিক হিসাব' : 'Monthly overview of ' + this.currentViewDate.getFullYear());
 
+    // Instant seamless update if chart structure already exists (prevents canvas blink)
+    const existingChartCanvas = document.getElementById('finance-main-chart');
+    if (existingChartCanvas && container.querySelector('.finance-container')) {
+      const monthControl = document.getElementById('fin-month-control');
+      if (monthControl) monthControl.innerHTML = this.renderMonthControl();
+      const summaryCard = document.getElementById('fin-summary-card');
+      if (summaryCard) summaryCard.innerHTML = this.renderSummary(stats);
+      const subTitle = container.querySelector('.fin-section-subtitle');
+      if (subTitle) subTitle.textContent = monthSub;
+      const activityCard = document.getElementById('fin-activity-card');
+      if (activityCard) activityCard.innerHTML = this.renderExpensesList(this.currentViewDate);
+      
+      this.initChart(stats);
+      return;
+    }
+
     container.innerHTML = `
       <div class="finance-container" style="position:relative;">
         <div class="finance-aurora-bg"></div>
@@ -2474,6 +2490,37 @@ const Finance = {
       }
     ];
 
+    // If chart already exists on the active canvas, update in-place with zero flicker/blink!
+    if (this.mainChart && this.mainChart.ctx && this.mainChart.ctx.canvas === canvas) {
+      this.mainChart.data.labels = labels;
+      this.mainChart.data.datasets[0].data = income;
+      this.mainChart.data.datasets[0].label = incomeLabel;
+      this.mainChart.data.datasets[0].pointRadius = makePoints(income);
+      this.mainChart.data.datasets[0].pointHoverRadius = makeHover(income);
+      this.mainChart.data.datasets[1].data = spend;
+      this.mainChart.data.datasets[1].label = spendLabel;
+      this.mainChart.data.datasets[1].pointRadius = makePoints(spend);
+      this.mainChart.data.datasets[1].pointHoverRadius = makeHover(spend);
+      
+      if (this.mainChart.options.scales?.x?.ticks) {
+        this.mainChart.options.scales.x.ticks.color = tickColor;
+        this.mainChart.options.scales.x.ticks.maxTicksLimit = isDaily ? 10 : 12;
+      }
+      if (this.mainChart.options.scales?.y?.ticks) {
+        this.mainChart.options.scales.y.ticks.color = tickColor;
+      }
+      if (this.mainChart.options.scales?.y?.grid) {
+        this.mainChart.options.scales.y.grid.color = gridColor;
+      }
+      this.mainChart.update('none');
+      return;
+    }
+
+    if (this.mainChart) {
+      try { this.mainChart.destroy(); } catch (e) { }
+      this.mainChart = null;
+    }
+
     this.mainChart = new Chart(ctx, {
       type: 'line',
       data: { labels, datasets },
@@ -2623,10 +2670,6 @@ const Finance = {
 
   destroy() {
     this._removeGlobalListeners();
-    if (this.mainChart) {
-      try { this.mainChart.destroy(); } catch (e) { }
-      this.mainChart = null;
-    }
     if (this._debouncedDataUpdate) {
       this._debouncedDataUpdate.cancel();
       this._debouncedDataUpdate = null;
