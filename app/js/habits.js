@@ -27,6 +27,15 @@ const Habits = {
       this._expandedHabitIds.add(habitId);
       card.classList.add('is-expanded');
       card.querySelector('.iw-collapsed-header')?.setAttribute('aria-expanded', 'true');
+      
+      setTimeout(() => {
+        if (this._expandedHabitIds && this._expandedHabitIds.has(habitId)) {
+          const rect = card.getBoundingClientRect();
+          if (rect.bottom > window.innerHeight - 80) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      }, 60);
     }
   },
   
@@ -444,17 +453,18 @@ const Habits = {
             
             const compactDaysEl = document.querySelector(`.habits-compact-days[data-habit-days="${habitId}"]`);
             if (compactDaysEl) {
-              compactDaysEl.textContent = window.n ? window.n(timeStats.days) : timeStats.days;
+              const formattedDays = window.n ? window.n(timeStats.days) : timeStats.days;
+              if (compactDaysEl.textContent !== String(formattedDays)) {
+                compactDaysEl.textContent = formattedDays;
+              }
             }
-            
-            this.updateSpiritBarsLive();
 
             // MILESTONE SURGE: Detect Rank Change
             if (lastKnownDays !== timeStats.days && habitId) {
               const oldBadge = this.getBadgeForDays(lastKnownDays);
               const newBadge = this.getBadgeForDays(timeStats.days);
               if (newBadge && (!oldBadge || newBadge.days > oldBadge.days)) {
-                Utils.toast(`RANK ADVANCEMENT: You have achieved the rank of "${newBadge.name}"! ️`, 'success');
+                Utils.toast(`RANK ADVANCEMENT: You have achieved the rank of "${newBadge.name}"! 🏆`, 'success');
               }
             }
             
@@ -471,13 +481,15 @@ const Habits = {
                     quoteEl.className = 'iw-quote ' + quoteData.effectClass;
                     quoteEl.innerHTML = quoteData.text;
                     quoteEl.style.opacity = '1';
-                  }, 500);
+                  }, 400);
                 }
               }
             }
           }
         });
-      }, 500);
+
+        this.updateSpiritBarsLive();
+      }, 1000);
   },
 
   updateSpiritBarsLive() {
@@ -493,8 +505,16 @@ const Habits = {
 
       const fill = item.querySelector(`[data-spirit-fill="${habitId}"]`);
       const pctEl = item.querySelector(`[data-spirit-pct="${habitId}"]`);
-      if (fill) fill.style.width = pct + '%';
-      if (pctEl) pctEl.textContent = pct.toFixed(2) + '%';
+      if (fill) fill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      if (pctEl) {
+        const numStr = pct.toFixed(1);
+        const formatted = (typeof App !== 'undefined' && App.lang === 'bn')
+          ? (window.n ? window.n(numStr) : numStr) + '%'
+          : numStr + '%';
+        if (pctEl.textContent !== formatted) {
+          pctEl.textContent = formatted;
+        }
+      }
     });
   },
 
@@ -827,51 +847,43 @@ const Habits = {
               <div class="iw-quote ${quoteData.effectClass}">${quoteHTML}</div>
               <div class="iw-top-actions">
                 <button type="button" class="iw-icon-btn" onclick="event.stopPropagation(); Habits.showHistoryModal('${habit.id}')" title="History">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
                 </button>
                 <button type="button" class="iw-icon-btn" onclick="event.stopPropagation(); Habits.deleteHabit('${habit.id}')" title="Delete Habit" style="margin-left:4px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                 </button>
               </div>
-            </div>
-
-            <div class="iw-habit-pill" role="button" tabindex="0" onclick="Habits.showProgressPulse('${Utils.escapeHTML(habit.id)}')">
-              ${isMaster ? '<span class="iw-rank-tag" style="color:#000;background:#ffd700;">MASTER</span>' : isDivine ? '<span class="iw-rank-tag" style="color:#00f2ff;text-shadow:0 0 10px #00f2ff;">SOVEREIGN</span>' : isLegendary ? '<span class="iw-rank-tag" style="color:#ffd700;">LEGEND</span>' : ''}${Utils.escapeHTML(habit.label)}
-              ${isLegendary ? `<span class="iw-year-tag">${years} Years</span>` : ''}
-            </div>
-
-            <div class="iw-badge-container">
-              <div class="iw-big-badge" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};">
-                <div class="iw-badge-inner">${currentBadge ? currentBadge.emoji : habit.icon}</div>
-              </div>
-              <div class="iw-rank-pill" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};">${currentBadge ? currentBadge.name : 'The Novice'}</div>
             </div>
 
             <div class="iw-timer-circle-wrap">
               <div class="iw-timer-circle habits-live-time" data-habit-id="${habit.id}">
-                <div class="iw-timer-label">It has been</div>
-                <div class="iw-timer-days-row" role="button" tabindex="0" onclick="event.stopPropagation(); Habits.showStartDateModal('${habit.id}')" style="cursor:pointer;" title="Adjust Timer (Secret)">
+                <div class="iw-timer-badge-pill" style="--theme-color:${currentBadge ? currentBadge.color : habit.color};" onclick="event.stopPropagation(); Habits.showProgressPulse('${Utils.escapeHTML(habit.id)}')" role="button" tabindex="0">
+                  <span class="iw-timer-badge-emoji">${currentBadge ? currentBadge.emoji : habit.icon}</span>
+                  <span class="iw-timer-badge-name">${currentBadge ? currentBadge.name : 'The Novice'}</span>
+                </div>
+                <div class="iw-timer-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'বিগত সময়' : 'IT HAS BEEN'}</div>
+                <div class="iw-timer-days-row" role="button" tabindex="0" onclick="event.stopPropagation(); Habits.showStartDateModal('${habit.id}')" style="cursor:pointer;" title="Adjust Timer">
                   <div class="iw-timer-days"><span class="habits-time-num">${window.n ? window.n(timeStats.days) : timeStats.days}</span></div>
-                  <div class="iw-days-text">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'দিন' : 'days'}</div>
+                  <div class="iw-days-text">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'দিন' : 'DAYS'}</div>
                 </div>
                 
                 <div class="iw-timer-sub">
                   <div class="iw-timer-unit">
                     <span class="habits-time-num">${window.n ? window.n(timeStats.hours) : timeStats.hours}</span>
-                    <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'ঘণ্টা' : 'hours'}</span>
+                    <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'ঘণ্টা' : 'HOURS'}</span>
                   </div>
                   <div class="iw-timer-unit">
                     <span class="habits-time-num">${window.n ? window.n(timeStats.minutes) : timeStats.minutes}</span>
-                    <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'মিনিট' : 'minutes'}</span>
+                    <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'মিনিট' : 'MINS'}</span>
                   </div>
                   <div class="iw-timer-unit">
                     <span class="habits-time-num">${window.n ? window.n(timeStats.seconds) : timeStats.seconds}</span>
-                    <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'সেকেন্ড' : 'seconds'}</span>
+                    <span class="iw-unit-label">${(typeof App !== 'undefined' && App.lang === 'bn') ? 'সেকেন্ড' : 'SECS'}</span>
                   </div>
                 </div>
               </div>
               <button class="iw-relapse-btn" onclick="Habits.showRelapseModal('${habit.id}')" title="Reset Timer / Relapse">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
               </button>
             </div>
 

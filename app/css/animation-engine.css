@@ -294,9 +294,9 @@
 
 .iw-timer-circle-wrap {
   position: relative;
-  width: 280px;
-  height: 280px;
-  margin: 8px auto 16px;
+  width: 248px;
+  height: 248px;
+  margin: 6px auto 14px;
 }
 
 .iw-timer-circle {
@@ -310,16 +310,16 @@
   align-items: center;
   justify-content: center;
   box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
-  padding: 24px;
+  padding: 16px;
   box-sizing: border-box;
 }
 
 .iw-timer-label {
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 2.5px;
-  opacity: 0.45;
-  margin-bottom: 6px;
+  letter-spacing: 2px;
+  opacity: 0.5;
+  margin-bottom: 2px;
   font-weight: 700;
   color: var(--color-text-primary);
 }
@@ -328,31 +328,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   cursor: pointer;
 }
 
 .iw-timer-days {
-  font-size: 62px;
+  font-size: 52px;
   font-weight: 900;
   line-height: 1;
   display: flex;
   justify-content: center;
-  letter-spacing: -2px;
+  letter-spacing: -1.5px;
 }
 
 .iw-days-text {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
-  opacity: 0.5;
+  opacity: 0.55;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-top: 2px;
+  letter-spacing: 2.5px;
+  margin-top: 1px;
 }
 
 .iw-timer-sub {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   justify-content: center;
   width: 100%;
 }
