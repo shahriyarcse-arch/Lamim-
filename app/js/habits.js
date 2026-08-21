@@ -27,15 +27,6 @@ const Habits = {
       this._expandedHabitIds.add(habitId);
       card.classList.add('is-expanded');
       card.querySelector('.iw-collapsed-header')?.setAttribute('aria-expanded', 'true');
-      
-      setTimeout(() => {
-        if (this._expandedHabitIds && this._expandedHabitIds.has(habitId)) {
-          const rect = card.getBoundingClientRect();
-          if (rect.bottom > window.innerHeight - 80) {
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        }
-      }, 60);
     }
   },
   
