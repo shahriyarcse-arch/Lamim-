@@ -2366,7 +2366,6 @@ const Finance = {
         });
       return;
     }
-    if (this.mainChart) this.mainChart.destroy();
 
     Chart.defaults.font.family = "'Outfit','Plus Jakarta Sans',system-ui,-apple-system,sans-serif";
 
