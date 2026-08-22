@@ -2166,6 +2166,7 @@ const Finance = {
     document.body.appendChild(overlay);
 
     const v = this.currentViewDate || new Date();
+    const selDate = `${v.getFullYear()}-${(v.getMonth()+1).toString().padStart(2, '0')}`;
     const sym = typeof this.getSymbol === 'function' ? this.getSymbol() : '৳';
     if (!this.data) this.data = DB.getFinance() || { expenses: [], income: [], savings: [] };
     const mStr = v.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -2176,10 +2177,17 @@ const Finance = {
     const totalSaved = (this.data.savings || []).reduce((sum, g) => sum + (Number(g.saved) || 0), 0);
     const netWorth = (stats.closingBalance || 0) + totalSaved;
 
-    // Merge both income and expenses into a unified list, sorted chronologically (newest first)
     const user = DB.getUser() || { name: 'Account Holder' };
+    const joinDateStr = (user.createdAt || user.created_at || '').slice(0, 10);
     const daysInCurrentMonth = new Date(v.getFullYear(), v.getMonth() + 1, 0).getDate();
-    const dailyAvgBurn = daysInCurrentMonth > 0 ? (total / daysInCurrentMonth) : 0;
+    let activeDaysInMonth = daysInCurrentMonth;
+    if (joinDateStr && joinDateStr.slice(0, 7) === selDate.slice(0, 7)) {
+      const joinDay = parseInt(joinDateStr.slice(8, 10), 10);
+      const isCurrentMonth = Utils.todayStr().slice(0, 7) === selDate.slice(0, 7);
+      const currentDay = isCurrentMonth ? new Date().getDate() : daysInCurrentMonth;
+      activeDaysInMonth = Math.max(1, currentDay - joinDay + 1);
+    }
+    const dailyAvgBurn = activeDaysInMonth > 0 ? (total / activeDaysInMonth) : 0;
     const savingsRate = stats.income > 0 ? Math.max(0, Math.round(((stats.income - total) / stats.income) * 100)) : 0;
 
     const txs = [
@@ -2239,7 +2247,27 @@ const Finance = {
     };
 
     let ledgerTableHtml = '';
-    if (txs.length > 10) {
+    if (txs.length === 0) {
+      ledgerTableHtml = `
+        <table>
+          <thead>
+            <tr>
+              <th style="width:16%">Date</th>
+              <th style="width:46%">Description</th>
+              <th style="width:20%">Category</th>
+              <th style="width:18%; text-align:right;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4" style="text-align:center; padding:28px 12px; color:#94a3b8; font-weight:700; font-size:9px;">
+                No financial transactions recorded for this billing cycle.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+    } else if (txs.length > 10) {
       const splitIdx = Math.ceil(txs.length / 2);
       const col1 = txs.slice(0, splitIdx);
       const col2 = txs.slice(splitIdx, 32);

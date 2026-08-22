@@ -608,12 +608,16 @@ const Analysis = {
       const date = new Date(currentYear, currentMonth, i);
       const ds = Utils.dateStr(date);
 
-      // Strict future check: Do NOT include future days in PDF report!
-      if (ds > todayStr) break;
+      const isFuture = ds > todayStr;
       const isPreJoin = joinDateStr ? (ds < joinDateStr) : false;
 
       if (isPreJoin) {
-        dayData.push({ day: i, score: '—', rating: 'N/A', isPreJoin: true });
+        dayData.push({ day: i, score: '<span style="color:#94a3b8; font-size:6.5px; font-weight:700; background:#f1f5f9; border:1px solid #e2e8f0; padding:1px 3px; border-radius:3px;">N/A</span>', rating: 'Pre-Join', isPreJoin: true, isFuture: false });
+        continue;
+      }
+
+      if (isFuture) {
+        dayData.push({ day: i, score: '<span style="color:#cbd5e1; font-size:9px; opacity:0.6;">•</span>', rating: 'Future', isPreJoin: false, isFuture: true });
         continue;
       }
 
@@ -627,7 +631,7 @@ const Analysis = {
       if (done === 5) salahStats.perfect++;
       if (done >= 4) salahStats.consistent++;
 
-      dayData.push({ day: i, score: shs.total, rating: shs.rating.label, isPreJoin: false });
+      dayData.push({ day: i, score: shs.total, rating: shs.rating.label, isPreJoin: false, isFuture: false });
       daysAnalyzed++;
     }
 
@@ -640,7 +644,8 @@ const Analysis = {
     const avgSHS = (totalSHS / daysAnalyzed).toFixed(1);
 
     const getBadgeStyle = (rating) => {
-      if (rating === 'N/A' || rating === '—') return 'background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0;';
+      if (rating === 'Pre-Join' || rating === 'N/A' || rating === '—') return 'background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0;';
+      if (rating === 'Future') return 'background: #f8fafc; color: #cbd5e1; border: 1px solid #e2e8f0;';
       if (rating === 'Ihsan') return 'background: rgba(251, 191, 36, 0.15); color: #b45309; border: 1px solid rgba(251, 191, 36, 0.3);';
       if (rating === 'God-Conscious') return 'background: rgba(167, 139, 250, 0.15); color: #6d28d9; border: 1px solid rgba(167, 139, 250, 0.3);';
       if (rating === 'Mindful') return 'background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3);';
@@ -655,8 +660,11 @@ const Analysis = {
     const splitIndex = Math.ceil(dayData.length / 2);
 
     dayData.forEach((d, idx) => {
+      const rowStyle = d.isPreJoin 
+        ? 'background: rgba(241, 245, 249, 0.4);' 
+        : (d.isFuture ? 'opacity: 0.45; background: rgba(248, 250, 252, 0.6);' : '');
       const renderedRow = `
-        <tr>
+        <tr style="${rowStyle}">
           <td style="color: #64748b; font-weight: 700; padding: 3px 6px;">${String(d.day).padStart(2, '0')}</td>
           <td style="text-align: center; font-weight: 800; color: #0f172a; padding: 3px 6px;">${d.score}</td>
           <td style="text-align: center; padding: 3px 4px;"><span class="rating-badge" style="${getBadgeStyle(d.rating)}">${d.rating}</span></td>
