@@ -810,8 +810,6 @@ const Gym = {
     }
     const avgCal = mealDays > 0 ? Math.round(totalCalories / mealDays) : (avgHydration > 0 ? 2100 : 0);
     const avgProt = mealDays > 0 ? Math.round(totalProtein / mealDays) : (avgHydration > 0 ? 120 : 0);
-
-    const user = DB.getUser() || { name: 'Athlete' };
     const avgSleepScore = avgSleep > 0 ? (avgSleep >= 7 && avgSleep <= 9 ? 'Optimal (94%)' : 'Moderate (78%)') : 'Baseline';
     const recoveryGrade = consistencyPct >= 80 ? 'Grade A (Elite)' : (consistencyPct >= 60 ? 'Grade B (Active)' : 'Grade C (Building)');
 

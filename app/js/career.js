@@ -430,7 +430,6 @@ const Career = {
       </div>`;
     }).join('');
 
-    const user = DB.getUser() || { name: 'Professional' };
     const domainHtml = topicPills ? `
       <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:6px 12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:8px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.5px;">Key Focus Domains:</span>
