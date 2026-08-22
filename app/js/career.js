@@ -389,7 +389,13 @@ const Career = {
 
     rows.forEach(r => {
       let rowHtml = '';
-      if (r.isFuture || r.isPreJoin) {
+      if (r.isPreJoin) {
+        rowHtml = `<tr style="background:rgba(241, 245, 249, 0.4);">
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;"><span style="color:#94a3b8;font-size:6.5px;font-weight:700;background:#f1f5f9;border:1px solid #e2e8f0;padding:1px 3px;border-radius:3px;">N/A</span></td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;color:#94a3b8;font-size:7px;font-style:italic;">Pre-Join</td>
+        </tr>`;
+      } else if (r.isFuture) {
         rowHtml = `<tr>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>

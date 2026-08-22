@@ -846,9 +846,9 @@ const Salah = {
         const s = data[p];
         if (!s) {
           if (isPreJoin) {
-            rowCells += '<td class="cell-empty" style="color:#cbd5e1; font-size:8px;" title="Pre-join day">—</td>';
+            rowCells += '<td class="cell-na"><span style="color:#94a3b8; font-size:6.5px; font-weight:700; background:#f1f5f9; border:1px solid #e2e8f0; padding:1px 3px; border-radius:3px;">N/A</span></td>';
           } else {
-            rowCells += '<td class="cell-empty">—</td>';
+            rowCells += '<td class="cell-empty" style="color:#94a3b8; font-weight:700;">—</td>';
           }
         } else {
           const norm = s === 'jamaah' ? 'jamaat' : s;
@@ -862,7 +862,7 @@ const Salah = {
         }
       });
 
-      const rowClass = (d % 2 === 0) ? 'row-alt' : '';
+      const rowClass = isPreJoin ? 'row-prejoin' : ((d % 2 === 0) ? 'row-alt' : '');
       const renderedRow = `<tr class="${rowClass}">${rowCells}</tr>`;
       if (d <= splitIndex) {
         col1Rows += renderedRow;
