@@ -2326,66 +2326,82 @@ const Finance = {
           <title>LAMIM - Financial Audit (${mStr})</title>
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap');
-            @page { size: A4 portrait; margin: 8mm 10mm; }
+            @page { size: A4 portrait; margin: 6mm 8mm; }
             * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            body { 
+            html, body { 
+              height: 100%;
               font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; 
               background: #fff; 
               color: #0f172a; 
-              font-size: 9px;
-              line-height: 1.3;
+              font-size: 8.5px;
+              line-height: 1.25;
+              overflow: hidden;
             }
             
-            .container { width: 100%; min-height: 1040px; margin: 0 auto; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+            .container { 
+              width: 100%; 
+              height: 100%; 
+              max-height: 282mm; 
+              box-sizing: border-box; 
+              margin: 0 auto; 
+              display: flex; 
+              flex-direction: column; 
+              justify-content: space-between; 
+              position: relative; 
+              page-break-after: avoid !important; 
+              page-break-inside: avoid !important; 
+              break-after: avoid !important; 
+              break-inside: avoid !important; 
+            }
 
             .hero { 
               background: linear-gradient(135deg, #090d16 0%, #1e1b4b 60%, #312e81 100%); 
               color: #fff; 
-              padding: 14px 18px; 
-              border-radius: 12px; 
-              margin-bottom: 10px; 
+              padding: 10px 14px; 
+              border-radius: 10px; 
+              margin-bottom: 6px; 
               display: flex; 
               justify-content: space-between; 
               align-items: center; 
             }
-            .brand-name { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: 0.05em; line-height: 1; }
-            .brand-sub { font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
-            .report-title { font-size: 14px; font-weight: 900; color: #fff; text-align: right; line-height: 1.1; }
-            .report-date { font-size: 8px; font-weight: 700; color: #a5b4fc; text-align: right; margin-top: 2px; }
+            .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: 0.05em; line-height: 1; }
+            .brand-sub { font-size: 7.5px; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+            .report-title { font-size: 13px; font-weight: 900; color: #fff; text-align: right; line-height: 1.1; }
+            .report-date { font-size: 7.5px; font-weight: 700; color: #a5b4fc; text-align: right; margin-top: 1px; }
 
-            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
-            .stat-card { background: #f8fafc; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; }
+            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
+            .stat-card { background: #f8fafc; padding: 6px 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
             .stat-card.dark { background: #1e1b4b; color: white; border: none; }
-            .label { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 3px; display: block; }
-            .val { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.1; }
+            .label { font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 2px; display: block; }
+            .val { font-size: 17px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.1; }
             
-            .wealth-metrics-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
-            .wm-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
-            .wm-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+            .wealth-metrics-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 6px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+            .wm-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+            .wm-val { font-size: 11.5px; font-weight: 900; color: #0f172a; margin-top: 1px; }
 
-            .savings-wrap { display: flex; gap: 8px; margin-bottom: 10px; }
-            .cats-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
+            .savings-wrap { display: flex; gap: 6px; margin-bottom: 6px; }
+            .cats-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 6px; }
 
-            .ledger-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; }
-            .ledger-title { font-size: 8.5px; font-weight: 900; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.5px; }
+            .ledger-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding: 4px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; }
+            .ledger-title { font-size: 7.5px; font-weight: 900; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.5px; }
             
-            table { width: 100%; border-collapse: collapse; margin-bottom: 8px; table-layout: fixed; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #fff; }
-            th { text-align: left; padding: 5px 8px; font-size: 7.5px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f1f5f9; border-bottom: 1.5px solid #e2e8f0; }
-            td { padding: 4.8px 8px; background: white; border-bottom: 1px solid #f1f5f9; font-size: 8.5px; vertical-align: middle; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 6px; table-layout: fixed; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; background: #fff; }
+            th { text-align: left; padding: 4px 6px; font-size: 7px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f1f5f9; border-bottom: 1.5px solid #e2e8f0; }
+            td { padding: 3.2px 6px; background: white; border-bottom: 1px solid #f1f5f9; font-size: 8px; vertical-align: middle; }
             tr:nth-child(even) td { background: #fafbfd; }
 
-            .amount { font-weight: 900; font-size: 9px; text-align: right; letter-spacing: -0.2px; }
+            .amount { font-weight: 900; font-size: 8.5px; text-align: right; letter-spacing: -0.2px; }
             .neg { color: #f43f5e; }
             .pos { color: #10b981; }
 
-            .cat-tag { padding: 2px 6px; border-radius: 6px; font-size: 7px; font-weight: 800; text-transform: uppercase; display: inline-block; }
+            .cat-tag { padding: 1.5px 5px; border-radius: 4px; font-size: 6.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
 
-            .footer { margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-            .footer-text { font-size: 7.5px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+            .footer { margin-top: 5px; padding-top: 5px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+            .footer-text { font-size: 7px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
             
             @media print {
-              body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-              .container { width: 100%; padding: 0; }
+              html, body { height: 100% !important; overflow: hidden !important; }
+              .container { height: 100% !important; max-height: 100% !important; page-break-after: avoid !important; page-break-inside: avoid !important; }
             }
           </style>
         </head>

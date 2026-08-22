@@ -442,61 +442,61 @@ const Career = {
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Career & Study Report — ${monthName} ${year}</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-      @page { size: A4 portrait; margin: 8mm 10mm; }
-      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { color: #1e293b; background: #fff; line-height: 1.3; font-size: 9px; }
-      .page { width: 100%; min-height: 1040px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+      @page { size: A4 portrait; margin: 6mm 8mm; }
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      html, body { height: 100%; margin: 0; padding: 0; color: #1e293b; background: #fff; line-height: 1.25; font-size: 8.5px; overflow: hidden; }
+      .page { width: 100%; height: 100%; max-height: 282mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; page-break-after: avoid !important; page-break-inside: avoid !important; break-after: avoid !important; break-inside: avoid !important; }
       
       .header { 
         display: flex; 
         justify-content: space-between; 
         align-items: center; 
-        padding: 14px 18px; 
-        margin-bottom: 10px; 
-        border-radius: 12px; 
+        padding: 10px 14px; 
+        margin-bottom: 6px; 
+        border-radius: 10px; 
         background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 45%, #4f46e5 100%); 
         color: #fff; 
       }
-      .logo { font-size: 20px; font-weight: 900; letter-spacing: 0.05em; line-height: 1; color: #fff; }
-      .subtitle { font-size: 8px; color: rgba(255,255,255,0.85); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+      .logo { font-size: 17px; font-weight: 900; letter-spacing: 0.05em; line-height: 1; color: #fff; }
+      .subtitle { font-size: 7.5px; color: rgba(255,255,255,0.85); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; }
       .meta { text-align: right; }
-      .meta strong { font-size: 14px; color: #fff; font-weight: 800; line-height: 1.1; display: block; }
-      .meta span { font-size: 8px; color: #c7d2fe; font-weight: 700; }
+      .meta strong { font-size: 13px; color: #fff; font-weight: 800; line-height: 1.1; display: block; }
+      .meta span { font-size: 7.5px; color: #c7d2fe; font-weight: 700; }
 
-      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
-      .sum-card { background: #f8fafc; border-radius: 10px; padding: 10px 12px; border: 1px solid #e2e8f0; position: relative; overflow: hidden; }
-      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--c, #6366f1); }
+      .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
+      .sum-card { background: #f8fafc; border-radius: 8px; padding: 6px 10px; border: 1px solid #e2e8f0; position: relative; overflow: hidden; }
+      .sum-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--c, #6366f1); }
       .sum-card:nth-child(1) { --c: #6366f1; }
       .sum-card:nth-child(2) { --c: #0d9488; }
       .sum-card:nth-child(3) { --c: #f59e0b; }
       .sum-card:nth-child(4) { --c: #ec4899; }
-      .sum-label { font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; font-weight: 800; }
-      .sum-val { font-size: 19px; font-weight: 900; color: #0f172a; margin-top: 3px; line-height: 1.1; }
+      .sum-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; font-weight: 800; }
+      .sum-val { font-size: 17px; font-weight: 900; color: #0f172a; margin-top: 2px; line-height: 1.1; }
       
-      .productivity-kpi-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
-      .pk-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
-      .pk-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+      .productivity-kpi-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 6px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+      .pk-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+      .pk-val { font-size: 11.5px; font-weight: 900; color: #0f172a; margin-top: 1px; }
 
-      .trend-panel { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 12px; margin-bottom: 10px; }
-      .trend-title { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 6px; }
+      .trend-panel { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 6px; }
+      .trend-title { font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 4px; }
       
-      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-      table { width: 100%; border-collapse: collapse; font-size: 8.5px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; table-layout: fixed; background: #fff; }
-      th { background: #f1f5f9; color: #334155; padding: 5px 4px; text-align: center; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
-      th:first-child { text-align: left; padding-left: 8px; width: 18%; }
+      .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+      table { width: 100%; border-collapse: collapse; font-size: 8px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; table-layout: fixed; background: #fff; }
+      th { background: #f1f5f9; color: #334155; padding: 4px 3px; text-align: center; font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+      th:first-child { text-align: left; padding-left: 6px; width: 18%; }
       th:nth-child(2) { width: 20%; }
-      td { padding: 4.8px 4px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-      td:first-child { padding-left: 8px; }
+      td { padding: 3.2px 3px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+      td:first-child { padding-left: 6px; }
       tbody tr:nth-child(even) { background: #fafbfc; }
 
-      .ayah-quote { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #3730a3; font-size: 8px; line-height: 1.35; text-align: center; }
+      .ayah-quote { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px; color: #3730a3; font-size: 7.5px; line-height: 1.3; text-align: center; }
       .ayah-ref { font-weight: 800; color: #4f46e5; margin-top: 2px; }
 
-      .footer { padding-top: 6px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; font-weight: 600; }
+      .footer { padding-top: 5px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; font-weight: 600; }
       .footer .brand { font-weight: 800; color: #4f46e5; }
       @media print {
-        body { padding: 0; }
-        .page { break-inside: avoid; }
+        html, body { height: 100% !important; overflow: hidden !important; }
+        .page { height: 100% !important; max-height: 100% !important; page-break-after: avoid !important; page-break-inside: avoid !important; }
       }
     </style></head><body>
     <div class="page">

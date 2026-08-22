@@ -926,69 +926,73 @@ const Salah = {
   <title>Salah Monthly Performance Report — ${monthName} ${year}</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-    @page { size: A4 portrait; margin: 8mm 10mm; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    body { background: #fff; color: #0f172a; font-size: 9px; line-height: 1.3; }
-    .page { width: 100%; min-height: 1040px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+    @page { size: A4 portrait; margin: 6mm 8mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { height: 100%; margin: 0; padding: 0; background: #fff; color: #0f172a; font-size: 8.5px; line-height: 1.25; overflow: hidden; }
+    .page { width: 100%; height: 100%; max-height: 282mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; page-break-after: avoid !important; page-break-inside: avoid !important; break-after: avoid !important; break-inside: avoid !important; }
     
     .header-banner { 
       background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%); 
       color: #fff; 
-      padding: 14px 18px; 
-      border-radius: 12px; 
-      margin-bottom: 10px;
+      padding: 10px 14px; 
+      border-radius: 10px; 
+      margin-bottom: 6px;
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
     }
-    .brand-title { font-size: 20px; font-weight: 900; letter-spacing: 0.05em; line-height: 1; color: #fff; }
-    .brand-subtitle { font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.8); letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+    .brand-title { font-size: 17px; font-weight: 900; letter-spacing: 0.05em; line-height: 1; color: #fff; }
+    .brand-subtitle { font-size: 7.5px; font-weight: 700; color: rgba(255,255,255,0.8); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; }
     .user-info-box { text-align: right; }
-    .user-name { font-size: 14px; font-weight: 800; color: #fff; line-height: 1.1; }
-    .report-date { font-size: 10px; font-weight: 700; color: #a5b4fc; margin-top: 2px; }
-    .report-ref { font-size: 7.5px; color: rgba(255,255,255,0.6); font-weight: 600; margin-top: 1px; }
+    .user-name { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.1; }
+    .report-date { font-size: 9px; font-weight: 700; color: #a5b4fc; margin-top: 1px; }
+    .report-ref { font-size: 7px; color: rgba(255,255,255,0.6); font-weight: 600; margin-top: 1px; }
 
-    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
-    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; position: relative; overflow: hidden; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 6px; }
+    .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; position: relative; overflow: hidden; }
     .summary-card.highlight { background: ${statusBg}; border-color: ${statusBorder}; }
-    .summary-card.highlight::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: ${statusColor}; }
-    .sum-val { font-size: 20px; font-weight: 900; line-height: 1.1; color: #0f172a; }
+    .summary-card.highlight::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: ${statusColor}; }
+    .sum-val { font-size: 17px; font-weight: 900; line-height: 1.1; color: #0f172a; }
     .sum-val.accent { color: ${statusColor}; }
-    .sum-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
-    .badge-pill { display: inline-block; padding: 2px 6px; font-size: 7px; font-weight: 800; border-radius: 999px; text-transform: uppercase; margin-top: 3px; }
+    .sum-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+    .badge-pill { display: inline-block; padding: 1.5px 5px; font-size: 6.5px; font-weight: 800; border-radius: 999px; text-transform: uppercase; margin-top: 2px; }
 
-    .prayer-breakdown-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
+    .prayer-breakdown-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 6px; }
 
-    .section-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .section-title { font-size: 8px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; }
-    .legend-box { display: flex; gap: 10px; font-size: 8px; font-weight: 700; color: #475569; }
-    .legend-item { display: flex; align-items: center; gap: 4px; }
-    .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .section-bar { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 8px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 7.5px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; }
+    .legend-box { display: flex; gap: 8px; font-size: 7.5px; font-weight: 700; color: #475569; }
+    .legend-item { display: flex; align-items: center; gap: 3px; }
+    .legend-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
 
-    .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; table-layout: fixed; }
-    th { background: #f1f5f9; color: #334155; font-size: 7.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 5px 3px; text-align: center; border-bottom: 1.5px solid #e2e8f0; }
-    th:first-child { text-align: left; padding-left: 8px; width: 28%; }
-    td { padding: 4.8px 3px; text-align: center; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-    td.cell-date { text-align: left; padding-left: 8px; font-weight: 700; color: #334155; }
-    .date-day { font-size: 9.5px; font-weight: 800; color: #0f172a; margin-right: 4px; }
-    .date-weekday { font-size: 7.5px; color: #64748b; font-weight: 600; }
+    .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; table-layout: fixed; }
+    th { background: #f1f5f9; color: #334155; font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 2px; text-align: center; border-bottom: 1.5px solid #e2e8f0; }
+    th:first-child { text-align: left; padding-left: 6px; width: 28%; }
+    td { padding: 3.2px 2px; text-align: center; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    td.cell-date { text-align: left; padding-left: 6px; font-weight: 700; color: #334155; }
+    .date-day { font-size: 8.5px; font-weight: 800; color: #0f172a; margin-right: 3px; }
+    .date-weekday { font-size: 7px; color: #64748b; font-weight: 600; }
     .cell-empty { color: #cbd5e1; font-weight: 700; }
     .cell-unlogged { color: #f59e0b; font-weight: 900; }
     .row-alt { background: #fafbfc; }
     .row-prejoin { background: rgba(241, 245, 249, 0.4); opacity: 0.85; }
     .row-future { opacity: 0.45; background: rgba(248, 250, 252, 0.6); }
-    .status-dot-cell { display: inline-block; width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+    .status-dot-cell { display: inline-block; width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
-    .spiritual-audit-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; margin-bottom: 8px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
-    .sab-item-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; }
-    .sab-item-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 1px; }
+    .spiritual-audit-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 10px; margin-bottom: 6px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
+    .sab-item-lbl { font-size: 6.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+    .sab-item-val { font-size: 11.5px; font-weight: 900; color: #0f172a; margin-top: 1px; }
 
-    .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #4338ca; font-size: 8px; line-height: 1.35; text-align: center; }
+    .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px; color: #4338ca; font-size: 7.5px; line-height: 1.3; text-align: center; }
     .ayah-ref { font-weight: 800; color: #6366f1; margin-top: 2px; }
 
-    .footer { display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #94a3b8; font-weight: 600; padding-top: 6px; border-top: 1px solid #e2e8f0; }
+    .footer { display: flex; justify-content: space-between; align-items: center; font-size: 7px; color: #94a3b8; font-weight: 600; padding-top: 5px; border-top: 1px solid #e2e8f0; }
     .footer-brand { font-weight: 800; color: #4f46e5; }
+    @media print {
+      html, body { height: 100% !important; overflow: hidden !important; }
+      .page { height: 100% !important; max-height: 100% !important; page-break-after: avoid !important; page-break-inside: avoid !important; }
+    }
   </style>
 </head>
 <body>

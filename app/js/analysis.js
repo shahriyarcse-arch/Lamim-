@@ -677,52 +677,30 @@ const Analysis = {
     const innerHTML = `
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        @page { size: A4 portrait; margin: 8mm 10mm; }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; padding: 0; }
-        body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #fff; font-size: 9px; line-height: 1.3; }
-        .pdf-wrapper { width: 100%; position: relative; }
+        @page { size: A4 portrait; margin: 6mm 8mm; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; margin: 0; padding: 0; }
+        html, body { height: 100%; margin: 0; padding: 0; background: #fff; font-size: 8.5px; line-height: 1.25; overflow: hidden; }
         
-        .header-banner { 
-          background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); 
-          color: white; 
-          padding: 14px 18px 22px; 
-          border-radius: 12px;
-          position: relative;
-          overflow: hidden;
-        }
-        .header-top { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
-        .brand { display: flex; align-items: center; gap: 8px; }
-        .brand-icon { width: 26px; height: 26px; background: rgba(255,255,255,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
-        .brand-text { font-size: 16px; font-weight: 900; letter-spacing: 1px; }
-        
-        .report-meta { text-align: right; }
-        .report-meta-title { font-size: 7.5px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8); font-weight: 700; }
-        .report-meta-date { font-size: 11px; font-weight: 800; }
-        
-        .user-info { margin-top: 8px; position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: baseline; }
-        .user-name { font-size: 16px; font-weight: 900; }
-        .user-subtitle { font-size: 8px; color: rgba(255,255,255,0.85); font-weight: 600; }
-
-        .content { padding: 0 4px; }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: -10px; position: relative; z-index: 10; margin-bottom: 8px; }
-
         .pdf-wrapper {
           width: 100%;
-          min-height: 1040px;
+          height: 100%;
+          max-height: 282mm;
+          box-sizing: border-box;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          position: relative;
+          page-break-after: avoid !important;
+          page-break-inside: avoid !important;
+          break-after: avoid !important;
+          break-inside: avoid !important;
         }
 
         .header-banner {
           background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%);
-          border-radius: 12px;
-          padding: 14px 18px;
+          border-radius: 10px;
+          padding: 10px 14px;
           color: #ffffff;
-          margin-bottom: 10px;
-          box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
+          margin-bottom: 6px;
         }
 
         .header-top {
@@ -730,28 +708,28 @@ const Analysis = {
           justify-content: space-between;
           align-items: center;
           border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-          padding-bottom: 8px;
-          margin-bottom: 8px;
+          padding-bottom: 5px;
+          margin-bottom: 5px;
         }
 
         .brand {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         }
 
         .brand-icon {
-          width: 24px;
-          height: 24px;
+          width: 20px;
+          height: 20px;
           background: rgba(255, 255, 255, 0.2);
-          border-radius: 6px;
+          border-radius: 5px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
         .brand-text {
-          font-size: 18px;
+          font-size: 15px;
           font-weight: 900;
           letter-spacing: 0.05em;
         }
@@ -761,14 +739,14 @@ const Analysis = {
         }
 
         .report-meta-title {
-          font-size: 13px;
+          font-size: 11px;
           font-weight: 800;
           color: #ffffff;
           line-height: 1.1;
         }
 
         .report-meta-date {
-          font-size: 8px;
+          font-size: 7.5px;
           color: #a5b4fc;
           font-weight: 700;
           margin-top: 1px;
@@ -781,13 +759,13 @@ const Analysis = {
         }
 
         .user-name {
-          font-size: 15px;
+          font-size: 13px;
           font-weight: 900;
           letter-spacing: -0.2px;
         }
 
         .user-subtitle {
-          font-size: 8px;
+          font-size: 7.5px;
           color: rgba(255, 255, 255, 0.8);
           font-weight: 600;
         }
@@ -795,71 +773,70 @@ const Analysis = {
         .stats-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 8px;
-          margin-bottom: 10px;
+          gap: 6px;
+          margin-bottom: 6px;
         }
 
         .stat-card { 
           background: #ffffff; 
-          padding: 10px 14px; 
-          border-radius: 10px; 
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+          padding: 6px 10px; 
+          border-radius: 8px; 
           border: 1px solid #e2e8f0;
           display: flex;
           flex-direction: column;
           position: relative;
           overflow: hidden;
         }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--sc, #6366f1); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--sc, #6366f1); }
         .stat-card:nth-child(1) { --sc: #6366f1; }
         .stat-card:nth-child(2) { --sc: #10b981; }
         .stat-card:nth-child(3) { --sc: #f59e0b; }
-        .stat-val { font-size: 22px; font-weight: 900; color: #0f172a; line-height: 1.1; margin-bottom: 3px; }
-        .stat-label { font-size: 8px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-val { font-size: 17px; font-weight: 900; color: #0f172a; line-height: 1.1; margin-bottom: 2px; }
+        .stat-label { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .spiritual-matrix-box {
           background: #f8fafc;
           border: 1px solid #e2e8f0;
           border-radius: 8px;
-          padding: 8px 14px;
-          margin-bottom: 10px;
+          padding: 6px 10px;
+          margin-bottom: 6px;
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 10px;
+          gap: 8px;
           text-align: center;
         }
-        .sm-lbl { font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; }
-        .sm-val { font-size: 13px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+        .sm-lbl { font-size: 7px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+        .sm-val { font-size: 11.5px; font-weight: 900; color: #0f172a; margin-top: 1px; }
 
-        .section-bar { font-size: 8px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; justify-content: space-between; }
+        .section-bar { font-size: 7.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding: 4px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; justify-content: space-between; }
 
-        .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; font-size: 8.5px; table-layout: fixed; }
-        th { text-align: left; background: #f1f5f9; padding: 5px 6px; font-size: 7.5px; text-transform: uppercase; color: #475569; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
+        .grid-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; border: 1px solid #e2e8f0; overflow: hidden; font-size: 8px; table-layout: fixed; }
+        th { text-align: left; background: #f1f5f9; padding: 4px 5px; font-size: 7px; text-transform: uppercase; color: #475569; font-weight: 800; border-bottom: 1.5px solid #e2e8f0; }
         th:nth-child(2), th:nth-child(3) { text-align: center; }
-        td { padding: 4.8px 6px; border-bottom: 1px solid #f1f5f9; font-size: 8.5px; color: #334155; }
+        td { padding: 3.2px 5px; border-bottom: 1px solid #f1f5f9; font-size: 8px; color: #334155; }
         tr:last-child td { border-bottom: none; }
         tr:nth-child(even) td { background: #fafbfc; }
         
-        .rating-badge { padding: 2px 8px; border-radius: 12px; font-size: 7.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
+        .rating-badge { padding: 1.5px 6px; border-radius: 999px; font-size: 6.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
 
-        .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #4338ca; font-size: 8px; line-height: 1.35; text-align: center; }
+        .ayah-quote { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px; color: #4338ca; font-size: 7.5px; line-height: 1.3; text-align: center; }
         .ayah-ref { font-weight: 800; color: #6366f1; margin-top: 2px; }
         
         .footer { 
-          padding-top: 6px; 
+          padding-top: 5px; 
           border-top: 1px solid #e2e8f0; 
           display: flex; 
           justify-content: space-between; 
           align-items: center;
-          font-size: 7.5px;
+          font-size: 7px;
           color: #94a3b8;
           font-weight: 600;
         }
-        .footer-logo { font-size: 8px; font-weight: 900; color: #6366f1; }
+        .footer-logo { font-size: 7.5px; font-weight: 900; color: #6366f1; }
         @media print {
-          body { padding: 0; }
-          .pdf-wrapper { break-inside: avoid; }
+          html, body { height: 100% !important; overflow: hidden !important; }
+          .pdf-wrapper { height: 100% !important; max-height: 100% !important; page-break-after: avoid !important; page-break-inside: avoid !important; }
         }
       </style>
       
