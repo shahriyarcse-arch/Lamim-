@@ -52,9 +52,9 @@ const Analysis = {
     const salahData = DB.getSalah(date);
     const dhikrData = DB.getDhikr(date);
     
-    // 1. Salah Score (Max 50)
+    // 1. Salah Score (Max 50) - Jama'at (10), Alone (7), Qaza (3), Missed (0)
     const salahScore = Utils.salahScore(salahData);
-    const pointsSalah = (salahScore.pct / 100) * this.weights.salah;
+    const pointsSalah = Math.min(this.weights.salah, (salahScore && typeof salahScore.pts === 'number') ? salahScore.pts : 0);
 
     // 2. Nafl & Sunnah Score (Max 15) - Matched to Goals Nafl Engine
     let pointsNafl = 0;

@@ -811,7 +811,8 @@ const Utils = {
     let qaza = 0;
     let onTime = 0;
     prayers.forEach(p => {
-      const s = salahData[p];
+      const raw = salahData[p];
+      const s = raw === 'jamaah' ? 'jamaat' : (raw === 'prayed' ? 'alone' : raw);
       if (s && s !== 'missed') {
         done++;
         if (s === 'jamaat') {
