@@ -120,6 +120,7 @@ const Analysis = {
     else if (checkTotal >= 70) pointsConsistency = 6;
     else if (checkTotal >= 60) pointsConsistency = 4;
     else if (checkTotal >= 50) pointsConsistency = 2;
+    else if (checkTotal >= 40) pointsConsistency = 1;
 
     const totalSHS = Math.min(100, rawTotal + pointsConsistency);
 
