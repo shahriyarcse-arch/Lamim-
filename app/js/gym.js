@@ -776,20 +776,20 @@ const Gym = {
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;"><span style="color:#94a3b8;font-size:6.5px;font-weight:700;background:#f1f5f9;border:1px solid #e2e8f0;padding:1px 3px;border-radius:3px;">N/A</span></td>
         </tr>`;
       } else if (r.isFuture) {
-        rowHtml = `<tr>
+        rowHtml = `<tr style="opacity:0.45; background:rgba(248, 250, 252, 0.6);">
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1;font-size:9px;opacity:0.6;">•</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1;font-size:9px;opacity:0.6;">•</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1;font-size:9px;opacity:0.6;">•</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1;font-size:9px;opacity:0.6;">•</td>
         </tr>`;
       } else {
         rowHtml = `<tr>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:800;color:#0f172a">${r.day}</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-weight:700;color:#0891b2">${r.exCount || '—'}</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center">${r.dur ? r.dur.toFixed(1) + 'h' : '—'}</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:8px">${r.recovery || '—'}</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#0284c7">${r.water ? r.water + 'ml' : '—'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-weight:700;color:#0891b2">${r.exCount ? r.exCount : '<span style="color:#f59e0b;font-weight:800;">—</span>'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center">${r.dur ? r.dur.toFixed(1) + 'h' : '<span style="color:#94a3b8;">—</span>'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-size:8px">${r.recovery ? r.recovery : '<span style="color:#94a3b8;">—</span>'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#0284c7">${r.water ? r.water + 'ml' : '<span style="color:#94a3b8;">—</span>'}</td>
         </tr>`;
       }
       if (r.day <= splitIndex) col1Rows += rowHtml;

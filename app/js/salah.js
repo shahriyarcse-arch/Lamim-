@@ -847,8 +847,10 @@ const Salah = {
         if (!s) {
           if (isPreJoin) {
             rowCells += '<td class="cell-na"><span style="color:#94a3b8; font-size:6.5px; font-weight:700; background:#f1f5f9; border:1px solid #e2e8f0; padding:1px 3px; border-radius:3px;">N/A</span></td>';
+          } else if (isFuture) {
+            rowCells += '<td class="cell-future" style="text-align:center; color:#cbd5e1; font-size:9px; opacity:0.6;">•</td>';
           } else {
-            rowCells += '<td class="cell-empty" style="color:#94a3b8; font-weight:700;">—</td>';
+            rowCells += '<td class="cell-unlogged" style="text-align:center; color:#f59e0b; font-weight:900; font-size:10px;" title="Unlogged prayer">—</td>';
           }
         } else {
           const norm = s === 'jamaah' ? 'jamaat' : s;
@@ -862,7 +864,7 @@ const Salah = {
         }
       });
 
-      const rowClass = isPreJoin ? 'row-prejoin' : ((d % 2 === 0) ? 'row-alt' : '');
+      const rowClass = isPreJoin ? 'row-prejoin' : (isFuture ? 'row-future' : ((d % 2 === 0) ? 'row-alt' : ''));
       const renderedRow = `<tr class="${rowClass}">${rowCells}</tr>`;
       if (d <= splitIndex) {
         col1Rows += renderedRow;
@@ -972,7 +974,10 @@ const Salah = {
     .date-day { font-size: 9.5px; font-weight: 800; color: #0f172a; margin-right: 4px; }
     .date-weekday { font-size: 7.5px; color: #64748b; font-weight: 600; }
     .cell-empty { color: #cbd5e1; font-weight: 700; }
+    .cell-unlogged { color: #f59e0b; font-weight: 900; }
     .row-alt { background: #fafbfc; }
+    .row-prejoin { background: rgba(241, 245, 249, 0.4); opacity: 0.85; }
+    .row-future { opacity: 0.45; background: rgba(248, 250, 252, 0.6); }
     .status-dot-cell { display: inline-block; width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
     .spiritual-audit-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; margin-bottom: 8px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }

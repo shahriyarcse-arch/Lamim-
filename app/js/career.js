@@ -396,18 +396,18 @@ const Career = {
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;color:#94a3b8;font-size:7px;font-style:italic;">Pre-Join</td>
         </tr>`;
       } else if (r.isFuture) {
-        rowHtml = `<tr>
+        rowHtml = `<tr style="opacity:0.45; background:rgba(248, 250, 252, 0.6);">
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;color:#cbd5e1">—</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1;font-size:9px;opacity:0.6;">•</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;color:#cbd5e1;font-size:9px;opacity:0.6;">•</td>
         </tr>`;
       } else {
         const goalsCell = goalsMap[r.day]
           ? `<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:flex-start">` + goalsMap[r.day].map(g => `<span style="display:inline-block;font-size:7px;line-height:1.2;padding:1px 5px;border-radius:999px;white-space:nowrap;${g.done ? 'background:#ecfdf5;color:#047857;border:1px solid #a7f3d0' : 'background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0'}">${g.done ? '✓' : '○'} ${Utils.escapeHTML(g.text)}</span>`).join('') + `</div>`
-          : '—';
+          : '<span style="color:#94a3b8;">—</span>';
         rowHtml = `<tr>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:800;color:#0f172a">${r.day}</td>
-          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-weight:700;color:#4f46e5">${r.goals ? r.done + '/' + r.goals : '—'}</td>
+          <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;font-weight:700;color:#4f46e5">${r.goals ? r.done + '/' + r.goals : '<span style="color:#f59e0b;font-weight:800;">—</span>'}</td>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9">${goalsCell}</td>
         </tr>`;
       }
