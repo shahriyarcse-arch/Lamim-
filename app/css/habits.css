@@ -1062,6 +1062,20 @@
   margin-bottom: 8px;
   letter-spacing: -2px;
   filter: drop-shadow(0 6px 20px rgba(129, 140, 248, 0.3));
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.spirit-score-unit {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: #a5b4fc;
+  -webkit-text-fill-color: #a5b4fc;
+  opacity: 0.9;
+  margin-left: 2px;
 }
 
 .spirit-score-sub {
@@ -1069,6 +1083,53 @@
   color: var(--color-text-muted);
   font-weight: 600;
   letter-spacing: 0.2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spirit-shield-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+}
+
+.spirit-shield-badge.badge-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.spirit-shield-badge.badge-warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+}
+
+[data-theme="light"] .spirit-score-unit {
+  color: #6366f1 !important;
+  -webkit-text-fill-color: #6366f1 !important;
+}
+
+[data-theme="light"] .spirit-shield-badge.badge-success {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="light"] .spirit-shield-badge.badge-warning {
+  background: rgba(245, 158, 11, 0.1) !important;
+  color: #d97706 !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
 }
 
 .spirit-breakdown {

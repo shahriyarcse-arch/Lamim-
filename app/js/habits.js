@@ -560,11 +560,24 @@ const Habits = {
 
   renderWarriorSpiritScore(skipAnim = false) {
     const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-    let totalDays = 0;
+    const today = Utils.todayStr();
+    let maxStreak = 0;
+    let cleanTodayCount = 0;
+    const totalHabits = this.habits.length;
+
     const breakdown = this.habits.map(h => {
       const stats = this.getHabitStats(h.id);
       const timeStats = this.getHabitTimeStats(h.id);
-      totalDays += stats.currentStreak;
+      
+      if (stats.currentStreak > maxStreak) {
+        maxStreak = stats.currentStreak;
+      }
+
+      const relapsedToday = (h.history || []).find(entry => entry.date === today && entry.clean === false);
+      if (!relapsedToday) {
+        cleanTodayCount++;
+      }
+
       const fractional = timeStats.days + (timeStats.hours / 24) + (timeStats.minutes / 1440) + (timeStats.seconds / 86400);
       const pct = this.getProgressPercent(fractional);
       const nextBadge = this.badges.find(b => b.days > stats.currentStreak);
@@ -573,15 +586,34 @@ const Habits = {
       return { id: h.id, label: Utils.escapeHTML(labelText), val: stats.currentStreak, color: h.color, pct, nextInfo };
     });
 
-    const displayVal = window.n ? window.n(totalDays) : totalDays;
+    const displayNum = window.n ? window.n(maxStreak) : maxStreak;
+    const daysUnit = isBn ? 'দিন' : (maxStreak === 1 ? 'day' : 'days');
+    
+    // Dynamic Subtitle Badge
+    let subHtml = '';
+    if (totalHabits > 0) {
+      if (cleanTodayCount === totalHabits) {
+        const countStr = window.n ? window.n(totalHabits) : totalHabits;
+        subHtml = `<span class="spirit-shield-badge badge-success"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>${isBn ? `${countStr}টি সক্রিয় অভ্যাস সুরক্ষিত` : `All ${countStr} Habits Protected`}</span>`;
+      } else {
+        const cleanStr = window.n ? window.n(cleanTodayCount) : cleanTodayCount;
+        const totalStr = window.n ? window.n(totalHabits) : totalHabits;
+        const slipCount = totalHabits - cleanTodayCount;
+        const slipStr = window.n ? window.n(slipCount) : slipCount;
+        subHtml = `<span class="spirit-shield-badge badge-warning"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>${isBn ? `${cleanStr}/${totalStr}টি অভ্যাস অক্ষত (${slipStr}টি রিল্যাপস)` : `${cleanStr}/${totalStr} Habits Protected (${slipStr} Slip)`}</span>`;
+      }
+    }
 
     return `
       <div class="habits-spirit-score-wrap ${skipAnim ? '' : 'anim-scale-up'}">
         <div class="spirit-score-glow"></div>
         <div class="spirit-score-content">
-          <div class="spirit-score-label">${isBn ? 'হ্যাবিট রেজিলিয়েন্স পাওয়ার' : 'WARRIOR SPIRIT POWER'}</div>
-          <div class="spirit-score-val">${displayVal}</div>
-          <div class="spirit-score-sub">${isBn ? 'পবিত্রতার মোট দিন' : 'Total Combined Days of Purity'}</div>
+          <div class="spirit-score-label">${isBn ? 'শীর্ষ ধারাবাহিকতা' : 'PEAK RESILIENCE STREAK'}</div>
+          <div class="spirit-score-val">
+            <span class="spirit-score-num">${displayNum}</span>
+            <span class="spirit-score-unit">${daysUnit}</span>
+          </div>
+          <div class="spirit-score-sub">${subHtml}</div>
           
           <div class="spirit-breakdown">
             ${breakdown.map(b => {
