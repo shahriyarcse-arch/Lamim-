@@ -319,26 +319,31 @@ const Career = {
     const month = selDate.slice(5, 7);
     const monthName = new Date(parseInt(year, 10), parseInt(month, 10) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     const daysInMonth = new Date(parseInt(year, 10), parseInt(month, 10), 0).getDate();
+    const user = DB.getUser() || { name: 'Professional' };
+    const joinDateStr = (user.createdAt || user.created_at || '').slice(0, 10);
     const todayStr = Utils.todayStr();
 
     let totalGoals = 0, goalsDone = 0, daysWithGoals = 0, perfectDays = 0;
+    let activeDaysEligible = 0;
     const rows = [];
     const goalsMap = {};
 
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${year}-${month}-${String(day).padStart(2, '0')}`;
       const isFuture = dateStr > todayStr;
+      const isPreJoin = joinDateStr ? (dateStr < joinDateStr) : false;
       const c = isFuture ? { checklist: [] } : DB.getCareer(dateStr);
       const list = c.checklist || [];
       const done = list.filter(x => x.done).length;
-      if (!isFuture) {
+      if (!isFuture && !isPreJoin) {
+        activeDaysEligible++;
         totalGoals += list.length;
         goalsDone += done;
         if (list.length) daysWithGoals++;
         if (list.length > 0 && list.every(x => x.done)) perfectDays++;
         if (list.length) goalsMap[day] = list.map(x => ({ text: x.text || '', done: !!x.done }));
       }
-      rows.push({ day, goals: list.length, done, isFuture });
+      rows.push({ day, goals: list.length, done, isFuture, isPreJoin });
     }
 
     const completionPct = totalGoals ? Math.round((goalsDone / totalGoals) * 100) : 0;
@@ -368,15 +373,13 @@ const Career = {
     }
     const maxTrend = Math.max(...trend.map(t => t.pct), 1);
     const trendBars = trend.map(t => {
-      const h = Math.max(8, (t.pct / maxTrend) * 100);
-      const g1 = t.pct === 100 ? '#34d399' : t.pct >= 50 ? '#fbbf24' : '#818cf8';
-      const g2 = t.pct === 100 ? '#0d9488' : t.pct >= 50 ? '#f59e0b' : '#4f46e5';
-      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
-        <div style="font-size:8px;font-weight:800;color:${t.isCurrent ? g2 : '#475569'}">${t.pct}%</div>
-        <div style="width:100%;height:40px;display:flex;align-items:flex-end">
-          <div style="width:100%;height:${h}%;border-radius:4px 4px 2px 2px;background:linear-gradient(180deg, ${g1} 0%, ${g2} 100%);"></div>
+      const height = Math.max(8, Math.round((t.pct / maxTrend) * 36));
+      return `<div style="display:flex; flex-direction:column; align-items:center; gap:2px; flex:1;">
+        <span style="font-size:6.5px; font-weight:800; color:${t.isCurrent ? '#4f46e5' : '#64748b'};">${t.pct}%</span>
+        <div style="width:100%; max-width:14px; height:38px; background:#f1f5f9; border-radius:3px; display:flex; align-items:flex-end; overflow:hidden;">
+          <div style="width:100%; height:${height}px; background:${t.isCurrent ? 'linear-gradient(180deg, #6366f1, #4f46e5)' : '#94a3b8'}; border-radius:2px;"></div>
         </div>
-        <div style="font-size:7.5px;color:${t.isCurrent ? '#0f172a' : '#64748b'};font-weight:${t.isCurrent ? 800 : 600}">${t.label}</div>
+        <span style="font-size:6.5px; font-weight:700; color:${t.isCurrent ? '#4f46e5' : '#94a3b8'};">${t.label}</span>
       </div>`;
     }).join('');
 
@@ -386,7 +389,7 @@ const Career = {
 
     rows.forEach(r => {
       let rowHtml = '';
-      if (r.isFuture) {
+      if (r.isFuture || r.isPreJoin) {
         rowHtml = `<tr>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>

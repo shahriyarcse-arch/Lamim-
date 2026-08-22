@@ -806,10 +806,15 @@ const Salah = {
     const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+    const user = DB.getUser() || { name: 'Servant of Allah' };
+    const joinDateStr = (user.createdAt || user.created_at || '').slice(0, 10);
+    const todayStr = Utils.todayStr();
+
     let totalPrayed = 0;
     let totalPoints = 0;
     let col1Rows = '';
     let col2Rows = '';
+    let activeDaysEligible = 0;
     const splitIndex = Math.ceil(daysInMonth / 2);
 
     const prayerStats = {
@@ -822,10 +827,16 @@ const Salah = {
 
     for (let d = 1; d <= daysInMonth; d++) {
       const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      const isFuture = dateStr > todayStr;
+      const isPreJoin = joinDateStr ? (dateStr < joinDateStr) : false;
       const data = DB.getSalah(dateStr);
       const score = Utils.salahScore(data);
       totalPrayed += score.done;
       totalPoints += this.calcDayPoints(data);
+
+      if (!isFuture && !isPreJoin) {
+        activeDaysEligible++;
+      }
 
       const dayOfWeek = new Date(year, month, d).toLocaleDateString('en-US', { weekday: 'short' });
 
@@ -834,7 +845,11 @@ const Salah = {
       this.prayers.forEach(p => {
         const s = data[p];
         if (!s) {
-          rowCells += '<td class="cell-empty">—</td>';
+          if (isPreJoin) {
+            rowCells += '<td class="cell-empty" style="color:#cbd5e1; font-size:8px;" title="Pre-join day">—</td>';
+          } else {
+            rowCells += '<td class="cell-empty">—</td>';
+          }
         } else {
           const norm = s === 'jamaah' ? 'jamaat' : s;
           if (norm === 'jamaat') { prayerStats[p].jamaat++; prayerStats[p].done++; }
@@ -856,8 +871,8 @@ const Salah = {
       }
     }
 
-    const monthlyConsistency = parseFloat(((totalPrayed / (daysInMonth * 5)) * 100).toFixed(1));
-    const user = DB.getUser() || { name: 'Servant of Allah' };
+    const denominatorDays = activeDaysEligible > 0 ? activeDaysEligible : daysInMonth;
+    const monthlyConsistency = parseFloat(((totalPrayed / (denominatorDays * 5)) * 100).toFixed(1));
 
     let statusLabel = 'VULNERABLE';
     let statusColor = '#ef4444';
@@ -889,7 +904,7 @@ const Salah = {
     const prayerPillsHtml = this.prayers.map(p => {
       const pLabel = this.prayerMeta[p]?.label || p;
       const st = prayerStats[p];
-      const pPct = daysInMonth > 0 ? Math.round((st.done / daysInMonth) * 100) : 0;
+      const pPct = denominatorDays > 0 ? Math.round((st.done / denominatorDays) * 100) : 0;
       return `<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:6px 8px; display:flex; flex-direction:column; gap:4px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <span style="font-weight:900; color:#0f172a; font-size:9px; text-transform:uppercase; letter-spacing:0.5px;">${pLabel}</span>
@@ -897,7 +912,7 @@ const Salah = {
         </div>
         <div style="display:flex; justify-content:space-between; font-size:7.5px; font-weight:700; color:#64748b;">
           <span><b style="color:#10b981;">${st.jamaat}J</b> · <b style="color:#0284c7;">${st.alone}A</b>${st.qaza > 0 ? ` · <b style="color:#f59e0b;">${st.qaza}Q</b>` : ''}</span>
-          <span>${st.done}/${daysInMonth}</span>
+          <span>${st.done}/${denominatorDays}</span>
         </div>
       </div>`;
     }).join('');

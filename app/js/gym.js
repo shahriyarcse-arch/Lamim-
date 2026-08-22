@@ -707,13 +707,19 @@ const Gym = {
     const monthName = new Date(parseInt(year, 10), parseInt(month, 10) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     const daysInMonth = new Date(parseInt(year, 10), parseInt(month, 10), 0).getDate();
 
+    const user = DB.getUser() || { name: 'Athlete' };
+    const joinDateStr = (user.createdAt || user.created_at || '').slice(0, 10);
+    const todayStr = Utils.todayStr();
+
     let totalExercises = 0, totalSleepHrs = 0, sleepDays = 0;
     let totalHydrationPct = 0, hydrationDays = 0, loggedDaysCount = 0;
+    let activeDaysEligible = 0;
     const rows = [];
 
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${year}-${month}-${String(day).padStart(2, '0')}`;
-      const isFuture = dateStr > Utils.todayStr();
+      const isFuture = dateStr > todayStr;
+      const isPreJoin = joinDateStr ? (dateStr < joinDateStr) : false;
       const g = DB.getGym(dateStr);
       const exCount = (g.exercises || []).length;
       const sleep = g.sleep || {};
@@ -733,7 +739,8 @@ const Gym = {
 
       const hasActivity = exCount > 0 || dur > 0 || water > 0 || meals.length > 0;
 
-      if (!isFuture) {
+      if (!isFuture && !isPreJoin) {
+        activeDaysEligible++;
         totalExercises += exCount;
         if (dur > 0) { totalSleepHrs += dur; sleepDays++; }
         const wpct = waterGoal ? (water / waterGoal) * 100 : 0;
@@ -742,13 +749,14 @@ const Gym = {
       }
 
       rows.push({
-        day, exCount, dur, recovery, water, foodIntake, isFuture
+        day, exCount, dur, recovery, water, foodIntake, isFuture, isPreJoin
       });
     }
 
     const avgSleep = sleepDays ? (totalSleepHrs / sleepDays).toFixed(1) : '0';
     const avgHydration = hydrationDays ? Math.round(totalHydrationPct / hydrationDays) : 0;
-    const consistencyPct = Math.round((loggedDaysCount / (daysInMonth || 30)) * 100);
+    const denominatorDays = activeDaysEligible > 0 ? activeDaysEligible : (daysInMonth || 30);
+    const consistencyPct = Math.round((loggedDaysCount / denominatorDays) * 100);
     let consistencyTier = 'NEEDS WORK', consistencyColor = '#fbbf24';
     if (consistencyPct >= 80) { consistencyTier = 'EXCELLENT'; consistencyColor = '#34d399'; }
     else if (consistencyPct >= 50) { consistencyTier = 'GOOD'; consistencyColor = '#22d3ee'; }
@@ -759,7 +767,7 @@ const Gym = {
 
     rows.forEach(r => {
       let rowHtml = '';
-      if (r.isFuture) {
+      if (r.isFuture || r.isPreJoin) {
         rowHtml = `<tr>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#94a3b8">${r.day}</td>
           <td style="padding:3px 4px;border-bottom:1px solid #f1f5f9;text-align:center;color:#cbd5e1">—</td>

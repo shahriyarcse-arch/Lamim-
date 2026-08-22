@@ -593,6 +593,10 @@ const Analysis = {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const monthName = targetDate.toLocaleDateString(undefined, { month: 'long' });
 
+    const user = DB.getUser() || { name: 'User' };
+    const joinDateStr = (user.createdAt || user.created_at || '').slice(0, 10);
+    const todayStr = Utils.todayStr();
+
     let totalSHS = 0;
     let daysAnalyzed = 0;
     let totalDhikr = 0;
@@ -600,13 +604,19 @@ const Analysis = {
     
     const dayData = [];
 
-    const todayStr = Utils.todayStr();
     for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(currentYear, currentMonth, i);
       const ds = Utils.dateStr(date);
 
       // Strict future check: Do NOT include future days in PDF report!
       if (ds > todayStr) break;
+      const isPreJoin = joinDateStr ? (ds < joinDateStr) : false;
+
+      if (isPreJoin) {
+        dayData.push({ day: i, score: '—', rating: 'N/A', isPreJoin: true });
+        continue;
+      }
+
       const shs = this.calculateSHS(ds);
       totalSHS += shs.total;
       totalDhikr += shs.level.dhikrCount;
@@ -617,20 +627,20 @@ const Analysis = {
       if (done === 5) salahStats.perfect++;
       if (done >= 4) salahStats.consistent++;
 
-      dayData.push({ day: i, score: shs.total, rating: shs.rating.label });
+      dayData.push({ day: i, score: shs.total, rating: shs.rating.label, isPreJoin: false });
       daysAnalyzed++;
     }
 
     if (daysAnalyzed === 0) {
       const isBn = (typeof App !== 'undefined' && App.lang === 'bn') || (localStorage.getItem('lamim_lang') || 'en') === 'bn';
-      Utils.toast(isBn ? 'এই মাসের জন্য কোনো ডেটা পাওয়া যায়নি।' : 'No data available for this month yet.', 'error');
+      Utils.toast(isBn ? 'এই মাসের জন্য এখনো কোনো রেকর্ড পাওয়া যায়নি।' : 'No recorded activity found for this month yet.', 'error');
       return;
     }
 
     const avgSHS = (totalSHS / daysAnalyzed).toFixed(1);
-    const user = DB.getUser() || { name: 'User' };
 
     const getBadgeStyle = (rating) => {
+      if (rating === 'N/A' || rating === '—') return 'background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0;';
       if (rating === 'Ihsan') return 'background: rgba(251, 191, 36, 0.15); color: #b45309; border: 1px solid rgba(251, 191, 36, 0.3);';
       if (rating === 'God-Conscious') return 'background: rgba(167, 139, 250, 0.15); color: #6d28d9; border: 1px solid rgba(167, 139, 250, 0.3);';
       if (rating === 'Mindful') return 'background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3);';
