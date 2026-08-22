@@ -820,7 +820,7 @@ const Utils = {
           pts += 10;
           onTime++;
         } else if (s === 'alone') {
-          pctScore += 20;
+          pctScore += 15;
           pts += 7;
           onTime++;
         } else if (s === 'qaza') {

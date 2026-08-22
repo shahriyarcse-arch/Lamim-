@@ -100,9 +100,9 @@ const Manual = {
             {
               heading: 'সালাতের স্ট্যাটাস ও পয়েন্ট বণ্টন',
               items: [
-                '<strong>জামাতে আদায় (Jama\'at):</strong> ১০ নেক আমল পয়েন্ট + ১০০% স্কোর।',
-                '<strong>একাকী আদায় (Alone):</strong> ৭ নেক আমল পয়েন্ট + ১০০% স্কোর।',
-                '<strong>কাজা আদায় (Qaza):</strong> ৩ নেক আমল পয়েন্ট + ৫০% স্কোর।',
+                '<strong>জামাতে আদায় (Jama\'at):</strong> ১০ নেক আমল পয়েন্ট + ১০০% স্কোর (+২০%)।',
+                '<strong>একাকী আদায় (Alone):</strong> ৭ নেক আমল পয়েন্ট + ৭৫% স্কোর (+১৫%)।',
+                '<strong>কাজা আদায় (Qaza):</strong> ৩ নেক আমল পয়েন্ট + ৫০% স্কোর (+১০%)।',
                 '<strong>মিসড (Missed):</strong> ০ পয়েন্ট।'
               ]
             },
@@ -368,9 +368,9 @@ const Manual = {
             {
               heading: 'Prayer Status & Deed Points',
               items: [
-                '<strong>In Congregation (Jama\'at):</strong> 10 deed points + 100% score.',
-                '<strong>Prayed Alone:</strong> 7 deed points + 100% score.',
-                '<strong>Qaza (Late):</strong> 3 deed points + 50% score.',
+                '<strong>In Congregation (Jama\'at):</strong> 10 deed points + 100% score (+20%).',
+                '<strong>Prayed Alone:</strong> 7 deed points + 75% score (+15%).',
+                '<strong>Qaza (Late):</strong> 3 deed points + 50% score (+10%).',
                 '<strong>Missed:</strong> 0 points.'
               ]
             },
