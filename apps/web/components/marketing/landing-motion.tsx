@@ -37,10 +37,37 @@ export function LandingMotion() {
         },
         (ctx) => {
           const { motion, pointer } = ctx.conditions as { motion: boolean; pointer: boolean };
-          if (!motion) return;
           const all = <T extends Element = HTMLElement>(sel: string) =>
             gsap.utils.toArray<T>(sel, root);
           const one = (sel: string) => root.querySelector<HTMLElement>(sel);
+
+          // ---- Feature story: swap the sticky device's screen per step ------------
+          // Runs with reduced motion too: the swap itself is instant there (CSS).
+          const story = one('[data-story]');
+          const storyDevice = one('[data-anim="story-device"]');
+          if (story) {
+            for (const step of all('[data-step]')) {
+              ScrollTrigger.create({
+                trigger: step,
+                start: 'top 55%',
+                end: 'bottom 55%',
+                onToggle: (self) => {
+                  if (!self.isActive) return;
+                  const i = Number(step.dataset.step);
+                  story.dataset.active = String(i);
+                  if (motion && storyDevice)
+                    gsap.to(storyDevice, {
+                      rotateY: i % 2 ? -14 : 14,
+                      rotateX: 6,
+                      transformPerspective: 1400,
+                      duration: MOTION.reveal,
+                      ease: MOTION.ease,
+                    });
+                },
+              });
+            }
+          }
+          if (!motion) return;
           const off: Array<() => void> = [];
           const listen = <K extends keyof HTMLElementEventMap>(
             el: HTMLElement,
@@ -85,8 +112,33 @@ export function LandingMotion() {
             duration: MOTION.intro * 1.3,
             ease: MOTION.ease,
           });
+          // Fanned devices open out from behind the front phone, then spread on scroll.
+          for (const [sel, dir] of [
+            ['[data-anim="fan-left"]', -1],
+            ['[data-anim="fan-right"]', 1],
+          ] as const) {
+            gsap.from(sel, {
+              xPercent: -40 * dir,
+              rotateY: 0,
+              duration: MOTION.intro * 1.4,
+              delay: 0.15,
+              ease: MOTION.ease,
+            });
+          }
           const hero = one('[data-anim="hero"]');
           if (hero) {
+            for (const [sel, dir] of [
+              ['[data-anim="fan-left"]', -1],
+              ['[data-anim="fan-right"]', 1],
+            ] as const) {
+              gsap.to(sel, {
+                x: 64 * dir,
+                rotateY: 18 * -dir,
+                transformPerspective: 1200,
+                ease: 'none',
+                scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
+              });
+            }
             gsap.to('[data-anim="hero-phone"]', {
               rotateX: -14,
               rotateY: 12,
@@ -106,11 +158,11 @@ export function LandingMotion() {
             const tiltEl = one('[data-anim="hero-tilt"]');
             if (pointer && tiltEl) {
               gsap.set(tiltEl, { transformPerspective: 1200 });
-              const rx = gsap.quickTo(tiltEl, 'rotateX', {
+              const rx = gsap.quickTo(tiltEl, 'rotationX', {
                 duration: MOTION.follow,
                 ease: 'power3',
               });
-              const ry = gsap.quickTo(tiltEl, 'rotateY', {
+              const ry = gsap.quickTo(tiltEl, 'rotationY', {
                 duration: MOTION.follow,
                 ease: 'power3',
               });
@@ -220,12 +272,38 @@ export function LandingMotion() {
             );
           }
 
+          // ---- Footer wordmark rises as the page ends -----------------------------
+          const wordmark = one('[data-anim="wordmark"]');
+          if (wordmark) {
+            gsap.fromTo(
+              wordmark,
+              { yPercent: 60, scale: 0.92 },
+              {
+                yPercent: 0,
+                scale: 1,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: wordmark,
+                  start: 'top bottom',
+                  end: 'bottom bottom',
+                  scrub: true,
+                },
+              },
+            );
+          }
+
           // ---- Pointer: tilt cards and magnetic buttons ---------------------------
           if (pointer) {
             for (const card of all('[data-tilt]')) {
               gsap.set(card, { transformPerspective: 800 });
-              const rx = gsap.quickTo(card, 'rotateX', { duration: MOTION.follow, ease: 'power3' });
-              const ry = gsap.quickTo(card, 'rotateY', { duration: MOTION.follow, ease: 'power3' });
+              const rx = gsap.quickTo(card, 'rotationX', {
+                duration: MOTION.follow,
+                ease: 'power3',
+              });
+              const ry = gsap.quickTo(card, 'rotationY', {
+                duration: MOTION.follow,
+                ease: 'power3',
+              });
               listen(card, 'pointermove', (e) => {
                 const r = card.getBoundingClientRect();
                 const px = (e.clientX - r.left) / r.width;

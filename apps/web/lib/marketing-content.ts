@@ -33,7 +33,17 @@ export interface MarketingCopy {
   comingSoon: { title: string; items: { title: string; body: string }[] };
   faq: { title: string; items: { q: string; a: string }[] };
   final: { title: string; body: string; cta: string };
-  footer: { tagline: string; privacyLink: string; rights: string };
+  footer: {
+    tagline: string;
+    privacyLink: string;
+    rights: string;
+    /** One line under the brand in the footer. */
+    lead: string;
+    explore: string;
+    modules: string;
+    more: string;
+    backToTop: string;
+  };
 }
 
 export const MARKETING_COPY: Record<MarketingLang, MarketingCopy> = {
@@ -212,6 +222,11 @@ export const MARKETING_COPY: Record<MarketingLang, MarketingCopy> = {
       tagline: 'Offline first. Always yours.',
       privacyLink: 'Privacy policy',
       rights: '© 2026 Lamim. Crafted for the Ummah.',
+      lead: 'A quiet companion for prayer, remembrance, money and habits. On your device, in your hands.',
+      explore: 'Explore',
+      modules: 'Inside the app',
+      more: 'More',
+      backToTop: 'Back to top',
     },
   },
 
@@ -379,6 +394,11 @@ export const MARKETING_COPY: Record<MarketingLang, MarketingCopy> = {
       tagline: 'ইন্টারনেট ছাড়াই চলে, তথ্য থাকে আপনার কাছেই।',
       privacyLink: 'গোপনীয়তা নীতি',
       rights: '© ২০২৬ লামিম। উম্মাহর জন্য তৈরি।',
+      lead: 'সালাত, যিকির, হিসাব আর অভ্যাসের এক শান্ত সঙ্গী। আপনার ডিভাইসে, আপনার হাতে।',
+      explore: 'দেখুন',
+      modules: 'অ্যাপের ভেতরে',
+      more: 'আরও',
+      backToTop: 'উপরে ফিরে যান',
     },
   },
 };
