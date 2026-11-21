@@ -1,3 +1,13 @@
-// @lamim/db — Dexie v4 schema, repositories and legacy importer.
-// The schema (CLAUDE.md §3) and importer (§4) land here in Phase 1 steps 3–4.
-export {};
+// @lamim/db — Dexie v4 schema and the legacy importer.
+export * from './schema';
+export * from './uuid';
+export * from './legacy/source';
+export {
+  planLegacyImport,
+  unescapeLegacyHtml,
+  type FinanceReconciliation,
+  type ImportPlan,
+  type ImportReport,
+  type ImportRows,
+} from './legacy/plan';
+export * from './legacy/importer';

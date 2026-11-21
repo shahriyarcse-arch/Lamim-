@@ -143,9 +143,14 @@ Every table entry requires:
    *(Relapses stored as immutable event rows, not mutating arrays)*
 7. **`transactions`**: `id, [profileId+date], [profileId+type], categoryId`
 8. **`vaults`**: `id, profileId, targetMinor, savedMinor`
-9. **`zakatProfile`**: `profileId, assetsMinor, liabilityMinor`
-10. **`syncQueue`**: `++seq, [table+rowId]`
-11. **`meta`**: `key, value` *(tracks `migratedFrom` status)*
+9. **`zakatProfiles`**: `id, &profileId` — `nisabMinor` + per-asset `cashMinor/goldMinor/silverMinor/businessMinor/stocksMinor` (totals are derived, never stored)
+10. **`kv`**: `id, &[profileId+key]` — small documents: goals, gym body metrics/PRs, career achievements/timer, dhikr presets (`profileId = 'global'`)
+11. **`syncQueue`**: `++seq, [table+rowId]`
+12. **`meta`**: `key, value` *(tracks `migratedFrom` status, `activeProfileId`)*
+13. **`quarantine`**: `++seq, legacyKey, reason` — invalid legacy records with raw JSON
+14. **`legacyArchive`**: `key, legacyKey` — every legacy key/value verbatim, per source
+
+Schema source of truth: `packages/db/src/schema.ts` (`SCHEMA_V1`). Fields not yet typed are preserved in `extra`.
 
 ### 3.2 Money Rules (Zero Float Error)
 - `amountMinor`: Integer in the currency entered (BDT or USD cents/paisa).
@@ -162,6 +167,9 @@ Every table entry requires:
 - Atomically commit into Dexie inside a single transaction.
 - Invalid records are routed to a `quarantine` table (never discarded).
 - Never delete `lamim_db`.
+- Sources: IndexedDB `lamim_db` and the localStorage fallback; IndexedDB wins on conflict, both archived.
+- Imported profiles are pinned to MWL + Hanafi (legacy behavior); `resolveDefaultPrayerSettings` is for new profiles only.
+- Legacy amounts were USD floats (BDT input converted at entry, rate not stored): imported as USD cents with `baseMinor = amountMinor`.
 
 ---
 
