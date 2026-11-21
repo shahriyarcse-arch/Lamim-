@@ -95,8 +95,13 @@ export interface Habit extends SyncedRow {
   label: string;
   icon: string | null;
   color: string | null;
-  /** ISO datetime the current streak started. */
+  /**
+   * ISO datetime the habit's tracking began. The current streak is derived:
+   * max(startDate, latest relapse event). Legacy rows stored the streak start here.
+   */
   startDate: string;
+  /** ISO datetime the habit first existed (for Spirit Score day eligibility). */
+  trackedSince?: string;
   extra?: Extra;
 }
 

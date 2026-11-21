@@ -170,6 +170,7 @@ describe('runLegacyImport — full fixture', () => {
       label: 'No sugar',
       icon: 'leaf',
       startDate: '2026-11-01T00:00:00.000Z',
+      trackedSince: '2026-10-30T10:00:00.000Z', // earliest relapse predates the legacy streak start
     });
     expect(habit!.extra).toMatchObject({ customStart: true, longestStreak: 5 });
     const [event] = await db.habitEvents.toArray();

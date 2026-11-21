@@ -7,3 +7,4 @@ export * from './shs';
 export * from './money';
 export * from './dhikr';
 export * from './finance';
+export * from './habits';

@@ -17,3 +17,4 @@ export * from './repos/settings';
 export * from './repos/bootstrap';
 export * from './repos/daily';
 export * from './repos/finance';
+export * from './repos/habits';

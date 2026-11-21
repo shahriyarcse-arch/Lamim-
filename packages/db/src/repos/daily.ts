@@ -190,7 +190,8 @@ export async function getShsInput(
     },
     dhikr,
     habits: live.map((h) => ({
-      startDate: h.startDate,
+      // Eligibility uses when tracking began, not the (legacy) current-streak start.
+      startDate: h.trackedSince ?? h.startDate,
       history: events
         .filter((e) => e.habitId === h.id && e.deletedAt === null)
         .map((e) => ({ date: e.date, clean: e.type === 'clean' })),

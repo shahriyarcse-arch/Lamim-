@@ -573,6 +573,14 @@ export function planLegacyImport(snapshots: readonly LegacySnapshot[], opts: Pla
       const d = h.data;
       const startIso = [d.startDate, d.start_date, d.created_at].map(parseIso).find((t) => t !== null);
       const habitId = newId();
+      // Legacy moved startDate on every relapse; tracking began at the earliest known point.
+      const historyTimes = (d.history ?? []).flatMap((h) => {
+        const r = HabitHistorySchema.safeParse(h);
+        if (!r.success) return [];
+        const t = parseIso(r.data.fullDate) ?? parseIso(`${r.data.date}T00:00:00Z`);
+        return t === null ? [] : [t];
+      });
+      const trackedSince = Math.min(startIso ?? now, ...historyTimes);
       rows.habits.push(
         withOptional<Habit>(
           {
@@ -582,6 +590,7 @@ export function planLegacyImport(snapshots: readonly LegacySnapshot[], opts: Pla
             icon: d.icon ?? null,
             color: d.color ?? null,
             startDate: new Date(startIso ?? now).toISOString(),
+            trackedSince: new Date(trackedSince).toISOString(),
           },
           {
             legacyId: d.id,
