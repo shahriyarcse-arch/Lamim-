@@ -48,6 +48,8 @@ playwright-report/
 !legacy/favicon.png
 !legacy/apple-touch-icon.png
 !apps/web/public/**/*.png
+# The OG image route lives in a directory literally named og.png
+!apps/web/app/og.png/
 *.mp4
 !legacy/app/assets/*.mp4
 !apps/web/public/**/*.mp4
