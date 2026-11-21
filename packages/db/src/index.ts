@@ -15,3 +15,4 @@ export * from './repos/common';
 export * from './repos/salah';
 export * from './repos/settings';
 export * from './repos/bootstrap';
+export * from './repos/daily';

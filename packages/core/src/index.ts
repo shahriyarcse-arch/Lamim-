@@ -5,3 +5,4 @@ export * from './prayer';
 export * from './salah';
 export * from './shs';
 export * from './money';
+export * from './dhikr';

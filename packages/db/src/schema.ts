@@ -73,6 +73,8 @@ export interface SalahDay extends SyncedRow {
   witr: number | boolean | string;
   sunnah: Record<string, unknown>;
   notes: Record<string, unknown>;
+  /** Voluntary fast observed this day (new in v3; absent on imported rows). */
+  fasting?: boolean;
   extra?: Extra;
 }
 
