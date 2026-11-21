@@ -1,6 +1,8 @@
 {
   "extends": "@lamim/config/tsconfig.nextjs.json",
   "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022", "WebWorker"],
+    "types": ["@serwist/next/typings"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]

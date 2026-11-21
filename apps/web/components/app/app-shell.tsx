@@ -3,11 +3,13 @@
 import type { ReactNode } from 'react';
 import { AppProvider } from './app-provider';
 import { BottomDock } from './bottom-dock';
+import { ServiceWorkerRegistrar } from './sw-register';
 import { ThemeController, ThemeToggle } from './theme';
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <AppProvider>
+      <ServiceWorkerRegistrar />
       <ThemeController />
       <div className="grid min-h-dvh grid-rows-[auto_1fr] bg-app">
         <header className="sticky top-0 z-(--z-dock) border-b border-border bg-app/85 backdrop-blur-md">

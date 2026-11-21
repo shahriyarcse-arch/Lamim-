@@ -16,9 +16,10 @@ coverage/
 next-env.d.ts
 
 # Generated service worker (Serwist)
-apps/web/public/sw.js
-apps/web/public/sw.js.map
-apps/web/public/swe-worker-*.js
+apps/web/public/app/sw.js
+apps/web/public/app/sw.js.map
+apps/web/public/app/swe-worker-*.js
+apps/web/public/app/swe-worker-*.js.map
 
 # OS & Temp
 .DS_Store

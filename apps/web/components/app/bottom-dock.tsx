@@ -16,7 +16,7 @@ interface DockItem {
 }
 
 const ITEMS: readonly DockItem[] = [
-  { href: '/app', label: 'nav.home', Icon: HomeIcon, ready: true },
+  { href: '/app/home', label: 'nav.home', Icon: HomeIcon, ready: true },
   { href: '/app/salah', label: 'nav.salah', Icon: SalahIcon, ready: true },
   { href: '/app/dhikr', label: 'nav.dhikr', Icon: DhikrIcon, ready: false },
   { href: '/app/finance', label: 'nav.finance', Icon: FinanceIcon, ready: false },

@@ -11,6 +11,9 @@ const en = {
   'app.error.retry': 'Try again',
   'app.import.failed':
     'We could not move your data from the previous version. Nothing was changed.',
+  'offline.title': 'You are offline',
+  'offline.body':
+    'This page has not been saved for offline use yet. Your Salah log works fully offline.',
   'nav.label': 'Main',
   'nav.home': 'Home',
   'nav.salah': 'Salah',
@@ -68,6 +71,8 @@ const bn: Record<MessageKey, string> = {
   'app.error.body': 'আপনার তথ্য এই ডিভাইসে নিরাপদ আছে। আবার চেষ্টা করুন, সমস্যা থাকলে পেজটি রিলোড করুন।',
   'app.error.retry': 'আবার চেষ্টা করুন',
   'app.import.failed': 'আগের সংস্করণ থেকে তথ্য আনা যায়নি। কিছুই পরিবর্তন করা হয়নি।',
+  'offline.title': 'আপনি অফলাইনে আছেন',
+  'offline.body': 'এই পেজটি এখনো অফলাইনের জন্য সংরক্ষিত হয়নি। আপনার সালাত লগ সম্পূর্ণ অফলাইনে কাজ করে।',
   'nav.label': 'প্রধান',
   'nav.home': 'হোম',
   'nav.salah': 'সালাত',
