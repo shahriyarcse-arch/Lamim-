@@ -97,7 +97,7 @@ Strictly standardized under `--color-*` for seamless Tailwind v4 `@theme` integr
   --bg-surface-subtle: #F1F5F9;
   --text-primary: #0F172A;
   --text-secondary: #475569;
-  --text-tertiary: #64748B; /* Darkened from #94A3B8 for WCAG 4.5:1 compliance */
+  --text-tertiary: #606F86; /* ≥4.5:1 on app, surface AND surface-subtle (#64748B was 4.34 on subtle) */
   --border-subtle: #E2E8F0;
   --border-focus: #007CD3;
 }
@@ -108,11 +108,19 @@ Strictly standardized under `--color-*` for seamless Tailwind v4 `@theme` integr
   --bg-surface-subtle: #162035;
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
-  --text-tertiary: #64748B;
+  --text-tertiary: #7D8B9E; /* #64748B was only 3.4–4.1:1 on dark surfaces */
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-focus: #007CD3;
 }
 ```
+
+### 2.3 Brand Contrast Contract (enforced by `apps/web/__tests__/contrast.test.ts`)
+The 6 brand hexes fail 4.5:1 as body text and behind white body text (only iris passes on white). So:
+- **Raw brand hex** (`bg-cerulean`, gradients): fills, icons, borders, large text only (≥3:1 verified).
+- **`bg-<brand>-strong` + `text-white`**: buttons/badges with body-size text. Brand mixed 6–12% toward black.
+- **`text-<brand>-text`**: body-size brand-colored text; theme-aware (darker shade in light, lighter tint in dark).
+- Semantic utilities: `bg-app`, `bg-surface`, `bg-surface-subtle`, `text-fg`, `text-fg-muted`, `text-fg-subtle`, `border-border`, `outline-focus`.
+- Any new color token must be added to the contrast test.
 
 ---
 

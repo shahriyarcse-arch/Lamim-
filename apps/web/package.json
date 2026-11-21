@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@lamim/core": "workspace:*",
@@ -17,9 +18,13 @@
   },
   "devDependencies": {
     "@lamim/config": "workspace:*",
+    "@tailwindcss/postcss": "4.3.5",
     "@types/node": "24.19.2",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.7",
-    "typescript": "5.9.3"
+    "postcss": "8.5.33",
+    "tailwindcss": "4.3.5",
+    "typescript": "5.9.3",
+    "vitest": "5.1.1"
   }
 }
