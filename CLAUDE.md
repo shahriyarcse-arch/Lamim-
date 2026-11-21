@@ -1,0 +1,163 @@
+# 🌿 CLAUDE.md — Lamim Master Architecture & Agentic Guidelines
+
+> **Project**: Lamim — Precision Islamic Life Operating System & Landing Page  
+> **Role**: Senior Principal Full-Stack & Systems Architect  
+> **Core Priority Hierarchy**: SECURITY > DATA INTEGRITY > PERFORMANCE > UX > AESTHETICS
+
+---
+
+## 1. Executive Modernization Target & Monorepo Architecture
+
+Turborepo + pnpm workspace structure:
+
+```
+lamim/
+├── apps/
+│   ├── web/                     # Next.js 15 (React 19, TypeScript)
+│   │   └── app/
+│   │       ├── (marketing)/     # 🌐 Landing Page (SSR, SEO, OpenGraph) -> lamim.tech/
+│   │       │   └── page.tsx
+│   │       └── (app)/app/       # 📱 PWA Life OS (Scoped to /app/* for existing PWA SW)
+│   │           ├── layout.tsx   # Ergonomic Dock, Serwist PWA shell
+│   │           ├── home/page.tsx
+│   │           ├── salah/page.tsx
+│   │           ├── dhikr/page.tsx
+│   │           ├── finance/page.tsx
+│   │           └── ...
+│   └── api/                     # NestJS (Deferred to Phase 2)
+│
+├── packages/
+│   ├── core/                    # Pure TS (Zero DOM/React, tested via Vitest):
+│   │                            # - Astronomical solar prayer calculation & memoization
+│   │                            # - Hijri calendar conversion
+│   │                            # - 3:00 AM waking day offset logic
+│   │                            # - Spirit Score (SHS) calculation
+│   │                            # - Salah scoring & streaks
+│   │                            # - Money helper (Integer minor units, fxRateMicro)
+│   ├── db/                      # Dexie.js v4 schema, repositories & Legacy Importer
+│   └── config/                  # Shared tsconfig, ESLint, Prettier
+```
+
+| Layer | Modernized Target Stack |
+| :--- | :--- |
+| **Frontend Framework** | Next.js 15 (App Router, React 19, TypeScript) |
+| **Styling & UI** | Tailwind CSS v4 (CSS-first, `@theme`, `@utility`, no tailwind.config) |
+| **Motion Physics** | `motion/react` (Framer Motion) + `animejs` (dynamic import for SVG orb) |
+| **Local Database** | IndexedDB via Dexie.js v4 (UUID v7, profileId, updatedAt, tombstones) |
+| **Offline PWA** | Serwist (`@serwist/next`, supersedes next-pwa) scoped to `/app/*` |
+| **Backend API** | NestJS (Phase 2: Auth, Sync Engine, LangGraph.js) |
+| **Cloud Database** | PostgreSQL (Neon) + Prisma ORM + `pgvector` (Phase 2) |
+| **Testing** | Vitest for `packages/core` & `packages/db`, Playwright for E2E |
+
+---
+
+## 2. Official Visual Design System & Tailwind v4 Tokens
+
+### 2.1 The Official 6-Color Brand Tokens (`--color-*` namespace)
+Strictly standardized under `--color-*` for seamless Tailwind v4 `@theme` integration:
+
+| Token Name | Hex Code | Role / Module Mapping |
+| :--- | :--- | :--- |
+| `--color-terracotta` | `#C25E5E` | Maghrib sunset, high-priority habit alerts, streak resets |
+| `--color-raspberry`  | `#C05683` | Fajr dawn glow, savings vault progress, active badges |
+| `--color-violet`     | `#A45EAA` | Contemplative Nafl & Tahajjud, spiritual reflections |
+| `--color-iris`       | `#656EC9` | Isha night sky, focus timer, study sessions |
+| `--color-azure`      | `#007CD3` | Dhuhr midday clarity, hydration tracker, verified badges |
+| `--color-cerulean`   | `#0085C1` | Asr celestial blue, primary CTAs, active Salah indicator |
+
+### 2.2 Tailwind CSS v4 CSS-First Spec (`globals.css`)
+
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-terracotta: #C25E5E;
+  --color-raspberry:  #C05683;
+  --color-violet:     #A45EAA;
+  --color-iris:       #656EC9;
+  --color-azure:      #007CD3;
+  --color-cerulean:   #0085C1;
+}
+
+@utility bg-celestial {
+  background-image: linear-gradient(135deg, #C25E5E 0%, #C05683 20%, #A45EAA 40%, #656EC9 60%, #007CD3 80%, #0085C1 100%);
+}
+@utility bg-dusk {
+  background-image: linear-gradient(135deg, #C25E5E, #C05683, #A45EAA);
+}
+@utility bg-dawn {
+  background-image: linear-gradient(135deg, #656EC9, #007CD3, #0085C1);
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
+  --bg-app: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #F1F5F9;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #64748B; /* Darkened from #94A3B8 for WCAG 4.5:1 compliance */
+  --border-subtle: #E2E8F0;
+  --border-focus: #007CD3;
+}
+
+[data-theme="dark"] {
+  --bg-app: #070B14;
+  --bg-surface: #0E1626;
+  --bg-surface-subtle: #162035;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: #007CD3;
+}
+```
+
+---
+
+## 3. Data & Storage System Design (Dexie.js v4)
+
+Every table entry requires:
+- `id`: UUID v7 (time-ordered)
+- `profileId`: string
+- `updatedAt`: number (UTC ms epoch)
+- `deletedAt`: number | null (soft-delete tombstone for sync)
+
+### 3.1 Tables Architecture
+1. **`profiles`**: `id, legacyId, name, gender, dob`
+2. **`settings`**: `profileId, lang, currency, lat, lng, method`
+3. **`salahEntries`**: `id, &[profileId+date+prayer], [profileId+date]`  
+   *(One row per prayer to avoid concurrent multi-device overwrite)*
+4. **`salahDays`**: `&[profileId+date], tahajjud, jummah, notes`
+5. **`dhikrLogs`, `gymLogs`, `careerLogs`**: `&[profileId+date]`
+6. **`habits`, `habitEvents`**: `id, profileId, [profileId+updatedAt]`  
+   *(Relapses stored as immutable event rows, not mutating arrays)*
+7. **`transactions`**: `id, [profileId+date], [profileId+type], categoryId`
+8. **`vaults`**: `id, profileId, targetMinor, savedMinor`
+9. **`zakatProfile`**: `profileId, assetsMinor, liabilityMinor`
+10. **`syncQueue`**: `++seq, [table+rowId]`
+11. **`meta`**: `key, value` *(tracks `migratedFrom` status)*
+
+### 3.2 Money Rules (Zero Float Error)
+- `amountMinor`: Integer in the currency entered (BDT or USD cents/paisa).
+- `currency`: `'BDT' | 'USD'`.
+- `fxRateMicro`: Integer exchange rate multiplied by $10^6$.
+- `baseMinor`: Integer USD cents.
+- Display formatting only via `Intl.NumberFormat`.
+
+---
+
+## 4. Legacy Importer Protocol (Zero Data Loss)
+- On first boot: Check `meta.migratedFrom`. If absent, open legacy `lamim_db` read-only.
+- Validate every key/record via Zod.
+- Atomically commit into Dexie inside a single transaction.
+- Invalid records are routed to a `quarantine` table (never discarded).
+- Never delete `lamim_db`.
+
+---
+
+## 5. Execution Rules for Claude
+1. Follow Phase 1 in strict priority order (Step 0 through Step 7).
+2. Never skip Vitest tests on `packages/core` logic.
+3. Keep the vanilla app in `legacy/` as the rollback safety net until parity is reached.
