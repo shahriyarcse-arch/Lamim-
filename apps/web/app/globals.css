@@ -69,6 +69,19 @@
   --shadow-raised: 0 4px 8px rgb(15 23 42 / 0.08), 0 8px 24px rgb(15 23 42 / 0.08);
   --shadow-overlay: 0 16px 48px rgb(15 23 42 / 0.2);
 
+  /* Landing display scale (fluid) */
+  --text-hero: clamp(2.75rem, 1.1rem + 5.6vw, 6.5rem);
+  --text-hero--line-height: 0.96;
+  --text-section: clamp(2.25rem, 1.4rem + 3.2vw, 4.25rem);
+  --text-section--line-height: 1.02;
+  --text-statement: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  --text-statement--line-height: 1.25;
+  --text-mega: clamp(5rem, 1rem + 21vw, 19rem);
+  --text-mega--line-height: 0.8;
+  --tracking-tightest: -0.045em;
+  --tracking-display: -0.03em;
+  --tracking-eyebrow: 0.16em;
+
   /* Motion — one easing, three durations (200–300 ms) */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --default-transition-timing-function: var(--ease-standard);
@@ -178,6 +191,7 @@
   --motion-orbit: 48s;
   --motion-marquee: 44s;
   --motion-aurora: 26s;
+  --motion-swap: 600ms;
   /* Dark app background, for the page edge behind the night-sky landing */
   --landing-edge: #070b14;
 }
@@ -277,6 +291,94 @@ html.lenis body {
 /* Fades a horizontal strip in and out at its edges (marquee). */
 @utility mask-fade-x {
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* ---- Landing typography ---- */
+[data-landing] {
+  font-family: var(--font-geist), var(--font-sans);
+  font-feature-settings: 'ss01', 'cv11';
+  /* Bengali page: a modern display Bangla, falling back to Noto. */
+  --font-bengali: var(--font-anek), var(--font-noto-bengali), sans-serif;
+}
+/* Serif italic accent words; Bengali has no italic serif, so it keeps the sans. */
+.font-accent:not(:lang(bn)) {
+  font-family: var(--font-instrument), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+/* Bengali matras need more line room than the tight Latin display leading. */
+[data-landing]:lang(bn) .text-hero,
+[data-landing]:lang(bn) .text-section,
+[data-landing]:lang(bn) .text-mega {
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+/* Letter-spacing breaks Bengali conjunct shaping. */
+[data-landing]:lang(bn) .tracking-eyebrow,
+[data-landing]:lang(bn) .tracking-display,
+[data-landing]:lang(bn) .tracking-tightest {
+  letter-spacing: 0;
+}
+
+/* ---- Vector device (marketing mock-ups) ---- */
+@utility device-bezel {
+  background: linear-gradient(145deg, #4a5468 0%, #121826 22%, #0a0e17 60%, #3a4356 100%);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.14),
+    inset 0 0 0 3px rgb(0 0 0 / 0.6),
+    0 2px 4px rgb(0 0 0 / 0.4),
+    0 40px 80px -20px rgb(0 0 0 / 0.75),
+    0 0 120px -30px rgb(101 110 201 / 0.45);
+}
+@utility device-button {
+  width: 1.2cqw;
+  border-radius: 1cqw;
+  background: linear-gradient(90deg, #2a3142, #4a5468);
+}
+@utility device-glare {
+  background: linear-gradient(
+    115deg,
+    rgb(255 255 255 / 0.1) 0%,
+    rgb(255 255 255 / 0.03) 28%,
+    transparent 42%,
+    transparent 78%,
+    rgb(255 255 255 / 0.04) 100%
+  );
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+/* Feature story: one device, screens swap with the active step. */
+[data-screen] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  translate: 0 3%;
+  scale: 0.97;
+  filter: blur(6px);
+  transition:
+    opacity var(--motion-swap) var(--ease-standard),
+    translate var(--motion-swap) var(--ease-standard),
+    scale var(--motion-swap) var(--ease-standard),
+    filter var(--motion-swap) var(--ease-standard);
+}
+[data-active='0'] [data-screen='0'],
+[data-active='1'] [data-screen='1'],
+[data-active='2'] [data-screen='2'],
+[data-active='3'] [data-screen='3'],
+[data-active='4'] [data-screen='4'] {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  filter: none;
+}
+[data-active='0'] [data-step-dot='0'],
+[data-active='1'] [data-step-dot='1'],
+[data-active='2'] [data-step-dot='2'],
+[data-active='3'] [data-step-dot='3'],
+[data-active='4'] [data-step-dot='4'] {
+  opacity: 1;
+  width: 2.5rem;
 }
 
 /* Fades a backdrop in and out at its top and bottom edges (no hard section seams). */
