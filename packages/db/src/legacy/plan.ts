@@ -15,6 +15,7 @@ import {
   LEGACY_PRAYER_SETTINGS,
   normalizeStatus,
   PRAYER_NAMES,
+  rateToMicro,
   type DateStr,
 } from '@lamim/core';
 import { z } from 'zod';
@@ -168,7 +169,13 @@ const PlainObject = z.record(z.string(), z.unknown());
 
 // ---- Helpers -------------------------------------------------------------------
 
-const GLOBAL_KEYS = new Set(['lamim_user', 'lamim_profiles_vault', 'lamim_lang', 'lamim_dhikr_presets']);
+const GLOBAL_KEYS = new Set([
+  'lamim_user',
+  'lamim_profiles_vault',
+  'lamim_lang',
+  'lamim_dhikr_presets',
+  'lamim_fx_rate',
+]);
 const SCOPED_KEY = /^usr_(.+?)_(lamim_.+|user_manual_seen)$/;
 /** Date-shaped suffix; impossible dates (2026-02-30) are quarantined, non-dates (intro_done) archived. */
 const DATED_KEY = /^lamim_(salah|dhikr|gym|career)_(\d{4}-\d{2}-\d{2})$/;
@@ -476,6 +483,23 @@ export function planLegacyImport(snapshots: readonly LegacySnapshot[], opts: Pla
   const presets = json('lamim_dhikr_presets');
   if (presets.ok) {
     rows.kv.push({ ...synced(GLOBAL_PROFILE_ID), key: KV_KEYS.lamim_dhikr_presets!, value: presets.value });
+  }
+
+  // Last cached USD→BDT rate (legacy localStorage), so BDT users have a rate offline.
+  const fx = json('lamim_fx_rate');
+  if (fx.ok) {
+    const v = z
+      .looseObject({ rate: z.number().positive().max(100_000), ts: z.number().optional(), source: z.string().optional() })
+      .safeParse(fx.value);
+    if (v.success) {
+      rows.kv.push({
+        ...synced(GLOBAL_PROFILE_ID),
+        key: 'fx.USD_BDT',
+        value: { rateMicro: rateToMicro(v.data.rate), at: v.data.ts ?? now, source: v.data.source ?? 'legacy' },
+      });
+    } else {
+      reject('lamim_fx_rate', fx.value, issues(v.error));
+    }
   }
 
   // ---- Module mappers (closures over rows/quarantine) ---------------------------

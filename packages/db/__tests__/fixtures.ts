@@ -127,6 +127,12 @@ export const LEGACY_IDB: Record<string, unknown> = {
 export const LEGACY_LS: Record<string, string> = {
   lamim_settings: JSON.stringify({ currency: 'USD', language: 'en' }),
   lamim_lang: 'bn',
+  lamim_fx_rate: JSON.stringify({
+    ts: 1_700_000_000_000,
+    rate: 121.53,
+    source: 'TradingView',
+    changePct: 0.1,
+  }),
   [`usr_${A}_lamim_salah_2026-11-19`]: JSON.stringify({ fajr: 'jamaat', isha: 'jamaat' }),
   [`usr_${A}_lamim_salah_2026-11-20`]: JSON.stringify({ fajr: 'missed' }), // conflicts; IndexedDB wins
   unrelated_key: 'ignored',

@@ -112,7 +112,8 @@ export interface HabitEvent extends SyncedRow {
   extra?: Extra;
 }
 
-export type TransactionType = 'income' | 'expense' | 'transfer';
+/** transfer = cash → vault deposit; withdrawal = vault → cash. */
+export type TransactionType = 'income' | 'expense' | 'transfer' | 'withdrawal';
 
 export interface Transaction extends SyncedRow {
   legacyId?: string;
@@ -122,8 +123,8 @@ export interface Transaction extends SyncedRow {
   currency: Currency;
   /** Rate × 10⁶ (1 USD = rate BDT); null when `currency` is the base currency. */
   fxRateMicro: number | null;
-  /** Integer USD cents. */
-  baseMinor: number;
+  /** Integer USD cents; null for non-USD entries recorded before any rate was known (backfilled by sync). */
+  baseMinor: number | null;
   categoryId: string | null;
   description: string;
   date: DateStr;
@@ -148,6 +149,8 @@ export interface ZakatProfile extends SyncedRow {
   silverMinor: number;
   businessMinor: number;
   stocksMinor: number;
+  /** Debts due now, deducted before nisab (new in v3; absent on imported rows). */
+  liabilitiesMinor?: number;
   extra?: Extra;
 }
 

@@ -46,7 +46,7 @@ describe('runLegacyImport — full fixture', () => {
       transactions: 5,
       vaults: 1,
       zakatProfiles: 1,
-      kv: 2,
+      kv: 3, // body metrics, global dhikr presets, global FX rate
     });
   });
 
@@ -150,6 +150,16 @@ describe('runLegacyImport — full fixture', () => {
     expect(
       (await db.kv.where('[profileId+key]').equals(['global', 'dhikr.presets']).first())!.value,
     ).toEqual([{ id: 'p1', latin: 'Ya Latif', target: 129 }]);
+  });
+
+  it('legacy cached exchange rate becomes the global FX rate', async () => {
+    const { db } = await importFixture();
+    const fx = await db.kv.where('[profileId+key]').equals(['global', 'fx.USD_BDT']).first();
+    expect(fx?.value).toEqual({
+      rateMicro: 121_530_000,
+      at: 1_700_000_000_000,
+      source: 'TradingView',
+    });
   });
 
   it('habits become rows plus immutable events with unescaped reasons', async () => {

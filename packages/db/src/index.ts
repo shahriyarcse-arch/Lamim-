@@ -16,3 +16,4 @@ export * from './repos/salah';
 export * from './repos/settings';
 export * from './repos/bootstrap';
 export * from './repos/daily';
+export * from './repos/finance';
