@@ -41,7 +41,15 @@ const withSerwist = withSerwistInit({
   disable: process.env.NODE_ENV === 'development',
   additionalPrecacheEntries: [
     ...publicPrecacheEntries(),
-    ...['/app/home', '/app/salah', '/app/dhikr', '/app/finance', '/app/~offline'].map((url) => ({
+    ...[
+      '/app/home',
+      '/app/salah',
+      '/app/dhikr',
+      '/app/finance',
+      '/app/habits',
+      '/app/more',
+      '/app/~offline',
+    ].map((url) => ({
       url,
       revision: shellRevision,
     })),
@@ -49,6 +57,8 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
+  // Separate dev output so `next build` (quality gates) never clobbers a running dev server.
+  distDir: process.env.NODE_ENV === 'development' ? '.next-dev' : '.next',
   reactStrictMode: true,
   poweredByHeader: false,
   // Internal workspace packages ship TypeScript source; Next compiles them.

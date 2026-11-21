@@ -8,6 +8,7 @@ node_modules/
 
 # Build & tooling output
 .next/
+.next-dev/
 out/
 dist/
 .turbo/
