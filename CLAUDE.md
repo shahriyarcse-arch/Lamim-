@@ -42,7 +42,7 @@ lamim/
 | :--- | :--- |
 | **Frontend Framework** | Next.js 15 (App Router, React 19, TypeScript) |
 | **Styling & UI** | Tailwind CSS v4 (CSS-first, `@theme`, `@utility`, no tailwind.config) |
-| **Motion Physics** | `motion/react` (Framer Motion) + `animejs` (dynamic import for SVG orb) |
+| **Motion Physics** | `motion/react` for all UI motion (Spirit orb, dhikr ring, transitions) under `MotionConfig reducedMotion="user"`; `animejs` only if a future effect needs it (dynamic import) |
 | **Local Database** | IndexedDB via Dexie.js v4 (UUID v7, profileId, updatedAt, tombstones) |
 | **Offline PWA** | Serwist (`@serwist/next`, supersedes next-pwa) scoped to `/app/*` |
 | **Backend API** | NestJS (Phase 2: Auth, Sync Engine, LangGraph.js) |

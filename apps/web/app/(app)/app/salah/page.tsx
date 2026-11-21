@@ -3,13 +3,11 @@
 import {
   addDays,
   computeSalahStreaks,
-  getCurrentPrayer,
   getPrayerTimes,
   PRAYER_NAMES,
   scoreSalahDay,
   type DateStr,
   type PrayerName,
-  type PrayerTimesInput,
   type SalahDayLog,
   type SalahStatus,
 } from '@lamim/core';
@@ -22,16 +20,16 @@ import { SalahHeatmap } from '@/components/salah/heatmap';
 import { LocationCard } from '@/components/salah/location-card';
 import { NextPrayerCard } from '@/components/salah/next-prayer';
 import { PrayerRow } from '@/components/salah/prayer-row';
-import { useMinuteClock } from '@/components/salah/use-clock';
+import { usePrayerSchedule } from '@/components/salah/use-prayer-schedule';
 
-const DHAKA = { lat: 23.8103, lng: 90.4125 };
 const STREAK_LOOKBACK_DAYS = 365;
 const utcNoon = (d: DateStr) => Date.parse(`${d}T12:00:00Z`);
 const EMPTY_DAY: SalahDayLog = {};
 
 export default function SalahPage() {
   const { db, profileId, settings, t, locale } = useApp();
-  const clock = useMinuteClock();
+  const schedule = usePrayerSchedule();
+  const { clock, input: scheduleInput } = schedule;
   const today = clock.wakingDate;
   const [picked, setPicked] = useState<DateStr | null>(null);
   const selected = picked && picked <= today ? picked : today;
@@ -43,36 +41,11 @@ export default function SalahPage() {
     [db, profileId, today],
   );
 
-  // Location: saved coordinates, else Dhaka for Bangladesh-zone devices (flagged as approximate).
-  const deviceZone = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone, []);
-  const coords =
-    settings.lat !== null && settings.lng !== null
-      ? { lat: settings.lat, lng: settings.lng, approximate: false }
-      : deviceZone === 'Asia/Dhaka'
-        ? { ...DHAKA, approximate: true }
-        : null;
-
-  const scheduleInput = useMemo<PrayerTimesInput | null>(
-    () =>
-      coords
-        ? {
-            date: clock.calendarDate,
-            lat: coords.lat,
-            lng: coords.lng,
-            method: settings.method,
-            asr: settings.asr,
-          }
-        : null,
-    [coords?.lat, coords?.lng, clock.calendarDate, settings.method, settings.asr],
-  );
   const selectedSchedule = useMemo(
     () => (scheduleInput ? getPrayerTimes({ ...scheduleInput, date: selected }) : null),
     [scheduleInput, selected],
   );
-  const currentPrayer =
-    selected === today && scheduleInput
-      ? getCurrentPrayer(getPrayerTimes(scheduleInput), clock.now)
-      : null;
+  const currentPrayer = selected === today ? schedule.current : null;
 
   const timeFormat = useMemo(
     () => new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit' }),
@@ -141,8 +114,8 @@ export default function SalahPage() {
       </header>
 
       {scheduleInput ? <NextPrayerCard input={scheduleInput} timeFormat={timeFormat} /> : null}
-      {!coords || coords.approximate ? (
-        <LocationCard approximate={Boolean(coords?.approximate)} />
+      {!scheduleInput || schedule.approximate ? (
+        <LocationCard approximate={schedule.approximate} />
       ) : null}
 
       {saveError ? (
