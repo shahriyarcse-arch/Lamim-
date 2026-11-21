@@ -10,16 +10,16 @@ const STROKE = 12;
 const R = (SIZE - STROKE) / 2;
 
 /**
- * Spirit Score orb: a celestial-gradient ring fills to the score, the number counts up,
- * and a soft dawn glow breathes behind it. Motion runs only when the score changes;
- * with reduced motion the ring and number jump straight to the value.
+ * Spirit Score orb: a celestial-gradient ring fills to the score and a soft glow
+ * breathes behind it. The NUMBER is always rendered from data, never from animation
+ * state, so a throttled or paused animation can never show a wrong score. With
+ * reduced motion the ring jumps straight to the value.
  */
 export const SpiritOrb = memo(function SpiritOrb({ shs }: { shs: ShsResult }) {
   const { t, locale } = useApp();
   const reduce = useReducedMotion();
   const value = useMotionValue(0);
   const nf = useMemo(() => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }), [locale]);
-  const display = useTransform(value, (v) => nf.format(v));
   const progress = useTransform(value, (v) => v / 100);
 
   useEffect(() => {
@@ -90,9 +90,12 @@ export const SpiritOrb = memo(function SpiritOrb({ shs }: { shs: ShsResult }) {
           />
         </svg>
         <div aria-hidden className="absolute grid justify-items-center">
-          <motion.span className="text-display leading-none font-bold text-fg tabular-nums">
-            {display}
-          </motion.span>
+          <span
+            className="text-display leading-none font-bold text-fg tabular-nums"
+            data-testid="shs-value"
+          >
+            {nf.format(Math.round(shs.total))}
+          </span>
           <span className="text-caption font-semibold text-fg-muted">{rating}</span>
         </div>
       </div>
