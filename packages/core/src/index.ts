@@ -1,3 +1,7 @@
-// @lamim/core — framework-free domain logic.
-// Modules (prayer times, Hijri, day offset, Spirit Score, salah scoring, Money) land here in Phase 1 step 1+.
-export {};
+// @lamim/core — framework-free domain logic (no DOM, no React, no storage).
+export * from './date';
+export * from './hijri';
+export * from './prayer';
+export * from './salah';
+export * from './shs';
+export * from './money';
