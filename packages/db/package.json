@@ -1,0 +1,24 @@
+{
+  "name": "@lamim/db",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Dexie.js v4 schema, typed repositories and the legacy lamim_db importer",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@lamim/core": "workspace:*",
+    "dexie": "4.4.7"
+  },
+  "devDependencies": {
+    "@lamim/config": "workspace:*",
+    "typescript": "5.9.3",
+    "vitest": "5.1.1"
+  }
+}
