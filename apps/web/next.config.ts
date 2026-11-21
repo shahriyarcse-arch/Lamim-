@@ -14,12 +14,14 @@ const shellRevision = randomUUID();
 function publicPrecacheEntries(): { url: string; revision: string }[] {
   const publicDir = path.join(process.cwd(), 'public');
   const generated = /(^|\/)(sw\.js(\.map)?|swe-worker-[^/]*)$/;
+  // Only the /app PWA's own files: landing images and verification files stay out of its cache.
+  const notForApp = /^(marketing\/|\.well-known\/|google[0-9a-f]+\.html$)/;
   return readdirSync(publicDir, { recursive: true, withFileTypes: true })
     .filter((entry) => entry.isFile())
     .map((entry) =>
       path.relative(publicDir, path.join(entry.parentPath, entry.name)).split(path.sep).join('/'),
     )
-    .filter((rel) => !generated.test(rel))
+    .filter((rel) => !generated.test(rel) && !notForApp.test(rel))
     .map((rel) => ({
       url: `/${rel}`,
       revision: createHash('sha256')
@@ -48,6 +50,7 @@ const withSerwist = withSerwistInit({
       '/app/finance',
       '/app/habits',
       '/app/more',
+      '/app/profile',
       '/app/~offline',
     ].map((url) => ({
       url,
@@ -69,6 +72,24 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        // Baseline hardening for every route (marketing + app).
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+          },
+          // Geolocation only for this origin (prayer times); nothing else.
+          {
+            key: 'Permissions-Policy',
+            value: 'geolocation=(self), camera=(), microphone=(), payment=(), usb=()',
+          },
+        ],
+      },
       {
         source: '/app/sw.js',
         headers: [
