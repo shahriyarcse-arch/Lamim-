@@ -1,0 +1,6 @@
+# Keep LF everywhere so Prettier (endOfLine: lf) and git agree on Windows.
+* text=auto eol=lf
+*.png binary
+*.webp binary
+*.ico binary
+*.woff2 binary

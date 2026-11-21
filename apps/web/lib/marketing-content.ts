@@ -28,6 +28,8 @@ export interface MarketingCopy {
   }[];
   privacy: { title: string; body: string; points: { title: string; body: string }[] };
   ayah: { label: string };
+  /** Decorative scrolling band of the day's rhythm (aria-hidden on the page). */
+  marquee: string[];
   comingSoon: { title: string; items: { title: string; body: string }[] };
   faq: { title: string; items: { q: string; a: string }[] };
   final: { title: string; body: string; cta: string };
@@ -142,6 +144,18 @@ export const MARKETING_COPY: Record<MarketingLang, MarketingCopy> = {
         },
       ],
     },
+    marquee: [
+      'Fajr',
+      'Dhuhr',
+      'Asr',
+      'Maghrib',
+      'Isha',
+      'Tahajjud',
+      'Dhikr',
+      'Sadaqah',
+      'Zakat',
+      'Patience',
+    ],
     ayah: { label: 'From the Qur’an' },
     comingSoon: {
       title: 'On the way',
@@ -308,6 +322,7 @@ export const MARKETING_COPY: Record<MarketingLang, MarketingCopy> = {
         },
       ],
     },
+    marquee: ['ফজর', 'যোহর', 'আসর', 'মাগরিব', 'ইশা', 'তাহাজ্জুদ', 'যিকির', 'সাদাকাহ', 'যাকাত', 'সবর'],
     ayah: { label: 'কুরআন থেকে' },
     comingSoon: {
       title: 'আসছে',

@@ -171,6 +171,146 @@
   --brand-text-cerulean: #1c92c8;
 }
 
+/* ---- Landing page: night-sky scope, ambient motion, smooth scroll ----------- */
+:root {
+  /* Ambient (CSS keyframe) timings; JS timings live in components/marketing/motion-tokens.ts */
+  --motion-float: 6s;
+  --motion-orbit: 48s;
+  --motion-marquee: 44s;
+  --motion-aurora: 26s;
+  /* Dark app background, for the page edge behind the night-sky landing */
+  --landing-edge: #070b14;
+}
+
+/* The landing always renders in the dark night-sky palette (tokens tested in contrast.test.ts). */
+html:has([data-landing]) {
+  color-scheme: dark;
+}
+body:has([data-landing]) {
+  background-color: var(--landing-edge);
+}
+
+/* Lenis (recommended base styles) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+@keyframes lamim-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}
+@keyframes lamim-orbit {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes lamim-marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+@keyframes lamim-aurora {
+  0%,
+  100% {
+    translate: 0 0;
+    scale: 1;
+  }
+  50% {
+    translate: 8% -6%;
+    scale: 1.18;
+  }
+}
+@keyframes lamim-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+  50% {
+    opacity: 0.4;
+    scale: 1.6;
+  }
+}
+
+/* Uses the `translate`/`rotate` properties so they compose with GSAP's `transform`. */
+@utility animate-float {
+  animation: lamim-float var(--motion-float) var(--ease-standard) infinite;
+}
+@utility animate-orbit {
+  animation: lamim-orbit var(--motion-orbit) linear infinite;
+}
+@utility animate-marquee {
+  animation: lamim-marquee var(--motion-marquee) linear infinite;
+}
+@utility animate-aurora {
+  animation: lamim-aurora var(--motion-aurora) var(--ease-standard) infinite;
+}
+@utility animate-beacon {
+  animation: lamim-pulse 2.4s var(--ease-standard) infinite;
+}
+
+/* A faint starfield; decorative only. */
+@utility bg-stars {
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgb(255 255 255 / 0.55), transparent),
+    radial-gradient(1px 1px at 28% 68%, rgb(255 255 255 / 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 46% 14%, rgb(255 255 255 / 0.5), transparent),
+    radial-gradient(1px 1px at 63% 48%, rgb(255 255 255 / 0.3), transparent),
+    radial-gradient(1.5px 1.5px at 78% 26%, rgb(255 255 255 / 0.45), transparent),
+    radial-gradient(1px 1px at 88% 74%, rgb(255 255 255 / 0.35), transparent),
+    radial-gradient(1px 1px at 8% 86%, rgb(255 255 255 / 0.3), transparent),
+    radial-gradient(1px 1px at 54% 90%, rgb(255 255 255 / 0.4), transparent);
+}
+
+/* Fades a horizontal strip in and out at its edges (marquee). */
+@utility mask-fade-x {
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* Fades a backdrop in and out at its top and bottom edges (no hard section seams). */
+@utility mask-fade-y {
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+/* Glass card with a pointer-following sheen (--mx/--my set by landing-motion). */
+@utility glass {
+  background-color: rgb(14 22 38 / 0.62);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+@utility sheen {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 250ms var(--ease-standard);
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      rgb(255 255 255 / 0.09),
+      transparent 60%
+    );
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
 /* ---- Base ------------------------------------------------------------------- */
 @layer base {
   html {
