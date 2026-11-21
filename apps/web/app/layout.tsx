@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Amiri_Quran, Noto_Sans_Bengali, Plus_Jakarta_Sans } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { THEME_PREPAINT_SCRIPT } from '@/lib/theme-script';
 import './globals.css';
 
 // Self-hosted at build time by next/font: no runtime request to Google, works offline.
@@ -42,7 +43,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       className={`${jakarta.variable} ${notoBengali.variable} ${amiriQuran.variable}`}
+      // data-theme is set by the pre-paint script before hydration.
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_PREPAINT_SCRIPT }} />
+      </head>
       <body>{children}</body>
     </html>
   );
