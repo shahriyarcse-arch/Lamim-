@@ -29,6 +29,10 @@ const amiriQuran = Amiri_Quran({
 export const metadata: Metadata = {
   title: 'Lamim',
   description: 'Precision Islamic Life Operating System',
+  icons: {
+    icon: [{ url: '/app/icons/icon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/app/icons/icon-180x180.png', sizes: '180x180' }],
+  },
 };
 
 export const viewport: Viewport = {

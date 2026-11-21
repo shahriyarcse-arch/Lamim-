@@ -29,36 +29,65 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
         aria-label={lang === 'bn' ? 'প্রধান মেনু' : 'Primary Navigation'}
         className="mx-auto w-full max-w-6xl min-h-[4rem] px-3.5 sm:px-5 py-2 flex items-center justify-between gap-3 sm:gap-4 rounded-full bg-app/80 backdrop-blur-2xl border border-white/12 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)] pointer-events-auto transition-all"
       >
-        {/* Brand Logo & Social Proof Badge */}
-        <div className="flex items-center gap-3">
-          <Link href={paths.home} className="flex items-center gap-2.5 group">
-            {/* Luminous Logo Emblem */}
-            <span className="size-9 rounded-full bg-gradient-to-tr from-terracotta via-violet to-azure p-[1px] shadow-[0_0_16px_rgba(0,124,211,0.35)] transition-transform duration-300 group-hover:scale-105">
-              <span className="size-full rounded-full bg-app flex items-center justify-center text-white">
-                <svg
-                  className="size-4.5 text-azure"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden
-                >
-                  <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 1 12 2z" />
-                </svg>
-              </span>
-            </span>
-            <span className="bg-celestial bg-clip-text text-xl font-bold tracking-tight text-transparent">
-              Lamim
-            </span>
-          </Link>
-
-          {/* Sellsull-style Proof Badge */}
-          <div className="hidden lg:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs font-semibold text-fg/75 backdrop-blur-sm">
-            <span className="relative flex size-2">
-              <span className="animate-ping absolute inset-0 rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative size-2 rounded-full bg-emerald-400" />
-            </span>
-            <span>{lang === 'bn' ? '১০০% অফলাইন ও প্রাইভেট' : '100% Offline & Private'}</span>
-          </div>
-        </div>
+        {/* Brand Logo */}
+        <Link href={paths.home} className="flex items-center gap-3 group">
+          {/* Real Lamim Ribbon "L" Logo in Celestial Twilight Gradient */}
+          <span className="size-9 rounded-2xl bg-white/[0.05] border border-white/10 p-1.5 shadow-[0_0_20px_rgba(0,124,211,0.25)] grid place-items-center transition-all duration-300 group-hover:scale-105 group-hover:border-white/20 group-hover:shadow-[0_0_25px_rgba(0,124,211,0.45)]">
+            <svg viewBox="130 60 280 335" className="size-full" aria-hidden>
+              <defs>
+                <linearGradient id="nav_vG" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#C25E5E" />
+                  <stop offset="100%" stopColor="#A45EAA" />
+                </linearGradient>
+                <linearGradient id="nav_fG" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#C05683" />
+                  <stop offset="45%" stopColor="#A45EAA" />
+                  <stop offset="100%" stopColor="#656EC9" />
+                </linearGradient>
+                <linearGradient id="nav_sG" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#2D1B4E" stopOpacity="0.95" />
+                  <stop offset="100%" stopColor="#0F172A" stopOpacity="0.98" />
+                </linearGradient>
+                <linearGradient id="nav_hG" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#656EC9" />
+                  <stop offset="50%" stopColor="#007CD3" />
+                  <stop offset="100%" stopColor="#00A3E0" />
+                </linearGradient>
+                <linearGradient id="nav_spG" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFF" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#FFF" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M140,115 C140,82 172,60 205,75 L240,92 C252,98 252,112 252,122 L252,325 L140,375Z"
+                fill="url(#nav_vG)"
+              />
+              <path d="M175,255 L252,300 L252,385 L175,340Z" fill="url(#nav_sG)" />
+              <path
+                d="M140,195 C140,182 150,175 162,180 L252,130 L252,325 L140,375Z"
+                fill="url(#nav_fG)"
+                opacity="0.97"
+              />
+              <path
+                d="M140,195 L252,130 L232,118 L140,172Z"
+                fill="url(#nav_spG)"
+                opacity="0.8"
+              />
+              <path
+                d="M175,300 L350,300 C382,300 400,320 400,344 C400,368 382,385 350,385 L175,385Z"
+                fill="url(#nav_hG)"
+              />
+              <path
+                d="M175,300 L355,300 C367,300 376,307 376,314 L175,314Z"
+                fill="url(#nav_spG)"
+                opacity="0.5"
+              />
+            </svg>
+          </span>
+          <span className="bg-celestial bg-clip-text text-xl font-bold tracking-tight text-transparent">
+            Lamim
+          </span>
+        </Link>
 
         {/* Center Navigation Links */}
         <div className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06]">
