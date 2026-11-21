@@ -10,6 +10,7 @@ import {
 } from '@/lib/marketing-content';
 import { MARKETING_PATHS } from '@/lib/site';
 import { LandingMotion } from './landing-motion';
+import { Navbar } from './navbar';
 import { Device, SCREENS, ScreenDefs, type ScreenId } from './phone-screens';
 
 // Landing-only faces, self-hosted at build time by next/font (no runtime Google request).
@@ -91,10 +92,6 @@ const PRIMARY =
   'group inline-flex min-h-12 items-center justify-center gap-2 rounded-pill bg-cerulean-strong px-6 text-body font-semibold text-white shadow-[0_8px_32px_rgb(0_133_193/0.35)] transition-[box-shadow,filter] duration-200 hover:shadow-[0_8px_48px_rgb(0_133_193/0.6)] hover:brightness-110 focus-visible:brightness-110 active:brightness-95';
 const SECONDARY =
   'glass inline-flex min-h-12 items-center justify-center rounded-pill px-6 text-body font-semibold text-fg transition-colors duration-200 hover:bg-surface-subtle focus-visible:bg-surface-subtle';
-const PRIMARY_SM =
-  'inline-flex min-h-11 items-center justify-center rounded-pill bg-cerulean-strong px-4 text-caption font-semibold text-white transition-[filter] duration-200 hover:brightness-110 focus-visible:brightness-110';
-const NAV_LINK =
-  'inline-flex min-h-11 items-center rounded-pill px-4 text-body text-fg-muted transition-colors duration-200 hover:bg-surface-subtle hover:text-fg focus-visible:text-fg';
 const FOOT_LINK =
   'inline-flex min-h-11 items-center text-body text-fg-muted transition-colors duration-200 hover:text-fg focus-visible:text-fg';
 const EYEBROW = 'text-caption font-semibold tracking-eyebrow uppercase';
@@ -245,58 +242,15 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
         {lang === 'bn' ? 'মূল অংশে যান' : 'Skip to content'}
       </a>
 
-      {/* Header */}
-      <header className="sticky top-0 z-(--z-dock) border-b border-border bg-app/70 backdrop-blur-xl">
-        <span
-          aria-hidden
-          data-anim="progress"
-          className="bg-celestial absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0"
-        />
-        <div
-          className={`${CONTAINER} grid min-h-16 grid-cols-[1fr_auto_auto] items-center gap-2 md:grid-cols-[auto_1fr_auto_auto] md:gap-4`}
-        >
-          <Link
-            href={paths.home}
-            className="bg-celestial bg-clip-text text-h3 font-semibold tracking-display text-transparent"
-          >
-            Lamim
-          </Link>
-          <nav
-            aria-label={lang === 'bn' ? 'প্রধান' : 'Primary'}
-            className="hidden justify-center gap-2 md:flex"
-          >
-            {(
-              [
-                ['#features', c.nav.features],
-                ['#privacy', c.nav.privacy],
-                ['#faq', c.nav.faq],
-              ] as const
-            ).map(([href, label]) => (
-              <a key={href} href={href} className={NAV_LINK}>
-                {label}
-              </a>
-            ))}
-          </nav>
-          <Link
-            href={MARKETING_PATHS[other].home}
-            hrefLang={other}
-            lang={other}
-            className="inline-flex min-h-11 items-center rounded-pill border border-border px-4 text-caption font-semibold text-fg transition-colors duration-200 hover:bg-surface-subtle"
-          >
-            {c.nav.language}
-          </Link>
-          <Link href="/app/home" className={PRIMARY_SM}>
-            {c.nav.openApp}
-          </Link>
-        </div>
-      </header>
+      {/* Header (Floating island capsule, inspired by sellsull.com) */}
+      <Navbar lang={lang} c={c} paths={paths} other={other} />
 
       <main id="main">
         {/* Hero — server-rendered and fully visible; motion only adds transforms */}
         <section
           data-anim="hero"
           aria-labelledby="hero-title"
-          className="relative isolate overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32"
+          className="relative isolate overflow-hidden pt-24 pb-24 md:pt-32 md:pb-32"
         >
           <Sky intensity="bright" />
           <div className={`${CONTAINER} grid items-center gap-16 lg:grid-cols-12`}>
