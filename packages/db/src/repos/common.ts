@@ -18,7 +18,8 @@ export async function enqueueSync(
 ): Promise<void> {
   const pending = await db.syncQueue.where('[table+rowId]').equals([table, rowId]).first();
   if (pending?.seq !== undefined) {
-    await db.syncQueue.update(pending.seq, { op, createdAt: now });
+    // A new local edit is a new version: give it a fresh set of attempts.
+    await db.syncQueue.update(pending.seq, { op, createdAt: now, attempts: 0 });
   } else {
     await db.syncQueue.add({ table, rowId, op, createdAt: now, attempts: 0 });
   }

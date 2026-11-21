@@ -1,0 +1,11 @@
+{
+  "extends": "@lamim/config/tsconfig.library.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false
+  },
+  "include": ["src", "test", "prisma.config.ts", "vitest.config.ts"],
+  // The real-client restore test runs the browser DB package; it is checked by tsconfig.test.json.
+  "exclude": ["test/integration/client-restore.int.test.ts"]
+}

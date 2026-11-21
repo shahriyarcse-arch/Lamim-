@@ -4,6 +4,7 @@ import { getProfile } from '@lamim/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useApp } from '@/components/app/app-provider';
 import { PrayerSettingsCard } from '@/components/settings/prayer-settings-card';
+import { AccountCard } from '@/components/sync/account-card';
 import { PreferencesCard } from '@/components/settings/preferences-card';
 import { ProfileCard } from '@/components/settings/profile-card';
 
@@ -22,6 +23,7 @@ export default function ProfilePage() {
             <div aria-busy className="min-h-48 animate-pulse rounded-xl bg-surface-subtle" />
           )}
           <PreferencesCard />
+          <AccountCard />
         </div>
         <PrayerSettingsCard />
       </div>

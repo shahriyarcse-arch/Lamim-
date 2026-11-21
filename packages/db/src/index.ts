@@ -19,3 +19,5 @@ export * from './repos/daily';
 export * from './repos/finance';
 export * from './repos/habits';
 export * from './repos/profile';
+export * from './sync/engine';
+export * from './sync/account';

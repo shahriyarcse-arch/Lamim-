@@ -12,6 +12,7 @@
   "dependencies": {
     "@lamim/core": "workspace:*",
     "@lamim/db": "workspace:*",
+    "@lamim/sync-protocol": "workspace:*",
     "dexie": "4.4.7",
     "dexie-react-hooks": "4.4.0",
     "motion": "14.10.1",

@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   // Internal workspace packages ship TypeScript source; Next compiles them.
-  transpilePackages: ['@lamim/core', '@lamim/db'],
+  transpilePackages: ['@lamim/core', '@lamim/db', '@lamim/sync-protocol'],
   // '/app' (no slash) is outside the worker scope '/app/', so every in-app route lives below it.
   async redirects() {
     return [{ source: '/app', destination: '/app/home', permanent: false }];

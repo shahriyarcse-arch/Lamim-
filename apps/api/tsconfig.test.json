@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // DOM types only for the cross-package test that drives the browser sync engine (fake-indexeddb).
+    "lib": ["ES2022", "DOM"]
+  },
+  "include": ["test/integration/client-restore.int.test.ts", "test/global-setup.ts"],
+  "exclude": []
+}
