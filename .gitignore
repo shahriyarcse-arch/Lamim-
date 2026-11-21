@@ -1,9 +1,24 @@
 # Environment
 .env
-.env.local
+.env.*
+!.env.example
 
 # Node modules
 node_modules/
+
+# Build & tooling output
+.next/
+out/
+dist/
+.turbo/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Generated service worker (Serwist)
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+apps/web/public/swe-worker-*.js
 
 # OS & Temp
 .DS_Store
@@ -27,11 +42,13 @@ tests/test-results/*
 test-results/
 playwright-report/
 *.png
-!app/assets/*.png
-!favicon.png
-!apple-touch-icon.png
+!legacy/app/assets/*.png
+!legacy/favicon.png
+!legacy/apple-touch-icon.png
+!apps/web/public/**/*.png
 *.mp4
-!app/assets/*.mp4
+!legacy/app/assets/*.mp4
+!apps/web/public/**/*.mp4
 
 # Temp & Scratch
 scratch/
