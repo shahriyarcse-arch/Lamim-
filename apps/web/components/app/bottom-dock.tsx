@@ -15,6 +15,9 @@ interface DockItem {
   ready: boolean;
 }
 
+/** Pages reached from the More hub keep the More tab highlighted. */
+const MORE_CHILDREN = ['/app/habits', '/app/profile'];
+
 const ITEMS: readonly DockItem[] = [
   { href: '/app/home', label: 'nav.home', Icon: HomeIcon, ready: true },
   { href: '/app/salah', label: 'nav.salah', Icon: SalahIcon, ready: true },
@@ -35,7 +38,8 @@ export function BottomDock() {
       <ul className="mx-auto grid max-w-md grid-cols-5 gap-1 rounded-xl border border-border bg-surface/90 p-2 shadow-raised backdrop-blur-md">
         {ITEMS.map(({ href, label, Icon, ready }) => {
           // More stays highlighted on the modules it hosts.
-          const active = pathname === href || (href === '/app/more' && pathname === '/app/habits');
+          const active =
+            pathname === href || (href === '/app/more' && MORE_CHILDREN.includes(pathname));
           const base =
             'relative grid min-h-12 place-items-center gap-0.5 rounded-lg px-1 py-1 text-micro font-medium transition-colors';
           if (!ready) {

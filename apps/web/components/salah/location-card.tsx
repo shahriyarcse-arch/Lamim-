@@ -1,9 +1,9 @@
 'use client';
 
-import { updateSettings } from '@lamim/db';
 import { useState } from 'react';
 import { PinIcon } from '@/components/app/icons';
 import { useApp } from '@/components/app/app-provider';
+import { refreshLocation } from '@/lib/location';
 
 /** Location is requested only on an explicit tap — never on page load. */
 export function LocationCard({ approximate }: { approximate: boolean }) {
@@ -11,25 +11,8 @@ export function LocationCard({ approximate }: { approximate: boolean }) {
   const [state, setState] = useState<'idle' | 'busy' | 'denied'>('idle');
 
   const request = () => {
-    if (!('geolocation' in navigator)) {
-      setState('denied');
-      return;
-    }
     setState('busy');
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        // ~11 m precision is plenty for prayer times and avoids storing an exact address.
-        const round = (n: number) => Math.round(n * 1e4) / 1e4;
-        updateSettings(db, profileId, {
-          lat: round(pos.coords.latitude),
-          lng: round(pos.coords.longitude),
-        })
-          .then(() => setState('idle'))
-          .catch(() => setState('denied'));
-      },
-      () => setState('denied'),
-      { enableHighAccuracy: false, timeout: 10_000, maximumAge: 600_000 },
-    );
+    void refreshLocation(db, profileId).then((r) => setState(r === 'ok' ? 'idle' : 'denied'));
   };
 
   return (

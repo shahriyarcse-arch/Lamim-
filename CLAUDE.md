@@ -138,7 +138,7 @@ Every table entry requires:
 3. **`salahEntries`**: `id, &[profileId+date+prayer], [profileId+date]`  
    *(One row per prayer to avoid concurrent multi-device overwrite)*
 4. **`salahDays`**: `&[profileId+date], tahajjud, jummah, notes`
-5. **`dhikrLogs`, `gymLogs`, `careerLogs`**: `&[profileId+date]`
+5. **`dhikrLogs`, `gymLogs`, `careerLogs`**: `&[profileId+date]` — Gym and Career are dropped from the product (no UI or routes); their tables keep imported legacy data read-only so nothing is lost.
 6. **`habits`, `habitEvents`**: `id, profileId, [profileId+updatedAt]`  
    *(Relapses stored as immutable event rows, not mutating arrays)*
 7. **`transactions`**: `id, [profileId+date], [profileId+type], categoryId`
