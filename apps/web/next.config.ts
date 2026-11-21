@@ -41,7 +41,7 @@ const withSerwist = withSerwistInit({
   disable: process.env.NODE_ENV === 'development',
   additionalPrecacheEntries: [
     ...publicPrecacheEntries(),
-    ...['/app/home', '/app/salah', '/app/dhikr', '/app/~offline'].map((url) => ({
+    ...['/app/home', '/app/salah', '/app/dhikr', '/app/finance', '/app/~offline'].map((url) => ({
       url,
       revision: shellRevision,
     })),

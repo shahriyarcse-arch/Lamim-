@@ -156,7 +156,7 @@ Schema source of truth: `packages/db/src/schema.ts` (`SCHEMA_V1`). Fields not ye
 - `amountMinor`: Integer in the currency entered (BDT or USD cents/paisa).
 - `currency`: `'BDT' | 'USD'`.
 - `fxRateMicro`: Integer exchange rate multiplied by $10^6$.
-- `baseMinor`: Integer USD cents.
+- `baseMinor`: Integer USD cents, or `null` for non-USD entries recorded before any rate was known (single-currency users never need a rate; backfilled at sync).
 - Display formatting only via `Intl.NumberFormat`.
 
 ---
