@@ -11,3 +11,7 @@ export {
   type ImportRows,
 } from './legacy/plan';
 export * from './legacy/importer';
+export * from './repos/common';
+export * from './repos/salah';
+export * from './repos/settings';
+export * from './repos/bootstrap';
