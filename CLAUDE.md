@@ -173,7 +173,45 @@ Schema source of truth: `packages/db/src/schema.ts` (`SCHEMA_V1`). Fields not ye
 
 ---
 
-## 5. Execution Rules for Claude
-1. Follow Phase 1 in strict priority order (Step 0 through Step 7).
-2. Never skip Vitest tests on `packages/core` logic.
-3. Keep the vanilla app in `legacy/` as the rollback safety net until parity is reached.
+## 5. Master Autonomous Multi-Agent Swarm Protocol
+
+For all remaining phases (Landing Page, Backend Cloud Sync, LangGraph Islamic AI, and Production Deployment), Claude must operate as the **Lead Swarm Orchestrator** managing specialized autonomous roles:
+
+```
+                          LEAD SWARM ORCHESTRATOR (Claude)
+                                         │
+     ┌───────────────────┬───────────────┴───────────────┬───────────────────┐
+     ▼                   ▼                               ▼                   ▼
+[ Editorial & ]     [ Visual UI & ]              [ Backend & Data ]    [ QA, Security & ]
+[ Content Agent]    [ Motion Agent]              [ Systems Agent  ]    [ DevOps Agent   ]
+```
+
+### Specialized Roles & Mandates:
+1. **Editorial & Content Agent**:
+   - Protects authentic Islamic stewardship voice, monograph copywriting, and typography.
+   - Strictly enforces: ZERO generic "AI slop" or synthetic marketing fluff.
+2. **Visual UI & Motion Agent**:
+   - Enforces the 6-color celestial gradient (#C25E5E to #0085C1) and Tailwind v4 CSS-first tokens.
+   - Crafts smooth Framer Motion / Anime.js micro-interactions, responsive Bento grids, and mobile-first ergonomics.
+3. **Backend & Data Systems Agent**:
+   - Manages NestJS modular backend, Prisma ORM, Neon PostgreSQL, and bi-directional offline sync (LWW).
+   - Builds LangGraph.js verified state-machine RAG pipelines with `pgvector` for authentic Quran/Hadith retrieval.
+4. **QA, Security & DevOps Agent**:
+   - Enforces OWASP security standards, sliding-window rate limiting, and zero floating-point money bugs.
+   - Runs automated Vitest and Playwright E2E suites with silent outputs to preserve token context.
+
+### Execution Cycle per Phase:
+`Plan Breakdown` ➔ `Role Delegation` ➔ `Atomic Implementation` ➔ `Silent Automated Verification` ➔ `Atomic Commit`.
+
+---
+
+## 6. Cloud Database & Neon Infrastructure
+
+- **Cloud Provider**: Neon Serverless PostgreSQL (AWS us-east-2)
+- **Organization ID**: `org-broad-meadow-49182162`
+- **Project ID**: `fragrant-star-54354336` (`neondb`)
+- **Connection Strings**: Stored in root `.env` and `apps/web/.env.local`
+- **Driver Standards**:
+  - `apps/web` (Next.js serverless): `@neondatabase/serverless` via pooled connection.
+  - `apps/api` (NestJS / Prisma): Prisma Client with pooled `DATABASE_URL` and direct `DIRECT_URL` for schema migrations.
+  - Vector Extension: `pgvector` enabled for Islamic Knowledge RAG.
