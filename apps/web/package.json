@@ -1,0 +1,37 @@
+{
+  "name": "@lamim/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lamim/core": "workspace:*",
+    "@lamim/db": "workspace:*",
+    "@lamim/sync-protocol": "workspace:*",
+    "dexie": "4.4.7",
+    "dexie-react-hooks": "4.4.0",
+    "motion": "14.10.1",
+    "next": "15.5.29",
+    "react": "19.2.9",
+    "react-dom": "19.2.9"
+  },
+  "devDependencies": {
+    "@lamim/config": "workspace:*",
+    "@serwist/next": "9.5.13",
+    "@tailwindcss/postcss": "4.3.5",
+    "@types/node": "24.19.2",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "fake-indexeddb": "6.2.8",
+    "postcss": "8.5.33",
+    "serwist": "9.5.13",
+    "tailwindcss": "4.3.5",
+    "typescript": "5.9.3",
+    "vitest": "5.1.1"
+  }
+}

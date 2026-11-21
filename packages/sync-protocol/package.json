@@ -1,0 +1,23 @@
+{
+  "name": "@lamim/sync-protocol",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Wire contract shared by the web client and the API: sync tables, row envelope, LWW rule, auth DTOs",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@lamim/config": "workspace:*",
+    "typescript": "5.9.3",
+    "vitest": "5.1.1"
+  }
+}

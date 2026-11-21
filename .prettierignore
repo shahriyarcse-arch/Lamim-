@@ -1,0 +1,9 @@
+legacy/
+pnpm-lock.yaml
+.next/
+.turbo/
+dist/
+coverage/
+*.md
+apps/api/src/generated/
+apps/api/dist/

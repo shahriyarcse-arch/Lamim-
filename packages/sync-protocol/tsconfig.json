@@ -1,0 +1,4 @@
+{
+  "extends": "@lamim/config/tsconfig.library.json",
+  "include": ["src", "__tests__"]
+}

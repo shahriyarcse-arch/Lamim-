@@ -1,0 +1,416 @@
+// Lamim cloud schema. Sync tables mirror the client Dexie rows (packages/db/src/schema.ts).
+// Conventions: snake_case tables/columns, client ids are text (UUID v7), timestamps that
+// take part in LWW are epoch-ms BigInt, money is integer minor units (BigInt), never Float.
+// Every accepted sync write is stamped with rev = nextval of the sync_rev sequence (created
+// in the init migration) so pulls page by one monotonic cursor across all tables.
+// Natural-key uniques include user_id because profileId "global" is shared by every user.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---- Identity -------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(uuid(7)) @db.Uuid
+  /// Always stored lowercased + trimmed (normalised by EmailSchema before it reaches the DB).
+  email        String   @unique @db.VarChar(254)
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  /// Storage quota accounting, maintained inside every sync push transaction.
+  syncRowCount BigInt   @default(0) @map("sync_row_count")
+  syncBytes    BigInt   @default(0) @map("sync_bytes")
+
+  refreshTokens RefreshToken[]
+  devices       Device[]
+  profileOwners ProfileOwner[]
+  profiles      SyncProfile[]
+  settings      SyncSettings[]
+  salahEntries  SyncSalahEntry[]
+  salahDays     SyncSalahDay[]
+  dhikrLogs     SyncDhikrLog[]
+  gymLogs       SyncGymLog[]
+  careerLogs    SyncCareerLog[]
+  habits        SyncHabit[]
+  habitEvents   SyncHabitEvent[]
+  transactions  SyncTransaction[]
+  vaults        SyncVault[]
+  zakatProfiles SyncZakatProfile[]
+  kv            SyncKv[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  /// sha256 (hex) of the opaque token; the raw token is never stored.
+  tokenHash  String    @unique @map("token_hash") @db.Char(64)
+  /// Rotation family: every token minted from one login shares it.
+  familyId   String    @map("family_id") @db.Uuid
+  deviceId   String    @map("device_id") @db.VarChar(64)
+  expiresAt  DateTime  @map("expires_at") @db.Timestamptz(3)
+  revokedAt  DateTime? @map("revoked_at") @db.Timestamptz(3)
+  /// rotated | logout | reuse — decides how a later presentation of this token is treated.
+  revokeReason String? @map("revoke_reason") @db.VarChar(16)
+  replacedBy String?   @map("replaced_by") @db.Uuid
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@map("refresh_tokens")
+}
+
+model Device {
+  id         String   @db.VarChar(64)
+  userId     String   @map("user_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastSeenAt DateTime @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, id])
+  @@map("devices")
+}
+
+/// A client profile id belongs to exactly one user, claimed by the first push that references it.
+model ProfileOwner {
+  profileId String   @id @map("profile_id") @db.VarChar(64)
+  userId    String   @map("user_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("profile_owners")
+}
+
+// ---- Sync tables (one per client table) ------------------------------------------
+
+model SyncProfile {
+  id              String  @id @db.VarChar(64)
+  userId          String  @map("user_id") @db.Uuid
+  profileId       String  @map("profile_id") @db.VarChar(64)
+  updatedAt       BigInt  @map("updated_at")
+  deletedAt       BigInt? @map("deleted_at")
+  deviceId        String  @map("device_id") @db.VarChar(64)
+  rev             BigInt
+  extra           Json?
+  legacyId        String? @map("legacy_id") @db.VarChar(128)
+  name            String  @db.VarChar(200)
+  gender          String? @db.VarChar(32)
+  dob             String? @db.VarChar(10)
+  clientCreatedAt BigInt  @map("client_created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("profiles")
+}
+
+model SyncSettings {
+  id           String  @id @db.VarChar(64)
+  userId       String  @map("user_id") @db.Uuid
+  profileId    String  @map("profile_id") @db.VarChar(64)
+  updatedAt    BigInt  @map("updated_at")
+  deletedAt    BigInt? @map("deleted_at")
+  deviceId     String  @map("device_id") @db.VarChar(64)
+  rev          BigInt
+  extra        Json?
+  lang         String  @db.VarChar(8)
+  currency     String  @db.VarChar(8)
+  lat          Float?
+  lng          Float?
+  locationName String? @map("location_name") @db.VarChar(200)
+  method       String  @db.VarChar(32)
+  asr          String  @db.VarChar(16)
+  hijriOffset  Int     @map("hijri_offset")
+  theme        String  @db.VarChar(16)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("settings")
+}
+
+model SyncSalahEntry {
+  id        String  @id @db.VarChar(64)
+  userId    String  @map("user_id") @db.Uuid
+  profileId String  @map("profile_id") @db.VarChar(64)
+  updatedAt BigInt  @map("updated_at")
+  deletedAt BigInt? @map("deleted_at")
+  deviceId  String  @map("device_id") @db.VarChar(64)
+  rev       BigInt
+  extra     Json?
+  date      String  @db.VarChar(10)
+  prayer    String  @db.VarChar(16)
+  status    String  @db.VarChar(16)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId, date, prayer])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("salah_entries")
+}
+
+model SyncSalahDay {
+  id            String   @id @db.VarChar(64)
+  userId        String   @map("user_id") @db.Uuid
+  profileId     String   @map("profile_id") @db.VarChar(64)
+  updatedAt     BigInt   @map("updated_at")
+  deletedAt     BigInt?  @map("deleted_at")
+  deviceId      String   @map("device_id") @db.VarChar(64)
+  rev           BigInt
+  extra         Json?
+  date          String   @db.VarChar(10)
+  jummah        Boolean
+  /// boolean or string (legacy "prayed")
+  tahajjud      Json
+  tahajjudRakat Int      @map("tahajjud_rakat")
+  /// number, boolean or string
+  witr          Json
+  sunnah        Json
+  notes         Json
+  fasting       Boolean?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId, date])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("salah_days")
+}
+
+model SyncDhikrLog {
+  id        String  @id @db.VarChar(64)
+  userId    String  @map("user_id") @db.Uuid
+  profileId String  @map("profile_id") @db.VarChar(64)
+  updatedAt BigInt  @map("updated_at")
+  deletedAt BigInt? @map("deleted_at")
+  deviceId  String  @map("device_id") @db.VarChar(64)
+  rev       BigInt
+  extra     Json?
+  date      String  @db.VarChar(10)
+  counts    Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId, date])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("dhikr_logs")
+}
+
+model SyncGymLog {
+  id        String  @id @db.VarChar(64)
+  userId    String  @map("user_id") @db.Uuid
+  profileId String  @map("profile_id") @db.VarChar(64)
+  updatedAt BigInt  @map("updated_at")
+  deletedAt BigInt? @map("deleted_at")
+  deviceId  String  @map("device_id") @db.VarChar(64)
+  rev       BigInt
+  extra     Json?
+  date      String  @db.VarChar(10)
+  data      Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId, date])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("gym_logs")
+}
+
+model SyncCareerLog {
+  id        String  @id @db.VarChar(64)
+  userId    String  @map("user_id") @db.Uuid
+  profileId String  @map("profile_id") @db.VarChar(64)
+  updatedAt BigInt  @map("updated_at")
+  deletedAt BigInt? @map("deleted_at")
+  deviceId  String  @map("device_id") @db.VarChar(64)
+  rev       BigInt
+  extra     Json?
+  date      String  @db.VarChar(10)
+  data      Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId, date])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("career_logs")
+}
+
+model SyncHabit {
+  id           String  @id @db.VarChar(64)
+  userId       String  @map("user_id") @db.Uuid
+  profileId    String  @map("profile_id") @db.VarChar(64)
+  updatedAt    BigInt  @map("updated_at")
+  deletedAt    BigInt? @map("deleted_at")
+  deviceId     String  @map("device_id") @db.VarChar(64)
+  rev          BigInt
+  extra        Json?
+  legacyId     String? @map("legacy_id") @db.VarChar(128)
+  label        String  @db.VarChar(200)
+  icon         String? @db.VarChar(64)
+  color        String? @db.VarChar(64)
+  startDate    String  @map("start_date") @db.VarChar(40)
+  trackedSince String? @map("tracked_since") @db.VarChar(40)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("habits")
+}
+
+model SyncHabitEvent {
+  id        String  @id @db.VarChar(64)
+  userId    String  @map("user_id") @db.Uuid
+  profileId String  @map("profile_id") @db.VarChar(64)
+  updatedAt BigInt  @map("updated_at")
+  deletedAt BigInt? @map("deleted_at")
+  deviceId  String  @map("device_id") @db.VarChar(64)
+  rev       BigInt
+  extra     Json?
+  habitId   String  @map("habit_id") @db.VarChar(64)
+  date      String  @db.VarChar(10)
+  type      String  @db.VarChar(16)
+  at        String? @db.VarChar(40)
+  reason    String? @db.VarChar(1000)
+  streak    Int?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, rev])
+  @@index([profileId, date])
+  @@index([habitId])
+  @@map("habit_events")
+}
+
+model SyncTransaction {
+  id          String  @id @db.VarChar(64)
+  userId      String  @map("user_id") @db.Uuid
+  profileId   String  @map("profile_id") @db.VarChar(64)
+  updatedAt   BigInt  @map("updated_at")
+  deletedAt   BigInt? @map("deleted_at")
+  deviceId    String  @map("device_id") @db.VarChar(64)
+  rev         BigInt
+  extra       Json?
+  legacyId    String? @map("legacy_id") @db.VarChar(128)
+  type        String  @db.VarChar(16)
+  /// Integer minor units in currency.
+  amountMinor BigInt  @map("amount_minor")
+  currency    String  @db.VarChar(8)
+  /// Rate x 10^6.
+  fxRateMicro BigInt? @map("fx_rate_micro")
+  /// Integer USD cents.
+  baseMinor   BigInt? @map("base_minor")
+  categoryId  String? @map("category_id") @db.VarChar(128)
+  description String  @db.VarChar(1000)
+  date        String  @db.VarChar(10)
+  vaultId     String? @map("vault_id") @db.VarChar(64)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, rev])
+  @@index([profileId, date])
+  @@index([vaultId])
+  @@map("transactions")
+}
+
+model SyncVault {
+  id          String  @id @db.VarChar(64)
+  userId      String  @map("user_id") @db.Uuid
+  profileId   String  @map("profile_id") @db.VarChar(64)
+  updatedAt   BigInt  @map("updated_at")
+  deletedAt   BigInt? @map("deleted_at")
+  deviceId    String  @map("device_id") @db.VarChar(64)
+  rev         BigInt
+  extra       Json?
+  legacyId    String? @map("legacy_id") @db.VarChar(128)
+  name        String  @db.VarChar(200)
+  targetMinor BigInt  @map("target_minor")
+  savedMinor  BigInt  @map("saved_minor")
+  currency    String  @db.VarChar(8)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("vaults")
+}
+
+model SyncZakatProfile {
+  id               String  @id @db.VarChar(64)
+  userId           String  @map("user_id") @db.Uuid
+  profileId        String  @map("profile_id") @db.VarChar(64)
+  updatedAt        BigInt  @map("updated_at")
+  deletedAt        BigInt? @map("deleted_at")
+  deviceId         String  @map("device_id") @db.VarChar(64)
+  rev              BigInt
+  extra            Json?
+  currency         String  @db.VarChar(8)
+  nisabMinor       BigInt  @map("nisab_minor")
+  cashMinor        BigInt  @map("cash_minor")
+  goldMinor        BigInt  @map("gold_minor")
+  silverMinor      BigInt  @map("silver_minor")
+  businessMinor    BigInt  @map("business_minor")
+  stocksMinor      BigInt  @map("stocks_minor")
+  liabilitiesMinor BigInt? @map("liabilities_minor")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("zakat_profiles")
+}
+
+model SyncKv {
+  id        String  @id @db.VarChar(64)
+  userId    String  @map("user_id") @db.Uuid
+  profileId String  @map("profile_id") @db.VarChar(64)
+  updatedAt BigInt  @map("updated_at")
+  deletedAt BigInt? @map("deleted_at")
+  deviceId  String  @map("device_id") @db.VarChar(64)
+  rev       BigInt
+  extra     Json?
+  key       String  @db.VarChar(200)
+  value     Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId, key])
+  @@index([userId, rev])
+  @@index([profileId])
+  @@map("kv")
+}
+
+// ---- Knowledge base (Phase 3 RAG; no data yet) -------------------------------------
+
+model KnowledgeChunk {
+  id        String                      @id @default(uuid(7)) @db.Uuid
+  source    String
+  reference String
+  lang      String                      @db.VarChar(8)
+  content   String
+  embedding Unsupported("vector(768)")?
+  createdAt DateTime                    @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([source])
+  @@map("knowledge_chunks")
+}

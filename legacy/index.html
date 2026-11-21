@@ -1,0 +1,3154 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Lamim — A Quiet Chronicle & Intentional Life Companion</title>
+  <meta name="description" content="Lamim is an editorial, private digital chronicle for Salah, Nafl, Dhikr, habits, wellness, halal finance, and intentional daily living.">
+  <meta name="keywords" content="Lamim, lamim.tech, লামিম, Editorial Life OS, Salah Tracker, Contemplative Dhikr, Halal Finance Ledger, Habit Forge, Minimalist Lifestyle">
+  <meta name="author" content="Lamim Editorial">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="google-site-verification" content="googleba82f160fa58e075">
+  <meta name="theme-color" content="#fbf9f5">
+
+  <!-- SEO / Social -->
+  <link rel="canonical" href="https://www.lamim.tech/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.lamim.tech/">
+  <meta property="og:title" content="Lamim — A Quiet Chronicle & Intentional Life Companion">
+  <meta property="og:description" content="A private, editorial digital chronicle uniting prayer, contemplation, habits, and halal stewardship into one quiet daily rhythm.">
+  <meta property="og:image" content="https://www.lamim.tech/app/assets/icon-512x512.png">
+  <meta property="og:site_name" content="Lamim">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="bn_BD">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lamim — A Quiet Chronicle & Intentional Life Companion">
+  <meta name="twitter:description" content="A private, editorial digital chronicle uniting prayer, contemplation, habits, and halal stewardship into one quiet daily rhythm.">
+  <meta name="twitter:image" content="https://www.lamim.tech/app/assets/icon-512x512.png">
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/app/assets/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/app/assets/icon-512x512.png">
+  <link rel="icon" type="image/svg+xml" href="/app/assets/icon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Comprehensive Google Knowledge Graph & SoftwareApplication Schema -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Lamim",
+      "alternateName": ["Lamim App", "Lamim Tech", "লামিম", "Lamim Islamic App"],
+      "description": "A private, offline-first Islamic lifestyle companion for Salah tracking, Dhikr, Habits, Halal Finance, and Spiritual Analysis.",
+      "url": "https://www.lamim.tech/",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "Salah Tracker & Color Heatmap",
+        "Digital Tasbeeh & Dhikr Counter",
+        "Nafl & Sunnah Goals",
+        "Spiritual Analysis (LSS Engine)",
+        "Gym & Health Journal",
+        "Career Builder & Study Routine",
+        "Halal Finance & Savings Vaults"
+      ],
+      "screenshot": "https://www.lamim.tech/app/assets/icon-512x512.png",
+      "softwareVersion": "2.1.0"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Lamim",
+      "alternateName": ["Lamim App", "Lamim Tech", "লামিম"],
+      "url": "https://www.lamim.tech/"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is included in Lamim?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Salah tracking, Nafl goals, digital Dhikr tasbeeh, Habit routines, Gym journal, Career builder, Halal Finance with Savings Vaults, Spiritual Health Score (SHS) analysis, profile milestones, local JSON backups, and pure on-device web architecture."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Lamim need an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Lamim works completely without email, password, phone number, or a central cloud database. Your personal logs stay exclusively on your local device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use Lamim without internet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The app is built offline-first using IndexedDB and Service Worker caching. All prayer calculations, habit streaks, and financial summaries run entirely on-device."
+          }
+        }
+      ]
+    }
+  ]
+  </script>
+
+  <script>
+    function safeVibrate(ms) {
+      if (navigator.userActivation && !navigator.userActivation.hasBeenActive) return;
+      if (navigator.vibrate) { try { navigator.vibrate(ms); } catch(e) {} }
+    }
+history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Playfair+Display:ital,wght@1,700;1,800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Outfit:ital,wght@0,500..800;1,500..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Manrope:ital,wght@0,400..800;1,400..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap">
+  <link rel="stylesheet" href="styles.min.css?v=20260818_typo_sync">
+  <noscript>
+    <style>.reveal{opacity:1;transform:none}.hero-art{opacity:1;transform:none}.float{opacity:1}.nav{opacity:1}
+    .brand-essence { padding: 90px 0 60px; text-align: center; }
+    .essence-head { max-width: 680px; margin: 0 auto 48px; }
+    .essence-head .eyebrow { margin-bottom: 12px; color: var(--teal); letter-spacing: .14em; font-weight: 800; font-size: .78rem; }
+    .essence-head h2 { font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -.035em; color: var(--ink); }
+    .essence-head p { margin: 0 auto; font-size: 1.05rem; color: var(--muted); line-height: 1.6; }
+    .essence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+    .essence-card { background: #ffffff; border: 1px solid rgba(10, 21, 17, .11); border-radius: 24px; padding: 48px 28px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 14px 38px rgba(10, 21, 17, .06); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); }
+    .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
+    .essence-icon-badge { width: 62px; height: 62px; border-radius: 20px; background: #f0f8e8; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; box-shadow: inset 0 2px 4px rgba(255, 255, 255, .8); transition: transform .35s var(--ease), background .35s ease; }
+    .essence-card:hover .essence-icon-badge { transform: scale(1.08); background: #e2f4c1; }
+    .essence-card h3 { font-size: 1.35rem; font-weight: 800; color: var(--ink); margin-bottom: 8px; letter-spacing: -.02em; }
+    .essence-card p { font-size: .96rem; color: var(--muted); margin: 0; line-height: 1.5; }
+    .visual.nafl,.visual.habits,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
+    section { position: relative; border-top: 1px solid rgba(19, 33, 27, 0.07); }
+    section.hero { border-top: none; }
+    section.brand-essence { background: #fbf9f5; border-top: 1px solid rgba(19, 33, 27, 0.07); border-bottom: 1px solid rgba(19, 33, 27, 0.07); }
+    .section-interactive { background: #ffffff; border-top: 1px solid rgba(19, 33, 27, 0.07); }
+    .section-companion { background: #fbf9f5; border-top: 1px solid rgba(19, 33, 27, 0.07); border-bottom: 1px solid rgba(19, 33, 27, 0.07); }
+    .security { background: #ffffff; border-top: 1px solid rgba(19, 33, 27, 0.07); }
+    .faq { background: #fbf9f5; border-top: 1px solid rgba(19, 33, 27, 0.07); border-bottom: 1px solid rgba(19, 33, 27, 0.07); }
+    .cta { border-top: 1px solid rgba(19, 33, 27, 0.07); }
+    </style>
+  </noscript>
+
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+    :root{
+      --paper:#fbf9f5;--paper-rgb:251,249,245;--paper-subtle:#f4efea;--surface:#ffffff;--ink:#121513;--muted:#4e5751;--faint:#8a948e;--dark:#121815;
+      --mint:#e2f0d9;--teal:#1b3d2f;--editorial-jade:#1b3d2f;--editorial-sage:#e8efe6;--editorial-gold:#c28e3e;--editorial-ochre:#b58034;--editorial-terracotta:#b85d3b;
+      --lilac:#e8e2f0;--sky:#dceaf4;--coral:#f2d8cb;--gold:#ebd898;
+      --line:rgba(18,21,19,0.08);--line-dark:rgba(241,240,233,.12);--ease:cubic-bezier(.16,1,.3,1);
+      --wrap-max:1240px;--wrap-pad:clamp(16px,4vw,40px);
+      --font-display:"Fraunces","Cormorant Garamond",Georgia,serif;--font-serif:"Fraunces","Playfair Display",Georgia,serif;--font-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    ::selection { background: #e2f0d9; color: #121513; }
+    ::-moz-selection { background: #e2f0d9; color: #121513; }
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:clamp(.95rem,1.2vw,1.05rem);line-height:1.62;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased}
+    body::before{display:none !important}
+    .skip-link{position:fixed;top:-100%;left:12px;z-index:1000;padding:10px 20px;background:var(--ink);color:var(--paper);border-radius:0 0 12px 12px;font-weight:700;font-size:.88rem;transition:top .2s}
+    .skip-link:focus{top:0;outline:3px solid var(--teal);outline-offset:2px}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer}
+    h1,h2,h3,h4,p,blockquote,figure{margin:0}
+    h1,h2,h3{font-family:var(--font-display);letter-spacing:-.025em;color:var(--ink)}
+    h1{font-size:clamp(2.3rem,6.2vw+.5rem,6.8rem);line-height:.96;letter-spacing:-.045em}
+    .hero-title{margin-top:20px}
+    h1 em{font-family:var(--font-display);font-weight:500;font-style:italic;color:var(--teal);line-height:.95}
+    h2{font-size:clamp(1.8rem,4vw+.5rem,4.2rem);line-height:1.02;letter-spacing:-.035em}
+    h3{font-size:clamp(1.18rem,2vw,1.6rem);line-height:1.2}
+    p{color:var(--muted);max-width:62ch;line-height:1.68}
+    .eyebrow{font-family:var(--font-mono, monospace);font-size:0.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--teal);background:var(--mint);border:1px solid rgba(27,61,47,0.18);padding:5px 14px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+    .wrap{width:100%;max-width:var(--wrap-max);padding-left:var(--wrap-pad);padding-right:var(--wrap-pad);margin:0 auto}
+    .nav{position:fixed;z-index:100;top:16px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:1120px;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(251,249,245,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(18,21,19,.1);border-radius:999px;box-shadow:0 12px 32px rgba(18,21,19,.05);opacity:0}
+    .brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display);font-style:italic;font-weight:700;font-size:1.36rem;line-height:1;letter-spacing:-.015em;color:var(--ink);text-decoration:none}
+    .brand>span{display:inline-block;transform:translateY(1px);line-height:1}
+    .brand-icon{height:20px;width:auto;display:block;flex-shrink:0;object-fit:contain}
+
+    .links{display:none;gap:clamp(16px,2vw,28px);color:var(--muted);font-size:.88rem;font-weight:500}
+    .links a{padding:6px 0;transition:color .2s ease}
+    .links a:hover{color:var(--ink)}
+    .navcta,.btn{min-height:44px;padding:0 20px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:.86rem;cursor:pointer;white-space:nowrap;transition:all .25s var(--ease)}
+    .navcta{background:var(--teal);color:#ffffff}
+    .navcta:hover{background:#122e20;transform:translateY(-1px);box-shadow:0 6px 18px rgba(27,61,47,.25)}
+    .btn{background:var(--dark);color:#ffffff;padding:0 24px;min-height:48px;font-size:.9rem}
+    .btn:hover{background:#000000;transform:translateY(-1px);box-shadow:0 8px 20px rgba(18,21,19,.15)}
+    .btn.alt{background:transparent;border:1px solid var(--line);color:var(--ink)}
+    .btn.alt:hover{background:var(--paper-subtle);border-color:var(--ink)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .menu{display:flex;align-items:center;justify-content:center;background:transparent;border:0;width:44px;height:44px;font-size:20px;color:var(--ink);border-radius:50%}
+    .nav-overlay{position:fixed;top:70px;left:12px;right:12px;background:rgba(251,249,245,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:24px;padding:20px 16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 20px 50px rgba(18,21,19,.12);opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);z-index:99}
+    .nav.mobile-active .nav-overlay{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    @media(min-width:768px){.links{display:flex}.menu,.nav-overlay{display:none!important}.nav{top:16px;padding:10px 22px}}
+    .hero{padding:110px 0 60px}
+    .hero-grid{display:flex;flex-direction:column;gap:clamp(28px,5vw,60px)}
+    .hero p{font-size:clamp(1rem,1.8vw,1.18rem);line-height:1.5;margin:clamp(20px,4vw,32px) 0;max-width:44ch}
+    .actions{display:flex;flex-direction:column;gap:12px;width:100%}
+    .actions .btn{width:100%;text-align:center}
+    @media(min-width:540px){.actions{flex-direction:row;width:auto}.actions .btn{width:auto}}
+    .hero-art{width:100%;max-width:580px;margin:0 auto;min-height:380px;position:relative;overflow:hidden;opacity:0}
+    .halo{position:absolute;inset:7% 0 3% 7%;border-radius:50%;background:radial-gradient(circle at 68% 28%,#d8ccec,transparent 66%)}
+    .orbit{position:absolute;inset:0;border:1px solid #5e9f7b55;border-radius:50%;transform:rotate(18deg) scale(.89)}
+    .app{position:absolute;left:2%;right:2%;top:4%;bottom:2%;padding:clamp(12px,3vw,20px);border:1px solid #13211b2c;border-radius:clamp(20px,4vw,30px);background:#ffffff;box-shadow:0 20px 60px rgba(19,33,27,.15);transform:rotate(1deg)}
+    .float{position:absolute;right:12px;bottom:12px;padding:10px 14px;border-radius:16px;background:rgba(18,38,30,.15);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);border:1px solid rgba(255,255,255,.35);color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.9);box-shadow:0 8px 24px rgba(0,0,0,.2);font-size:.8rem;font-weight:500;z-index:10;cursor:pointer;transition:background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease);opacity:0}
+    .float:hover,.float:active,.float.active{background:var(--dark);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:transparent;box-shadow:0 12px 30px rgba(19,33,27,.35)}
+    @media(min-width:1024px){.hero-art{overflow:visible}.hero{min-height:100vh;padding:140px 0 80px;display:grid;align-items:center}.hero-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(40px,5vw,90px);align-items:center}.hero-art{height:620px;max-width:100%}.app{left:8%;right:0;top:8%;bottom:2%;padding:15px;border-radius:30px;transform:rotate(3deg)}.float{right:-3%;bottom:10%;padding:14px 17px}}
+    .reveal{opacity:0;transform:translateY(30px)}
+    .app-head{display:flex;justify-content:space-between;padding:4px 7px 12px;border-bottom:1px solid var(--line);font-weight:800;font-size:.85rem}
+    .hero-live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      vertical-align: middle;
+      margin-left: 12px;
+      margin-right: 2px;
+      flex-shrink: 0;
+    }
+    .hero-live-dot-wrap {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-live-dot-core {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981, 0 0 2px #10b981;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-live-dot-ping {
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.45);
+      animation: heroLivePing 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+    @keyframes heroLivePing {
+      0% {
+        transform: scale(0.85);
+        opacity: 0.9;
+      }
+      70%, 100% {
+        transform: scale(1.85);
+        opacity: 0;
+      }
+    }
+    .app-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,2vw,13px);margin-top:12px}
+    .tile{padding:clamp(10px,2.5vw,16px);border-radius:16px;min-height:110px;background:#edf2eb;display:flex;flex-direction:column;justify-content:space-between}
+    .tile.mint{background:var(--mint)}.tile.sky{background:var(--sky)}.tile.dark{background:var(--dark);color:var(--paper)}
+    .wide{grid-column:1/-1;min-height:140px}
+    .kicker{font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800;opacity:.75}
+    .big{font-family:var(--font-display);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:500;line-height:1;margin:8px 0 4px}
+    .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:clamp(.7rem,1.2vw,.77rem)}
+    .meter{height:7px;background:#13211b22;border-radius:9px;overflow:hidden;margin-top:10px}
+    .meter span{display:block;width:76%;height:100%;background:var(--teal);border-radius:inherit}
+    @media(prefers-reduced-motion:reduce){.track{animation:none}.reveal{opacity:1;transform:none}.hero-art{opacity:1;transform:none}.nav{opacity:1}.float{opacity:1}}
+    @media(max-width:767px){.hero-art{min-height:auto;overflow:visible}.app{position:relative;left:auto;right:auto;top:auto;bottom:auto;padding:14px;border-radius:20px;transform:none!important;-webkit-transform:none!important;transition:none!important;-webkit-backface-visibility:hidden;backface-visibility:hidden;transform-style:preserve-3d}.hero-art:hover .app{transform:none!important;-webkit-transform:none!important}.float{position:relative;right:auto;bottom:auto;display:flex;margin:16px auto 0;width:fit-content;padding:10px 20px;border-radius:999px;font-weight:700;animation:none!important}.halo,.orbit{display:none}.footer{overflow:visible;padding:40px 0 0}.footer::before{display:none}.footer-grid{grid-template-columns:1fr;gap:0;padding-bottom:0}.footer-brand{text-align:center;padding:0 0 24px;border-bottom:1px solid rgba(207,238,130,.1)}.footer-brand .brand{justify-content:center;font-size:1.5rem;letter-spacing:-.02em}.footer-brand p{margin:8px auto 0;font-size:.82rem;color:#8fa89a;line-height:1.45;max-width:24ch}.footer-grid>div:not(.footer-brand){padding:20px 0;border-bottom:1px solid rgba(241,240,233,.05)}.footer-grid>div:last-child{border-bottom:none}.footer-grid h3{font-size:.6rem;letter-spacing:.2em;color:#cfee82;margin-bottom:2px;font-weight:700}.footer-links{gap:0;margin-top:8px}.footer-links a{font-size:.82rem;color:#9cb5a8;padding:4px 0;min-height:auto;display:block}.footer-links a::after{display:none}.footer-links-2col{grid-template-columns:1fr 1fr;gap:0 20px}.footer-divider{display:none}.bottom{flex-direction:column;align-items:center;text-align:center;padding:18px 0;gap:4px;border-top:1px solid rgba(241,240,233,.06);margin-top:8px}.bottom span{font-size:.66rem;color:#4a6558;letter-spacing:.01em}}
+    :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+  
+    /* Brand Essence Section */
+    .brand-essence { padding: 90px 0 60px; text-align: center; }
+    .essence-head { max-width: 680px; margin: 0 auto 48px; }
+    .essence-head .eyebrow { margin-bottom: 12px; color: var(--teal); letter-spacing: .14em; font-weight: 800; font-size: .78rem; }
+    .essence-head h2 { font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -.035em; color: var(--ink); }
+    .essence-head p { margin: 0 auto; font-size: 1.05rem; color: var(--muted); line-height: 1.6; }
+    .essence-icon-badge { width: 56px; height: 56px; border-radius: 16px; background: rgba(61, 122, 90, 0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; flex-shrink: 0; }
+    .essence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; }
+    .essence-card { background: #ffffff; border: 1px solid rgba(19, 33, 27, .09); border-radius: 24px; padding: 32px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 30px rgba(19, 33, 27, .03); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease); position: relative; }
+    .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
+    .essence-tap-hint { font-family: var(--font-body, sans-serif); font-size: 0.7rem; font-weight: 800; color: var(--teal); margin-top: 14px; opacity: 0; transform: translateY(4px); transition: all 0.25s ease; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(61,122,90,0.08); padding: 3px 10px; border-radius: 99px; }
+    .essence-card:hover .essence-tap-hint, .essence-card:focus .essence-tap-hint { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 767px) {
+      .brand-essence { padding: 50px 0 35px; }
+      .essence-head { margin-bottom: 28px; }
+      .essence-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+      .essence-card { padding: 20px 10px 16px !important; border-radius: 18px !important; }
+      .essence-icon-badge { width: 44px !important; height: 44px !important; margin-bottom: 10px !important; border-radius: 12px !important; }
+      .essence-icon-badge svg { width: 22px !important; height: 22px !important; }
+      .essence-card h3 { font-size: 1.05rem !important; margin-bottom: 4px !important; }
+      .essence-card p { font-size: 0.8rem !important; line-height: 1.35 !important; }
+      .essence-tap-hint { margin-top: 10px !important; font-size: 0.66rem !important; font-weight: 800 !important; padding: 4px 12px !important; opacity: 1 !important; transform: none !important; white-space: nowrap !important; display: inline-block !important; }
+    }
+
+    /* ---- ESSENCE OVERVIEW MODAL POPUP ---- */
+    .essence-modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(12, 22, 17, 0.65);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(16px, 4vw, 32px);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    }
+    .essence-modal-overlay.active {
+      opacity: 1; visibility: visible;
+    }
+    .essence-modal-card {
+      width: 100%; max-width: 580px;
+      background: linear-gradient(145deg, #ffffff 0%, #f6f8f4 100%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 32px;
+      box-shadow: 0 28px 70px rgba(12, 22, 17, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      padding: clamp(24px, 5vw, 40px);
+      position: relative;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .essence-modal-overlay.active .essence-modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .essence-modal-close {
+      position: absolute; top: 20px; right: 20px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(19, 33, 27, 0.06); border: 1px solid rgba(19, 33, 27, 0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink); font-size: 1.2rem; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .essence-modal-close:hover {
+      background: rgba(19, 33, 27, 0.14); transform: scale(1.08);
+    }
+    .essence-modal-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 99px;
+      font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(61,122,90,0.12); color: var(--teal); border: 1px solid rgba(61,122,90,0.25);
+      margin-bottom: 16px;
+    }
+    .essence-modal-title {
+      font-family: var(--font-display, serif);
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800;
+      color: var(--ink); line-height: 1.1; margin-bottom: 12px;
+      letter-spacing: -0.035em;
+    }
+    .essence-modal-desc {
+      font-size: 1.02rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px;
+    }
+    .essence-modal-stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-bottom: 24px;
+    }
+    .essence-modal-stat-box {
+      background: #ffffff; border: 1px solid rgba(19, 33, 27, 0.09);
+      border-radius: 18px; padding: 14px 10px; text-align: center;
+      box-shadow: 0 4px 14px rgba(19, 33, 27, 0.03);
+    }
+    .essence-modal-stat-box b {
+      display: block; font-family: var(--font-display, serif);
+      font-size: 1.4rem; font-weight: 800; color: var(--ink); line-height: 1.1;
+    }
+    .essence-modal-stat-box span {
+      display: block; font-size: 0.7rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px;
+    }
+    .essence-modal-bullets {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 16px 20px; background: rgba(19, 33, 27, 0.03);
+      border-radius: 20px; border: 1px solid rgba(19, 33, 27, 0.06);
+    }
+    .essence-modal-bullet-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.88rem; color: var(--ink); font-weight: 500; line-height: 1.45;
+    }
+    .essence-modal-bullet-icon {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--mint); color: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+    }
+    .essence-card:hover { transform: translateY(-6px); border-color: var(--teal); box-shadow: 0 20px 45px rgba(19, 33, 27, .08); }
+    /* essence-card active removed for uniform professional design */
+    .essence-icon-badge { width: 58px; height: 58px; border-radius: 18px; background: #f0f8e8; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(255, 255, 255, .8); transition: transform .35s var(--ease), background .35s ease; }
+.essence-card:hover .essence-icon-badge { transform: scale(1.08); background: #e2f4c1; }
+    .essence-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -.02em; }
+    .essence-card p { font-size: .92rem; color: var(--muted); margin: 0; }
+    .visual.nafl,.visual.habits,.visual.career,.visual.ledger{background:rgba(255,255,255,.88);box-shadow:0 8px 32px rgba(19,33,27,.06)}
+    #landing-breath-circle::before { content: "" !important; }
+    @keyframes hijri-pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+      50%       { transform: scale(1.25); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    }
+    @keyframes dhikr-ring-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(19, 33, 27, 0.12), inset 0 0 0 1px rgba(19, 33, 27, 0.25); }
+      50%       { box-shadow: 0 0 20px 4px rgba(61, 122, 90, 0.25), inset 0 0 0 2px rgba(19, 33, 27, 0.45); }
+    }
+    @keyframes breath-pulse-hint {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(19, 33, 27, 0.08); transform: scale(1); }
+      50%       { box-shadow: 0 0 18px 4px rgba(19, 33, 27, 0.18); transform: scale(1.04); }
+    }
+    .dhikr-ring {
+      animation: dhikr-ring-glow 3s ease-in-out infinite;
+    }
+
+    /* ---- EDITORIAL MONOGRAPH & TYPOGRAPHY ENHANCEMENTS ---- */
+    .essence-num {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1;
+      font-style: italic;
+    }
+    .ribbon-sep {
+      color: var(--gold);
+      font-size: 0.75rem;
+      margin: 0 4px;
+      opacity: 0.85;
+    }
+    .editorial-masthead-folio {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .editorial-rule-thin {
+      height: 1px;
+      background: var(--line);
+      border: none;
+      margin: 0;
+      width: 100%;
+    }
+    /* Editorial card hover & border transitions */
+    .essence-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 36px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(18, 21, 19, 0.03);
+      transition: all 0.3s var(--ease);
+      position: relative;
+    }
+    .essence-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(27, 61, 47, 0.3);
+      box-shadow: 0 12px 32px rgba(18, 21, 19, 0.06);
+    }
+    .essence-icon-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--mint);
+      border: 1px solid rgba(27, 61, 47, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+      transition: transform 0.3s var(--ease), background 0.3s ease;
+    }
+    .essence-card:hover .essence-icon-badge {
+      transform: scale(1.06);
+      background: #d4eec5;
+    }
+    .essence-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+    .essence-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .essence-tap-hint {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-top: 14px;
+      opacity: 0.85;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--mint);
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(27, 61, 47, 0.12);
+      transition: all 0.25s ease;
+    }
+    .essence-card:hover .essence-tap-hint, .essence-card:focus .essence-tap-hint {
+      opacity: 1;
+      background: var(--teal);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .dhikr-ring:hover {
+      box-shadow: 0 0 24px 6px rgba(61, 122, 90, 0.35) !important;
+    }
+    #landing-breath-circle {
+      animation: breath-pulse-hint 4s ease-in-out infinite;
+      transition: all 0.3s ease;
+    }
+    /* Gym section: water hydration ring container fills the v-art slot naturally */
+    #feature-gym .v-art { height: auto; min-height: 0; }
+
+    /* High-contrast text visibility for Salah card */
+    .salah .eyebrow {
+      color: #cfee82 !important;
+      background: rgba(207,238,130,0.18) !important;
+      border: 1px solid rgba(207,238,130,0.38) !important;
+      box-shadow: 0 2px 10px rgba(207,238,130,0.15) !important;
+    }
+    .salah h3 {
+      color: #ffffff !important;
+      font-weight: 800;
+      -webkit-font-smoothing: antialiased;
+    }
+    .salah p {
+      color: #e2f0e7 !important;
+      font-weight: 500;
+      opacity: 1 !important;
+    }
+
+    /* Ultra-crisp rendering for Analysis Board (removes 1deg rotation layer blurriness) */
+    .analysis-board {
+      transform: none !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      box-shadow: 0 12px 36px rgba(19, 33, 27, 0.06);
+    }
+    .analysis-board:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 20px 48px rgba(19, 33, 27, 0.1);
+    }
+
+    /* Razor-sharp chart bars with subtle gradient and top highlight */
+    #insights .chart {
+      height: 120px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding: 0 4px 2px;
+      margin-top: 18px;
+    }
+    #insights .chart i {
+      flex: 1;
+      border-radius: 8px 8px 3px 3px;
+      background: linear-gradient(180deg, #3d7a5a 0%, #29573f 100%);
+      transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    #insights .chart i:last-child {
+      background: linear-gradient(180deg, #dcf598 0%, var(--mint) 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 14px rgba(207, 238, 130, 0.35);
+    }
+
+    /* Modern crisp range slider styling */
+    #insights input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(19, 33, 27, 0.12);
+      border-radius: 999px;
+      outline: none;
+      height: 6px !important;
+    }
+    #insights input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(19, 33, 27, 0.25);
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    #insights input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    #insights input[type=range]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(19, 33, 27, 0.25);
+      cursor: pointer;
+    }
+    #insights input[type=range]:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #landing-hijri-chip span:first-child { animation: none !important; }
+    }
+
+    </style>
+</head>
+<body>
+  <a href="#top" class="skip-link">Skip to main content</a>
+
+  <!-- Sticky Navigation Header -->
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="Lamim Home">
+      <img src="app/assets/logo-mark.png" alt="Lamim Logo" class="brand-icon" style="height:20px; width:auto; object-fit:contain;" fetchpriority="high" decoding="async">
+      <span>lamim</span>
+    </a>
+    
+    <div class="links">
+      <a href="#difference">Why Lamim</a>
+      <a href="#system">Features</a>
+      <a href="#insights">Preview</a>
+      <a href="#faq">FAQ</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="navcta" href="app/index.html">Open app <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <button type="button" class="menu" aria-label="Open navigation" aria-expanded="false" id="menuToggle"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+
+    <!-- Mobile Navigation Overlay Dropdown -->
+    <div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+        <div class="nav-links-mobile">
+          <a href="#difference" class="nav-link-mobile"><span>Why Lamim</span></a>
+          <a href="#system" class="nav-link-mobile"><span>Features</span></a>
+          <a href="#insights" class="nav-link-mobile"><span>Preview</span></a>
+          <a href="#faq" class="nav-link-mobile"><span>FAQ</span></a>
+        </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">EST. 2026 · VOL. I · LIVING MONOGRAPH</div>
+          <h1 class="hero-title">Your daily life, aligned with <em>faith.</em></h1>
+          <p>A quiet digital chronicle uniting prayer, contemplation, physical discipline, and halal stewardship into one harmonious, private rhythm.</p>
+          <div class="actions">
+            <a class="btn" href="app/index.html">Open Web Companion <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn alt" href="#difference">Read Monograph ↓</a>
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <div class="halo"></div>
+          <div class="orbit"></div>
+          <div class="app">
+            <div class="app-head">
+              <span id="hero-live-date" style="display:inline-flex;align-items:center;">
+                <span id="hero-live-date-text">Tuesday, 18 Aug</span>
+                <span class="hero-live-indicator" title="Live Clock & Solar Engine Active">
+                  <span class="hero-live-dot-wrap">
+                    <span class="hero-live-dot-ping"></span>
+                    <span class="hero-live-dot-core"></span>
+                  </span>
+                </span>
+              </span>
+              <span>&bull;&bull;&bull;</span>
+            </div>
+            <div class="app-grid">
+              <div class="tile mint">
+                <div class="kicker">Next prayer</div>
+                <div class="big" id="hero-next-prayer-name">Maghrib</div>
+                <div class="row"><span id="hero-next-prayer-countdown">in 01:42:18</span><b id="hero-next-prayer-time">18:47</b></div>
+              </div>
+              <div class="tile sky" id="hero-shs-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;" title="Auto-progressing spiritual health rhythm">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div class="kicker" style="margin:0;">Spiritual health</div>
+                  <span id="hero-shs-indicator" style="font-size:0.56rem;font-weight:800;color:#1f4e36;background:rgba(31,78,54,0.12);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">LIVE</span>
+                </div>
+                <div class="big" id="hero-shs-rank" style="transition:transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s ease;">Awakening</div>
+                <div class="meter"><span id="hero-shs-bar" style="width:0%; transition:none; background:linear-gradient(90deg, #1f4e36, #3d7a5a);"></span></div>
+                <div class="row"><span id="hero-shs-subtext">beginning the journey</span><b id="hero-shs-percent">0%</b></div>
+              </div>
+              <!-- Interactive Hero Live Activity Tile -->
+              <div class="tile dark wide" id="hero-live-activity-tile" style="cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;padding:16px 18px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <div class="kicker" style="margin:0;font-size:0.68rem;letter-spacing:0.14em;color:#cfee82;font-weight:800;">LIVE ACTIVITY</div>
+                  <span id="hero-activity-badge" style="font-size:0.62rem;font-weight:800;color:var(--mint);background:rgba(111,207,138,0.15);padding:3px 10px;border-radius:99px;letter-spacing:0.04em;">3/5 Done</span>
+                </div>
+                
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Salah Companion <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; Fajr Jama'at at 04:45</span>
+                  </span>
+                  <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Nafl &amp; Tahajjud <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; 2 Rakat at 03:30</span>
+                  </span>
+                  <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="true" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Dhikr &amp; Tasbeeh <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; 108x SubhanAllah</span>
+                  </span>
+                  <b class="activity-check" style="color:var(--mint);font-size:0.95rem;transition:all 0.2s ease;">&#10003;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;opacity:0.65;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Gym &amp; Health <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; 42m Workout</span>
+                  </span>
+                  <b class="activity-check" style="color:rgba(255,255,255,0.3);font-size:0.85rem;transition:all 0.2s ease;">&#9675;</b>
+                </div>
+
+                <div class="hero-activity-item row" data-done="false" style="cursor:pointer;padding:6px 0;transition:all 0.2s ease;opacity:0.65;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.86rem;font-weight:700;color:#f1f0e9;display:flex;align-items:center;gap:6px;">
+                    Smart Finance <span style="color:#9cb5a8;font-size:0.76rem;font-weight:500;">&middot; Monthly Ledger Saved</span>
+                  </span>
+                  <b class="activity-check" style="color:rgba(255,255,255,0.3);font-size:0.85rem;transition:all 0.2s ease;">&#9675;</b>
+                </div>
+
+                <!-- Live Progress Bar Fill -->
+                <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:12px;">
+                  <div id="hero-activity-bar" style="height:100%;width:60%;background:linear-gradient(90deg,var(--mint),#cfee82);border-radius:99px;transition:width 0.4s cubic-bezier(0.16,1,0.3,1);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="float"><b>100%</b> local and private</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Infinite Marquee Ribbon -->
+    <div class="ribbon">
+      <div class="track-wrapper">
+        <div class="track">
+          <span>Salah with presence</span>
+          <span>Nafl with intention</span>
+          <span>Dhikr with rhythm</span>
+          <span>Habits with mercy</span>
+          <span>Career with direction</span>
+          <span>Money with clarity</span>
+          <span>Zero cloud, zero tracking</span>
+          <span>Salah with presence</span>
+          <span>Nafl with intention</span>
+          <span>Dhikr with rhythm</span>
+          <span>Habits with mercy</span>
+          <span>Career with direction</span>
+          <span>Money with clarity</span>
+          <span>Zero cloud, zero tracking</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Brand Essence Section -->
+    <section class="brand-essence" id="brand-essence">
+      <div class="wrap">
+        <div class="essence-head reveal">
+          <div class="eyebrow">CHAPTER 01 · FOUNDATIONAL ESSENCE</div>
+          <h2>Think. Plan. <em>Achieve.</em></h2>
+          <p>A living monograph for an unhurried, intentional life. We unite prayer, clarity, and daily practice to cultivate quiet excellence.</p>
+        </div>
+
+        <div class="essence-grid">
+          <!-- Fast -->
+          <div class="essence-card reveal" data-essence="fast" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Fast architecture">
+            <span class="essence-num">I</span>
+            <div class="essence-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1b3d2f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3>Fast</h3>
+            <p>Instant, sub-16ms response</p>
+            <span class="essence-tap-hint">Overview &rarr;</span>
+          </div>
+
+          <!-- Secure -->
+          <div class="essence-card reveal" data-essence="secure" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Secure zero-cloud architecture">
+            <span class="essence-num">II</span>
+            <div class="essence-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1b3d2f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Secure</h3>
+            <p>Zero cloud, 100% on-device</p>
+            <span class="essence-tap-hint">Overview &rarr;</span>
+          </div>
+
+          <!-- Smart -->
+          <div class="essence-card reveal" data-essence="smart" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Smart local analytics">
+            <span class="essence-num">III</span>
+            <div class="essence-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1b3d2f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="2" y="13" width="4" height="8" rx="1"/></svg>
+            </div>
+            <h3>Smart</h3>
+            <p>Local solar &amp; streak insights</p>
+            <span class="essence-tap-hint">Overview &rarr;</span>
+          </div>
+
+          <!-- Human -->
+          <div class="essence-card reveal" data-essence="human" style="cursor:pointer;" tabindex="0" role="button" aria-label="Learn more about Human-centered design">
+            <span class="essence-num">IV</span>
+            <div class="essence-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1b3d2f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3>Human</h3>
+            <p>Calm typography, zero fatigue</p>
+            <span class="essence-tap-hint">Overview &rarr;</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    
+
+    
+    <!-- 00 · AI INTELLIGENT COMPANION SHOWCASE -->
+    <section class="ai-showcase-section" id="ai-companion" aria-label="AI Intelligent Companion">
+      <div class="wrap">
+        <div class="ai-island-card reveal" id="aiIslandCard">
+          
+            <!-- Header -->
+            <div class="ai-island-header">
+              <div class="ai-island-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span>THOUGHTFUL COMPANION</span>
+              </div>
+              <h2 class="ai-island-title">A quiet guide that understands your real routine.</h2>
+              <p class="ai-island-subtitle">
+                Ask in your own words — Bengali, Banglish, or English. Calm, grounded guidance for your daily rhythm, with 100% on-device privacy.
+              </p>
+            </div>
+
+            <!-- Bento Grid: Interactive Console + Mascot Video -->
+            <div class="ai-bento-grid">
+              
+              <!-- Column 1: Live Interactive Chat Simulator -->
+              <div class="ai-sim-card" id="aiSimConsole">
+                <div class="ai-sim-header">
+                  <div class="ai-sim-brand">
+                    <div class="ai-sim-orb">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="ai-sim-name">Lamim Companion</div>
+                      <div class="ai-sim-status">Private &amp; On-Device Guidance</div>
+                    </div>
+                  </div>
+                  <span class="ai-sim-badge">
+                    <span class="ai-sim-dot"></span> Live
+                  </span>
+                </div>
+
+                <!-- Dialogue Stream -->
+                <div class="ai-sim-body">
+                  <div class="ai-sim-bubble user" id="aiSimUserBubble">
+                    ajke fajr miss geche, ki korbo?
+                  </div>
+                  <div class="ai-sim-bubble ai" id="aiSimAiBubble">
+                    মন খারাপ করবেন না। ঘুম ভেঙে মনে পড়ার সাথে সাথেই অজু করে কাজা পড়ে নিন। আর বাকি ওয়াক্তগুলো জামাআতে পড়ে দিনটিকে সুন্দরভাবে রিকভার করুন!
+                  </div>
+                </div>
+
+                <!-- Interactive Quick Queries -->
+                <div class="ai-sim-footer">
+                  <div class="ai-sim-chips-label">REAL CONVERSATIONS:</div>
+                  <div class="ai-sim-chips">
+                    <button type="button" class="ai-sim-chip active" data-index="0">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                      <span>Fajr miss hole ki korbo?</span>
+                    </button>
+                    <button type="button" class="ai-sim-chip" data-index="1">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path></svg>
+                      <span>Tasbeeh kivabe hisab rakhbo?</span>
+                    </button>
+                    <button type="button" class="ai-sim-chip" data-index="2">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                      <span>Mon shanto korar tip?</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Column 2: Cinematic 3D Robot HUD Video Showcase -->
+              <div class="ai-video-card">
+                <div class="ai-video-frame">
+                  <video 
+                    id="aiCompanionVideoEl"
+                    class="ai-companion-video" 
+                    poster="app/assets/ai-companion-poster.jpg"
+                    autoplay 
+                    loop 
+                    muted 
+                    playsinline 
+                    webkit-playsinline
+                    preload="auto"
+                    aria-label="3D AI Intelligent Mascot interacting with lifestyle analytics HUD">
+                    <source src="app/assets/ai-companion.webm" type="video/webm">
+                    <source src="app/assets/ai-companion.mp4" type="video/mp4">
+                    <img src="app/assets/ai-companion-poster.jpg" alt="3D AI Assistant">
+                  </video>
+                  <div class="ai-video-hud-overlay">
+                    <span class="ai-video-pill">
+                      <span class="ai-video-dot"></span> Daily Rhythm &amp; Analytics
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Clean Video Card Caption -->
+                <div class="ai-video-caption">
+                  <div class="ai-video-caption-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cfee82" stroke-width="2.6">
+                      <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                    </svg>
+                    <span>Clear Insight, Zero Noise</span>
+                  </div>
+                  <p class="ai-video-caption-desc">
+                    সালাত, ফোকাস টাইম, আয়-ব্যয় এবং ব্যক্তিগত ভালো অভ্যাসের মাঝে একটি ভারসাম্যপূর্ণ ছন্দ বজায় রাখুন।
+                  </p>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 01: Difference -->
+    <section id="difference">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="eyebrow">CHAPTER 02 · ARCHITECTURAL DIFFERENCE</div>
+            <h2>One system beats nine <em>scattered apps.</em></h2>
+          </div>
+          <p>Lamim does not treat prayer, habits, money, health, and ambition as separate lives. It gives them one context, one rhythm, and one private home.</p>
+        </div>
+
+        <div class="manifest">
+          <article class="reveal">
+            <b>01</b>
+            <h3>Private by architecture</h3>
+            <p>No account, no cloud sync, no third-party profile.</p>
+          </article>
+          <article class="reveal">
+            <b>02</b>
+            <h3>Built for real days</h3>
+            <p>A custom 3 AM waking-day boundary for night worship.</p>
+          </article>
+          <article class="reveal">
+            <b>03</b>
+            <h3>Useful, not noisy</h3>
+            <p>Insight from patterns, not engagement tricks.</p>
+          </article>
+          <article class="reveal">
+            <b>04</b>
+            <h3>Always close</h3>
+            <p>Offline-first storage and local calculations.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 02: Complete System -->
+    <section class="dark" id="system">
+      <div class="wrap dark-grid">
+        <div class="reveal">
+          <div class="eyebrow" style="color:var(--mint)">CHAPTER 03 · COMPLETE LIFE SYSTEM</div>
+          <h2>Everything your day asks for, in <em>quiet harmony.</em></h2>
+          <p>Each module is focused, but the intelligence compounds across the whole experience.</p>
+        </div>
+
+        <div class="system">
+          <article class="system-row reveal">
+            <div class="num">01</div>
+            <h3>Salah</h3>
+            <p><span class="desc-full">Local prayer times, countdowns, Jama'at, Qaza, Missed, and a three-week heatmap.</span><span class="desc-short">Prayer times, Qaza logging &amp; 3-week heatmap.</span></p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">02</div>
+            <h3>Nafl</h3>
+            <p><span class="desc-full">Sunnah Muakkadah, Tahajjud, Witr, and optional prayers with a 3 AM boundary.</span><span class="desc-short">Tahajjud, Witr &amp; optional prayers with 3 AM boundary.</span></p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">03</div>
+            <h3>Dhikr</h3>
+            <p><span class="desc-full">Tactile Tasbeeh with presets, custom phrases, haptics, sound, sessions, and streaks.</span><span class="desc-short">Tactile Tasbeeh with presets, haptics &amp; streaks.</span></p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">04</div>
+            <h3>Habits</h3>
+            <p><span class="desc-full">Habit forge with relapse logging, progression badges, and 4-7-8 breathing.</span><span class="desc-short">Habit forge, relapse logging &amp; 4-7-8 breathing.</span></p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">05</div>
+            <h3>Gym</h3>
+            <p><span class="desc-full">Workout sessions, sets, reps, movement streaks, diet, sleep, and records.</span><span class="desc-short">Workouts, sets, reps, movement streaks &amp; sleep.</span></p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">06</div>
+            <h3>Career</h3>
+            <p><span class="desc-full">Focus sessions, study time, career goals, milestones, and direction.</span><span class="desc-short">Focus sessions, study goals &amp; direction.</span></p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">07</div>
+            <h3>Finance</h3>
+            <p><span class="desc-full">220+ categories, savings vaults, timelines, currency support, and PDF statements.</span><span class="desc-short">220+ categories, savings vaults &amp; PDF reports.</span></p>
+          </article>
+          <article class="system-row reveal">
+            <div class="num">08</div>
+            <h3>Analysis</h3>
+            <p><span class="desc-full">Spiritual Health Score, weighted ranks, trends, and downloadable reports.</span><span class="desc-short">Spiritual Health Score &amp; trend reports.</span></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 03: Salah -->
+    <section id="feature-salah">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 04 · SALAH</div>
+          <h2>Let consistency become <em>visible.</em></h2>
+          <p>Local sun-angle calculations power the next-prayer countdown. The heatmap adds context, showing Jama'at, Alone, Qaza, and Missed.</p>
+          <a class="btn" href="app/index.html?section=salah">Explore Salah <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual salah reveal">
+          <div class="v-info">
+            <div class="eyebrow" style="color:var(--mint)">Three-week rhythm</div>
+            <h3>Small marks. A clearer pattern.</h3>
+            <p>Fajr and Dhuhr are complete. Asr is next. Maghrib is waiting for you.</p>
+            <div id="landing-hijri-chip" style="display:inline-flex;align-items:center;gap:10px;margin-top:14px;padding:8px 18px 8px 14px;background:linear-gradient(135deg, #ffffff 0%, #f4faf6 100%);border:1px solid rgba(207,238,130,0.6);border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.9);transition:all 0.3s ease;" aria-label="Today's Islamic Hijri date">
+              <span style="width:9px;height:9px;border-radius:50%;background:#10b981;flex-shrink:0;animation:hijri-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;" aria-hidden="true"></span>
+              <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.75rem;font-weight:800;letter-spacing:0.08em;color:#2e6e4d;text-transform:uppercase;background:rgba(46,110,77,0.1);padding:2px 8px;border-radius:99px;">HIJRI</span>
+              <span id="landing-hijri-text" style="font-family:var(--font-display,'Fraunces',serif);font-size:0.92rem;font-weight:800;color:#13211b;-webkit-font-smoothing:antialiased;">Loading&hellip;</span>
+            </div>
+          </div>
+          <div class="v-art">
+            <div class="heatmap" id="landing-salah-heatmap" aria-label="Interactive 3-week prayer rhythm heatmap grid" style="cursor:pointer;position:relative;" title="Tap any cell to cycle prayer state">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 04: Nafl -->
+    <section id="feature-nafl" style="background:var(--gold)">
+      <div class="wrap feature-grid">
+        <div class="visual nafl reveal">
+          <div class="v-info">
+            <div class="eyebrow">The night view</div>
+            <h3>Keep the prayers you choose.</h3>
+            <p>Witr completed. Tahajjud remembered. A private record of the prayers that asked a little more from you.</p>
+          </div>
+          <div class="v-art">
+            <div class="nafl-orbit-ring" aria-hidden="true">
+              <div class="nafl-badge witr">Witr</div>
+              <div class="nafl-badge tahajjud">Tahajjud</div>
+            </div>
+            <div class="nafl-center-text">
+              <b>3 AM</b>
+              <span>new waking day</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 05 · NAFL &amp; TAHAJJUD</div>
+          <h2>Your night has its own <em>sacred logic.</em></h2>
+          <p>Tahajjud and Witr belong to the waking day you were living, not an arbitrary midnight boundary.</p>
+          <a class="btn" href="app/index.html?section=nafl">Explore Nafl <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 05: Dhikr -->
+    <section id="feature-dhikr">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 06 · DHIKR &amp; TASBEEH</div>
+          <h2>Make repetition feel <em>quietly present.</em></h2>
+          <p>Tap, haptic response, subtle ripple, and session history let the practice stay meaningful without becoming performative.</p>
+          <a class="btn" href="app/index.html?section=dhikr">Open Dhikr <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual dhikr reveal">
+          <div class="v-info">
+            <div class="eyebrow">Tasbeeh session</div>
+            <h3>108 repetitions, one breath at a time.</h3>
+            <p>Choose a phrase, begin a session, and let the interface disappear behind the rhythm.</p>
+          </div>
+          <div class="v-art">
+            <div class="dhikr-ring" id="landing-dhikr-ring" style="cursor:pointer; transition:transform 0.15s ease, box-shadow 0.3s ease; user-select:none; -webkit-user-select:none; position:relative;" title="Tap to count Tasbeeh" tabindex="0" role="button" aria-label="Tap to count Dhikr">
+              <div class="count" style="display:flex; flex-direction:column; align-items:center;">
+                <b id="landing-dhikr-count" style="font-size:clamp(2rem, 4.5vw, 3rem); font-weight:800; line-height:1; color:#13211b;">108</b>
+                <span id="landing-dhikr-label" class="dhikr-tap-pill">tap to count</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 06: Habits -->
+    <section id="feature-habits">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 07 · HABIT FORGE</div>
+          <h2>Clean discipline with <em>patience &amp; mercy.</em></h2>
+          <p>Build discipline across daily habits, track streaks, log relapses gracefully, and reset with calm breathing exercises.</p>
+          <a class="btn" href="app/index.html?section=habits">Enter the forge <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual habits reveal">
+          <div class="v-info">
+            <div class="eyebrow">4-7-8 Breathing</div>
+            <h3>Discipline without shame.</h3>
+            <p>Log the hard moment, start the breathing guide, and keep moving.</p>
+            <div class="habit-streak-dots" style="display:flex; align-items:center; gap:6px; margin-top:14px;">
+              <span style="font-size:0.62rem; font-weight:800; color:#3d246c; letter-spacing:0.08em; text-transform:uppercase; margin-right:4px;">7-Day Streak</span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#3d7a5a; box-shadow:0 0 6px rgba(61,122,90,0.35);"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#3d7a5a; box-shadow:0 0 6px rgba(61,122,90,0.35);"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#3d7a5a; box-shadow:0 0 6px rgba(61,122,90,0.35);"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#3d7a5a; box-shadow:0 0 6px rgba(61,122,90,0.35);"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#3d7a5a; box-shadow:0 0 6px rgba(61,122,90,0.35);"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#3d7a5a; box-shadow:0 0 6px rgba(61,122,90,0.35);"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:rgba(61,36,108,0.12); border:1px solid rgba(61,36,108,0.25);"></span>
+            </div>
+          </div>
+          <div class="v-art">
+            <div class="breath" id="landing-breath-circle" tabindex="0" role="button" aria-label="Tap circle to start 4-7-8 breathing guide">
+              <span id="landing-breath-text">
+                <b id="landing-breath-state">4 &middot; 7 &middot; 8</b>
+                <small id="landing-breath-sub">start guide</small>
+                <small id="landing-breath-count"></small>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 07: Gym -->
+    <section id="feature-gym">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 08 · GYM &amp; RECOVERY</div>
+          <h2>Train the body that carries your <em>intentions.</em></h2>
+          <p>Workouts, sets, reps, diet, sleep, movement streaks, and personal records. No social feed, no comparison loop.</p>
+          <a class="btn" href="app/index.html?section=gym">Build your rhythm <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="visual gym reveal">
+          <div class="v-info">
+            <div class="eyebrow">Training log</div>
+            <h3>12 days of showing up.</h3>
+            <p>42 minutes today. Personal best on the deadlift. Recovery still counts.</p>
+          </div>
+          <div class="v-art" style="width:auto;height:auto;min-width:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+            <!-- Canvas-based Water Glass (Tap to Hydrate) -->
+            <div id="landing-water-glass" style="position:relative;width:110px;height:158px;background:rgba(220,240,255,0.35);border:2.5px solid rgba(255,255,255,0.95);border-radius:14px 14px 28px 28px;box-shadow:0 20px 48px rgba(14,100,190,0.28),inset 0 2px 10px rgba(255,255,255,0.95),inset 0 -8px 18px rgba(20,120,220,0.18);overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform 0.18s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease;" title="Tap glass to add 250ml water" tabindex="0" role="button" aria-label="Tap glass to add 250ml water">
+
+              <!-- Canvas: water body + realistic sine wave rendered every frame -->
+              <canvas id="landing-water-canvas" width="110" height="158" style="position:absolute;inset:0;z-index:2;pointer-events:none;"></canvas>
+
+              <!-- Glass Reflection Flare (above canvas) -->
+              <div style="position:absolute;top:0;left:8px;width:16px;height:100%;background:linear-gradient(160deg,rgba(255,255,255,0.65) 0%,rgba(255,255,255,0.03) 100%);border-radius:8px;z-index:5;pointer-events:none;"></div>
+
+              <!-- Measurement ticks (above canvas) -->
+              <div style="position:absolute;right:7px;top:18px;bottom:18px;width:9px;display:flex;flex-direction:column;justify-content:space-between;z-index:5;opacity:0.55;pointer-events:none;">
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.45);border-radius:1px;"></span>
+                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.3);border-radius:1px;"></span>
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.45);border-radius:1px;"></span>
+                <span style="display:block;width:6px;height:1px;background:rgba(10,70,130,0.3);border-radius:1px;"></span>
+                <span style="display:block;width:9px;height:2px;background:rgba(10,70,130,0.45);border-radius:1px;"></span>
+              </div>
+
+              <!-- ML label (above everything) -->
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:8;pointer-events:none;text-align:center;">
+                <b id="landing-water-amount" style="font-family:var(--font-display,'Fraunces',serif);font-size:1.75rem;font-weight:900;color:#062d56;line-height:1;text-shadow:0 0 20px rgba(255,255,255,1),0 2px 6px rgba(255,255,255,0.95);-webkit-font-smoothing:antialiased;">750</b>
+                <span id="landing-water-unit" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.68rem;font-weight:900;color:#0a4070;letter-spacing:0.12em;text-transform:uppercase;margin-top:3px;text-shadow:0 1px 8px rgba(255,255,255,1);">ML</span>
+              </div>
+            </div>
+
+            <!-- Percentage Pill Badge -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <span id="landing-water-pct" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.78rem;font-weight:800;color:#ffffff;background:#0d5994;padding:4px 14px;border-radius:99px;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(13,89,148,0.25);">25% &middot; Goal 3L</span>
+              <small style="font-size:0.64rem;color:#13211b;font-weight:800;letter-spacing:0.03em;">Tap glass to add water</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 08: Career -->
+    <section id="feature-career" style="background:var(--coral)">
+      <div class="wrap feature-grid">
+        <div class="visual career reveal">
+          <div class="v-info">
+            <div class="eyebrow">Career &amp; Life</div>
+            <h3>Direction over drift.</h3>
+            <p>One skill improved this week. 4.2 hours of deep focus logged today.</p>
+          </div>
+          <div class="v-art" style="width:auto;height:auto;min-width:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+            
+            <!-- Glassmorphic Weekly Focus Card (Interactive) -->
+            <div id="landing-career-card" style="width:152px;background:rgba(255,255,255,0.78);border:2px solid rgba(255,255,255,0.95);border-radius:18px;box-shadow:0 14px 36px rgba(19,33,27,0.1), inset 0 2px 6px rgba(255,255,255,0.9);padding:14px 12px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);user-select:none;-webkit-user-select:none;cursor:pointer;" title="Tap pillars to inspect focus hours" tabindex="0" role="button" aria-label="Interactive Weekly Focus Log">
+              
+              <!-- Card Top Header -->
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:5px;">
+                  <span style="width:7px;height:7px;border-radius:50%;background:#3d7a5a;box-shadow:0 0 8px #6fcf8a;"></span>
+                  <span style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.62rem;font-weight:800;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;">FOCUS LOG</span>
+                </div>
+                <span id="career-focus-badge" style="font-family:var(--font-display,'Fraunces',serif);font-size:0.75rem;font-weight:800;color:#1e4530;background:#e2f4c1;padding:2px 8px;border-radius:99px;box-shadow:0 2px 6px rgba(61,122,90,0.15);transition:all 0.25s ease;">4.2h</span>
+              </div>
+
+              <!-- 5 Interactive Vertical Pillars -->
+              <div style="height:76px;display:flex;align-items:flex-end;justify-content:space-between;gap:6px;padding:0 2px;position:relative;">
+                
+                <!-- Baseline grid lines -->
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;opacity:0.25;">
+                  <span style="border-bottom:1px dashed rgba(19,33,27,0.5);"></span>
+                  <span style="border-bottom:1px dashed rgba(19,33,27,0.3);"></span>
+                  <span style="border-bottom:1px dashed rgba(19,33,27,0.5);"></span>
+                </div>
+
+                <!-- Mon -->
+                <div class="career-day-col" data-day="Mon" data-hours="2.5h" data-streak="9 Day Streak" data-growth="↑8%" data-baseh="25px" style="height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:25px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:5px 5px 2px 2px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.18);" title="Mon: 2.5h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">M</span>
+                </div>
+
+                <!-- Tue -->
+                <div class="career-day-col" data-day="Tue" data-hours="3.8h" data-streak="10 Day Streak" data-growth="↑12%" data-baseh="42px" style="height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:42px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:5px 5px 2px 2px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.18);" title="Tue: 3.8h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">T</span>
+                </div>
+
+                <!-- Wed -->
+                <div class="career-day-col" data-day="Wed" data-hours="3.0h" data-streak="11 Day Streak" data-growth="↑15%" data-baseh="32px" style="height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:32px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:5px 5px 2px 2px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.18);" title="Wed: 3.0h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">W</span>
+                </div>
+
+                <!-- Thu (Active Peak) -->
+                <div class="career-day-col active" data-day="Thu" data-hours="4.2h" data-streak="12 Day Streak" data-growth="↑18%" data-baseh="54px" style="height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:44px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:5px 5px 2px 2px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.18);" title="Thu: 4.2h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">T</span>
+                </div>
+
+                <!-- Fri -->
+                <div class="career-day-col" data-day="Fri" data-hours="3.5h" data-streak="13 Day Streak" data-growth="↑22%" data-baseh="44px" style="height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;z-index:2;cursor:pointer;">
+                  <div class="career-pillar" style="width:100%;height:44px;background:linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%);border-radius:5px 5px 2px 2px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 6px rgba(46,110,77,0.18);" title="Fri: 3.5h"></div>
+                  <span class="career-day-lbl" style="font-size:0.58rem;font-weight:800;color:var(--muted);transition:color 0.2s;">F</span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Streak Pill Badge -->
+            <div id="landing-career-streak" style="display:flex;align-items:center;gap:6px;background:#1a3d2b;color:#cfee82;padding:5px 14px;border-radius:99px;box-shadow:0 4px 14px rgba(26,61,43,0.22);font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;letter-spacing:0.04em;cursor:pointer;transition:transform 0.18s ease;" title="Tap to cycle days">
+              <span>12 Day Streak</span>
+              <span style="opacity:0.5;">&middot;</span>
+              <span style="color:#6fcf8a;">&uparrow;18%</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 09 · VOCATION &amp; AMBITION</div>
+          <h2>Turn ambition into a daily <em>practice.</em></h2>
+          <p>Keep career goals, focus sessions, study time, and milestones visible without letting work consume the rest of your life.</p>
+          <a class="btn" href="app/index.html?section=career">Shape your path <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 09: Finance -->
+    <section id="feature-finance" style="background:#dcece1">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 10 · HALAL CAPITAL</div>
+          <h2>Clarity is a form of <em>care.</em></h2>
+          <p>Track income and expenses across 220+ categories, create savings vaults, see timelines, convert currencies, and export PDF statements.</p>
+          <a class="btn" href="app/index.html?section=finance">Explore the ledger <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <!-- Interactive Finance Ledger Card -->
+        <div class="visual ledger reveal" id="landing-finance-card" style="cursor:pointer;user-select:none;-webkit-user-select:none;" title="Tap month or rows to cycle ledger preview">
+          <div class="ledger-top" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Monthly overview</span>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <button id="ledger-prev-btn" aria-label="Previous month" title="Previous month" style="background:rgba(61,122,90,0.12);color:#1f4e36;border:none;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;cursor:font-weight:900;font-size:0.75rem;transition:transform 0.15s, background 0.15s;">&lsaquo;</button>
+              <span id="ledger-month-btn" style="cursor:pointer;background:rgba(61,122,90,0.1);color:#1f4e36;padding:3px 10px;border-radius:99px;font-weight:800;transition:all 0.2s ease;">August 2026 &#9662;</span>
+              <button id="ledger-next-btn" aria-label="Next month" title="Next month" style="background:rgba(61,122,90,0.12);color:#1f4e36;border:none;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;cursor:pointer;font-weight:900;font-size:0.75rem;transition:transform 0.15s, background 0.15s;">&rsaquo;</button>
+            </div>
+          </div>
+          <div class="ledger-total" style="display:flex;align-items:baseline;gap:10px;margin:16px 0 20px;transition:transform 0.2s ease;">
+            <span id="ledger-total-val">&#2547;58,000</span>
+            <span id="ledger-trend-badge" style="font-family:var(--font-body,sans-serif);font-size:0.75rem;font-weight:800;color:#1f4e36;background:#e2f4c1;padding:2px 9px;border-radius:99px;">&plus;12.4%</span>
+          </div>
+          
+          <div class="ledger-row-box" data-row="income" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0;"><span>Income</span><b class="green" id="ledger-income-val">&plus; &#2547;72,000</b></div>
+          </div>
+
+          <div class="ledger-row-box" data-row="essentials" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0;"><span>Essentials</span><b id="ledger-essentials-val">&minus; &#2547;32,500</b></div>
+          </div>
+
+          <div class="ledger-row-box" data-row="giving" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0;"><span>Giving</span><b id="ledger-giving-val">&minus; &#2547;8,000</b></div>
+          </div>
+
+          <div class="ledger-row-box" data-row="vault" style="padding:2px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.2s;">
+            <div class="ledger-row" style="border-bottom:none;padding:6px 0 2px;"><span>Savings vault</span><b class="green" id="ledger-vault-val">&#2547;8,500 / &#2547;10,000</b></div>
+            <!-- Progress bar fill for Vault -->
+            <div style="height:5px;background:rgba(19,33,27,0.08);border-radius:99px;overflow:hidden;margin-bottom:6px;">
+              <div id="ledger-vault-bar" style="height:100%;width:85%;background:linear-gradient(90deg,#3d7a5a,#6fcf8a);border-radius:99px;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 10: Analysis & Insights -->
+    <section id="insights">
+      <div class="wrap analysis-grid">
+        <div class="analysis-board reveal">
+          <div class="analysis-top">
+            <span>Spiritual Health Score</span>
+            <span class="green" style="font-size:0.72rem;font-weight:700;letter-spacing:0.04em;">Live Preview</span>
+          </div>
+          <!-- Live SHS Score -->
+          <div class="score" id="landing-shs-score" style="transition:color 0.5s ease;">76 <small style="font-size:0.4em; color:var(--muted);">/ 100</small></div>
+          <div id="landing-shs-rank" style="font-size:.78rem; color:var(--muted); transition:opacity 0.4s;">Mindful &mdash; presence &amp; devotion in deeds</div>
+          <!-- 5 Real SHS Sliders with Unique Accent Colors -->
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label for="shs-prayer" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Prayer</label>
+              <input id="shs-prayer" type="range" min="0" max="100" value="92" style="flex:1;accent-color:#3d7a5a;height:4px;cursor:pointer;" aria-label="Prayer percentage">
+              <b id="shs-prayer-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#3d7a5a;width:32px;text-align:right;">92%</b>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label for="shs-dhikr" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Dhikr</label>
+              <input id="shs-dhikr" type="range" min="0" max="100" value="88" style="flex:1;accent-color:#167cc0;height:4px;cursor:pointer;" aria-label="Dhikr percentage">
+              <b id="shs-dhikr-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#167cc0;width:32px;text-align:right;">88%</b>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label for="shs-nafl" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Nafl</label>
+              <input id="shs-nafl" type="range" min="0" max="100" value="60" style="flex:1;accent-color:#b87e14;height:4px;cursor:pointer;" aria-label="Nafl percentage">
+              <b id="shs-nafl-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#b87e14;width:32px;text-align:right;">60%</b>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label for="shs-habits" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Habits</label>
+              <input id="shs-habits" type="range" min="0" max="100" value="80" style="flex:1;accent-color:#593b82;height:4px;cursor:pointer;" aria-label="Habits clean score">
+              <b id="shs-habits-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#593b82;width:32px;text-align:right;">80%</b>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label for="shs-rhythm" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:700;color:var(--muted);width:58px;flex-shrink:0;">Rhythm</label>
+              <input id="shs-rhythm" type="range" min="0" max="100" value="70" style="flex:1;accent-color:#c2441d;height:4px;cursor:pointer;" aria-label="Rhythm consistency score">
+              <b id="shs-rhythm-val" style="font-family:var(--font-body,'Inter',sans-serif);font-size:0.72rem;font-weight:800;color:#c2441d;width:32px;text-align:right;">70%</b>
+            </div>
+          </div>
+          <!-- 6 Distinct Vibrant Gradient Chart Bars with Category Labels & Flex:None Fix -->
+          <div class="chart" aria-hidden="true" style="margin-top:20px;height:120px;display:flex;align-items:flex-end;gap:8px;border-bottom:1px solid var(--line);padding:0 4px 6px;">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Prayer: 92%" style="flex:none !important;width:100%;height:92%;background:linear-gradient(180deg,#52d49c 0%,#1e6341 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(30,99,65,0.22);transition:height 0.35s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Prayer</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Dhikr: 88%" style="flex:none !important;width:100%;height:88%;background:linear-gradient(180deg,#38c8f0 0%,#167cc0 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(22,124,192,0.22);transition:height 0.35s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Dhikr</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Nafl: 60%" style="flex:none !important;width:100%;height:60%;background:linear-gradient(180deg,#f5c842 0%,#b87e14 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(184,126,20,0.22);transition:height 0.35s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Nafl</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Habits: 80%" style="flex:none !important;width:100%;height:80%;background:linear-gradient(180deg,#b886f8 0%,#593b82 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(89,59,130,0.22);transition:height 0.35s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Habits</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Rhythm: 70%" style="flex:none !important;width:100%;height:70%;background:linear-gradient(180deg,#ff8c66 0%,#c2441d 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 3px 8px rgba(194,68,29,0.22);transition:height 0.35s cubic-bezier(0.16,1,0.3,1);"></i>
+              <span style="font-size:0.56rem;font-weight:800;color:var(--muted);">Rhythm</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px;">
+              <i title="Total SHS: 83/100" style="flex:none !important;width:100%;height:83%;background:linear-gradient(180deg,#cfee82 0%,#1f4e36 100%) !important;border-radius:6px 6px 2px 2px;box-shadow:0 4px 14px rgba(31,78,54,0.4);transition:height 0.35s cubic-bezier(0.16,1,0.3,1);position:relative;">
+                <span style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#cfee82;border-radius:50%;box-shadow:0 0 6px #cfee82;"></span>
+              </i>
+              <span style="font-size:0.56rem;font-weight:900;color:#1f4e36;">SHS</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 11 · SPIRITUAL ANALYSIS</div>
+          <h2>See the pattern, not just <em>the score.</em></h2>
+          <p>Connect Salah, Nafl, Dhikr, habits, and goals into a useful long-term view. Review trends and export a PDF report.</p>
+          <a class="btn" href="app/index.html?section=analysis">Open your insights <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 11: Profile -->
+    <section id="feature-profile" class="profile">
+      <div class="wrap feature-grid">
+        <div class="feature-copy reveal">
+          <div class="eyebrow">CHAPTER 12 · SANCTUARY PROFILE</div>
+          <h2>Your whole self, in <em>one view.</em></h2>
+          <p>City, prayer method, language, currency, notifications, goals, rank, and preferences in one considered space.</p>
+          <a class="btn" href="app/index.html?section=profile">Make it yours <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <!-- Interactive Profile Card -->
+        <div class="profile-card reveal" id="landing-profile-card" style="position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;transition:all 0.35s var(--ease);" title="Tap to interact with profile preview">
+          
+          <!-- Top Row: Avatar + Name + Live Badge -->
+          <div class="profile-top" style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+            <div class="avatar" style="position:relative;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#cfee82,#3d7a5a);color:#1e4530;font-family:var(--font-display,serif);font-size:1.15rem;font-weight:900;display:grid;place-items:center;box-shadow:0 4px 14px rgba(61,122,90,0.25);flex-shrink:0;">
+              MR
+              <span style="position:absolute;bottom:1px;right:1px;width:11px;height:11px;background:#6fcf8a;border:2px solid #ffffff;border-radius:50%;box-shadow:0 0 8px #6fcf8a;"></span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <h3 style="font-size:1.2rem;font-weight:800;color:var(--ink);margin:0;letter-spacing:-0.02em;">Mr riyar</h3>
+                <span style="font-size:0.58rem;font-weight:800;color:#1f4e36;background:#e2f4c1;padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">PRO</span>
+              </div>
+              <p style="font-size:0.8rem;color:var(--muted);margin-top:2px;" id="profile-sub-info">Dhaka &middot; Mindful &middot; 18 day rhythm</p>
+            </div>
+          </div>
+
+          <!-- 3 Interactive Glass Stat Cards -->
+          <div class="stats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
+            
+            <div class="profile-stat-box" data-stat="salah" style="background:rgba(61,122,90,0.06);border:1px solid rgba(61,122,90,0.12);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.25s ease;" title="Tap to inspect Salah rhythm">
+              <b style="font-family:var(--font-display,serif);font-size:1.35rem;font-weight:900;color:#1f4e36;line-height:1;display:block;" id="stat-salah-val">92%</b>
+              <span style="font-size:0.62rem;font-weight:700;color:var(--muted);margin-top:4px;display:block;">Salah rhythm</span>
+            </div>
+
+            <div class="profile-stat-box" data-stat="goals" style="background:rgba(61,122,90,0.06);border:1px solid rgba(61,122,90,0.12);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.25s ease;" title="Tap to inspect active goals">
+              <b style="font-family:var(--font-display,serif);font-size:1.35rem;font-weight:900;color:var(--ink);line-height:1;display:block;" id="stat-goals-val">14</b>
+              <span style="font-size:0.62rem;font-weight:700;color:var(--muted);margin-top:4px;display:block;">goals alive</span>
+            </div>
+
+            <div class="profile-stat-box" data-stat="vault" style="background:rgba(61,122,90,0.06);border:1px solid rgba(61,122,90,0.12);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;transition:all 0.25s ease;" title="Tap to inspect savings vault">
+              <b style="font-family:var(--font-display,serif);font-size:1.35rem;font-weight:900;color:#1f4e36;line-height:1;display:block;" id="stat-vault-val">&#2547;8.5k</b>
+              <span style="font-size:0.62rem;font-weight:700;color:var(--muted);margin-top:4px;display:block;">vault saved</span>
+            </div>
+
+          </div>
+
+          <!-- Interactive Detail Rows -->
+          <div class="profile-row" id="profile-row-focus" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer;transition:background 0.2s;" title="Tap to cycle focus goal">
+            <span style="font-size:0.82rem;color:var(--muted);">Current focus</span>
+            <b id="profile-focus-val" style="font-size:0.82rem;font-weight:800;color:var(--ink);background:rgba(19,33,27,0.05);padding:3px 10px;border-radius:99px;transition:all 0.25s ease;">Steady mornings</b>
+          </div>
+
+          <div class="profile-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line);">
+            <span style="font-size:0.82rem;color:var(--muted);">Data location</span>
+            <b class="green" style="font-size:0.82rem;font-weight:800;color:#1f4e36;display:flex;align-items:center;gap:4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              This device (Encrypted)
+            </b>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 12: Interactive Demo -->
+    <section id="demo" class="demo">
+      <div class="wrap demo-grid">
+        <div class="demo-copy reveal">
+          <div class="eyebrow" style="color:var(--mint)">CHAPTER 13 · A LIVING SYSTEM</div>
+          <h2>See the app change as <em>you grow.</em></h2>
+          <p>Switch between your day, analysis, and profile. This preview is interactive.</p>
+          <div class="tabs" role="tablist" id="demo-tabs">
+            <button type="button" class="tab active" role="tab" aria-selected="true" aria-controls="demo-panel" data-mode="Today">Today</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Analysis">Analysis</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-mode="Profile">Profile</button>
+          </div>
+          <p style="font-size:0.75rem;color:var(--mint);opacity:0.85;margin-top:14px;display:flex;align-items:center;gap:6px;">
+            <span style="width:6px;height:6px;background:var(--mint);border-radius:50%;box-shadow:0 0 8px var(--mint);"></span>
+            Interactive live preview &middot; Tap title or screen to cycle
+          </p>
+        </div>
+
+        <div class="phone reveal" id="demo-phone-frame" style="perspective:1000px;transition:transform 0.25s ease-out;cursor:pointer;" title="Tap phone to toggle interactive state">
+          <div class="screen" role="tabpanel" id="demo-panel" aria-label="Demo preview" aria-live="polite" style="transition:transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;">
+            <div>
+              <small>Lamim / <span id="mode">Today</span></small>
+              <h3 id="title" style="cursor:pointer;user-select:none;transition:all 0.2s;" title="Tap to cycle time of day">A steady morning</h3>
+              <div class="meter"><span id="meter" style="width: 76%; transition: width 0.6s cubic-bezier(0.16,1,0.3,1);"></span></div>
+            </div>
+            <div id="demo-rows-container">
+              <div class="screen-row">
+                <span id="copy">Next Prayer</span>
+                <strong id="value" style="color:var(--mint);">Fajr in 01:28</strong>
+              </div>
+              <div class="screen-row"><span>Daily Habits</span><span style="color:#cfee82;font-weight:600;">3/5 Completed</span></div>
+              <div class="screen-row"><span>Data Security</span><span style="color:#ffffff;font-weight:500;">100% Local &bull; AES-256</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 13: FAQ -->
+    <section id="faq">
+      <div class="wrap faq-grid">
+        <div class="reveal">
+          <div class="eyebrow">CHAPTER 14 · INQUIRIES &amp; CLARITY</div>
+          <h2>Nothing hidden behind the <em>calm.</em></h2>
+        </div>
+        <div class="faq-list reveal">
+          <details open>
+            <summary>What is included in Lamim?</summary>
+            <p>Salah, Nafl, Dhikr, Habits, Gym, Career, Goals and Sunnah, Smart Finance, Savings Vaults, Analysis, Spiritual Health Score, Profile, local backups, and pure on-device web architecture.</p>
+          </details>
+          <details>
+            <summary>Does Lamim need an account?</summary>
+            <p>No. Lamim works without email, password, phone number, or a central user database. Your personal reflections stay exclusively on your device.</p>
+          </details>
+          <details>
+            <summary>Can I use it without internet?</summary>
+            <p>Yes. The app is built for offline use with local storage and service-worker caching. All calculations happen on-device.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final reveal">
+      <div class="wrap final-wrap">
+        <div>
+          <div class="eyebrow" style="color:#2f4e3f;">Everything you need to begin</div>
+          <h2 style="margin-top:12px;">Make room for what lasts.</h2>
+        </div>
+        <div>
+          <p>Open lamim, choose one small practice, and let the rest become clearer with time.</p>
+          <a class="btn btn-final" href="app/index.html">Open app <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 9L9 2M9 2H3.5M9 2V7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Essence Overview Modal Popup -->
+  <div class="essence-modal-overlay" id="essence-modal" aria-hidden="true" role="dialog" aria-labelledby="essence-modal-title">
+    <div class="essence-modal-card">
+      <button class="essence-modal-close" id="essence-modal-close" aria-label="Close modal">&times;</button>
+      <div class="essence-modal-badge" id="essence-modal-badge">Pillars</div>
+      <h3 class="essence-modal-title" id="essence-modal-title">Title</h3>
+      <p class="essence-modal-desc" id="essence-modal-desc">Description</p>
+      
+      <div class="essence-modal-stats-grid" id="essence-modal-stats">
+        <!-- Dynamic Stats Boxes -->
+      </div>
+
+      <div class="essence-modal-bullets" id="essence-modal-bullets">
+        <!-- Dynamic Bullet List -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wrap footer-grid reveal">
+      <div class="footer-brand">
+        <a class="brand footer-brand-link" href="#top" style="color:var(--paper);text-decoration:none;font-size:clamp(1.85rem, 3vw, 2.5rem) !important;display:inline-flex !important;align-items:center !important;gap:12px !important;line-height:1 !important;margin:0 !important;">
+          <img src="app/assets/logo-mark.png" alt="Lamim Logo" class="brand-icon" style="height:clamp(36px, 3.2vw, 46px) !important; width:auto !important; object-fit:contain !important; filter: drop-shadow(0 3px 12px rgba(207, 238, 130, 0.28)); flex-shrink:0 !important;">
+          <span style="font-weight:900;letter-spacing:-0.035em;">lamim</span>
+        </a>
+        <p style="font-size: 0.92rem; margin-top: 12px; color: #8fa89a; max-width: 24ch; line-height: 1.5;">Your entire life, one quiet system.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="#system">Features</a>
+          <a href="#insights">Preview</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <h3>Modules</h3>
+        <div class="footer-links footer-links-2col">
+          <a href="app/index.html?section=salah">Salah</a>
+          <a href="app/index.html?section=nafl">Nafl</a>
+          <a href="app/index.html?section=dhikr">Dhikr</a>
+          <a href="app/index.html?section=habits">Habits</a>
+          <a href="app/index.html?section=gym">Gym</a>
+          <a href="app/index.html?section=career">Career</a>
+          <a href="app/index.html?section=finance">Finance</a>
+          <a href="app/index.html?section=analysis">Analysis</a>
+        </div>
+      </div>
+      <div>
+        <h3>Product</h3>
+        <div class="footer-links">
+          <a href="#difference">Why Lamim</a>
+          <a href="app/index.html">Open app</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="wrap bottom">
+      <span>Offline first. Always yours.</span>
+      <span>&copy; 2026 lamim. Crafted for the Ummah.</span>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js?v=20260812_v2"></script>
+
+
+  <script>
+    (function initHeroLivePrayer() {
+      const dateEl = document.getElementById('hero-live-date');
+      const nameEl = document.getElementById('hero-next-prayer-name');
+      const countEl = document.getElementById('hero-next-prayer-countdown');
+      const timeEl = document.getElementById('hero-next-prayer-time');
+      if (!dateEl || !nameEl || !countEl || !timeEl) return;
+
+      function updateHeroPrayer() {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const textEl = document.getElementById('hero-live-date-text');
+        if (textEl) {
+          textEl.textContent = dateStr;
+        } else {
+          dateEl.innerHTML = `${dateStr} <span class="hero-live-indicator" title="Live Clock & Solar Engine Active"><span class="hero-live-dot-wrap"><span class="hero-live-dot-ping"></span><span class="hero-live-dot-core"></span></span></span>`;
+        }
+
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const day = now.getDate();
+
+        let lat = 23.8103, lng = 90.4125;
+        try {
+          const stored = localStorage.getItem('lamim_settings');
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed.lat && parsed.lng) { lat = Number(parsed.lat); lng = Number(parsed.lng); }
+          }
+        } catch(e) {}
+
+        const dayOfYear = Math.floor((now - new Date(year, 0, 0)) / 86400000);
+        const B = (360 / 365) * (dayOfYear - 81) * (Math.PI / 180);
+        const EoT = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
+        const decl = 23.45 * Math.sin((360 / 365) * (dayOfYear - 81) * (Math.PI / 180)) * (Math.PI / 180);
+        const tzOffset = -now.getTimezoneOffset() / 60;
+        const solarNoon = 12 + (tzOffset - lng / 15) - (EoT / 60);
+
+        const hourAngle = function(angleDeg) {
+          const latRad = lat * (Math.PI / 180);
+          const angleRad = angleDeg * (Math.PI / 180);
+          const cosH = (Math.sin(angleRad) - Math.sin(latRad) * Math.sin(decl)) / (Math.cos(latRad) * Math.cos(decl));
+          if (cosH > 1) return 0;
+          if (cosH < -1) return 12;
+          return (Math.acos(cosH) * 180 / Math.PI) / 15;
+        };
+
+        const fajrHA = hourAngle(-18);
+        const asrAngle = Math.atan(1 / (2 + Math.tan(Math.abs((lat * Math.PI / 180) - decl)))) * 180 / Math.PI;
+        const asrHA = hourAngle(asrAngle);
+        const maghribHA = hourAngle(-0.833);
+        const ishaHA = hourAngle(-17);
+
+        const makeDate = function(hFloat, addDays) {
+          const h = Math.floor(hFloat);
+          const m = Math.floor((hFloat - h) * 60);
+          const s = Math.floor(((hFloat - h) * 60 - m) * 60);
+          return new Date(year, month, day + (addDays || 0), h, m, s);
+        };
+
+        const prayers = [
+          { name: 'Fajr', time: makeDate(solarNoon - fajrHA) },
+          { name: 'Dhuhr', time: makeDate(solarNoon) },
+          { name: 'Asr', time: makeDate(solarNoon + asrHA) },
+          { name: 'Maghrib', time: makeDate(solarNoon + maghribHA) },
+          { name: 'Isha', time: makeDate(solarNoon + ishaHA) }
+        ];
+
+        let next = null;
+        for (let i = 0; i < prayers.length; i++) {
+          if (prayers[i].time > now) {
+            next = prayers[i];
+            break;
+          }
+        }
+        if (!next) {
+          next = { name: 'Fajr', time: makeDate(solarNoon - fajrHA, 1) };
+        }
+
+        nameEl.textContent = next.name;
+        const pH = String(next.time.getHours()).padStart(2, '0');
+        const pM = String(next.time.getMinutes()).padStart(2, '0');
+        timeEl.textContent = pH + ':' + pM;
+
+        const diffMs = Math.max(0, next.time - now);
+        const cH = String(Math.floor(diffMs / 3600000)).padStart(2, '0');
+        const cM = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0');
+        const cS = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0');
+        countEl.textContent = 'in ' + cH + ':' + cM + ':' + cS;
+      }
+
+      updateHeroPrayer();
+      setInterval(updateHeroPrayer, 1000);
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE: HERO LIVE ACTIVITY INTERACTIVE TOGGLE ---- */
+    (function initHeroLiveActivity() {
+      var tile = document.getElementById('hero-live-activity-tile');
+      var badge = document.getElementById('hero-activity-badge');
+      var bar = document.getElementById('hero-activity-bar');
+      var items = document.querySelectorAll('.hero-activity-item');
+      if (!tile || !items.length) return;
+
+      function updateProgress() {
+        var total = items.length;
+        var done = 0;
+        items.forEach(function(item) {
+          if (item.getAttribute('data-done') === 'true') done++;
+        });
+
+        if (badge) badge.textContent = done + '/' + total + ' Done';
+        if (bar) bar.style.width = Math.round((done / total) * 100) + '%';
+      }
+
+      items.forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var isDone = item.getAttribute('data-done') === 'true';
+          var check = item.querySelector('.activity-check');
+
+          if (isDone) {
+            item.setAttribute('data-done', 'false');
+            item.style.opacity = '0.65';
+            if (check) {
+              check.innerHTML = '&#9675;';
+              check.style.color = 'rgba(255,255,255,0.3)';
+              check.style.fontSize = '0.85rem';
+            }
+          } else {
+            item.setAttribute('data-done', 'true');
+            item.style.opacity = '1';
+            if (check) {
+              check.innerHTML = '&#10003;';
+              check.style.color = 'var(--mint)';
+              check.style.fontSize = '0.95rem';
+            }
+          }
+
+          item.style.transform = 'scale(1.03)';
+          setTimeout(function() { item.style.transform = 'scale(1)'; }, 150);
+
+          updateProgress();
+          safeVibrate(14);
+        });
+      });
+
+      updateProgress();
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE: PER-PHASE 0% TO 100% SEQUENTIAL PROGRESSION ---- */
+    (function initHeroSHSTile() {
+      var tile = document.getElementById('hero-shs-tile');
+      var rankEl = document.getElementById('hero-shs-rank');
+      var barEl = document.getElementById('hero-shs-bar');
+      var percentEl = document.getElementById('hero-shs-percent');
+      var subtextEl = document.getElementById('hero-shs-subtext');
+      if (!tile || !rankEl || !barEl || !percentEl) return;
+
+      var phases = [
+        { rank: 'Awakening', subtext: 'beginning the journey' },
+        { rank: 'Intentional', subtext: 'traveling with purpose' },
+        { rank: 'Consistent', subtext: 'building habit momentum' },
+        { rank: 'Resilient', subtext: 'overcoming & pushing limits' },
+        { rank: 'Mindful', subtext: 'presence & devotion in deeds' },
+        { rank: 'God-Conscious', subtext: 'taqwa guiding your path' },
+        { rank: 'Ihsan', subtext: 'peak spiritual excellence' }
+      ];
+
+      var phaseIdx = 0;
+      var phaseDuration = 4500; // 4.5 seconds for each phase to count 0% -> 100%
+      var startTime = null;
+      var animFrameId = null;
+
+      function updatePhaseHeader(rank, subtext) {
+        if (rankEl.textContent !== rank) {
+          rankEl.style.transform = 'translateY(-3px)';
+          rankEl.style.opacity = '0.4';
+          setTimeout(function() {
+            rankEl.textContent = rank;
+            if (subtextEl) subtextEl.textContent = subtext;
+            rankEl.style.transform = 'translateY(0)';
+            rankEl.style.opacity = '1';
+          }, 150);
+        } else {
+          if (subtextEl) subtextEl.textContent = subtext;
+        }
+      }
+
+      function runPhase(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+        var progressRatio = Math.min(1, elapsed / phaseDuration);
+        
+        var currentPercent = progressRatio * 100;
+        var roundedInt = Math.floor(currentPercent);
+
+        // 1:1 sync of bar width & percentage number for current phase (0% -> 100%)
+        barEl.style.transition = 'none';
+        barEl.style.width = currentPercent.toFixed(1) + '%';
+        percentEl.textContent = roundedInt + '%';
+
+        if (progressRatio < 1) {
+          animFrameId = requestAnimationFrame(runPhase);
+        } else {
+          // Reached 100%! Instantly move to next phase with ZERO delay
+          phaseIdx = (phaseIdx + 1) % phases.length;
+          var nextPhase = phases[phaseIdx];
+          updatePhaseHeader(nextPhase.rank, nextPhase.subtext);
+
+          barEl.style.width = '0%';
+          percentEl.textContent = '0%';
+          startTime = null;
+          animFrameId = requestAnimationFrame(runPhase);
+        }
+      }
+
+      // Add interactive tap / click handler so user can click to change stage!
+      tile.addEventListener('click', function(e) {
+        e.stopPropagation();
+        phaseIdx = (phaseIdx + 1) % phases.length;
+        var nextPhase = phases[phaseIdx];
+        updatePhaseHeader(nextPhase.rank, nextPhase.subtext);
+        barEl.style.width = '0%';
+        percentEl.textContent = '0%';
+        startTime = null;
+        safeVibrate(12);
+      });
+
+      // Start sequential progression when visible on screen or fallback
+      let isVisible = false;
+      var targetToObserve = document.getElementById('spiritual-health-live') || tile;
+
+      if ('IntersectionObserver' in window && targetToObserve) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              if (!isVisible) {
+                isVisible = true;
+                startTime = null;
+                animFrameId = requestAnimationFrame(runPhase);
+              }
+            } else {
+              isVisible = false;
+              if (animFrameId) cancelAnimationFrame(animFrameId);
+            }
+          });
+        }, { threshold: 0.1 });
+        observer.observe(targetToObserve);
+      } else {
+        // Fallback: start animation immediately
+        animFrameId = requestAnimationFrame(runPhase);
+      }
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE: ULTRA-MODERN NAVBAR SCROLL ELEVATION ---- */
+    (function initNavScroll() {
+      var nav = document.querySelector('.nav');
+      if (!nav) return;
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 20) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      }, { passive: true });
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE 3: RHYTHMIC SEQUENTIAL RANDOM PUZZLE BLINK ---- */
+    (function initSalahHeatmapPuzzle() {
+      var heatmap = document.getElementById('landing-salah-heatmap');
+      if (!heatmap) return;
+      var cells = heatmap.querySelectorAll('i');
+      if (!cells.length) return;
+
+      var baseColor = '#2b5140'; // Uniform dark forest green when UNLIT
+      var glowColors = [
+        '#cfee82', // Bright Glowing Lime
+        '#6fcf8a', // Vibrant Emerald Mint
+        '#38c8f0', // Electric Sky Cyan
+        '#f5c842', // Warm Amber Gold
+        '#b886f8', // Neon Violet Purple
+        '#ff8c66', // Bright Coral Orange
+        '#e2f4c1'  // Soft Glowing Lime
+      ];
+
+      var isUserInteracting = false;
+      var userInteractionTimer = null;
+
+      function triggerUserActivity() {
+        isUserInteracting = true;
+        if (userInteractionTimer) clearTimeout(userInteractionTimer);
+        userInteractionTimer = setTimeout(function() {
+          isUserInteracting = false;
+        }, 2500);
+      }
+
+      // Explicit CLICK & TOUCH interactions ONLY (Mouse hover is strictly ignored)
+      heatmap.addEventListener('touchstart', triggerUserActivity, { passive: true });
+      heatmap.addEventListener('pointerdown', triggerUserActivity);
+
+      // Set initial dark background & click/tap handlers for all blocks
+      cells.forEach(function(cell) {
+        cell.style.setProperty('background-color', baseColor, 'important');
+        cell.style.transition = 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+
+        function handleTileTap(e) {
+          if (e) e.stopPropagation();
+          triggerUserActivity();
+
+          var tapColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+          cell.style.setProperty('background-color', tapColor, 'important');
+          cell.style.transform = 'scale(1.4) rotate(' + (Math.random() * 12 - 6).toFixed(1) + 'deg)';
+          cell.style.boxShadow = '0 0 16px ' + tapColor;
+          cell.style.zIndex = '10';
+
+          setTimeout(function() {
+            cell.style.setProperty('background-color', baseColor, 'important');
+            cell.style.transform = 'scale(1) rotate(0deg)';
+            cell.style.boxShadow = 'none';
+            cell.style.zIndex = '1';
+          }, 1100);
+
+          safeVibrate(16);
+        }
+
+        cell.addEventListener('click', handleTileTap);
+      });
+
+      // Fair Shuffle Queue: Ensures EVERY single cell (0 to 20) gets lit up over time!
+      var pendingQueue = [];
+      function refreshQueue() {
+        pendingQueue = [];
+        for (var i = 0; i < cells.length; i++) {
+          pendingQueue.push(i);
+        }
+        for (var j = pendingQueue.length - 1; j > 0; j--) {
+          var r = Math.floor(Math.random() * (j + 1));
+          var temp = pendingQueue[j];
+          pendingQueue[j] = pendingQueue[r];
+          pendingQueue[r] = temp;
+        }
+      }
+      refreshQueue();
+
+      // Run sequential pulse wave loop
+      function triggerSequentialWave() {
+        if (isUserInteracting) {
+          setTimeout(triggerSequentialWave, 1000);
+          return;
+        }
+
+        // Pick 3 to 5 cells for this sequence
+        var count = Math.min(pendingQueue.length, Math.floor(Math.random() * 3) + 3);
+        var sequenceCells = [];
+        for (var k = 0; k < count; k++) {
+          if (pendingQueue.length === 0) refreshQueue();
+          sequenceCells.push(cells[pendingQueue.pop()]);
+        }
+
+        // Light up each cell in sequence with a smooth 140ms stagger delay!
+        sequenceCells.forEach(function(c, seqIndex) {
+          if (!c) return;
+          var staggerDelay = seqIndex * 140;
+
+          setTimeout(function() {
+            if (isUserInteracting) return;
+            var activeGlow = glowColors[Math.floor(Math.random() * glowColors.length)];
+            c.style.setProperty('background-color', activeGlow, 'important');
+            c.style.transform = 'scale(1.28)';
+            c.style.boxShadow = '0 0 14px ' + activeGlow;
+            c.style.zIndex = '5';
+
+            setTimeout(function() {
+              c.style.setProperty('background-color', baseColor, 'important');
+              c.style.transform = 'scale(1)';
+              c.style.boxShadow = 'none';
+              c.style.zIndex = '1';
+            }, 900);
+          }, staggerDelay);
+        });
+
+        if (pendingQueue.length === 0) refreshQueue();
+
+        // Schedule next sequence after current sequence finishes only if section is visible
+        if (isHeatmapVisible) {
+          var nextWaveDelay = (count * 140) + 1100;
+          setTimeout(triggerSequentialWave, nextWaveDelay);
+        }
+      }
+
+      // Start initial sequence only when visible on screen
+      let isHeatmapVisible = false;
+      const heatmapObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!isHeatmapVisible) {
+              isHeatmapVisible = true;
+              triggerSequentialWave();
+            }
+          } else {
+            isHeatmapVisible = false;
+          }
+        });
+      }, { threshold: 0.1 });
+
+      const section = document.getElementById('feature-salah');
+      if (section) heatmapObserver.observe(section);
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE 12: LIVING PRODUCT INTERACTIVE DEMO & 3D PARALLAX ---- */
+    (function initLivingProductDemo() {
+      var phone = document.getElementById('demo-phone-frame');
+      var panel = document.getElementById('demo-panel');
+      var modeEl = document.getElementById('mode');
+      var titleEl = document.getElementById('title');
+      var meterEl = document.getElementById('meter');
+      var rowsContainer = document.getElementById('demo-rows-container');
+      var tabs = document.querySelectorAll('#demo-tabs .tab');
+      if (!phone || !panel || !tabs.length) return;
+
+      var modeOrder = ['Today', 'Analysis', 'Profile'];
+
+      var screensData = {
+        'Today': {
+          titleOptions: ['A steady morning', 'A focused afternoon', 'A quiet evening'],
+          titlesIdx: 0,
+          meterVals: ['76%', '88%', '95%'],
+          rows: [
+            { label: 'Next Prayer', val: 'Fajr in 01:28', highlight: true },
+            { label: 'Daily Habits', val: '3/5 Completed', green: true },
+            { label: 'Data Security', val: '100% Local &bull; AES-256' }
+          ]
+        },
+        'Analysis': {
+          titleOptions: ['Spiritual Health Score', '3-Week Rhythm', 'Peak Nafl & Dhikr'],
+          titlesIdx: 0,
+          meterVals: ['92%', '95%', '98%'],
+          rows: [
+            { label: 'SHS Rating', val: '92 / 100 (Optimal)', highlight: true },
+            { label: 'Salah Streak', val: '21 Days Active', green: true },
+            { label: 'Dhikr Counter', val: '3,240 Repetitions' }
+          ]
+        },
+        'Profile': {
+          titleOptions: ['Private Vault', 'Offline Sync', 'Encrypted Identity'],
+          titlesIdx: 0,
+          meterVals: ['80%', '90%', '100%'],
+          rows: [
+            { label: 'Current Focus', val: 'Steady Mornings', highlight: true },
+            { label: 'Storage Engine', val: 'IndexedDB &bull; 0 KB Cloud', green: true },
+            { label: 'Location & Method', val: 'Dhaka &bull; Karachi 18.0\u00b0' }
+          ]
+        }
+      };
+
+      var currentMode = 'Today';
+      var isAnimating = false;
+      var userInteractedTime = 0;
+
+      function renderScreen(modeName) {
+        if (isAnimating) return;
+        var prevIdx = modeOrder.indexOf(currentMode);
+        var nextIdx = modeOrder.indexOf(modeName);
+        var direction = nextIdx >= prevIdx ? 1 : -1; // 1 = slide from right, -1 = slide from left
+
+        currentMode = modeName;
+        var data = screensData[modeName];
+        if (!data) return;
+
+        isAnimating = true;
+
+        // Slide out in opposite direction
+        panel.style.transition = 'transform 0.22s cubic-bezier(0.4, 0, 1, 1), opacity 0.22s ease';
+        panel.style.transform = 'translateX(' + (-direction * 30) + 'px) scale(0.96)';
+        panel.style.opacity = '0';
+
+        setTimeout(function() {
+          if (modeEl) modeEl.textContent = modeName;
+          if (titleEl) titleEl.textContent = data.titleOptions[data.titlesIdx];
+          if (meterEl) meterEl.style.width = data.meterVals[data.titlesIdx];
+          
+          if (rowsContainer) {
+            var html = '';
+            data.rows.forEach(function(r) {
+              var valStyle = r.highlight ? 'color:var(--mint);font-weight:700;' : (r.green ? 'color:#cfee82;font-weight:600;' : 'color:#ffffff;font-weight:500;');
+              html += '<div class="screen-row"><span>' + r.label + '</span><span style="' + valStyle + '">' + r.val + '</span></div>';
+            });
+            rowsContainer.innerHTML = html;
+          }
+
+          // Prepare entrance from direction
+          panel.style.transition = 'none';
+          panel.style.transform = 'translateX(' + (direction * 30) + 'px) scale(0.96)';
+          
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+              panel.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease';
+              panel.style.transform = 'translateX(0) scale(1)';
+              panel.style.opacity = '1';
+              setTimeout(function() { isAnimating = false; }, 380);
+            });
+          });
+        }, 220);
+      }
+
+      /* Tab button handlers */
+      tabs.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          userInteractedTime = Date.now(); // Record user interaction time
+          tabs.forEach(function(t) {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+          
+          var mode = btn.getAttribute('data-mode') || 'Today';
+          if (mode !== currentMode) {
+            renderScreen(mode);
+          }
+          safeVibrate(14);
+        });
+      });
+
+      /* Tap title inside phone screen to cycle sub-states */
+      if (titleEl) {
+        titleEl.addEventListener('click', function(e) {
+          e.stopPropagation();
+          userInteractedTime = Date.now();
+          var data = screensData[currentMode];
+          if (!data) return;
+          data.titlesIdx = (data.titlesIdx + 1) % data.titleOptions.length;
+          titleEl.textContent = data.titleOptions[data.titlesIdx];
+          if (meterEl) meterEl.style.width = data.meterVals[data.titlesIdx];
+          titleEl.style.transform = 'scale(1.06)';
+          setTimeout(function() { titleEl.style.transform = 'scale(1)'; }, 160);
+          safeVibrate(12);
+        });
+      }
+
+      /* 3D Mouse Parallax Tilt Effect on phone frame */
+      phone.addEventListener('mousemove', function(e) {
+        var rect = phone.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+        var rotX = (-y / rect.height) * 12;
+        var rotY = (x / rect.width) * 12;
+        phone.style.transform = 'perspective(1000px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) scale(1.02)';
+      });
+
+      phone.addEventListener('mouseleave', function() {
+        phone.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      });
+
+      /* Smart Auto-cycle: pause 12s if user recently interacted */
+      var isHovered = false;
+      phone.addEventListener('mouseenter', function() { isHovered = true; });
+      phone.addEventListener('mouseleave', function() { isHovered = false; });
+
+      setInterval(function() {
+        if (isHovered) return;
+        if (Date.now() - userInteractedTime < 12000) return; // Pause auto-cycle for 12 seconds after user click
+
+        var curIdx = modeOrder.indexOf(currentMode);
+        var nextIdx = (curIdx + 1) % modeOrder.length;
+        var nextMode = modeOrder[nextIdx];
+
+        tabs.forEach(function(t) {
+          if (t.getAttribute('data-mode') === nextMode) {
+            t.click();
+          }
+        });
+      }, 5500);
+
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE 1: INTERACTIVE LANDING TASBEEH COUNTER (DEMO) ---- */
+    (function initLandingTasbeeh() {
+      const ring = document.getElementById('landing-dhikr-ring');
+      const countEl = document.getElementById('landing-dhikr-count');
+      const labelEl = document.getElementById('landing-dhikr-label');
+      if (!ring || !countEl) return;
+
+      let count = 108;
+      const dhikrPhrases = ['SubhanAllah ✦', 'Alhamdulillah ✦', 'Allahu Akbar ✦'];
+      let phraseIdx = 0;
+
+      function incrementTasbeeh() {
+        count++;
+        countEl.textContent = count;
+        if (labelEl) labelEl.textContent = dhikrPhrases[phraseIdx % dhikrPhrases.length];
+        phraseIdx++;
+
+        safeVibrate(25);
+
+        ring.style.transform = 'scale(1.08)';
+        setTimeout(function() {
+          ring.style.transform = 'scale(1)';
+        }, 150);
+      }
+
+      ring.addEventListener('click', incrementTasbeeh);
+      ring.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          incrementTasbeeh();
+        }
+      });
+    })();
+
+    /* ---- FEATURE 2: LIVE 4-7-8 GUIDED BREATHING (100% PWA ALIGNED) ---- */
+    (function initLandingBreathing() {
+      const circle = document.getElementById('landing-breath-circle');
+      const stateEl = document.getElementById('landing-breath-state');
+      const countEl = document.getElementById('landing-breath-count');
+      const subEl = document.getElementById('landing-breath-sub');
+      if (!circle || !stateEl || !countEl) return;
+
+      let isRunning = false;
+      let intervalId = null;
+      let phase = 'idle';
+      let secondsLeft = 0;
+
+      const textWrapper = document.getElementById('landing-breath-text');
+
+      function stopBreathing() {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = null;
+        isRunning = false;
+        phase = 'idle';
+        secondsLeft = 0;
+        circle.style.cursor = 'pointer';
+        stateEl.innerHTML = '4 &middot; 7 &middot; 8';
+        if (subEl) subEl.style.display = 'inline-flex';
+        countEl.style.display = 'none';
+        countEl.textContent = '';
+        circle.style.animation = '';
+        circle.style.transition = 'transform 0.5s ease-out';
+        circle.style.transform = '';
+        if (textWrapper) {
+          textWrapper.style.transition = 'transform 0.5s ease-out';
+          textWrapper.style.transform = 'scale(1)';
+        }
+      }
+
+      function stepBreathing() {
+        if (!isRunning) return;
+
+        if (secondsLeft <= 0) {
+          if (phase === 'idle') {
+            phase = 'inhale';
+            secondsLeft = 4;
+            circle.style.animation = 'none';
+            circle.style.transition = 'none';
+            circle.style.transform = 'scale(1)';
+            if (textWrapper) { textWrapper.style.transition = 'none'; textWrapper.style.transform = 'scale(1)'; }
+            void circle.offsetWidth;
+            circle.style.transition = 'transform 4s linear';
+            circle.style.transform = 'scale(1.28)';
+            if (textWrapper) { textWrapper.style.transition = 'transform 4s linear'; textWrapper.style.transform = 'scale(0.78)'; }
+          } else if (phase === 'inhale') {
+            phase = 'hold';
+            secondsLeft = 7;
+            circle.style.transition = 'none';
+            circle.style.transform = 'scale(1.28)';
+            if (textWrapper) { textWrapper.style.transition = 'none'; textWrapper.style.transform = 'scale(0.78)'; }
+          } else if (phase === 'hold') {
+            phase = 'exhale';
+            secondsLeft = 8;
+            circle.style.transition = 'transform 8s linear';
+            circle.style.transform = 'scale(1.0)';
+            if (textWrapper) { textWrapper.style.transition = 'transform 8s linear'; textWrapper.style.transform = 'scale(1.0)'; }
+          } else if (phase === 'exhale') {
+            stopBreathing();
+            return;
+          }
+        }
+
+        if (subEl) subEl.style.display = 'none';
+        countEl.style.display = 'inline-block';
+        if (phase === 'inhale') {
+          stateEl.textContent = 'Breathe In';
+          countEl.textContent = secondsLeft + 's Inhale';
+        } else if (phase === 'hold') {
+          stateEl.textContent = 'Hold';
+          countEl.textContent = secondsLeft + 's Stillness';
+        } else if (phase === 'exhale') {
+          stateEl.textContent = 'Breathe Out';
+          countEl.textContent = secondsLeft + 's Release';
+        }
+
+        secondsLeft--;
+      }
+
+      function toggleBreathing() {
+        if (isRunning) return;
+
+        isRunning = true;
+        circle.style.cursor = 'default';
+        phase = 'idle';
+        secondsLeft = 0;
+        stepBreathing();
+        intervalId = setInterval(stepBreathing, 1000);
+      }
+
+      circle.addEventListener('click', toggleBreathing);
+      circle.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleBreathing();
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    /* ---- FEATURE 3: LIVE ISLAMIC HIJRI DATE CHIP ---- */
+    (function initHijriDate() {
+      const el = document.getElementById('landing-hijri-text');
+      if (!el) return;
+
+      /* Simple Gregorian → Hijri converter (Kuwaiti algorithm, ±1 day accurate) */
+      function toHijri(date) {
+        const jd = Math.floor((date.getTime() / 86400000) + 2440587.5);
+        const l = jd - 1948440 + 10632;
+        const n = Math.floor((l - 1) / 10631);
+        const l2 = l - 10631 * n + 354;
+        const j = Math.floor((10985 - l2) / 5316) * Math.floor((50 * l2) / 17719)
+                + Math.floor(l2 / 5670) * Math.floor((43 * l2) / 15238);
+        const l3 = l2 - Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50)
+                 - Math.floor(j / 16) * Math.floor((15238 * j) / 43) + 29;
+        const month = Math.floor((24 * l3) / 709);
+        const day = l3 - Math.floor((709 * month) / 24);
+        const year = 30 * n + j - 30;
+        return { day, month, year };
+      }
+
+      const MONTHS = ['Muharram','Safar','Rabi\u02be al-Awwal','Rabi\u02be al-Thani',
+        'Jumada al-Awwal','Jumada al-Thani','Rajab','Sha\u02bban','Ramadan','Shawwal',
+        'Dhu al-Qi\u02bbdah','Dhu al-Hijjah'];
+
+      const h = toHijri(new Date());
+      el.textContent = h.day + ' ' + MONTHS[h.month - 1] + ' ' + h.year + ' AH';
+    })();
+
+    /* ---- FEATURE 4: MODERN GLASSMORPHIC HYDRATION TUMBLER ---- */
+    (function initWaterGlass() {
+      var glass    = document.getElementById('landing-water-glass');
+      var canvas   = document.getElementById('landing-water-canvas');
+      var amountEl = document.getElementById('landing-water-amount');
+      var pctEl    = document.getElementById('landing-water-pct');
+      if (!glass || !canvas || !amountEl || !pctEl) return;
+
+      var ctx    = canvas.getContext('2d');
+      var W      = canvas.width;   /* 110 */
+      var H      = canvas.height;  /* 158 */
+
+      var GOAL_ML  = 3000;
+      var STEP_ML  = 250;
+      var ml       = 750;           /* actual target */
+      var renderMl = 750;           /* animated render level */
+      var displayMl = 750;          /* counter label */
+
+      /* Wave state */
+      var phase1   = 0;   /* slow back wave phase */
+      var phase2   = 0;   /* fast front wave phase */
+      var amp      = 5;   /* base amplitude px */
+      var sloshAmp = 0;   /* extra amplitude added on click, decays */
+
+      /* --- draw one frame --- */
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        /* waterline Y: 0=top, H=bottom */
+        var waterTop = H - (renderMl / GOAL_ML) * H;
+        var totalAmp = amp + sloshAmp;
+
+        /* --- Gradient fill body --- */
+        var grad = ctx.createLinearGradient(0, waterTop, 0, H);
+        var pct = renderMl / GOAL_ML;
+        if (pct < 0.35) {
+          grad.addColorStop(0, '#4ecbf5');
+          grad.addColorStop(1, '#1e87d0');
+        } else if (pct < 0.75) {
+          grad.addColorStop(0, '#29b6e8');
+          grad.addColorStop(1, '#0d72c5');
+        } else {
+          grad.addColorStop(0, '#1aabd4');
+          grad.addColorStop(1, '#0a5ea8');
+        }
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.rect(0, waterTop + totalAmp, W, H - waterTop);
+        ctx.fill();
+
+        /* --- Back wave (slow, deeper blue) --- */
+        ctx.beginPath();
+        ctx.moveTo(0, H);
+        for (var x = 0; x <= W; x++) {
+          var y = waterTop + Math.sin((x / W) * Math.PI * 3 + phase1) * totalAmp;
+          if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        ctx.fillStyle = (pct < 0.35) ? '#29b6e8' : (pct < 0.75) ? '#1799d6' : '#1182c0';
+        ctx.fill();
+
+        /* --- Front wave (fast, bright cyan + white crest) --- */
+        ctx.beginPath();
+        for (var x2 = 0; x2 <= W; x2++) {
+          var y2 = waterTop + Math.sin((x2 / W) * Math.PI * 4 + phase2) * totalAmp * 0.65;
+          if (x2 === 0) ctx.moveTo(x2, y2); else ctx.lineTo(x2, y2);
+        }
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        ctx.fillStyle = 'rgba(100, 220, 255, 0.7)';
+        ctx.fill();
+
+        /* --- White foam crest line on top of front wave --- */
+        ctx.beginPath();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = 'rgba(255,255,255,0.80)';
+        for (var x3 = 0; x3 <= W; x3++) {
+          var y3 = waterTop + Math.sin((x3 / W) * Math.PI * 4 + phase2) * totalAmp * 0.65;
+          if (x3 === 0) ctx.moveTo(x3, y3); else ctx.lineTo(x3, y3);
+        }
+        ctx.stroke();
+      }
+
+      /* --- animation loop --- */
+      function loop() {
+        phase1 += 0.022;   /* back wave speed */
+        phase2 += 0.042;   /* front wave (faster) */
+
+        /* smoothly lerp renderMl toward target ml */
+        renderMl += (ml - renderMl) * 0.06;
+
+        /* decay slosh amplitude */
+        sloshAmp *= 0.94;
+        if (sloshAmp < 0.05) sloshAmp = 0;
+
+        draw();
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      /* --- animated display counter --- */
+      var counterRaf = null;
+      function animateCounter(from, to) {
+        cancelAnimationFrame(counterRaf);
+        var start = performance.now();
+        var dur   = 500;
+        function step(now) {
+          var t    = Math.min(1, (now - start) / dur);
+          var ease = 1 - Math.pow(1 - t, 3);
+          displayMl = Math.round(from + (to - from) * ease);
+          amountEl.textContent = displayMl;
+          if (t < 1) counterRaf = requestAnimationFrame(step);
+        }
+        counterRaf = requestAnimationFrame(step);
+      }
+
+      /* --- update badge label --- */
+      function updateBadge() {
+        var pct = Math.min(100, Math.round((ml / GOAL_ML) * 100));
+        pctEl.textContent = pct + '% \u00b7 Goal 3L';
+      }
+
+      /* --- bump + slosh on click --- */
+      function bump() {
+        glass.style.transform = 'scale(0.93)';
+        setTimeout(function() { glass.style.transform = 'scale(1)'; }, 160);
+        sloshAmp = 14;   /* spike the wave amplitude */
+        safeVibrate(22);
+      }
+
+      /* --- click handler --- */
+      glass.addEventListener('click', function() {
+        var prev = displayMl;
+        ml = (ml >= GOAL_ML) ? 0 : ml + STEP_ML;
+        animateCounter(prev, ml);
+        updateBadge();
+        bump();
+      });
+
+      glass.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          var prev = displayMl;
+          ml = (ml >= GOAL_ML) ? 0 : ml + STEP_ML;
+          animateCounter(prev, ml);
+          updateBadge();
+          bump();
+        }
+      });
+
+      /* initial badge */
+      updateBadge();
+    })();
+
+    /* ---- FEATURE 4b: INTERACTIVE CAREER FOCUS CARD ---- */
+    (function initCareerCard() {
+      var card = document.getElementById('landing-career-card');
+      var badge = document.getElementById('career-focus-badge');
+      var cols = document.querySelectorAll('.career-day-col');
+      var streak = document.getElementById('landing-career-streak');
+      if (!card || !cols.length || !badge) return;
+
+      /* Auto-detect real current day of week (Mon=0, Tue=1, Wed=2, Thu=3, Fri=4, Sat/Sun=3) */
+      var dayOfWeek = new Date().getDay();
+      var defaultIndex = (dayOfWeek >= 1 && dayOfWeek <= 5) ? (dayOfWeek - 1) : 3;
+      var currentIndex = defaultIndex;
+
+      function setActiveDay(index) {
+        currentIndex = index;
+
+        // Dynamic Glowing Dot Element
+        var dot = document.getElementById('career-glowing-dot');
+        if (!dot) {
+          dot = document.createElement('span');
+          dot.id = 'career-glowing-dot';
+          dot.style.cssText = 'position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#cfee82;border-radius:50%;box-shadow:0 0 6px #cfee82;pointer-events:none;z-index:5;';
+        }
+
+        cols.forEach(function(col, i) {
+          var pillar = col.querySelector('.career-pillar');
+          var lbl = col.querySelector('.career-day-lbl');
+          var baseH = parseInt(col.getAttribute('data-baseh') || '30px', 10);
+          if (i === index) {
+            col.classList.add('active');
+            if (pillar) {
+              pillar.style.position = 'relative';
+              pillar.style.height = (baseH + 6) + 'px';
+              pillar.style.background = 'linear-gradient(180deg,#cfee82 0%,#1f4e36 100%)';
+              pillar.style.boxShadow = '0 4px 14px rgba(31,78,54,0.45)';
+              pillar.appendChild(dot);
+            }
+            if (lbl) { lbl.style.color = '#1e4530'; lbl.style.fontWeight = '900'; }
+            var hours = col.getAttribute('data-hours') || '4.2h';
+            badge.textContent = hours;
+            badge.style.transform = 'scale(1.15)';
+            setTimeout(function() { badge.style.transform = 'scale(1)'; }, 180);
+
+            if (streak) {
+              var sVal = col.getAttribute('data-streak') || '12 Day Streak';
+              var gVal = col.getAttribute('data-growth') || '↑18%';
+              streak.innerHTML = '<span>' + sVal + '</span><span style="opacity:0.5;">&middot;</span><span style="color:#6fcf8a;">' + gVal + '</span>';
+            }
+          } else {
+            col.classList.remove('active');
+            if (pillar) {
+              pillar.style.height = baseH + 'px';
+              pillar.style.background = 'linear-gradient(180deg,#6fcf8a 0%,#2e6e4d 100%)';
+              pillar.style.boxShadow = '0 2px 6px rgba(46,110,77,0.18)';
+            }
+            if (lbl) { lbl.style.color = 'var(--muted)'; lbl.style.fontWeight = '800'; }
+          }
+        });
+        safeVibrate(18);
+      }
+
+      /* Initialize with real current day */
+      setActiveDay(defaultIndex);
+
+      cols.forEach(function(col, i) {
+        col.addEventListener('click', function(e) {
+          e.stopPropagation();
+          setActiveDay(i);
+        });
+      });
+
+      if (streak) {
+        streak.addEventListener('click', function(e) {
+          e.stopPropagation();
+          streak.style.transform = 'scale(0.94)';
+          setTimeout(function() { streak.style.transform = 'scale(1)'; }, 160);
+          safeVibrate(12);
+        });
+      }
+    })();
+
+    /* ---- FEATURE 4c: INTERACTIVE FINANCE LEDGER PREVIEW (CURRENT & PAST MONTHS ONLY) ---- */
+    (function initFinanceLedger() {
+      var card = document.getElementById('landing-finance-card');
+      var monthBtn = document.getElementById('ledger-month-btn');
+      var prevBtn = document.getElementById('ledger-prev-btn');
+      var nextBtn = document.getElementById('ledger-next-btn');
+      var totalVal = document.getElementById('ledger-total-val');
+      var trendBadge = document.getElementById('ledger-trend-badge');
+      var incomeVal = document.getElementById('ledger-income-val');
+      var essentialsVal = document.getElementById('ledger-essentials-val');
+      var givingVal = document.getElementById('ledger-giving-val');
+      var vaultVal = document.getElementById('ledger-vault-val');
+      var vaultBar = document.getElementById('ledger-vault-bar');
+      var rowBoxes = document.querySelectorAll('.ledger-row-box');
+      if (!card || !monthBtn || !totalVal) return;
+
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var now = new Date();
+      var curYear = now.getFullYear();
+      var curMonthIdx = now.getMonth(); // Real current month index (0-11)
+
+      var baseData = [
+        { income: 65000, essentials: 35000, giving: 7000, vault: 6500, trend: '+8.2%' },   // Jan
+        { income: 66000, essentials: 34500, giving: 7200, vault: 6800, trend: '+8.5%' },   // Feb
+        { income: 68000, essentials: 34000, giving: 7500, vault: 7200, trend: '+9.1%' },   // Mar
+        { income: 70000, essentials: 33500, giving: 7800, vault: 7500, trend: '+10.4%' },  // Apr
+        { income: 69000, essentials: 33800, giving: 7600, vault: 7800, trend: '+10.1%' },  // May
+        { income: 68000, essentials: 34000, giving: 7500, vault: 7800, trend: '+9.8%' },   // Jun
+        { income: 72000, essentials: 32500, giving: 8000, vault: 8500, trend: '+12.4%' },  // Jul
+        { income: 78000, essentials: 31000, giving: 10000, vault: 9200, trend: '+15.2%' }, // Aug
+        { income: 74000, essentials: 32000, giving: 8500, vault: 8800, trend: '+13.1%' },  // Sep
+        { income: 75000, essentials: 31500, giving: 9000, vault: 9000, trend: '+13.8%' },  // Oct
+        { income: 76000, essentials: 31200, giving: 9200, vault: 9100, trend: '+14.2%' },  // Nov
+        { income: 80000, essentials: 30000, giving: 11000, vault: 9500, trend: '+16.5%' }  // Dec
+      ];
+
+      var monthsData = monthNames.map(function(mName, i) {
+        var d = baseData[i];
+        var net = d.income - d.essentials - d.giving;
+        var pct = Math.min(100, Math.round((d.vault / 10000) * 100)) + '%';
+        return {
+          name: mName + ' ' + curYear + ' \u25be',
+          total: '\u09f3' + net.toLocaleString('en-US'),
+          trend: d.trend,
+          income: '+ \u09f3' + d.income.toLocaleString('en-US'),
+          essentials: '- \u09f3' + d.essentials.toLocaleString('en-US'),
+          giving: '- \u09f3' + d.giving.toLocaleString('en-US'),
+          vaultText: '\u09f3' + d.vault.toLocaleString('en-US') + ' / \u09f310,000',
+          vaultPct: pct
+        };
+      });
+
+      var monthIdx = curMonthIdx;
+
+      function updateMonth(idx) {
+        // Enforce max month boundary: cannot go beyond real current month!
+        if (idx > curMonthIdx) idx = curMonthIdx;
+        if (idx < 0) idx = 0;
+        monthIdx = idx;
+
+        var data = monthsData[monthIdx];
+        monthBtn.innerHTML = data.name;
+        totalVal.innerHTML = data.total;
+        if (trendBadge) trendBadge.textContent = data.trend;
+        if (incomeVal) incomeVal.innerHTML = data.income;
+        if (essentialsVal) essentialsVal.innerHTML = data.essentials;
+        if (givingVal) givingVal.innerHTML = data.giving;
+        if (vaultVal) vaultVal.innerHTML = data.vaultText;
+        if (vaultBar) vaultBar.style.width = data.vaultPct;
+
+        // Disable Next (>) button if at real current month
+        if (nextBtn) {
+          if (monthIdx >= curMonthIdx) {
+            nextBtn.style.opacity = '0.25';
+            nextBtn.style.cursor = 'not-allowed';
+            nextBtn.style.pointerEvents = 'none';
+          } else {
+            nextBtn.style.opacity = '1';
+            nextBtn.style.cursor = 'pointer';
+            nextBtn.style.pointerEvents = 'auto';
+          }
+        }
+
+        // Disable Prev (<) button if at January (index 0)
+        if (prevBtn) {
+          if (monthIdx <= 0) {
+            prevBtn.style.opacity = '0.25';
+            prevBtn.style.cursor = 'not-allowed';
+            prevBtn.style.pointerEvents = 'none';
+          } else {
+            prevBtn.style.opacity = '1';
+            prevBtn.style.cursor = 'pointer';
+            prevBtn.style.pointerEvents = 'auto';
+          }
+        }
+
+        totalVal.style.transform = 'scale(1.08)';
+        setTimeout(function() { totalVal.style.transform = 'scale(1)'; }, 180);
+        safeVibrate(18);
+      }
+
+      /* Initialize with real current month */
+      updateMonth(curMonthIdx);
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (monthIdx > 0) updateMonth(monthIdx - 1);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (monthIdx < curMonthIdx) updateMonth(monthIdx + 1);
+        });
+      }
+
+      if (monthBtn) {
+        monthBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (monthIdx > 0) {
+            updateMonth(monthIdx - 1);
+          } else {
+            updateMonth(curMonthIdx);
+          }
+        });
+      }
+
+      rowBoxes.forEach(function(box) {
+        box.addEventListener('click', function(e) {
+          e.stopPropagation();
+          box.style.background = 'rgba(61,122,90,0.08)';
+          setTimeout(function() { box.style.background = 'transparent'; }, 200);
+          safeVibrate(14);
+        });
+      });
+    })();
+
+    /* ---- FEATURE 5: REAL-TIME SHS SCORE CALCULATOR PREVIEW (5 PARAMETERS + LIVE BARS) ---- */
+    (function initSHSCalculator() {
+      const prayerSlider  = document.getElementById('shs-prayer');
+      const dhikrSlider   = document.getElementById('shs-dhikr');
+      const naflSlider    = document.getElementById('shs-nafl');
+      const habitsSlider = document.getElementById('shs-habits');
+      const rhythmSlider  = document.getElementById('shs-rhythm');
+
+      const prayerVal  = document.getElementById('shs-prayer-val');
+      const dhikrVal   = document.getElementById('shs-dhikr-val');
+      const naflVal    = document.getElementById('shs-nafl-val');
+      const habitsVal = document.getElementById('shs-habits-val');
+      const rhythmVal  = document.getElementById('shs-rhythm-val');
+
+      const scoreEl = document.getElementById('landing-shs-score');
+      const rankEl  = document.getElementById('landing-shs-rank');
+      const chartBars = document.querySelectorAll('#insights .chart i');
+      if (!prayerSlider || !scoreEl) return;
+
+      /* Official PWA SHS Weights: Prayer 50%, Dhikr 15%, Nafl 15%, Habits 10%, Rhythm 10% */
+      function computeSHS() {
+        const p = parseInt(prayerSlider.value, 10) || 0;
+        const d = parseInt(dhikrSlider.value, 10) || 0;
+        const n = parseInt(naflSlider.value, 10) || 0;
+        const m = parseInt(habitsSlider ? habitsSlider.value : 80, 10) || 0;
+        const r = parseInt(rhythmSlider ? rhythmSlider.value : 70, 10) || 0;
+
+        const ptsSalah = (p / 100) * 50;
+        const ptsDhikr = (d / 100) * 15;
+        const ptsNafl  = (n / 100) * 15;
+        const ptsHabits = (m / 100) * 10;
+        const ptsRhythm = (r / 100) * 10;
+
+        return Math.min(100, Math.round(ptsSalah + ptsDhikr + ptsNafl + ptsHabits + ptsRhythm));
+      }
+
+      function rankFromScore(s) {
+        if (s >= 90) return 'Ihsan \u2014 peak spiritual excellence';
+        if (s >= 80) return 'God-Conscious \u2014 taqwa guiding your path';
+        if (s >= 65) return 'Mindful \u2014 presence & devotion in deeds';
+        if (s >= 50) return 'Resilient \u2014 overcoming & pushing limits';
+        if (s >= 30) return 'Consistent \u2014 building habit momentum';
+        if (s >= 15) return 'Intentional \u2014 traveling with purpose';
+        return 'Awakening \u2014 beginning the journey';
+      }
+
+      function updateTrackFill(slider, val, color) {
+        if (!slider) return;
+        const c = color || '#3d7a5a';
+        slider.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + val + '%, rgba(19, 33, 27, 0.12) ' + val + '%, rgba(19, 33, 27, 0.12) 100%)';
+      }
+
+      function update() {
+        const p = parseInt(prayerSlider.value, 10) || 0;
+        const d = parseInt(dhikrSlider.value, 10) || 0;
+        const n = parseInt(naflSlider.value, 10) || 0;
+        const m = parseInt(habitsSlider ? habitsSlider.value : 80, 10) || 0;
+        const r = parseInt(rhythmSlider ? rhythmSlider.value : 70, 10) || 0;
+
+        if (prayerVal)  prayerVal.textContent  = p + '%';
+        if (dhikrVal)   dhikrVal.textContent   = d + '%';
+        if (naflVal)    naflVal.textContent    = n + '%';
+        if (habitsVal) habitsVal.textContent = m + '%';
+        if (rhythmVal)  rhythmVal.textContent  = r + '%';
+
+        updateTrackFill(prayerSlider, p, '#3d7a5a');
+        updateTrackFill(dhikrSlider, d, '#167cc0');
+        updateTrackFill(naflSlider, n, '#b87e14');
+        updateTrackFill(habitsSlider, m, '#593b82');
+        updateTrackFill(rhythmSlider, r, '#c2441d');
+
+        const shs = computeSHS();
+        if (scoreEl) scoreEl.innerHTML = shs + ' <small style="font-size:0.4em; color:var(--muted);">/ 100</small>';
+        if (rankEl)  rankEl.textContent = rankFromScore(shs);
+
+        // Dynamically animate chart bars height and tooltips!
+        if (chartBars && chartBars.length >= 6) {
+          chartBars[0].style.height = Math.max(8, p) + '%';
+          chartBars[0].title = 'Prayer: ' + p + '%';
+
+          chartBars[1].style.height = Math.max(8, d) + '%';
+          chartBars[1].title = 'Dhikr: ' + d + '%';
+
+          chartBars[2].style.height = Math.max(8, n) + '%';
+          chartBars[2].title = 'Nafl: ' + n + '%';
+
+          chartBars[3].style.height = Math.max(8, m) + '%';
+          chartBars[3].title = 'Habits: ' + m + '%';
+
+          chartBars[4].style.height = Math.max(8, r) + '%';
+          chartBars[4].title = 'Rhythm: ' + r + '%';
+
+          chartBars[5].style.height = Math.max(10, shs) + '%';
+          chartBars[5].title = 'Total SHS: ' + shs + '/100';
+        }
+      }
+
+      [prayerSlider, dhikrSlider, naflSlider, habitsSlider, rhythmSlider].forEach(slider => {
+        if (slider) slider.addEventListener('input', update);
+      });
+      update();
+    })();
+
+    /* ---- FEATURE 5b: INTERACTIVE PROFILE CARD PREVIEW ---- */
+    (function initProfileCard() {
+      var card = document.getElementById('landing-profile-card');
+      var focusRow = document.getElementById('profile-row-focus');
+      var focusVal = document.getElementById('profile-focus-val');
+      var statBoxes = document.querySelectorAll('.profile-stat-box');
+      if (!card || !focusVal) return;
+
+      var focusModes = ['Steady mornings', 'Qur\'an 30m', 'Night Tahajjud', 'Deep Study'];
+      var focusIndex = 0;
+
+      if (focusRow) {
+        focusRow.addEventListener('click', function(e) {
+          e.stopPropagation();
+          focusIndex = (focusIndex + 1) % focusModes.length;
+          focusVal.textContent = focusModes[focusIndex];
+          focusVal.style.transform = 'scale(1.12)';
+          focusVal.style.background = 'rgba(61,122,90,0.15)';
+          focusVal.style.color = '#1f4e36';
+          setTimeout(function() {
+            focusVal.style.transform = 'scale(1)';
+          }, 180);
+          safeVibrate(14);
+        });
+      }
+
+      statBoxes.forEach(function(box) {
+        box.addEventListener('click', function(e) {
+          e.stopPropagation();
+          box.style.transform = 'scale(0.95)';
+          box.style.background = 'rgba(61,122,90,0.14)';
+          setTimeout(function() {
+            box.style.transform = 'scale(1)';
+            box.style.background = 'rgba(61,122,90,0.06)';
+          }, 180);
+          safeVibrate(18);
+        });
+      });
+    })();
+
+
+
+    /* ---- FEATURE 7: ESSENCE CARD OVERVIEW MODAL POPUPS ---- */
+    (function initEssenceModals() {
+      const modal = document.getElementById('essence-modal');
+      const closeBtn = document.getElementById('essence-modal-close');
+      const badgeEl = document.getElementById('essence-modal-badge');
+      const titleEl = document.getElementById('essence-modal-title');
+      const descEl = document.getElementById('essence-modal-desc');
+      const statsEl = document.getElementById('essence-modal-stats');
+      const bulletsEl = document.getElementById('essence-modal-bullets');
+
+      if (!modal || !closeBtn || !titleEl) return;
+
+      const ESSENCE_DATA = {
+        fast: {
+          badge: 'Performance',
+          title: 'Zero Server Round-Trips',
+          desc: 'Lamim loads instantly from CacheStorage and runs every calculation on-device — prayer times, streaks, analytics — with no server call, ever. IndexedDB gives 0ms read times with RAM sync caching.',
+          stats: [
+            { num: '< 50ms', label: 'Cold Launch' },
+            { num: '60 fps', label: 'Animations' },
+            { num: '0 req', label: 'Network Calls' }
+          ],
+          bullets: [
+            'Service Worker precaches the full app shell — works even with 0 bars of signal',
+            'Prayer times use a local solar-angle engine — no third-party API needed',
+            'IndexedDB RAM-sync caching delivers sub-millisecond data reads on every interaction'
+          ]
+        },
+        secure: {
+          badge: 'Privacy First',
+          title: '100% Local. Zero Cloud. Zero Tracking.',
+          desc: 'Your Salah logs, Dhikr counts, daily habits, gym records, and financial ledger never leave your device. No account, no password, no email — nothing is collected or transmitted.',
+          stats: [
+            { num: '0 bytes', label: 'Cloud Sent' },
+            { num: '100%', label: 'Local IndexedDB' },
+            { num: '0', label: 'Trackers' }
+          ],
+          bullets: [
+            'All data lives in browser IndexedDB (lamim_db) — isolated per device, per browser',
+            'No signup, no login, no email — you are never identified or tracked',
+            'Full JSON backup export so you own and can migrate your data anytime'
+          ]
+        },
+        smart: {
+          badge: 'Local Intelligence',
+          title: 'Insights That Actually Know You',
+          desc: 'Lamim\'s analytics engine computes your Spiritual Health Score (SHS) entirely on-device across 9 integrated modules — Salah, Dhikr, Nafl, Habits, Gym, Career, Finance, Analysis, and Profile.',
+          stats: [
+            { num: 'SHS', label: 'Spirit Score' },
+            { num: '21-Day', label: 'Heatmap Grid' },
+            { num: '9', label: 'Modules Linked' }
+          ],
+          bullets: [
+            'Interactive 21-day Salah heatmap tracks Jama\'at, Alone, and Qaza per prayer slot',
+            '7-day and 30-day trend charts powered by Chart.js — rendered fully offline',
+            'PDF statement export for personal reflection and financial audit summaries'
+          ]
+        },
+        human: {
+          badge: 'Intentional Design',
+          title: 'Built for the Ummah, Not for Metrics',
+          desc: 'No streak shame, no social comparison, no notification spam. Lamim is a quiet companion built around Islamic rhythms — Fajr to Isha, Ramadan to Rajab, one honest day at a time.',
+          stats: [
+            { num: '0', label: 'Dark Patterns' },
+            { num: '9', label: 'Life Modules' },
+            { num: 'Free', label: 'Forever' }
+          ],
+          bullets: [
+            'Covers Salah, Dhikr, Nafl Goals, Gym, Career, Finance, and Spiritual Analysis in one app',
+            'Glassmorphic dark and light themes with 0.15s transitions — designed to feel calm',
+            'Installable as a PWA on Android and iOS — no App Store, no subscription required'
+          ]
+        }
+      };
+
+      function openModal(key) {
+        const data = ESSENCE_DATA[key];
+        if (!data) return;
+
+        badgeEl.textContent = data.badge;
+        titleEl.textContent = data.title;
+        descEl.textContent = data.desc;
+
+        statsEl.innerHTML = data.stats.map(s => `
+          <div class="essence-modal-stat-box">
+            <b>${s.num}</b>
+            <span>${s.label}</span>
+          </div>
+        `).join('');
+
+        bulletsEl.innerHTML = data.bullets.map(b => `
+          <div class="essence-modal-bullet-item">
+            <span class="essence-modal-bullet-icon">✓</span>
+            <span>${b}</span>
+          </div>
+        `).join('');
+
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.essence-card[data-essence]').forEach(card => {
+        card.addEventListener('click', () => {
+          const key = card.getAttribute('data-essence');
+          openModal(key);
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const key = card.getAttribute('data-essence');
+            openModal(key);
+          }
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    })();
+
+    // Instant prefetch on touchstart for zero-delay app launch
+    document.querySelectorAll('a[href*="app/index.html"]').forEach(function(el) {
+      el.addEventListener('touchstart', function() {
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = 'app/index.html';
+        document.head.appendChild(link);
+      }, { passive: true, once: true });
+    });
+  </script>
+
+  <!-- Interactive AI Showcase & Autoplay Engine -->
+  <script>
+    (function () {
+      // 1. Force Video Autoplay Resilience
+      const video = document.getElementById('aiCompanionVideoEl');
+      if (video) {
+        video.muted = true;
+        video.defaultMuted = true;
+        const tryPlay = () => {
+          const p = video.play();
+          if (p !== undefined) {
+            p.catch(() => {});
+          }
+        };
+        tryPlay();
+        window.addEventListener('scroll', tryPlay, { once: true, passive: true });
+        window.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+        window.addEventListener('click', tryPlay, { once: true, passive: true });
+      }
+
+      // 2. Realistic Contextual Dialogues (Natural, Human, Supportive)
+      const scenarios = [
+        {
+          user: 'ajke fajr miss geche, ki korbo?',
+          ai: 'মন খারাপ করবেন না। ঘুম ভেঙে মনে পড়ার সাথে সাথেই অজু করে কাজা পড়ে নিন। আর বাকি ওয়াক্তগুলো জামাআতে পড়ে দিনটিকে সুন্দরভাবে রিকভার করুন!'
+        },
+        {
+          user: 'tasbeeh kivabe hisab rakhbo?',
+          ai: 'সালাতের পর ৩৩x সুবহানাল্লাহ, ৩৩x আলহামদুলিল্লাহ ও ৩৪x আল্লাহু আকবার পাঠের সুন্নাহ রয়েছে। অ্যাপের ডিজিটাল তাসবীহ খুলে এক ট্যাপেই ১০০ কাউন্ট সম্পন্ন করতে পারেন।'
+        },
+        {
+          user: 'mon oshanto lagche, ki korbo?',
+          ai: 'একটু চোখ বন্ধ করে ৪ সেকেন্ড বুক ভরে শ্বাস নিন, ৭ সেকেন্ড ধরে রাখুন এবং ৮ সেকেন্ডে ধীরে ধীরে ছাড়ুন (৪-৭-৮ ব্রিদিং)। সাথে মনে মনে "আস্তাগফিরুল্লাহ" স্মরণ করুন — মন নিমিষেই হালকা লাগবে।'
+        }
+      ];
+
+      let currentIndex = 0;
+      let timer = null;
+      let isPaused = false;
+
+      const userBubble = document.getElementById('aiSimUserBubble');
+      const aiBubble = document.getElementById('aiSimAiBubble');
+      const chips = document.querySelectorAll('.ai-sim-chip');
+      const consoleEl = document.getElementById('aiSimConsole');
+
+      function switchScenario(index) {
+        currentIndex = index;
+        const s = scenarios[currentIndex];
+
+        chips.forEach((c, idx) => {
+          if (idx === currentIndex) c.classList.add('active');
+          else c.classList.remove('active');
+        });
+
+        if (!userBubble || !aiBubble) return;
+
+        userBubble.style.opacity = '0';
+        userBubble.style.transform = 'translateY(6px)';
+        aiBubble.style.opacity = '0';
+        aiBubble.style.transform = 'translateY(6px)';
+
+        setTimeout(() => {
+          userBubble.textContent = s.user;
+          userBubble.style.transition = 'all 0.3s ease';
+          userBubble.style.opacity = '1';
+          userBubble.style.transform = 'translateY(0)';
+
+          setTimeout(() => {
+            aiBubble.innerHTML = s.ai;
+            aiBubble.style.transition = 'all 0.35s ease';
+            aiBubble.style.opacity = '1';
+            aiBubble.style.transform = 'translateY(0)';
+          }, 350);
+        }, 200);
+      }
+
+      function startCycle() {
+        clearInterval(timer);
+        timer = setInterval(() => {
+          if (!isPaused) {
+            const next = (currentIndex + 1) % scenarios.length;
+            switchScenario(next);
+          }
+        }, 6500);
+      }
+
+      chips.forEach((btn, idx) => {
+        btn.addEventListener('click', () => {
+          switchScenario(idx);
+          startCycle();
+        });
+      });
+
+      if (consoleEl) {
+        consoleEl.addEventListener('mouseenter', () => { isPaused = true; });
+        consoleEl.addEventListener('mouseleave', () => { isPaused = false; });
+      }
+
+      startCycle();
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+

@@ -1,15 +1,24 @@
 {
-  "name": "lamimmain",
-  "version": "2.1.0",
-  "description": "Lamim — Precision Life Operating System",
+  "name": "lamim",
+  "version": "3.0.0-alpha.0",
+  "private": true,
+  "description": "Lamim — Precision Islamic Life Operating System (Next.js monorepo)",
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
-    "test": "npx playwright test",
-    "test:headed": "npx playwright test --headed",
-    "test:ui": "npx playwright test --ui",
-    "test:report": "npx playwright show-report",
-    "test:debug": "npx playwright test --debug"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.1"
+    "@lamim/config": "workspace:*",
+    "prettier": "3.10.1",
+    "turbo": "2.11.13",
+    "typescript": "5.9.3"
   }
 }

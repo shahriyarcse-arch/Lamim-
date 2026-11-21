@@ -1,0 +1,21 @@
+{
+  "name": "@lamim/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pure TypeScript domain logic (no DOM/React): prayer times, Hijri, day offset, scoring, money",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@lamim/config": "workspace:*",
+    "adhan": "4.4.6",
+    "typescript": "5.9.3",
+    "vitest": "5.1.1"
+  }
+}

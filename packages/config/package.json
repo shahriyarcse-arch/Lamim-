@@ -1,0 +1,16 @@
+{
+  "name": "@lamim/config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared TypeScript configuration for the Lamim monorepo",
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.library.json",
+    "tsconfig.nextjs.json"
+  ],
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.library.json": "./tsconfig.library.json",
+    "./tsconfig.nextjs.json": "./tsconfig.nextjs.json"
+  }
+}

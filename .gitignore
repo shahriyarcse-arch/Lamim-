@@ -1,9 +1,26 @@
 # Environment
 .env
-.env.local
+.env.*
+!.env.example
 
 # Node modules
 node_modules/
+
+# Build & tooling output
+.next/
+.next-dev/
+out/
+dist/
+.turbo/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Generated service worker (Serwist)
+apps/web/public/app/sw.js
+apps/web/public/app/sw.js.map
+apps/web/public/app/swe-worker-*.js
+apps/web/public/app/swe-worker-*.js.map
 
 # OS & Temp
 .DS_Store
@@ -27,11 +44,15 @@ tests/test-results/*
 test-results/
 playwright-report/
 *.png
-!app/assets/*.png
-!favicon.png
-!apple-touch-icon.png
+!legacy/app/assets/*.png
+!legacy/favicon.png
+!legacy/apple-touch-icon.png
+!apps/web/public/**/*.png
+# The OG image route lives in a directory literally named og.png
+!apps/web/app/og.png/
 *.mp4
-!app/assets/*.mp4
+!legacy/app/assets/*.mp4
+!apps/web/public/**/*.mp4
 
 # Temp & Scratch
 scratch/
