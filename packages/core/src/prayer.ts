@@ -55,8 +55,53 @@ export interface PrayerSchedule {
   readonly fallbacks: readonly ('fajr' | 'sunrise' | 'asr' | 'maghrib' | 'isha')[];
 }
 
+/**
+ * Fallbacks used by `getPrayerTimes` when a caller omits method/asr. They match the
+ * legacy app (MWL + Hanafi) and are what imported legacy profiles are pinned to.
+ * New profiles get their defaults from `resolveDefaultPrayerSettings` instead.
+ */
 export const DEFAULT_METHOD: CalculationMethod = 'MWL';
 export const DEFAULT_ASR_SCHOOL: AsrSchool = 'hanafi';
+
+export interface PrayerSettings {
+  readonly method: CalculationMethod;
+  readonly asr: AsrSchool;
+}
+
+/** Settings the legacy app always used; written explicitly for imported profiles. */
+export const LEGACY_PRAYER_SETTINGS: PrayerSettings = { method: 'MWL', asr: 'hanafi' };
+
+/** Bangladesh bounding box (also covers adjacent Indian border districts, which share the convention). */
+const BANGLADESH_BOUNDS = { minLat: 20.59, maxLat: 26.64, minLng: 88.0, maxLng: 92.68 } as const;
+
+export function isInBangladeshRegion(lat: number, lng: number): boolean {
+  const b = BANGLADESH_BOUNDS;
+  return lat >= b.minLat && lat <= b.maxLat && lng >= b.minLng && lng <= b.maxLng;
+}
+
+export interface PrayerDefaultsContext {
+  /** IANA zone, e.g. Intl.DateTimeFormat().resolvedOptions().timeZone. */
+  readonly timeZone?: string | null;
+  readonly lat?: number | null;
+  readonly lng?: number | null;
+}
+
+/**
+ * Defaults for a NEW profile: Karachi + Hanafi in Bangladesh (by zone or
+ * coordinates), otherwise MWL + standard Asr. The user can override in settings.
+ */
+export function resolveDefaultPrayerSettings(ctx: PrayerDefaultsContext = {}): PrayerSettings {
+  const { timeZone, lat, lng } = ctx;
+  const inBangladesh =
+    timeZone === 'Asia/Dhaka' ||
+    timeZone === 'Asia/Dacca' ||
+    (typeof lat === 'number' &&
+      typeof lng === 'number' &&
+      Number.isFinite(lat) &&
+      Number.isFinite(lng) &&
+      isInBangladeshRegion(lat, lng));
+  return inBangladesh ? { method: 'Karachi', asr: 'hanafi' } : { method: 'MWL', asr: 'standard' };
+}
 
 const DEG = Math.PI / 180;
 const MS_PER_HOUR = 3_600_000;

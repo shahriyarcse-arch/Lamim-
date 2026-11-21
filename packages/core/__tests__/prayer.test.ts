@@ -11,6 +11,9 @@ import {
   getNextPrayer,
   getPrayerTimes,
   prayerTimesCacheSize,
+  isInBangladeshRegion,
+  LEGACY_PRAYER_SETTINGS,
+  resolveDefaultPrayerSettings,
   type AsrSchool,
   type CalculationMethod,
   type PrayerSchedule,
@@ -396,5 +399,34 @@ describe('createCountdownTicker', () => {
       });
     });
     expect(seen.at(-1)).toBe(0);
+  });
+});
+
+describe('resolveDefaultPrayerSettings (new profiles)', () => {
+  it.each([
+    [{ timeZone: 'Asia/Dhaka' }, 'Karachi', 'hanafi'],
+    [{ timeZone: 'Asia/Dacca' }, 'Karachi', 'hanafi'], // legacy IANA alias
+    [{ lat: 23.8103, lng: 90.4125 }, 'Karachi', 'hanafi'], // Dhaka
+    [{ lat: 22.3569, lng: 91.7832 }, 'Karachi', 'hanafi'], // Chattogram
+    [{ lat: 24.8949, lng: 91.8687 }, 'Karachi', 'hanafi'], // Sylhet
+    [{ timeZone: 'Europe/London', lat: 23.8103, lng: 90.4125 }, 'Karachi', 'hanafi'], // travelling Bangladeshi
+    [{ timeZone: 'Europe/London', lat: 51.5, lng: -0.12 }, 'MWL', 'standard'],
+    [{ timeZone: 'Asia/Kolkata', lat: 28.61, lng: 77.2 }, 'MWL', 'standard'], // Delhi, outside the box
+    [{ lat: Number.NaN, lng: 90.4 }, 'MWL', 'standard'],
+    [{ lat: null, lng: null, timeZone: null }, 'MWL', 'standard'],
+    [{}, 'MWL', 'standard'],
+  ])('%o → %s + %s', (ctx, method, asr) => {
+    expect(resolveDefaultPrayerSettings(ctx)).toEqual({ method, asr });
+  });
+
+  it('box edges are inclusive', () => {
+    expect(isInBangladeshRegion(20.59, 88.0)).toBe(true);
+    expect(isInBangladeshRegion(26.64, 92.68)).toBe(true);
+    expect(isInBangladeshRegion(20.58, 90)).toBe(false);
+    expect(isInBangladeshRegion(24, 92.69)).toBe(false);
+  });
+
+  it('legacy profiles stay pinned to MWL + Hanafi', () => {
+    expect(LEGACY_PRAYER_SETTINGS).toEqual({ method: 'MWL', asr: 'hanafi' });
   });
 });
