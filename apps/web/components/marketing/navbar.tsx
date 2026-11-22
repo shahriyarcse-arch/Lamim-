@@ -80,7 +80,9 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
               />
             </svg>
           </span>
-          <span className="font-display text-h3 text-fg">Lamim</span>
+          <span className="font-display bg-celestial bg-clip-text pr-1 text-h3 text-transparent">
+            Lamim
+          </span>
         </Link>
 
         {/* Center Navigation Links */}

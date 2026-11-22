@@ -955,7 +955,7 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
           <div aria-hidden className={`${CONTAINER} mt-24 overflow-hidden`}>
             <p
               data-anim="wordmark"
-              className="font-display text-center text-mega text-fg select-none"
+              className="font-display bg-celestial bg-clip-text pb-4 text-center text-mega text-transparent select-none"
             >
               Lamim<span className="text-lime">.</span>
             </p>
