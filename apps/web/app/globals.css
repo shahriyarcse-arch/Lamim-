@@ -76,6 +76,8 @@
   --text-section--line-height: 1.02;
   --text-statement: clamp(1.5rem, 1rem + 2vw, 2.75rem);
   --text-statement--line-height: 1.25;
+  --text-mega-sm: clamp(3rem, 2rem + 3vw, 4.5rem);
+  --text-mega-sm--line-height: 1;
   --text-mega: clamp(5rem, 1rem + 21vw, 19rem);
   --text-mega--line-height: 0.8;
   --tracking-tightest: -0.045em;
@@ -193,7 +195,7 @@
   --motion-aurora: 26s;
   --motion-swap: 600ms;
   /* Dark app background, for the page edge behind the night-sky landing */
-  --landing-edge: #070b14;
+  --landing-edge: #1c1d18;
 }
 
 /* The landing always renders in the dark night-sky palette (tokens tested in contrast.test.ts). */
@@ -295,14 +297,23 @@ html.lenis body {
 
 /* ---- Landing typography ---- */
 [data-landing] {
-  font-family: var(--font-geist), var(--font-sans);
-  font-feature-settings: 'ss01', 'cv11';
-  /* Bengali page: a modern display Bangla, falling back to Noto. */
+  font-family: var(--font-isans), var(--font-sans);
+  /* Bengali page: a modern humanist Bangla for reading, falling back to Noto. */
   --font-bengali: var(--font-anek), var(--font-noto-bengali), sans-serif;
+}
+/* Editorial serif headings (Instrument Serif); Bengali headings use Noto Serif Bengali. */
+[data-landing] .font-display {
+  font-family: var(--font-iserif), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+[data-landing]:lang(bn) .font-display {
+  font-family: var(--font-serif-bn), var(--font-noto-bengali), serif;
+  font-weight: 500;
 }
 /* Serif italic accent words; Bengali has no italic serif, so it keeps the sans. */
 .font-accent:not(:lang(bn)) {
-  font-family: var(--font-instrument), Georgia, serif;
+  font-family: var(--font-iserif), Georgia, serif;
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -388,8 +399,8 @@ html.lenis body {
 
 /* Glass card with a pointer-following sheen (--mx/--my set by landing-motion). */
 @utility glass {
-  background-color: rgb(14 22 38 / 0.62);
-  border: 1px solid rgb(255 255 255 / 0.08);
+  background-color: color-mix(in srgb, var(--bg-surface) 72%, transparent);
+  border: 1px solid var(--border-subtle);
   backdrop-filter: blur(16px) saturate(140%);
 }
 @utility sheen {
@@ -411,6 +422,74 @@ html.lenis body {
   &:hover::before {
     opacity: 1;
   }
+}
+
+/* ---- Landing tones (warm palette; gated by __tests__/contrast.test.ts) ------ */
+.tone-night {
+  --bg-app: #1c1d18;
+  --bg-surface: #25271f;
+  --bg-surface-subtle: #2a2c24;
+  --text-primary: #f3f0e7;
+  --text-secondary: #b8b5a8;
+  --text-tertiary: #9e9b8f;
+  --border-subtle: rgb(243 240 231 / 0.1);
+  --border-focus: #007cd3;
+  --brand-text-terracotta: #d98585;
+  --brand-text-raspberry: #d9809f;
+  --brand-text-violet: #c08ac4;
+  --brand-text-iris: #9198dc;
+  --brand-text-azure: #4fa6e6;
+  --brand-text-cerulean: #4baad8;
+  color-scheme: dark;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+}
+.tone-cream {
+  --bg-app: #f3f0e7;
+  --bg-surface: #fbfaf6;
+  --bg-surface-subtle: #e8e4d8;
+  --text-primary: #1b1c18;
+  --text-secondary: #4f5147;
+  --text-tertiary: #5e6055;
+  --border-subtle: #dad6c9;
+  --border-focus: #007cd3;
+  --brand-text-terracotta: #9e4848;
+  --brand-text-raspberry: #9c4069;
+  --brand-text-violet: #87488c;
+  --brand-text-iris: #545cb0;
+  --brand-text-azure: #005fa3;
+  --brand-text-cerulean: #00658f;
+  color-scheme: light;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+}
+
+/* Hero 3D rig: ONE perspective on the stage, flat preserve-3d chain below it,
+   small angles only. (Nested perspectives + large tilts pushed devices through the
+   camera plane and smeared them across the screen.) */
+.hero-stage {
+  perspective: 1800px;
+  perspective-origin: 50% 40%;
+}
+.hero-stage .rig {
+  transform-style: preserve-3d;
+}
+.hero-back-left {
+  transform: translate3d(-40%, 5%, -160px) rotateY(16deg) rotateZ(-4deg);
+}
+.hero-back-right {
+  transform: translate3d(40%, 5%, -160px) rotateY(-16deg) rotateZ(4deg);
+}
+@media (max-width: 639px) {
+  .hero-back-left {
+    transform: translate3d(-26%, 4%, -160px) rotateY(12deg) rotateZ(-3deg);
+  }
+  .hero-back-right {
+    transform: translate3d(26%, 4%, -160px) rotateY(-12deg) rotateZ(3deg);
+  }
+}
+.story-stage {
+  perspective: 1600px;
 }
 
 /* ---- Base ------------------------------------------------------------------- */

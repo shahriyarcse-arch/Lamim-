@@ -42,7 +42,11 @@ const theme = tokens(block('@theme'));
 const light = tokens(block(':root'));
 const dark = tokens(block("[data-theme='dark']"));
 
-const themes = { light, dark };
+// Landing tones (warm palette): same token names, same AA gates.
+const night = tokens(block('.tone-night'));
+const cream = tokens(block('.tone-cream'));
+
+const themes = { light, dark, night, cream };
 const backgrounds = (t: Record<string, string>) => ({
   app: t['bg-app']!,
   surface: t['bg-surface']!,
