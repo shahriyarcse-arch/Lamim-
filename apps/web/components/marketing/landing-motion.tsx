@@ -57,9 +57,8 @@ export function LandingMotion() {
                   story.dataset.active = String(i);
                   if (motion && storyDevice)
                     gsap.to(storyDevice, {
-                      rotateY: i % 2 ? -14 : 14,
-                      rotateX: 6,
-                      transformPerspective: 1400,
+                      rotationY: i % 2 ? -10 : 10,
+                      rotationX: 4,
                       duration: MOTION.reveal,
                       ease: MOTION.ease,
                     });
@@ -104,22 +103,23 @@ export function LandingMotion() {
             ease: MOTION.ease,
             stagger: MOTION.stagger,
           });
-          gsap.from('[data-anim="hero-stage"]', {
-            rotateX: 28,
-            rotateY: -24,
-            y: 80,
-            transformPerspective: 1200,
+          // 3D rig: the ONLY perspective is CSS on .hero-stage. These wrappers carry
+          // small rotations in one preserve-3d chain (no transformPerspective here:
+          // nested perspectives multiply and smear the devices across the screen).
+          gsap.from('[data-anim="hero-intro"]', {
+            rotationY: -14,
+            rotationX: 8,
+            y: 64,
             duration: MOTION.intro * 1.3,
             ease: MOTION.ease,
           });
-          // Fanned devices open out from behind the front phone, then spread on scroll.
           for (const [sel, dir] of [
             ['[data-anim="fan-left"]', -1],
             ['[data-anim="fan-right"]', 1],
           ] as const) {
+            // Back devices slide out from behind the front phone…
             gsap.from(sel, {
-              xPercent: -40 * dir,
-              rotateY: 0,
+              xPercent: -30 * dir,
               duration: MOTION.intro * 1.4,
               delay: 0.15,
               ease: MOTION.ease,
@@ -127,37 +127,26 @@ export function LandingMotion() {
           }
           const hero = one('[data-anim="hero"]');
           if (hero) {
-            for (const [sel, dir] of [
-              ['[data-anim="fan-left"]', -1],
-              ['[data-anim="fan-right"]', 1],
-            ] as const) {
-              gsap.to(sel, {
-                x: 64 * dir,
-                rotateY: 18 * -dir,
-                transformPerspective: 1200,
-                ease: 'none',
-                scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
-              });
-            }
-            gsap.to('[data-anim="hero-phone"]', {
-              rotateX: -14,
-              rotateY: 12,
-              y: -48,
-              scale: 0.92,
-              transformPerspective: 1200,
+            const scrub = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
+            // …and spread a little further as the hero scrolls away.
+            gsap.to('[data-anim="fan-left"]', { x: -40, ease: 'none', scrollTrigger: scrub });
+            gsap.to('[data-anim="fan-right"]', { x: 40, ease: 'none', scrollTrigger: scrub });
+            gsap.to('[data-anim="hero-scroll"]', {
+              rotationX: 10,
+              y: -40,
+              scale: 0.95,
               ease: 'none',
-              scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
+              scrollTrigger: scrub,
             });
             for (const chip of all('[data-depth]')) {
               gsap.to(chip, {
-                y: -Number(chip.dataset.depth) * 140,
+                y: -Number(chip.dataset.depth) * 120,
                 ease: 'none',
-                scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
+                scrollTrigger: scrub,
               });
             }
             const tiltEl = one('[data-anim="hero-tilt"]');
             if (pointer && tiltEl) {
-              gsap.set(tiltEl, { transformPerspective: 1200 });
               const rx = gsap.quickTo(tiltEl, 'rotationX', {
                 duration: MOTION.follow,
                 ease: 'power3',
@@ -234,13 +223,12 @@ export function LandingMotion() {
             const dir = Number(el.dataset.dir ?? 1);
             gsap.fromTo(
               el,
-              { rotateY: 30 * dir, rotateX: 14, scale: 0.84, y: 96, transformPerspective: 1100 },
+              { rotationY: 18 * dir, rotationX: 8, scale: 0.9, y: 80 },
               {
-                rotateY: 0,
-                rotateX: 0,
+                rotationY: 0,
+                rotationX: 0,
                 scale: 1,
                 y: 0,
-                transformPerspective: 1100,
                 ease: 'none',
                 scrollTrigger: { trigger: el, start: 'top bottom', end: 'center 55%', scrub: 1 },
               },

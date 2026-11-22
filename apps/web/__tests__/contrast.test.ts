@@ -42,7 +42,44 @@ const theme = tokens(block('@theme'));
 const light = tokens(block(':root'));
 const dark = tokens(block("[data-theme='dark']"));
 
-const themes = { light, dark };
+// Landing tones (warm palette): same token names, same AA gates.
+const night = tokens(block('.tone-night'));
+const cream = tokens(block('.tone-cream'));
+
+const themes = { light, dark, night, cream };
+
+// Lime and coral are card colours: only ink-family text sits on them, so they are
+// gated on text tokens and the (ink) focus ring, not on the six brand fills.
+const cardTones = { lime: tokens(block('.tone-lime')), coral: tokens(block('.tone-coral')) };
+describe.each(Object.entries(cardTones))('%s card tone', (_name, t) => {
+  const bgs = backgrounds(t);
+  it.each(['text-primary', 'text-secondary', 'text-tertiary'])(
+    '%s ≥ 4.5:1 on every surface',
+    (token) => {
+      for (const [bg, value] of Object.entries(bgs)) {
+        expect(contrast(t[token]!, value), `${token} on ${bg}`).toBeGreaterThanOrEqual(AA_TEXT);
+      }
+    },
+  );
+  it('focus ring ≥ 3:1 on every surface', () => {
+    for (const [bg, value] of Object.entries(bgs)) {
+      expect(contrast(t['border-focus']!, value), `focus on ${bg}`).toBeGreaterThanOrEqual(
+        AA_NON_TEXT,
+      );
+    }
+  });
+});
+
+describe('landing palette', () => {
+  it('ink body text on lime, coral and cream ≥ 4.5:1', () => {
+    for (const bg of ['color-lime', 'color-coral', 'color-cream', 'color-sand'])
+      expect(contrast(theme['color-ink']!, theme[bg]!), bg).toBeGreaterThanOrEqual(AA_TEXT);
+  });
+  it('lime and coral text on ink ≥ 4.5:1', () => {
+    for (const fg of ['color-lime', 'color-coral'])
+      expect(contrast(theme[fg]!, theme['color-ink']!), fg).toBeGreaterThanOrEqual(AA_TEXT);
+  });
+});
 const backgrounds = (t: Record<string, string>) => ({
   app: t['bg-app']!,
   surface: t['bg-surface']!,

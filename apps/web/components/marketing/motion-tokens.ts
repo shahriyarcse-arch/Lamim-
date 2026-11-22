@@ -13,11 +13,11 @@ export const MOTION = {
   stagger: 0.08,
   /** Lenis smooth-scroll duration for wheel and anchor jumps (s). */
   lenisDuration: 1.15,
-  /** Sticky header height, so anchor jumps land below it (px). */
-  anchorOffset: 72,
+  /** Floating navbar height + gap, so anchor jumps land below it (px). */
+  anchorOffset: 104,
   /** Max pointer tilt for cards and the hero phone (deg). */
   tilt: 8,
-  heroTilt: 12,
+  heroTilt: 6,
   /** Fraction of the pointer offset a magnetic button follows. */
   magnet: 0.25,
   /** Follow speed for pointer-driven motion (s). */

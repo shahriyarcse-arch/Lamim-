@@ -69,7 +69,8 @@ export function Device({
         <span aria-hidden className="device-button absolute top-[27%] -right-[0.9cqw] h-[15%]" />
         <div
           aria-hidden
-          className="relative size-full overflow-hidden rounded-[12.6cqw] bg-app text-[4.5cqw] leading-[1.35] text-fg"
+          data-theme="dark"
+          className="relative size-full overflow-hidden rounded-[12.6cqw] bg-app font-sans text-[4.5cqw] leading-[1.35] text-fg"
         >
           {children}
           <span className="absolute top-[0.55em] left-1/2 h-[1.75em] w-[6.25em] -translate-x-1/2 rounded-pill bg-black" />

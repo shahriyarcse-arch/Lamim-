@@ -27,7 +27,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
       {/* Floating Capsule Shell (Inspired by sellsull.com) */}
       <nav
         aria-label={lang === 'bn' ? 'প্রধান মেনু' : 'Primary Navigation'}
-        className="mx-auto w-full max-w-6xl min-h-[4rem] px-3.5 sm:px-5 py-2 flex items-center justify-between gap-3 sm:gap-4 rounded-full bg-app/80 backdrop-blur-2xl border border-white/12 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)] pointer-events-auto transition-all"
+        className="tone-night mx-auto w-full max-w-6xl min-h-[4rem] px-3.5 sm:px-5 py-2 flex items-center justify-between gap-3 sm:gap-4 rounded-full bg-app/80 backdrop-blur-2xl border border-white/12 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)] pointer-events-auto transition-all"
       >
         {/* Brand Logo */}
         <Link href={paths.home} className="flex items-center gap-3 group">
@@ -68,11 +68,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
                 fill="url(#nav_fG)"
                 opacity="0.97"
               />
-              <path
-                d="M140,195 L252,130 L232,118 L140,172Z"
-                fill="url(#nav_spG)"
-                opacity="0.8"
-              />
+              <path d="M140,195 L252,130 L232,118 L140,172Z" fill="url(#nav_spG)" opacity="0.8" />
               <path
                 d="M175,300 L350,300 C382,300 400,320 400,344 C400,368 382,385 350,385 L175,385Z"
                 fill="url(#nav_hG)"
@@ -84,7 +80,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
               />
             </svg>
           </span>
-          <span className="bg-celestial bg-clip-text text-xl font-bold tracking-tight text-transparent">
+          <span className="font-display bg-celestial bg-clip-text pr-1 text-h3 text-transparent">
             Lamim
           </span>
         </Link>
@@ -136,10 +132,10 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
           {/* Sellsull Signature CTA Button with Arrow Bubble */}
           <Link
             href="/app/home"
-            className="group inline-flex items-center justify-center gap-2.5 pl-4 sm:pl-5 pr-1.5 py-1.5 rounded-full bg-gradient-to-r from-azure via-iris to-violet text-white text-xs sm:text-sm font-bold shadow-[0_0_24px_rgba(0,124,211,0.35)] hover:shadow-[0_0_32px_rgba(0,124,211,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-lime py-1.5 pr-1.5 pl-4 text-xs font-bold text-ink shadow-raised transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 sm:pl-5 sm:text-sm"
           >
             <span>{c.nav.openApp}</span>
-            <span className="size-7 sm:size-8 rounded-full bg-white/20 grid place-items-center text-white transition-transform duration-200 group-hover:translate-x-0.5">
+            <span className="bg-ink size-7 sm:size-8 rounded-full grid place-items-center text-lime transition-transform duration-200 group-hover:translate-x-0.5">
               <svg
                 className="size-3.5 sm:size-4"
                 viewBox="0 0 24 24"
@@ -159,6 +155,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-expanded={mobileOpen}
             className="md:hidden size-10 rounded-full border border-white/10 bg-white/[0.04] grid place-items-center text-fg hover:bg-white/10 transition-colors"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           >
@@ -195,7 +192,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
 
       {/* Mobile Drawer (Drop-down Island) */}
       {mobileOpen && (
-        <div className="md:hidden mt-2 max-w-sm mx-auto p-4 rounded-3xl bg-app/95 backdrop-blur-2xl border border-white/12 shadow-2xl flex flex-col gap-3 pointer-events-auto animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="tone-night md:hidden mt-2 max-w-sm mx-auto p-4 rounded-3xl bg-app/95 backdrop-blur-2xl border border-white/12 shadow-2xl flex flex-col gap-3 pointer-events-auto animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col gap-1">
             {(
               [
@@ -239,7 +236,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
             <Link
               href="/app/home"
               onClick={() => setMobileOpen(false)}
-              className="flex-1 text-center py-2 px-4 rounded-full bg-gradient-to-r from-azure to-violet text-white text-xs font-bold shadow-md"
+              className="flex-1 text-center py-2 px-4 rounded-full bg-lime text-ink text-xs font-bold shadow-md"
             >
               {c.nav.openApp}
             </Link>
