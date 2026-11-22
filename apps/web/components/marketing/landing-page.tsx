@@ -44,15 +44,18 @@ const serifBn = Noto_Serif_Bengali({
 });
 
 type FeatureId = MarketingCopy['features'][number]['id'];
+type Tone = 'cream' | 'night' | 'lime' | 'coral';
 
-/** Per-module accent (brand colors only) and the app screen that shows it. */
-const FEATURE_STYLE: Record<FeatureId, { eyebrow: string; dot: string; screen: ScreenId }> = {
-  salah: { eyebrow: 'text-cerulean-text', dot: 'bg-cerulean', screen: 'salah' },
-  spirit: { eyebrow: 'text-violet-text', dot: 'bg-violet', screen: 'home' },
-  dhikr: { eyebrow: 'text-iris-text', dot: 'bg-iris', screen: 'dhikr' },
-  finance: { eyebrow: 'text-raspberry-text', dot: 'bg-raspberry', screen: 'finance' },
-  habits: { eyebrow: 'text-terracotta-text', dot: 'bg-terracotta', screen: 'habits' },
+/** Per-module accent dot (brand colors) and the app screen that shows it. */
+const FEATURE_STYLE: Record<FeatureId, { dot: string; screen: ScreenId }> = {
+  salah: { dot: 'bg-cerulean', screen: 'salah' },
+  spirit: { dot: 'bg-violet', screen: 'home' },
+  dhikr: { dot: 'bg-iris', screen: 'dhikr' },
+  finance: { dot: 'bg-raspberry', screen: 'finance' },
+  habits: { dot: 'bg-terracotta', screen: 'habits' },
 };
+/** Card colour behind each feature's device on mobile (desktop swaps via CSS). */
+const FEATURE_CARD: Tone[] = ['lime', 'coral', 'night', 'cream', 'lime'];
 
 const SCREEN_LABEL: Record<ScreenId, { en: string; bn: string }> = {
   home: {
@@ -100,24 +103,32 @@ const HERO_CHIPS: { id: FeatureId; pos: string; depth: number; delay: string }[]
   },
 ];
 
+const HERO_FACTS: Record<MarketingLang, string[]> = {
+  en: ['Free', 'Works offline', 'Bangla & English'],
+  bn: ['ফ্রি', 'ইন্টারনেট ছাড়াই চলে', 'বাংলা ও ইংরেজি'],
+};
+
 const CONTAINER = 'mx-auto w-full max-w-7xl px-4 md:px-8 lg:px-12';
 const SECTION = 'relative py-24 md:py-32';
-/** Inverts per tone: cream pill on night sections, ink pill on cream sections. */
+/** Card shell shared by every bento tile. */
+const CARD = 'relative overflow-hidden rounded-xl p-6 md:p-8';
+/** Inverts per tone: ink pill on light surfaces, cream pill on ink. */
 const PRIMARY =
   'group inline-flex min-h-12 items-center justify-center gap-4 rounded-pill bg-fg py-2 pr-2 pl-6 text-body font-semibold text-app shadow-raised transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-overlay focus-visible:-translate-y-0.5 active:translate-y-0';
 const SECONDARY =
-  'inline-flex min-h-12 items-center justify-center rounded-pill border border-border px-6 text-body font-semibold text-fg transition-colors duration-200 hover:bg-surface-subtle focus-visible:bg-surface-subtle';
+  'inline-flex min-h-12 items-center justify-center rounded-pill border border-fg/20 px-6 text-body font-semibold text-fg transition-colors duration-200 hover:bg-fg hover:text-app focus-visible:bg-fg focus-visible:text-app';
 const FOOT_LINK =
   'inline-flex min-h-11 items-center text-body text-fg-muted transition-colors duration-200 hover:text-fg focus-visible:text-fg';
-const EYEBROW = 'text-caption font-semibold tracking-eyebrow uppercase';
+const TAG =
+  'inline-flex w-fit items-center gap-2 rounded-pill border border-border bg-surface px-4 py-1 text-caption font-semibold text-fg';
 const SECTION_TITLE = 'font-display text-section text-balance text-fg';
 
-/** Arrow inside a gradient bubble (the primary CTA's tail). */
+/** Arrow inside a lime bubble (the primary CTA's tail). */
 function ArrowBubble() {
   return (
     <span
       aria-hidden
-      className="bg-celestial grid size-8 place-items-center rounded-pill text-white transition-transform duration-200 group-hover:translate-x-1"
+      className="grid size-8 place-items-center rounded-pill bg-lime text-ink transition-transform duration-200 group-hover:translate-x-1"
     >
       <svg
         width="16"
@@ -154,26 +165,39 @@ function ArrowUp() {
   );
 }
 
-/** The headline's accent phrase: serif italic in the brand gradient (display size only). */
+function Check({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m5 12 5 5 9-10" />
+    </svg>
+  );
+}
+
+/** The headline's accent phrase: serif italic on a lime highlighter stroke. */
 function AccentTitle({ title, accent }: { title: string; accent: string }) {
   const i = title.indexOf(accent);
   if (i < 0) return <>{title}</>;
-  // Keep trailing punctuation inside the accent so it shares the italic and gradient.
+  // Keep trailing punctuation inside the accent so it shares the highlight.
   let end = i + accent.length;
   while (end < title.length && /[.,!?।]/.test(title[end]!)) end++;
   return (
     <>
       {title.slice(0, i)}
-      <span className="font-accent bg-celestial bg-clip-text pr-2 text-transparent">
+      <span className="font-accent rounded-md bg-lime px-2 text-ink [box-decoration-break:clone]">
         {title.slice(i, end)}
       </span>
       {title.slice(end)}
     </>
   );
-}
-
-function Dot({ className }: { className: string }) {
-  return <span aria-hidden className={`mt-2 size-2 shrink-0 rounded-pill ${className}`} />;
 }
 
 /** Eight-point star lattice (khatam), the geometry of Islamic ornament; decorative. */
@@ -194,24 +218,22 @@ function GeoPattern({ id, className = '' }: { id: string; className?: string }) 
   );
 }
 
-/** A soft brand-color glow and a few stars behind a night section; decorative. */
-function Sky({ intensity = 'soft' }: { intensity?: 'soft' | 'bright' }) {
-  const o = intensity === 'bright' ? 'opacity-35' : 'opacity-20';
+/** Square icon badge used on every card (inverts against the card tone). */
+function IconBox({ d, className }: { d: string; className: string }) {
   return (
-    <div
-      aria-hidden
-      className="mask-fade-y pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    >
-      <div className="bg-stars absolute inset-0 opacity-40" />
-      <div data-parallax="-20" className="absolute -top-1/4 -left-1/4 size-[60vmax]">
-        <span className={`bg-dusk animate-aurora absolute inset-0 rounded-full blur-3xl ${o}`} />
-      </div>
-      <div data-parallax="24" className="absolute -right-1/4 -bottom-1/3 size-[56vmax]">
-        <span
-          className={`bg-dawn animate-aurora absolute inset-0 rounded-full blur-3xl [animation-delay:-13s] ${o}`}
-        />
-      </div>
-    </div>
+    <span aria-hidden className={`grid size-12 place-items-center rounded-lg ${className}`}>
+      <svg
+        viewBox="0 0 24 24"
+        className="size-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d={d} />
+      </svg>
+    </span>
   );
 }
 
@@ -219,20 +241,18 @@ function Section({
   id,
   children,
   labelledBy,
-  tone,
   className = '',
 }: {
   id?: string;
   children: ReactNode;
   labelledBy: string;
-  tone: 'night' | 'cream';
   className?: string;
 }) {
   return (
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={`tone-${tone} ${SECTION} scroll-mt-24 ${className}`}
+      className={`${SECTION} scroll-mt-24 ${className}`}
     >
       <div className={CONTAINER}>{children}</div>
     </section>
@@ -244,20 +264,57 @@ function Screen({ id, lang }: { id: ScreenId; lang: MarketingLang }) {
   return <S lang={lang} />;
 }
 
-// ---- Privacy cards: each one shows what it claims ------------------------------
+// ---- Privacy bento: each card shows what it claims ------------------------------
 
-const PRIVACY_CARD = [
-  { block: 'bg-terracotta-strong', fact: { en: 'Stays on this device', bn: 'এই ডিভাইসেই থাকে' } },
-  { block: 'bg-azure-strong', fact: { en: 'Sign-up is optional', bn: 'সাইন-আপ ঐচ্ছিক' } },
+const ICON = {
+  device: 'M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm4 15h2',
+  user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 11-5.7M17 17l4 4m0-4-4 4',
+  eye: 'M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.2A9.6 9.6 0 0 1 12 5c5 0 9 5 9 7a9 9 0 0 1-2.2 3.4M6.6 6.6C4.4 8 3 10.4 3 12c0 2 4 7 9 7a9.4 9.4 0 0 0 4.4-1.1',
+  offline:
+    'M2 8.8a15 15 0 0 1 4.2-2.6M22 8.8A15 15 0 0 0 10.4 5.1M5 12.5a10 10 0 0 1 2.9-1.8M19 12.5a10 10 0 0 0-3.7-2.1M8.5 16a5 5 0 0 1 7 0M12 20h.01M3 3l18 18',
+  spark: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6',
+  cloud: 'M7 18a4 4 0 0 1-.6-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9Z',
+};
+
+const PRIVACY_CARD: {
+  tone: Tone;
+  span: string;
+  icon: string;
+  iconBox: string;
+  badge: { en: string; bn: string };
+}[] = [
   {
-    block: 'bg-iris-strong',
-    fact: { en: '0 third-party requests', bn: 'বাইরের কোনো রিকোয়েস্ট নেই' },
+    tone: 'lime',
+    span: 'lg:col-span-2',
+    icon: ICON.device,
+    iconBox: 'bg-ink text-lime',
+    badge: { en: 'Stays on this device', bn: 'এই ডিভাইসেই থাকে' },
   },
   {
-    block: 'bg-raspberry-strong',
-    fact: { en: 'Works in airplane mode', bn: 'এয়ারপ্লেন মোডেও চলে' },
+    tone: 'night',
+    span: '',
+    icon: ICON.user,
+    iconBox: 'bg-lime text-ink',
+    badge: { en: 'Sign-up optional', bn: 'সাইন-আপ ঐচ্ছিক' },
   },
-] as const;
+  {
+    tone: 'coral',
+    span: '',
+    icon: ICON.eye,
+    iconBox: 'bg-ink text-coral',
+    badge: { en: '0 third-party requests', bn: 'বাইরের রিকোয়েস্ট নেই' },
+  },
+  {
+    tone: 'cream',
+    span: 'lg:col-span-2',
+    icon: ICON.offline,
+    iconBox: 'bg-lime text-ink',
+    badge: { en: 'Works in airplane mode', bn: 'এয়ারপ্লেন মোডেও চলে' },
+  },
+];
+
+/** Inner white panel of a bento card (like a mini screen). */
+const PANEL = 'rounded-lg border border-ink/10 bg-white p-4 text-ink';
 
 function StorageVisual({ lang, nf }: { lang: MarketingLang; nf: Intl.NumberFormat }) {
   const rows: [string, number, number][] = [
@@ -267,7 +324,7 @@ function StorageVisual({ lang, nf }: { lang: MarketingLang; nf: Intl.NumberForma
     ['habitEvents', 41, 0.12],
   ];
   return (
-    <div className="absolute inset-4 grid content-start gap-2 rounded-lg bg-black/20 p-4 text-white">
+    <div className={`${PANEL} grid gap-2`}>
       <div className="flex items-center justify-between text-caption font-semibold">
         <span className="flex items-center gap-2">
           <svg
@@ -283,17 +340,15 @@ function StorageVisual({ lang, nf }: { lang: MarketingLang; nf: Intl.NumberForma
           </svg>
           IndexedDB
         </span>
-        <span className="opacity-90">{lang === 'bn' ? 'এই ডিভাইস' : 'this device'}</span>
+        <span className="rounded-pill bg-lime px-2 py-0.5">
+          {lang === 'bn' ? 'এই ডিভাইস' : 'this device'}
+        </span>
       </div>
       {rows.map(([name, n, w]) => (
-        <div key={name} className="grid grid-cols-[7rem_1fr_auto] items-center gap-2 text-caption">
-          <span className="truncate font-mono opacity-90">{name}</span>
-          <span className="h-1 overflow-hidden rounded-pill bg-white/20">
-            <span
-              data-bar
-              className="block h-full rounded-pill bg-white"
-              style={{ width: `${w * 100}%` }}
-            />
+        <div key={name} className="grid grid-cols-[7rem_1fr_auto] items-center gap-4 text-caption">
+          <span className="truncate font-mono">{name}</span>
+          <span className="h-2 overflow-hidden rounded-pill bg-sand">
+            <span className="block h-full rounded-pill bg-ink" style={{ width: `${w * 100}%` }} />
           </span>
           <span className="tabular-nums">{nf.format(n)}</span>
         </div>
@@ -305,23 +360,19 @@ function StorageVisual({ lang, nf }: { lang: MarketingLang; nf: Intl.NumberForma
 function SignupVisual({ lang }: { lang: MarketingLang }) {
   const fields = lang === 'bn' ? ['ইমেইল', 'পাসওয়ার্ড'] : ['Email', 'Password'];
   return (
-    <div className="absolute inset-4 grid content-center gap-2 text-white">
+    <div className={`${PANEL} grid gap-2`}>
       {fields.map((f) => (
         <span
           key={f}
-          className="relative flex h-9 items-center rounded-md border border-white/30 px-4 text-caption opacity-80"
+          className="flex h-10 items-center justify-between rounded-md border border-dashed border-ink/25 px-4 text-caption"
         >
-          <span className="line-through decoration-2">{f}</span>
-          <span className="absolute right-4 text-caption font-semibold no-underline">
-            {lang === 'bn' ? 'লাগবে না' : 'not needed'}
-          </span>
+          <span className="text-ink/70 line-through">{f}</span>
+          <span className="font-semibold">{lang === 'bn' ? 'লাগবে না' : 'not needed'}</span>
         </span>
       ))}
-      <span className="mt-2 flex h-10 items-center justify-between rounded-pill bg-white pr-2 pl-4 text-caption font-semibold text-azure-strong">
+      <span className="flex h-10 items-center justify-between rounded-pill bg-ink pr-1 pl-4 text-caption font-semibold text-cream">
         {lang === 'bn' ? 'সরাসরি শুরু করুন' : 'Start right away'}
-        <span className="grid size-6 place-items-center rounded-pill bg-azure-strong text-white">
-          →
-        </span>
+        <span className="grid size-8 place-items-center rounded-pill bg-lime text-ink">→</span>
       </span>
     </div>
   );
@@ -341,18 +392,21 @@ function NetworkVisual({ lang }: { lang: MarketingLang }) {
           ['Trackers', 'none'],
         ];
   return (
-    <div className="absolute inset-4 grid grid-cols-[auto_1fr] items-center gap-4 rounded-lg bg-black/20 p-4 text-white">
+    <div className={`${PANEL} grid grid-cols-[auto_1fr] items-center gap-6`}>
       <div className="grid justify-items-center">
         <span className="font-display text-mega-sm leading-none">0</span>
-        <span className="text-caption opacity-90">
-          {lang === 'bn' ? 'বাইরের রিকোয়েস্ট' : 'third-party'}
-        </span>
+        <span className="text-caption">{lang === 'bn' ? 'বাইরের রিকোয়েস্ট' : 'third-party'}</span>
       </div>
       <div className="grid gap-2">
         {rows.map(([k, v]) => (
-          <span key={k} className="flex justify-between border-b border-white/20 pb-1 text-caption">
+          <span key={k} className="flex items-center justify-between text-caption">
             <span>{k}</span>
-            <span className="font-semibold">{v}</span>
+            <span className="flex items-center gap-1 font-semibold">
+              <span className="grid size-4 place-items-center rounded-pill bg-coral">
+                <Check className="size-2.5" />
+              </span>
+              {v}
+            </span>
           </span>
         ))}
       </div>
@@ -362,22 +416,19 @@ function NetworkVisual({ lang }: { lang: MarketingLang }) {
 
 function OfflineVisual({ lang }: { lang: MarketingLang }) {
   return (
-    <div className="absolute inset-4 grid content-center gap-2 text-white">
-      <span className="flex h-10 items-center justify-between rounded-md bg-black/20 px-4 text-caption font-semibold">
+    <div className="grid gap-2 sm:grid-cols-2">
+      <span className={`${PANEL} flex items-center justify-between text-caption font-semibold`}>
         <span className="flex items-center gap-2">
           <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="currentColor">
             <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5Z" />
           </svg>
           {lang === 'bn' ? 'এয়ারপ্লেন মোড' : 'Airplane mode'}
         </span>
-        <span
-          data-toggle
-          className="flex h-5 w-9 items-center justify-end rounded-pill bg-white p-0.5"
-        >
-          <span className="size-4 rounded-pill bg-raspberry-strong" />
+        <span className="flex h-6 w-11 items-center justify-end rounded-pill bg-ink p-1">
+          <span className="size-4 rounded-pill bg-lime" />
         </span>
       </span>
-      <span className="grid gap-1 rounded-md bg-white p-4 text-raspberry-strong">
+      <span className={`${PANEL} grid gap-1`}>
         <span className="text-caption font-semibold tracking-eyebrow uppercase">
           {lang === 'bn' ? 'পরের ওয়াক্ত' : 'Next prayer'}
         </span>
@@ -413,7 +464,7 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
       id="top"
       data-landing
       lang={lang}
-      className={`${iserif.variable} ${isans.variable} ${anek.variable} ${serifBn.variable} tone-night relative isolate min-h-dvh overflow-x-clip antialiased`}
+      className={`${iserif.variable} ${isans.variable} ${anek.variable} ${serifBn.variable} tone-cream relative isolate min-h-dvh overflow-x-clip antialiased`}
     >
       <LandingMotion />
       <ScreenDefs />
@@ -431,18 +482,14 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
         <section
           data-anim="hero"
           aria-labelledby="hero-title"
-          className="relative isolate overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32"
+          className="relative isolate overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24"
         >
-          <Sky intensity="bright" />
           <div className={`${CONTAINER} grid items-center gap-16 xl:grid-cols-12`}>
-            <div className="grid gap-8 xl:col-span-7">
-              <p
-                data-anim="hero-item"
-                className={`${EYEBROW} inline-flex w-fit items-center gap-2 rounded-pill border border-border bg-surface px-4 py-2 text-fg-muted`}
-              >
+            <div className="grid gap-8 xl:col-span-6">
+              <p data-anim="hero-item" className={TAG}>
                 <span aria-hidden className="relative flex size-2">
-                  <span className="animate-beacon absolute inset-0 rounded-pill bg-cerulean" />
-                  <span className="relative size-2 rounded-pill bg-cerulean" />
+                  <span className="animate-beacon absolute inset-0 rounded-pill bg-coral" />
+                  <span className="relative size-2 rounded-pill bg-coral" />
                 </span>
                 {c.hero.eyebrow}
               </p>
@@ -465,83 +512,72 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
                   {c.hero.secondaryCta}
                 </a>
               </div>
-              <p data-anim="hero-item" className="text-caption text-fg-muted">
-                {c.hero.note}
-              </p>
+              <ul data-anim="hero-item" className="flex flex-wrap gap-4">
+                {HERO_FACTS[lang].map((f) => (
+                  <li
+                    key={f}
+                    className="flex items-center gap-2 text-caption font-semibold text-fg"
+                  >
+                    <span className="grid size-5 place-items-center rounded-pill bg-lime text-ink">
+                      <Check className="size-3" />
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* 3D rig: one perspective (stage), then intro → scroll → pointer wrappers,
-                each with a small transform of its own. Back devices sit at negative Z. */}
-            <div className="py-8 xl:col-span-5 xl:py-0">
-              <div className="hero-stage relative mx-auto w-full max-w-72 md:max-w-80">
-                <div data-anim="hero-intro" className="rig">
-                  <div data-anim="hero-scroll" className="rig">
-                    <div data-anim="hero-tilt" className="rig relative">
-                      <svg
-                        aria-hidden
-                        viewBox="0 0 400 400"
-                        className="animate-orbit pointer-events-none absolute top-1/2 left-1/2 w-[160%] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-50 [transform:translateZ(-260px)]"
-                      >
-                        <defs>
-                          <linearGradient id="hero-orbit" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stopColor="var(--color-terracotta)" />
-                            <stop offset="50%" stopColor="var(--color-violet)" />
-                            <stop offset="100%" stopColor="var(--color-cerulean)" />
-                          </linearGradient>
-                        </defs>
-                        <circle
-                          cx="200"
-                          cy="200"
-                          r="190"
-                          fill="none"
-                          stroke="url(#hero-orbit)"
-                          strokeWidth="1"
-                          strokeDasharray="2 10"
-                        />
-                        <circle cx="200" cy="10" r="5" fill="var(--color-raspberry)" />
-                        <circle cx="390" cy="200" r="4" fill="var(--color-azure)" />
-                      </svg>
-                      <div aria-hidden className="hero-back-left absolute inset-0">
-                        <div data-anim="fan-left" className="brightness-[0.7]">
-                          <Device label="">
-                            <Screen id="salah" lang={lang} />
-                          </Device>
-                        </div>
-                      </div>
-                      <div aria-hidden className="hero-back-right absolute inset-0">
-                        <div data-anim="fan-right" className="brightness-[0.7]">
-                          <Device label="">
-                            <Screen id="finance" lang={lang} />
-                          </Device>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Device label={SCREEN_LABEL.home[lang]}>
-                          <Screen id="home" lang={lang} />
-                        </Device>
-                      </div>
-                      {HERO_CHIPS.map((chip) => {
-                        const f = featureById.get(chip.id);
-                        if (!f) return null;
-                        return (
-                          <div
-                            key={chip.id}
-                            aria-hidden
-                            className={`absolute ${chip.pos} [transform:translateZ(80px)]`}
-                          >
-                            <div data-depth={chip.depth}>
-                              <span
-                                className={`tone-cream animate-float flex items-center gap-2 rounded-pill border border-border px-4 py-2 text-caption font-semibold shadow-overlay ${chip.delay}`}
-                              >
-                                <span
-                                  className={`size-2 rounded-pill ${FEATURE_STYLE[chip.id].dot}`}
-                                />
-                                {f.eyebrow}
-                              </span>
-                            </div>
+            {/* 3D rig on a coral card: one perspective (stage), then intro → scroll →
+                pointer wrappers, each a small transform. Back devices sit at negative Z. */}
+            <div className="xl:col-span-6">
+              <div className="tone-coral relative isolate rounded-xl px-8 py-16 md:px-16">
+                <GeoPattern id="hero-geo" className="text-ink opacity-10" />
+                <div className="hero-stage relative mx-auto w-full max-w-64 md:max-w-72">
+                  <div data-anim="hero-intro" className="rig">
+                    <div data-anim="hero-scroll" className="rig">
+                      <div data-anim="hero-tilt" className="rig relative">
+                        <div aria-hidden className="hero-back-left absolute inset-0">
+                          <div data-anim="fan-left" className="brightness-[0.85]">
+                            <Device label="">
+                              <Screen id="salah" lang={lang} />
+                            </Device>
                           </div>
-                        );
-                      })}
+                        </div>
+                        <div aria-hidden className="hero-back-right absolute inset-0">
+                          <div data-anim="fan-right" className="brightness-[0.85]">
+                            <Device label="">
+                              <Screen id="finance" lang={lang} />
+                            </Device>
+                          </div>
+                        </div>
+                        <div className="relative">
+                          <Device label={SCREEN_LABEL.home[lang]}>
+                            <Screen id="home" lang={lang} />
+                          </Device>
+                        </div>
+                        {HERO_CHIPS.map((chip) => {
+                          const f = featureById.get(chip.id);
+                          if (!f) return null;
+                          return (
+                            <div
+                              key={chip.id}
+                              aria-hidden
+                              className={`absolute ${chip.pos} [transform:translateZ(80px)]`}
+                            >
+                              <div data-depth={chip.depth}>
+                                <span
+                                  className={`animate-float flex items-center gap-2 rounded-pill bg-white px-4 py-2 text-caption font-semibold text-ink shadow-overlay ${chip.delay}`}
+                                >
+                                  <span
+                                    className={`size-2 rounded-pill ${FEATURE_STYLE[chip.id].dot}`}
+                                  />
+                                  {f.eyebrow}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -550,24 +586,18 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
           </div>
         </section>
 
-        {/* Marquee — the rhythm of the day, on a cream band; decorative */}
-        <div aria-hidden className="tone-cream mask-fade-x overflow-hidden py-8">
+        {/* Marquee — the rhythm of the day on an ink band; decorative */}
+        <div aria-hidden className="tone-night mask-fade-x overflow-hidden py-8">
           <div className="animate-marquee flex w-max items-center gap-12">
             {[...c.marquee, ...c.marquee].map((word, i) => (
               <span
                 key={`${word}-${i}`}
                 className="flex items-center gap-12 text-section whitespace-nowrap"
               >
-                <span
-                  className={
-                    i % 2 === 1
-                      ? 'font-accent bg-celestial bg-clip-text pr-2 text-transparent'
-                      : 'font-display text-fg'
-                  }
-                >
+                <span className={i % 2 === 1 ? 'font-accent text-lime' : 'font-display text-fg'}>
                   {word}
                 </span>
-                <svg viewBox="0 0 24 24" className="size-6 text-terracotta">
+                <svg viewBox="0 0 24 24" className="size-6 text-coral">
                   <path
                     fill="currentColor"
                     d="M12 2 14.6 7.4 20.5 8.2 16.2 12.3 17.3 18.2 12 15.4 6.7 18.2 7.8 12.3 3.5 8.2 9.4 7.4Z"
@@ -578,10 +608,14 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
           </div>
         </div>
 
-        {/* Essence — words light up as you scroll */}
-        <Section tone="night" labelledBy="essence-title">
-          <div data-anim="essence" className="mx-auto grid max-w-5xl gap-8 text-center">
-            <h2 id="essence-title" className={`${EYEBROW} text-terracotta-text`}>
+        {/* Essence — words go from faint to ink as you scroll */}
+        <Section labelledBy="essence-title">
+          <div
+            data-anim="essence"
+            className="mx-auto grid max-w-5xl justify-items-center gap-8 text-center"
+          >
+            <h2 id="essence-title" className={TAG}>
+              <span aria-hidden className="size-2 rounded-pill bg-coral" />
               {c.essence.title}
             </h2>
             <p className="font-display text-statement text-balance text-fg">
@@ -594,11 +628,11 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
           </div>
         </Section>
 
-        {/* Features — sticky device story on desktop, inline devices on mobile */}
+        {/* Features — sticky device on a colour-shifting card (desktop), inline cards on mobile */}
         <section
           id="features"
           aria-labelledby="features-title"
-          className="tone-cream relative scroll-mt-24 py-16 md:py-24"
+          className="relative scroll-mt-24 pb-16 md:pb-24"
         >
           <div className={CONTAINER}>
             <h2 id="features-title" className="sr-only">
@@ -617,11 +651,14 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
                       className="grid scroll-mt-24 content-center gap-12 lg:min-h-[85vh]"
                     >
                       <div data-anim="reveal" className="grid max-w-xl gap-6">
-                        <p className={`${EYEBROW} flex items-center gap-4 ${style.eyebrow}`}>
-                          <span aria-hidden className="font-accent text-h1 normal-case">
+                        <p className="flex items-center gap-4">
+                          <span aria-hidden className="font-accent text-h1 text-fg-muted">
                             {two(i + 1)}
                           </span>
-                          {f.eyebrow}
+                          <span className={TAG}>
+                            <span aria-hidden className={`size-2 rounded-pill ${style.dot}`} />
+                            {f.eyebrow}
+                          </span>
                         </p>
                         <h3
                           id={`feature-title-${f.id}`}
@@ -633,15 +670,19 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
                         <ul className="grid gap-4 border-t border-border pt-6">
                           {f.points.map((p) => (
                             <li key={p} className="flex gap-4 text-body text-fg">
-                              <Dot className={style.dot} />
+                              <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-pill bg-lime text-ink">
+                                <Check className="size-3" />
+                              </span>
                               <span>{p}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-                      <div className="story-stage lg:hidden">
+                      <div
+                        className={`tone-${FEATURE_CARD[i] ?? 'lime'} story-stage rounded-xl border border-border px-8 py-12 lg:hidden`}
+                      >
                         <div data-anim="feature-phone" data-dir={i % 2 ? '-1' : '1'}>
-                          <Device label={SCREEN_LABEL[style.screen][lang]} className="max-w-72">
+                          <Device label={SCREEN_LABEL[style.screen][lang]} className="max-w-64">
                             <Screen id={style.screen} lang={lang} />
                           </Device>
                         </div>
@@ -651,10 +692,13 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
                 })}
               </div>
               <div aria-hidden className="relative hidden lg:col-span-6 lg:block">
-                <div className="sticky top-24 grid h-[calc(100dvh-6rem)] place-items-center">
-                  <span className="bg-celestial absolute top-1/2 left-1/2 size-96 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl" />
-                  <div className="story-stage relative flex items-center gap-12">
-                    <div data-anim="story-device" className="w-80">
+                <div className="sticky top-24 grid h-[calc(100dvh-7rem)] place-items-center">
+                  <div
+                    data-story-card
+                    className="story-stage relative grid size-full place-items-center overflow-hidden rounded-xl border border-border"
+                  >
+                    <GeoPattern id="story-geo" className="text-ink opacity-10" />
+                    <div data-anim="story-device" className="relative w-72">
                       {/* One device; its screen swaps per step (CSS [data-active]) */}
                       <Device label="">
                         {c.features.map((f, i) => (
@@ -664,16 +708,13 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
                         ))}
                       </Device>
                     </div>
-                    <ol className="grid gap-4">
+                    <ol className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2 rounded-pill bg-white p-2 shadow-raised">
                       {c.features.map((f, i) => (
-                        <li key={f.id} className="flex items-center gap-4">
+                        <li key={f.id} className="flex items-center">
                           <span
                             data-step-dot={i}
-                            className={`h-1 w-4 rounded-pill opacity-40 transition-[width,opacity] duration-300 ${FEATURE_STYLE[f.id].dot}`}
+                            className={`h-2 w-2 rounded-pill opacity-40 transition-[width,opacity] duration-300 ${FEATURE_STYLE[f.id].dot}`}
                           />
-                          <span className="text-caption font-semibold text-fg-muted">
-                            {f.eyebrow}
-                          </span>
                         </li>
                       ))}
                     </ol>
@@ -684,38 +725,35 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
           </div>
         </section>
 
-        {/* Privacy — cream cards on night, each with a visual of what it claims */}
-        <Section id="privacy" tone="night" labelledBy="privacy-title" className="overflow-hidden">
-          <Sky />
-          <div className="grid gap-16">
-            <div data-anim="reveal" className="grid max-w-3xl gap-6">
-              <h2 id="privacy-title" className={SECTION_TITLE}>
+        {/* Privacy — bento of coloured cards, each with a visual of what it claims */}
+        <Section id="privacy" labelledBy="privacy-title">
+          <div className="grid gap-12">
+            <div data-anim="reveal" className="grid gap-8 lg:grid-cols-12 lg:items-end">
+              <h2 id="privacy-title" className={`${SECTION_TITLE} lg:col-span-7`}>
                 {c.privacy.title}
               </h2>
-              <p className="text-lead text-fg-muted">{c.privacy.body}</p>
+              <p className="text-lead text-fg-muted lg:col-span-5">{c.privacy.body}</p>
             </div>
-            <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {c.privacy.points.map((p, i) => {
-                const card = PRIVACY_CARD[i] ?? PRIVACY_CARD[0];
+                const card = PRIVACY_CARD[i] ?? PRIVACY_CARD[0]!;
                 return (
-                  <li key={p.title} data-anim="reveal" className={i % 2 ? 'lg:pt-12' : ''}>
+                  <li key={p.title} data-anim="reveal" className={card.span}>
                     <article
                       data-tilt
-                      className="tone-cream sheen grid h-full content-start gap-4 rounded-xl p-2 shadow-overlay"
+                      className={`tone-${card.tone} ${CARD} grid h-full content-start gap-6 border border-border`}
                     >
-                      <div
-                        aria-hidden
-                        className={`relative h-48 overflow-hidden rounded-lg ${card.block}`}
-                      >
-                        {visuals[i]}
-                      </div>
-                      <div className="grid gap-2 px-4 pt-2 pb-4">
-                        <h3 className="font-display text-h2 text-fg">{p.title}</h3>
-                        <p className="text-body text-fg-muted">{p.body}</p>
-                        <span className="mt-2 w-fit rounded-pill bg-fg px-4 py-2 text-caption font-semibold text-app">
-                          {card.fact[lang]}
+                      <div className="flex items-start justify-between gap-4">
+                        <IconBox d={card.icon} className={card.iconBox} />
+                        <span className="rounded-pill border border-fg/20 px-4 py-1 text-caption font-semibold text-fg">
+                          {card.badge[lang]}
                         </span>
                       </div>
+                      <div className="grid gap-2">
+                        <h3 className="font-display text-h1 text-fg">{p.title}</h3>
+                        <p className="max-w-prose text-body text-fg-muted">{p.body}</p>
+                      </div>
+                      <div aria-hidden>{visuals[i]}</div>
                     </article>
                   </li>
                 );
@@ -724,27 +762,27 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
           </div>
         </Section>
 
-        {/* Featured ayah — night card on cream, khatam lattice behind */}
-        <section
-          aria-labelledby="ayah-label"
-          className="tone-cream relative isolate overflow-hidden py-24 md:py-32"
-        >
-          <GeoPattern id="ayah-geo" className="mask-fade-y -z-10 text-terracotta opacity-25" />
+        {/* Featured ayah — ink card with the khatam lattice */}
+        <section aria-labelledby="ayah-label" className="relative pb-24 md:pb-32">
           <div className={CONTAINER}>
-            <div data-anim="zoom" className="mx-auto max-w-4xl">
-              <figure className="tone-night grid gap-8 rounded-xl p-8 text-center shadow-overlay md:p-16">
-                <h2 id="ayah-label" className={`${EYEBROW} text-terracotta-text`}>
+            <div data-anim="zoom">
+              <figure className="tone-night relative grid gap-8 overflow-hidden rounded-xl p-8 text-center md:p-16">
+                <GeoPattern id="ayah-geo" className="mask-fade-y text-lime opacity-10" />
+                <h2
+                  id="ayah-label"
+                  className="relative mx-auto w-fit rounded-pill bg-lime px-4 py-1 text-caption font-semibold text-ink"
+                >
                   {c.ayah.label}
                 </h2>
-                <blockquote className="grid gap-8">
+                <blockquote className="relative grid gap-8">
                   <p lang="ar" dir="rtl" className="font-quran text-quran text-fg">
                     {ayah.arabic}
                   </p>
-                  <p className="font-accent text-statement text-fg">
+                  <p className="font-accent mx-auto max-w-3xl text-statement text-fg">
                     {lang === 'bn' ? ayah.bn : ayah.en}
                   </p>
                 </blockquote>
-                <figcaption className="text-caption font-semibold tracking-eyebrow text-fg-muted uppercase">
+                <figcaption className="relative text-caption font-semibold tracking-eyebrow text-fg-muted uppercase">
                   {lang === 'bn' ? `কুরআন ${ayahRef}` : `Qur’an ${ayahRef}`}
                 </figcaption>
               </figure>
@@ -753,22 +791,26 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
         </section>
 
         {/* Coming soon */}
-        <Section tone="night" labelledBy="soon-title">
+        <Section labelledBy="soon-title" className="!pt-0">
           <div className="grid gap-12 lg:grid-cols-12">
             <h2 id="soon-title" data-anim="reveal" className={`${SECTION_TITLE} lg:col-span-4`}>
               {c.comingSoon.title}
             </h2>
-            <ul className="grid gap-6 md:grid-cols-2 lg:col-span-8">
+            <ul className="grid gap-4 md:grid-cols-2 lg:col-span-8">
               {c.comingSoon.items.map((item, i) => (
                 <li key={item.title} data-anim="reveal">
                   <div
                     data-tilt
-                    className="sheen grid h-full gap-4 rounded-xl border border-dashed border-border bg-surface p-8"
+                    className={`${i === 0 ? 'tone-coral' : 'tone-lime'} ${CARD} grid h-full gap-4 border border-border`}
                   >
-                    <span className="font-accent w-fit text-h1 text-terracotta-text">
-                      {two(i + 1)}
-                    </span>
-                    <h3 className="font-display text-h2 text-fg">{item.title}</h3>
+                    <div className="flex items-start justify-between">
+                      <IconBox
+                        d={i === 0 ? ICON.spark : ICON.cloud}
+                        className="bg-ink text-cream"
+                      />
+                      <span className="font-accent text-h1 text-fg">{two(i + 1)}</span>
+                    </div>
+                    <h3 className="font-display text-h1 text-fg">{item.title}</h3>
                     <p className="text-body text-fg-muted">{item.body}</p>
                   </div>
                 </li>
@@ -778,7 +820,7 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
         </Section>
 
         {/* FAQ — native details/summary, no JS */}
-        <Section id="faq" tone="cream" labelledBy="faq-title">
+        <Section id="faq" labelledBy="faq-title" className="!pt-0">
           <div className="grid gap-12 lg:grid-cols-12">
             <h2
               id="faq-title"
@@ -791,13 +833,13 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
                 <details
                   key={item.q}
                   data-anim="reveal"
-                  className="group rounded-lg border border-border bg-surface px-6 transition-colors duration-200 open:bg-surface-subtle"
+                  className="group rounded-lg border border-border bg-white px-6 transition-colors duration-200 open:bg-surface"
                 >
                   <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 py-4 text-lead font-medium text-fg [&::-webkit-details-marker]:hidden">
                     {item.q}
                     <span
                       aria-hidden
-                      className="grid size-8 shrink-0 place-items-center rounded-pill bg-fg text-app transition-transform duration-200 group-open:rotate-45"
+                      className="grid size-8 shrink-0 place-items-center rounded-pill bg-ink text-lime transition-transform duration-200 group-open:rotate-45"
                     >
                       <svg
                         width="14"
@@ -819,19 +861,15 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
           </div>
         </Section>
 
-        {/* Final CTA — a cream card on night */}
-        <section
-          aria-labelledby="final-title"
-          className={`tone-night ${SECTION} isolate overflow-hidden`}
-        >
-          <Sky intensity="bright" />
+        {/* Final CTA — a lime card */}
+        <section aria-labelledby="final-title" className="relative pb-24 md:pb-32">
           <div className={CONTAINER}>
             <div
               data-anim="zoom"
-              className="tone-cream relative mx-auto grid max-w-5xl justify-items-center gap-8 overflow-hidden rounded-xl px-6 py-24 text-center shadow-overlay md:px-16"
+              className="tone-lime relative grid justify-items-center gap-8 overflow-hidden rounded-xl border border-border px-6 py-24 text-center md:px-16"
             >
-              <GeoPattern id="final-geo" className="mask-fade-y text-terracotta opacity-20" />
-              <h2 id="final-title" className={`${SECTION_TITLE} relative`}>
+              <GeoPattern id="final-geo" className="mask-fade-y text-ink opacity-10" />
+              <h2 id="final-title" className={`${SECTION_TITLE} relative max-w-3xl`}>
                 {c.final.title}
               </h2>
               <p className="relative max-w-prose text-lead text-fg-muted">{c.final.body}</p>
@@ -844,95 +882,99 @@ export function LandingPage({ lang }: { lang: MarketingLang }) {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="tone-night relative isolate overflow-hidden border-t border-border pt-24">
-        <div
-          aria-hidden
-          className="bg-celestial absolute -bottom-1/2 left-1/2 -z-10 h-full w-3/4 -translate-x-1/2 rounded-full opacity-15 blur-3xl"
-        />
-        <div className={`${CONTAINER} grid gap-16 lg:grid-cols-12`}>
-          <div className="grid content-start gap-6 lg:col-span-5">
-            <Link
-              href={paths.home}
-              className="font-display w-fit text-section text-fg transition-opacity duration-200 hover:opacity-80"
-            >
-              Lamim
-            </Link>
-            <p className="max-w-sm text-lead text-fg-muted">{c.footer.lead}</p>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link href="/app/home" className={PRIMARY}>
-                {c.nav.openApp}
-                <ArrowBubble />
-              </Link>
+      {/* Footer — an ink panel inset on the cream page */}
+      <footer className="px-2 pb-2 md:px-4 md:pb-4">
+        <div className="tone-night relative overflow-hidden rounded-xl pt-24">
+          <div className={`${CONTAINER} grid gap-16 lg:grid-cols-12`}>
+            <div className="grid content-start gap-6 lg:col-span-5">
               <Link
-                href={MARKETING_PATHS[other].home}
-                hrefLang={other}
-                lang={other}
-                className={SECONDARY}
+                href={paths.home}
+                className="font-display w-fit text-section text-fg transition-opacity duration-200 hover:opacity-80"
               >
-                {c.nav.language}
+                Lamim
               </Link>
+              <p className="max-w-sm text-lead text-fg-muted">{c.footer.lead}</p>
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href="/app/home" className={PRIMARY}>
+                  {c.nav.openApp}
+                  <ArrowBubble />
+                </Link>
+                <Link
+                  href={MARKETING_PATHS[other].home}
+                  hrefLang={other}
+                  lang={other}
+                  className={SECONDARY}
+                >
+                  {c.nav.language}
+                </Link>
+              </div>
             </div>
-          </div>
-          <nav
-            aria-label={lang === 'bn' ? 'ফুটার' : 'Footer'}
-            className="grid gap-12 sm:grid-cols-3 lg:col-span-7"
-          >
-            <div className="grid content-start gap-2">
-              <h2 className={`${EYEBROW} mb-2 text-fg-subtle`}>{c.footer.explore}</h2>
-              <a href="#features" className={FOOT_LINK}>
-                {c.nav.features}
-              </a>
-              <a href="#privacy" className={FOOT_LINK}>
-                {c.nav.privacy}
-              </a>
-              <a href="#faq" className={FOOT_LINK}>
-                {c.nav.faq}
-              </a>
-            </div>
-            <div className="grid content-start gap-2">
-              <h2 className={`${EYEBROW} mb-2 text-fg-subtle`}>{c.footer.modules}</h2>
-              {c.features.map((f) => (
-                <a key={f.id} href={`#feature-${f.id}`} className={FOOT_LINK}>
-                  {f.eyebrow}
-                </a>
-              ))}
-            </div>
-            <div className="grid content-start gap-2">
-              <h2 className={`${EYEBROW} mb-2 text-fg-subtle`}>{c.footer.more}</h2>
-              <Link href={paths.privacy} className={FOOT_LINK}>
-                {c.footer.privacyLink}
-              </Link>
-              <Link href="/app/home" className={FOOT_LINK}>
-                {c.nav.openApp}
-              </Link>
-            </div>
-          </nav>
-        </div>
-
-        {/* Giant wordmark, rising as the page ends */}
-        <div aria-hidden className={`${CONTAINER} mt-24 overflow-hidden`}>
-          <p
-            data-anim="wordmark"
-            className="font-display bg-celestial bg-clip-text text-center text-mega text-transparent select-none"
-          >
-            Lamim
-          </p>
-        </div>
-
-        <div className="border-t border-border">
-          <div
-            className={`${CONTAINER} flex flex-col gap-4 py-8 md:flex-row md:items-center md:justify-between`}
-          >
-            <p className="text-caption text-fg-muted">{c.footer.rights}</p>
-            <p className="text-caption text-fg-muted">{c.footer.tagline}</p>
-            <a
-              href="#top"
-              className="group inline-flex min-h-11 w-fit items-center gap-2 rounded-pill border border-border px-4 text-caption font-semibold text-fg transition-colors duration-200 hover:bg-surface-subtle"
+            <nav
+              aria-label={lang === 'bn' ? 'ফুটার' : 'Footer'}
+              className="grid gap-12 sm:grid-cols-3 lg:col-span-7"
             >
-              {c.footer.backToTop}
-              <ArrowUp />
-            </a>
+              <div className="grid content-start gap-2">
+                <h2 className="mb-2 text-caption font-semibold tracking-eyebrow text-lime uppercase">
+                  {c.footer.explore}
+                </h2>
+                <a href="#features" className={FOOT_LINK}>
+                  {c.nav.features}
+                </a>
+                <a href="#privacy" className={FOOT_LINK}>
+                  {c.nav.privacy}
+                </a>
+                <a href="#faq" className={FOOT_LINK}>
+                  {c.nav.faq}
+                </a>
+              </div>
+              <div className="grid content-start gap-2">
+                <h2 className="mb-2 text-caption font-semibold tracking-eyebrow text-lime uppercase">
+                  {c.footer.modules}
+                </h2>
+                {c.features.map((f) => (
+                  <a key={f.id} href={`#feature-${f.id}`} className={FOOT_LINK}>
+                    {f.eyebrow}
+                  </a>
+                ))}
+              </div>
+              <div className="grid content-start gap-2">
+                <h2 className="mb-2 text-caption font-semibold tracking-eyebrow text-lime uppercase">
+                  {c.footer.more}
+                </h2>
+                <Link href={paths.privacy} className={FOOT_LINK}>
+                  {c.footer.privacyLink}
+                </Link>
+                <Link href="/app/home" className={FOOT_LINK}>
+                  {c.nav.openApp}
+                </Link>
+              </div>
+            </nav>
+          </div>
+
+          {/* Giant wordmark, rising as the page ends */}
+          <div aria-hidden className={`${CONTAINER} mt-24 overflow-hidden`}>
+            <p
+              data-anim="wordmark"
+              className="font-display text-center text-mega text-fg select-none"
+            >
+              Lamim<span className="text-lime">.</span>
+            </p>
+          </div>
+
+          <div className="border-t border-border">
+            <div
+              className={`${CONTAINER} flex flex-col gap-4 py-8 md:flex-row md:items-center md:justify-between`}
+            >
+              <p className="text-caption text-fg-muted">{c.footer.rights}</p>
+              <p className="text-caption text-fg-muted">{c.footer.tagline}</p>
+              <a
+                href="#top"
+                className="group inline-flex min-h-11 w-fit items-center gap-2 rounded-pill border border-border px-4 text-caption font-semibold text-fg transition-colors duration-200 hover:bg-surface-subtle"
+              >
+                {c.footer.backToTop}
+                <ArrowUp />
+              </a>
+            </div>
           </div>
         </div>
       </footer>

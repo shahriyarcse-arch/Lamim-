@@ -27,7 +27,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
       {/* Floating Capsule Shell (Inspired by sellsull.com) */}
       <nav
         aria-label={lang === 'bn' ? 'প্রধান মেনু' : 'Primary Navigation'}
-        className="mx-auto w-full max-w-6xl min-h-[4rem] px-3.5 sm:px-5 py-2 flex items-center justify-between gap-3 sm:gap-4 rounded-full bg-app/80 backdrop-blur-2xl border border-white/12 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)] pointer-events-auto transition-all"
+        className="tone-night mx-auto w-full max-w-6xl min-h-[4rem] px-3.5 sm:px-5 py-2 flex items-center justify-between gap-3 sm:gap-4 rounded-full bg-app/80 backdrop-blur-2xl border border-white/12 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)] pointer-events-auto transition-all"
       >
         {/* Brand Logo */}
         <Link href={paths.home} className="flex items-center gap-3 group">
@@ -130,10 +130,10 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
           {/* Sellsull Signature CTA Button with Arrow Bubble */}
           <Link
             href="/app/home"
-            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-fg py-1.5 pr-1.5 pl-4 text-xs font-bold text-app shadow-raised transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 sm:pl-5 sm:text-sm"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-lime py-1.5 pr-1.5 pl-4 text-xs font-bold text-ink shadow-raised transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 sm:pl-5 sm:text-sm"
           >
             <span>{c.nav.openApp}</span>
-            <span className="bg-celestial size-7 sm:size-8 rounded-full grid place-items-center text-white transition-transform duration-200 group-hover:translate-x-0.5">
+            <span className="bg-ink size-7 sm:size-8 rounded-full grid place-items-center text-lime transition-transform duration-200 group-hover:translate-x-0.5">
               <svg
                 className="size-3.5 sm:size-4"
                 viewBox="0 0 24 24"
@@ -190,7 +190,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
 
       {/* Mobile Drawer (Drop-down Island) */}
       {mobileOpen && (
-        <div className="md:hidden mt-2 max-w-sm mx-auto p-4 rounded-3xl bg-app/95 backdrop-blur-2xl border border-white/12 shadow-2xl flex flex-col gap-3 pointer-events-auto animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="tone-night md:hidden mt-2 max-w-sm mx-auto p-4 rounded-3xl bg-app/95 backdrop-blur-2xl border border-white/12 shadow-2xl flex flex-col gap-3 pointer-events-auto animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col gap-1">
             {(
               [
@@ -234,7 +234,7 @@ export function Navbar({ lang, c, paths, other }: NavbarProps) {
             <Link
               href="/app/home"
               onClick={() => setMobileOpen(false)}
-              className="flex-1 text-center py-2 px-4 rounded-full bg-fg text-app text-xs font-bold shadow-md"
+              className="flex-1 text-center py-2 px-4 rounded-full bg-lime text-ink text-xs font-bold shadow-md"
             >
               {c.nav.openApp}
             </Link>

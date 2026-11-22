@@ -30,6 +30,14 @@
   --color-azure-strong: #0071c0;
   --color-cerulean-strong: #0075aa;
 
+  /* Landing palette (owner's reference): cream page, coral / lime / ink cards.
+     Landing-only; the app keeps the 6 brand colors above. */
+  --color-cream: #f3f0e7;
+  --color-sand: #e8e4d8;
+  --color-ink: #171914;
+  --color-lime: #d6f065;
+  --color-coral: #ff7a5c;
+
   /* Typography — families come from next/font CSS variables (layout.tsx) */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-bengali: var(--font-noto-bengali), var(--font-jakarta), sans-serif;
@@ -195,12 +203,12 @@
   --motion-aurora: 26s;
   --motion-swap: 600ms;
   /* Dark app background, for the page edge behind the night-sky landing */
-  --landing-edge: #1c1d18;
+  --landing-edge: #f3f0e7;
 }
 
 /* The landing always renders in the dark night-sky palette (tokens tested in contrast.test.ts). */
 html:has([data-landing]) {
-  color-scheme: dark;
+  color-scheme: light;
 }
 body:has([data-landing]) {
   background-color: var(--landing-edge);
@@ -462,6 +470,52 @@ html.lenis body {
   color-scheme: light;
   background-color: var(--bg-app);
   color: var(--text-primary);
+}
+
+/* Card tones on the light landing (text tokens gated by contrast.test.ts). */
+.tone-lime {
+  --bg-app: #d6f065;
+  --bg-surface: #e3f693;
+  --bg-surface-subtle: #c8e352;
+  --text-primary: #171914;
+  --text-secondary: #3a4128;
+  --text-tertiary: #454d2e;
+  --border-subtle: rgb(23 25 20 / 0.14);
+  --border-focus: #171914;
+  color-scheme: light;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+}
+.tone-coral {
+  --bg-app: #ff7a5c;
+  --bg-surface: #ff9477;
+  --bg-surface-subtle: #f26a4b;
+  --text-primary: #171914;
+  --text-secondary: #3b1f17;
+  --text-tertiary: #3f2118;
+  --border-subtle: rgb(23 25 20 / 0.16);
+  --border-focus: #171914;
+  color-scheme: light;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+}
+
+/* Feature story: the card behind the sticky device takes a new colour per step. */
+[data-story-card] {
+  transition: background-color var(--motion-swap) var(--ease-standard);
+  background-color: var(--color-lime);
+}
+[data-active='1'] [data-story-card] {
+  background-color: var(--color-coral);
+}
+[data-active='2'] [data-story-card] {
+  background-color: var(--color-ink);
+}
+[data-active='3'] [data-story-card] {
+  background-color: #ffffff;
+}
+[data-active='4'] [data-story-card] {
+  background-color: var(--color-lime);
 }
 
 /* Hero 3D rig: ONE perspective on the stage, flat preserve-3d chain below it,
